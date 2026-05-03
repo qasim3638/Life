@@ -360,14 +360,14 @@ QUOTES_SEED = [
 ]
 
 PODCASTS_SEED = [
-    {"title": "Jordan Peterson — Purpose & Meaning", "youtube_id": "IZWCEr4QPOw", "host": "Jordan Peterson", "category": "Wisdom", "duration": "15 min"},
-    {"title": "Goggins — Stay Hard", "youtube_id": "nSRSjnV4lmc", "host": "David Goggins", "category": "Discipline", "duration": "7 min"},
+    {"title": "Jordan Peterson — Purpose & Meaning", "youtube_id": "nXc-zvHa-GA", "host": "Jordan Peterson", "category": "Wisdom", "duration": "8 min"},
+    {"title": "Goggins — Stay Hard", "youtube_id": "jlA2dWVLFzg", "host": "David Goggins", "category": "Discipline", "duration": "30 min"},
     {"title": "Alan Watts — What Do You Desire?", "youtube_id": "GqGksNRYu8s", "host": "Alan Watts", "category": "Philosophy", "duration": "3 min"},
     {"title": "Les Brown — It's Possible", "youtube_id": "lsSC2vx7zFQ", "host": "Les Brown", "category": "Motivation", "duration": "10 min"},
     {"title": "Naval Ravikant — How to Get Rich (Without Getting Lucky)", "youtube_id": "1-TZqOsVCNM", "host": "Naval", "category": "Wisdom", "duration": "30 min"},
     {"title": "Matthew McConaughey — This Is Your Time", "youtube_id": "wD2cVhC-63I", "host": "Matthew McConaughey", "category": "Motivation", "duration": "6 min"},
-    {"title": "Eckhart Tolle — The Power of Now", "youtube_id": "DrtLXG8Mtn4", "host": "Eckhart Tolle", "category": "Peace", "duration": "18 min"},
-    {"title": "Rumi Poetry Readings — For the Soul", "youtube_id": "8jixsFG9PJk", "host": "Various", "category": "Spiritual", "duration": "20 min"},
+    {"title": "Eckhart Tolle — The Power of Now", "youtube_id": "5IEsBKZu3RQ", "host": "Eckhart Tolle", "category": "Peace", "duration": "10 min"},
+    {"title": "Rumi — The Guest House (Guided)", "youtube_id": "RXBOtMkAalw", "host": "Various", "category": "Spiritual", "duration": "7 min"},
 ]
 
 MEDITATIONS_SEED = [
@@ -375,7 +375,7 @@ MEDITATIONS_SEED = [
     {"title": "Body Scan for Deep Rest", "youtube_id": "ihwcw_ofuME", "category": "Sleep", "duration": "20 min", "description": "Release tension from head to toe."},
     {"title": "Anxiety Relief Breath", "youtube_id": "MR57rug8NsM", "category": "Calm", "duration": "5 min", "description": "Box breathing for instant calm."},
     {"title": "Gratitude Meditation", "youtube_id": "OCorElLKFQE", "category": "Gratitude", "duration": "10 min", "description": "Cultivate thankfulness."},
-    {"title": "Guided Walking Meditation", "youtube_id": "KH5pSF3V8OE", "category": "Movement", "duration": "15 min", "description": "Mindfulness on the move."},
+    {"title": "Guided Walking Meditation", "youtube_id": "8PFKIu3pl0k", "category": "Movement", "duration": "15 min", "description": "Mindfulness on the move."},
     {"title": "Loving-Kindness (Metta)", "youtube_id": "sz7cpV7ERsM", "category": "Heart", "duration": "12 min", "description": "Open your heart to self and others."},
 ]
 

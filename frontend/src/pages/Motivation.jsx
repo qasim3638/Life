@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { api } from "../lib/api";
 import { Container, Card, Eyebrow, PageHeader } from "../components/Layout";
 import { Quote as QuoteIcon, Play } from "lucide-react";
+import { YouTubeThumb, WatchOnYouTube } from "../components/YouTubeThumb";
 
 export default function Motivation() {
   const [quotes, setQuotes] = useState([]);
@@ -53,11 +54,7 @@ export default function Motivation() {
                   className="aspect-video w-full relative group block"
                   data-testid={`play-podcast-${p.id}`}
                 >
-                  <img
-                    src={`https://i.ytimg.com/vi/${p.youtube_id}/hqdefault.jpg`}
-                    alt={p.title}
-                    className="w-full h-full object-cover"
-                  />
+                  <YouTubeThumb youtubeId={p.youtube_id} title={p.title} className="absolute inset-0" />
                   <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors flex items-center justify-center">
                     <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center group-hover:scale-110 transition-transform">
                       <Play size={24} strokeWidth={1.5} className="ml-1 text-[#2D312E]" />
@@ -68,7 +65,10 @@ export default function Motivation() {
               <div className="p-5">
                 <p className="text-[11px] uppercase tracking-widest text-[#C27A62]">{p.category} · {p.duration}</p>
                 <h3 className="font-serif text-xl text-[#2D312E] mt-1">{p.title}</h3>
-                <p className="text-sm text-[#6B7270] mt-1">{p.host}</p>
+                <div className="flex items-center justify-between mt-1">
+                  <p className="text-sm text-[#6B7270]">{p.host}</p>
+                  <WatchOnYouTube youtubeId={p.youtube_id} />
+                </div>
               </div>
             </Card>
           ))}

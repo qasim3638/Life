@@ -4,6 +4,7 @@ import { Container, Card, Eyebrow, PageHeader } from "../components/Layout";
 import { Button } from "../components/ui/button";
 import { Play, Pause, RotateCcw } from "lucide-react";
 import { usePlayer } from "../components/Player";
+import { YouTubeThumb, WatchOnYouTube } from "../components/YouTubeThumb";
 
 const PRESETS = [5, 10, 15, 20];
 const CATEGORIES = [
@@ -142,7 +143,7 @@ export default function Meditate() {
         {items.map(item => (
           <Card key={item.id} className="p-0 overflow-hidden cursor-pointer group" onClick={() => player.play({ youtube_id: item.youtube_id, title: item.title, category: item.category })} data-testid={`audio-${item.id}`}>
             <div className="aspect-video relative">
-              <img src={`https://i.ytimg.com/vi/${item.youtube_id}/hqdefault.jpg`} alt={item.title} className="w-full h-full object-cover"/>
+              <YouTubeThumb youtubeId={item.youtube_id} title={item.title} className="absolute inset-0" />
               <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors flex items-center justify-center">
                 <div className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Play size={20} strokeWidth={1.5} className="ml-0.5 text-[#2D312E]"/>
@@ -153,6 +154,9 @@ export default function Meditate() {
               <p className="text-[10px] uppercase tracking-widest text-[#C27A62]">{item.category} · {item.duration}</p>
               <h3 className="font-serif text-lg text-[#2D312E] mt-0.5 leading-tight">{item.title}</h3>
               {item.description && <p className="text-xs text-[#6B7270] mt-1 line-clamp-2">{item.description}</p>}
+              <div className="mt-2">
+                <WatchOnYouTube youtubeId={item.youtube_id} />
+              </div>
             </div>
           </Card>
         ))}
