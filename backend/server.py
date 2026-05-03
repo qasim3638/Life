@@ -7,7 +7,7 @@ import os
 import logging
 from pathlib import Path
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import List, Optional, Literal
 import uuid
 from datetime import datetime, timezone, timedelta
 
@@ -232,7 +232,7 @@ class Companion(BaseModel):
 class CompanionUpdate(BaseModel):
     name: Optional[str] = None
     user_name: Optional[str] = None
-    persona: Optional[str] = None
+    persona: Optional[Literal["friend", "secretary", "manager", "coach"]] = None
 
 
 class CompanionMemory(BaseModel):
@@ -736,7 +736,8 @@ async def companion_chat(req: ChatRequest):
     memory_block = ""
     if memories:
         memory_block = "\n\nThings you remember about the user:\n" + "\n".join(
-            f"- ({m.get('category', 'general')}) {m.get('content', '')}" for m in memories[:30]
+            f"- ({m.get('category', 'general')}) {(m.get('content', '') or '')[:240]}"
+            for m in memories[:30]
         )
 
     history_block = ""
