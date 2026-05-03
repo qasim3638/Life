@@ -73,6 +73,8 @@ async def list_distractions():
 @router.get("/focus-stats")
 async def focus_stats(date: Optional[str] = None, tz_offset_min: int = 0):
     """Stats for today (local time when date+tz_offset_min provided, else UTC date)."""
+    # Clamp to sane real-world range
+    tz_offset_min = max(-840, min(840, tz_offset_min))
     if date:
         try:
             local_midnight = datetime.fromisoformat(f"{date}T00:00:00+00:00")
