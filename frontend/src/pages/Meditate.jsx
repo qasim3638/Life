@@ -2,9 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { api } from "../lib/api";
 import { Container, Card, Eyebrow, PageHeader } from "../components/Layout";
 import { Button } from "../components/ui/button";
-import { Play, Pause, RotateCcw } from "lucide-react";
+import { Play, Pause, RotateCcw, Trash2 } from "lucide-react";
 import { usePlayer } from "../components/Player";
 import { YouTubeThumb, WatchOnYouTube } from "../components/YouTubeThumb";
+import AddYouTubeDialog from "../components/AddYouTubeDialog";
+import { toast } from "sonner";
 
 const PRESETS = [5, 10, 15, 20];
 const CATEGORIES = [
@@ -126,7 +128,7 @@ export default function Meditate() {
           <p className="text-sm text-[#6B7270] mb-5 leading-relaxed">
             Play any track and keep browsing — a small floating player keeps it with you.
           </p>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             {CATEGORIES.map(c => (
               <button key={c.key} onClick={() => setTab(c.key)}
                 className={`px-4 py-1.5 rounded-full text-xs uppercase tracking-wider transition-colors ${
@@ -135,6 +137,15 @@ export default function Meditate() {
                 data-testid={`audio-tab-${c.key}`}
               >{c.label}</button>
             ))}
+            {tab === "Guided" && (
+              <div className="ml-auto">
+                <AddYouTubeDialog
+                  kind="meditation"
+                  categories={["Morning", "Sleep", "Calm", "Gratitude", "Movement", "Heart", "Focus"]}
+                  onAdded={loadGuided}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -154,8 +165,18 @@ export default function Meditate() {
               <p className="text-[10px] uppercase tracking-widest text-[#C27A62]">{item.category} · {item.duration}</p>
               <h3 className="font-serif text-lg text-[#2D312E] mt-0.5 leading-tight">{item.title}</h3>
               {item.description && <p className="text-xs text-[#6B7270] mt-1 line-clamp-2">{item.description}</p>}
-              <div className="mt-2">
+              <div className="flex items-center justify-between mt-2 gap-2">
                 <WatchOnYouTube youtubeId={item.youtube_id} />
+                {item.is_custom && tab === "Guided" && (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); deleteMeditation(item.id); }}
+                    className="text-[#9A9F9D] hover:text-[#B85C50]"
+                    title="Remove"
+                    data-testid={`delete-meditation-${item.id}`}
+                  >
+                    <Trash2 size={13} strokeWidth={1.5}/>
+                  </button>
+                )}
               </div>
             </div>
           </Card>

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../lib/api";
 import { Container, Card, Eyebrow, PageHeader } from "../components/Layout";
-import { Quote as QuoteIcon, Play } from "lucide-react";
+import { Quote as QuoteIcon, Play, Trash2 } from "lucide-react";
 import { YouTubeThumb, WatchOnYouTube } from "../components/YouTubeThumb";
+import AddYouTubeDialog from "../components/AddYouTubeDialog";
+import { toast } from "sonner";
 
 export default function Motivation() {
   const [quotes, setQuotes] = useState([]);
@@ -10,12 +12,25 @@ export default function Motivation() {
   const [activeCat, setActiveCat] = useState("All");
   const [playing, setPlaying] = useState(null);
 
+  const loadPodcasts = () => api.get("/podcasts").then(r => setPodcasts(r.data));
+
   useEffect(() => {
     (async () => {
       const [q, p] = await Promise.all([api.get("/quotes"), api.get("/podcasts")]);
       setQuotes(q.data); setPodcasts(p.data);
     })();
   }, []);
+
+  const deletePodcast = async (id) => {
+    if (!window.confirm("Remove this from your library?")) return;
+    try {
+      await api.delete(`/podcasts/${id}`);
+      setPodcasts(p => p.filter(x => x.id !== id));
+      toast.success("Removed");
+    } catch {
+      toast.error("Couldn't remove");
+    }
+  };
 
   const cats = ["All", ...Array.from(new Set(quotes.map(q => q.category)))];
   const filteredQuotes = activeCat === "All" ? quotes : quotes.filter(q => q.category === activeCat);
@@ -31,11 +46,16 @@ export default function Motivation() {
 
       {/* Podcasts */}
       <section className="mb-14" data-testid="podcasts-section">
-        <div className="flex items-baseline justify-between mb-5">
+        <div className="flex items-baseline justify-between mb-5 gap-4 flex-wrap">
           <div>
             <Eyebrow>Listen</Eyebrow>
             <h2 className="font-serif text-3xl text-[#2D312E]">Speeches & podcasts</h2>
           </div>
+          <AddYouTubeDialog
+            kind="podcast"
+            categories={["Wisdom", "Discipline", "Philosophy", "Motivation", "Peace", "Spiritual"]}
+            onAdded={loadPodcasts}
+          />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {podcasts.map(p => (
@@ -65,9 +85,21 @@ export default function Motivation() {
               <div className="p-5">
                 <p className="text-[11px] uppercase tracking-widest text-[#C27A62]">{p.category} · {p.duration}</p>
                 <h3 className="font-serif text-xl text-[#2D312E] mt-1">{p.title}</h3>
-                <div className="flex items-center justify-between mt-1">
-                  <p className="text-sm text-[#6B7270]">{p.host}</p>
-                  <WatchOnYouTube youtubeId={p.youtube_id} />
+                <div className="flex items-center justify-between mt-1 gap-2">
+                  <p className="text-sm text-[#6B7270] truncate">{p.host}</p>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <WatchOnYouTube youtubeId={p.youtube_id} />
+                    {p.is_custom && (
+                      <button
+                        onClick={(e) => { e.stopPropagation(); deletePodcast(p.id); }}
+                        className="text-[#9A9F9D] hover:text-[#B85C50]"
+                        title="Remove from library"
+                        data-testid={`delete-podcast-${p.id}`}
+                      >
+                        <Trash2 size={13} strokeWidth={1.5}/>
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </Card>

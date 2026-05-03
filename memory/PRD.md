@@ -43,6 +43,8 @@ and anything that helps build a routine for staying healthy, happy and fit.
 - 2026-02: Upload endpoint now auto-compresses to WebP — full-size (longest edge ≤ 1600px, q85) + 400×300 thumbnail (q75). Recipe model gained `thumb` field; card grid uses thumbnail, detail modal keeps full. 2400×1600 JPEG (60KB) → 3KB WebP + 300-byte thumb (~20× smaller).
 - 2026-02: Recipe cards now use native `<img>` with `loading="lazy"`, `decoding="async"`, and fixed `width=400 height=300` (modal: 800×448) for zero-CLS, smooth scrolling at any catalog size.
 - 2026-02: AI macro estimation — `POST /api/ai/recipe-macros` uses Claude Sonnet 4.5 to estimate prep time + calories + protein/carbs/fat per serving from the ingredient list. New "Estimate macros" button in the Add Recipe dialog pre-fills all five numeric fields. Backend + frontend tests 100%.
+- 2026-02: YouTube library curation — `POST/DELETE /api/podcasts` and `/api/meditations` accept any YouTube URL form (watch?v=, youtu.be, /embed/, /shorts/, or raw 11-char ID), extract the ID server-side via regex, and store as `is_custom: true`. Motivation + Meditate pages have an "Add your own" dialog. Seeded items are protected from deletion (404 returned). Resilient UI: `<YouTubeThumb>` auto-detects YouTube's 120×90 broken-video placeholder and swaps in a warm fallback card; every card carries a "Watch on YouTube ↗" escape-hatch link. Fixed 5 dead seeded IDs (Jordan Peterson, Goggins, Eckhart Tolle, Rumi, Walking Meditation) in seed file + live DB.
+- 2026-02: Removed "Made with Emergent" badge from `public/index.html`.
 
 ## Prioritized Backlog
 - **P2** A11y: add `aria-describedby` / DialogDescription to all shadcn Dialogs (non-blocking warning surfaced by testing agent)
