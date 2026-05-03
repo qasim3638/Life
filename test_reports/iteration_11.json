@@ -1,0 +1,54 @@
+{
+  "summary": "Iter 11 — image upload endpoint + Today/Companion refactor regression. Backend image upload (POST /api/upload/image + GET /api/uploads/<file>) is solid: 7/7 pytest cases pass (PNG/JPEG accept, ext-rejection 400, >5MB-rejection 400, static-serve byte-exact, recipe POST persists /api/uploads/... URL). Today (/) regression PASS — all 5 extracted cards render (card-protected, card-daily-brief, streak-protector, card-life-progress, card-weekly-letter) with no console errors; the previous 'Compass is not defined' import error is gone. Companion (/companion) regression PASS — all 4 persona buttons + open-memories-btn + open-settings-btn render. Recipes dialog: add-recipe-btn, upload-recipe-image-btn, recipe-image-file-input, new-recipe-image, save-new-recipe-btn all present. URL paste → preview shows; clear-recipe-image-btn (X) clears it. CRITICAL FRONTEND BUG: selecting a file via the hidden input throws 'ReferenceError: handleFileUpload is not defined' — the onChange handler at /app/frontend/src/pages/Recipes.jsx:232 calls handleFileUpload(...) but no such function is defined anywhere in the file. This breaks the entire upload-from-file feature for this iteration.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Recipes.jsx (Add recipe dialog)",
+        "issue": "ReferenceError: handleFileUpload is not defined. The file input's onChange={(e) => handleFileUpload(e.target.files?.[0])} calls a function that is never declared. Selecting a file crashes the page with the React dev-mode red overlay. No POST /api/upload/image is fired from the frontend. URL-paste flow still works because it bypasses this handler.",
+        "selector": "[data-testid=recipe-image-file-input] (line 232 of Recipes.jsx)",
+        "priority": "CRITICAL"
+      }
+    ],
+    "integration_issues": [
+      {
+        "flow": "Upload recipe image from file picker",
+        "issue": "Frontend never calls POST /api/upload/image because handleFileUpload is missing. The backend endpoint is verified working via pytest (7/7 green) and would return {url, filename} correctly if invoked.",
+        "affected_selectors": ["[data-testid=recipe-image-file-input]", "[data-testid=upload-recipe-image-btn]", "[data-testid=new-recipe-image-preview]"]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iteration11.py",
+    "/app/test_reports/pytest/iter11.xml"
+  ],
+  "action_items": [
+    "FIX (CRITICAL): Add the missing handleFileUpload function in /app/frontend/src/pages/Recipes.jsx. It should do roughly: (1) guard if !file, (2) setUploading(true), (3) build FormData with field name 'file', (4) call api.post('/upload/image', formData, {headers: {'Content-Type': 'multipart/form-data'}}), (5) setNewRecipe({...newRecipe, image: data.url}), (6) toast.error on failure, (7) setUploading(false) in finally, (8) clear fileRef.current.value so the same file can be re-picked. After the fix, re-test by re-running the file-upload Playwright flow — preview should appear and the URL input should remain empty (because image starts with /api/).",
+    "Once the function is added, verify the saved recipe card shows the uploaded image (background-image style with REACT_APP_BACKEND_URL prefix via the existing toAbsolute helper)."
+  ],
+  "critical_code_review_comments": [
+    "Recipes.jsx imports Upload and X icons and declares uploading/setUploading + fileRef but the actual handler function was never written — likely a copy/paste or merge miss. ESLint with no-undef rule would have caught this; recommend enabling no-undef in CRA's eslintConfig.",
+    "Recipes.jsx (300 lines) is borderline; if more recipe features land, consider extracting RecipeCreateDialog and RecipeDetailDialog into /components/recipes/* (mirroring the Today/Companion split done this iteration).",
+    "uploads.py allows .gif but does not validate magic bytes — relies on extension only. Acceptable for single-user trust model but worth noting; a malicious file renamed .png is accepted. Low severity here.",
+    "uploads.py reads full file into memory before the size check. For 5MB cap that's fine, but if cap ever rises, switch to chunked-read with running size accumulator and abort early.",
+    "server.py mounts StaticFiles at /api/uploads AFTER include_router(uploads) — order is correct (static catches GETs that the router doesn't define). No conflict observed.",
+    "toAbsolute() in Recipes.jsx correctly resolves /api/uploads/* against REACT_APP_BACKEND_URL — verified by inspection; once handleFileUpload is added, the e2e flow will be complete."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iteration11.py (NEW)"
+  ],
+  "success_rate": {
+    "backend": "100% (7/7 pytest)",
+    "frontend": "~75% — Today + Companion regressions clean; Recipes URL/clear flow works; file-upload flow broken by missing handleFileUpload function"
+  },
+  "test_credentials": "no auth (single-user app)",
+  "seed_data_creation": "TestRecipeWithUpload created+deleted a recipe titled 'TEST_iter11_recipe' and uploaded one PNG to /app/backend/uploads (file remains; cleanup of upload dir not implemented yet — may want a periodic sweep of orphaned uploads).",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "After main agent adds handleFileUpload to Recipes.jsx, re-run the Playwright file-upload flow: open Add recipe → set_input_files on [data-testid=recipe-image-file-input] → wait ~2s → assert [data-testid=new-recipe-image-preview] is visible AND input_value of [data-testid=new-recipe-image] is empty (because image starts with /api/). Then save recipe and verify the new card's background-image contains the absolute REACT_APP_BACKEND_URL + /api/uploads/... path. Backend endpoint is already proven via /app/backend/tests/test_iteration11.py (run with: REACT_APP_BACKEND_URL=$(grep REACT_APP_BACKEND_URL /app/frontend/.env | cut -d= -f2) python -m pytest backend/tests/test_iteration11.py -v).",
+  "rca_of_the_issue": "ROOT CAUSE: /app/frontend/src/pages/Recipes.jsx line 232 references handleFileUpload(e.target.files?.[0]) inside the file input's onChange, but no such function is declared in the component. State (uploading/setUploading), the file ref (fileRef), and the icon imports (Upload, X) were all added, but the actual upload handler implementation was never written. REPRODUCTION: Visit /recipes → click Add recipe → click any file input or use page.set_input_files on [data-testid=recipe-image-file-input] → React shows red overlay 'ReferenceError: handleFileUpload is not defined'. NETWORK: zero POST requests are made to /api/upload/image. MITIGATION: define handleFileUpload as an async function inside the component scope (above saveRecipe) that builds FormData, POSTs to /upload/image via the existing api client, and updates newRecipe.image with response.data.url; toggle setUploading around the call and toast on failure."
+}

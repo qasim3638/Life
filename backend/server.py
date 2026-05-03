@@ -6,6 +6,7 @@ import os
 import logging
 
 from fastapi import FastAPI, APIRouter
+from fastapi.staticfiles import StaticFiles
 from starlette.middleware.cors import CORSMiddleware
 
 ROOT_DIR = Path(__file__).parent
@@ -20,7 +21,7 @@ from seed_data import (  # noqa: E402
 from routes import (  # noqa: E402
     workouts, recipes, journal, events, life_goals, content,
     day_plans, streaks, ai_endpoints, companion, family, audio, self_profile,
-    focus, sobriety, echo, sunday_review,
+    focus, sobriety, echo, sunday_review, uploads,
 )
 from audio_seed import (  # noqa: E402
     WISDOM_STORIES_SEED, SLEEP_STORIES_SEED, MEDITATION_MUSIC_SEED,
@@ -88,8 +89,14 @@ api_router.include_router(focus.router)
 api_router.include_router(sobriety.router)
 api_router.include_router(echo.router)
 api_router.include_router(sunday_review.router)
+api_router.include_router(uploads.router)
 
 app.include_router(api_router)
+
+# Serve uploaded files at /api/uploads/*
+UPLOAD_DIR = ROOT_DIR / "uploads"
+UPLOAD_DIR.mkdir(exist_ok=True)
+app.mount("/api/uploads", StaticFiles(directory=str(UPLOAD_DIR)), name="uploads")
 
 app.add_middleware(
     CORSMiddleware,

@@ -2,31 +2,19 @@ import React, { useEffect, useState } from "react";
 import { api } from "../lib/api";
 import { Container, Card, Eyebrow, PageHeader } from "../components/Layout";
 import { Button } from "../components/ui/button";
-import { Sparkles, Flame, HeartPulse, CalendarDays, Quote as QuoteIcon, Trophy, Mail, Shield, Compass, Timer, BookOpen } from "lucide-react";
+import { Sparkles, Flame, HeartPulse, CalendarDays, Quote as QuoteIcon, Trophy, BookOpen } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
+import ProtectedCard from "../components/today/ProtectedCard";
+import DailyBriefCard from "../components/today/DailyBriefCard";
+import StreakProtectorCard from "../components/today/StreakProtectorCard";
+import LifeArcCard from "../components/today/LifeArcCard";
+import WeeklyLetterCard from "../components/today/WeeklyLetterCard";
 
 const HERO_IMG = "https://static.prod-images.emergentagent.com/jobs/b8c548de-315f-4118-954b-1d59454f577f/images/252006b3fbe027b3d88a8673d327c4616289615eec678e0bbb491a6b1e1f603e.png";
 
 const AGE_NOW = 40;
 const TARGET_AGE = 80;
-
-function ProgressRing({ percent }) {
-  const r = 70;
-  const c = 2 * Math.PI * r;
-  const offset = c * (1 - percent / 100);
-  return (
-    <svg width="170" height="170" viewBox="0 0 170 170" className="rotate-[-90deg]">
-      <circle cx="85" cy="85" r={r} stroke="#E8E2D2" strokeWidth="10" fill="none" />
-      <circle
-        cx="85" cy="85" r={r}
-        stroke="#59745D" strokeWidth="10" fill="none"
-        strokeLinecap="round" strokeDasharray={c} strokeDashoffset={offset}
-        style={{ transition: "stroke-dashoffset 1.2s ease-out" }}
-      />
-    </svg>
-  );
-}
 
 export default function Today() {
   const [motivation, setMotivation] = useState("");
@@ -144,11 +132,6 @@ export default function Today() {
     .filter(e => e.date >= today)
     .slice(0, 3);
 
-  const yearsLived = AGE_NOW;
-  const yearsTotal = TARGET_AGE;
-  const yearsLeft = yearsTotal - yearsLived;
-  const pct = Math.round((yearsLived / yearsTotal) * 100);
-
   const todayStr = new Date().toLocaleDateString(undefined, {
     weekday: "long", month: "long", day: "numeric",
   });
@@ -162,10 +145,6 @@ export default function Today() {
   const currentWeekReviewed = weekReview && weekReview.week_start === currentWeekMondayISO;
   const showProtector =
     hourNow >= 18 && (!streaks.workout_today || !streaks.journal_today);
-  const protectorMessages = [
-    !streaks.workout_today && "A five-minute walk still counts. Even one set, even one breath of effort.",
-    !streaks.journal_today && "A single sentence still counts. One thing you noticed today.",
-  ].filter(Boolean);
 
   return (
     <Container>
@@ -205,153 +184,18 @@ export default function Today() {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Sober & focused — what you're protecting */}
-        {(addictions.length > 0 || focusToday.today_focus_min > 0) && (
-          <Card className="md:col-span-3" data-testid="card-protected">
-            <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2 mb-3">
-              <Eyebrow>What you're protecting</Eyebrow>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-6 items-start">
-              <div className="flex items-baseline gap-x-3 gap-y-1 flex-wrap">
-                {(() => {
-                  const longest = addictions.reduce((max, a) => {
-                    const ms = Date.now() - new Date(a.started_clean).getTime();
-                    const days = Math.max(0, Math.floor(ms / 86400000));
-                    return days > max ? days : max;
-                  }, 0);
-                  return addictions.length > 0 ? (
-                    <>
-                      <Shield size={16} strokeWidth={1.5} className="text-[#59745D]"/>
-                      <span className="font-serif text-3xl text-[#2D312E]">{longest}</span>
-                      <span className="text-sm text-[#6B7270]">day{longest === 1 ? "" : "s"} clean</span>
-                    </>
-                  ) : null;
-                })()}
-                {addictions.length > 0 && focusToday.today_focus_min > 0 && (
-                  <span className="text-[#9A9F9D] mx-1">·</span>
-                )}
-                {focusToday.today_focus_min > 0 && (
-                  <>
-                    <Timer size={16} strokeWidth={1.5} className="text-[#C27A62]"/>
-                    <span className="font-serif text-3xl text-[#2D312E]">{focusToday.today_focus_min}</span>
-                    <span className="text-sm text-[#6B7270]">min focused today</span>
-                  </>
-                )}
-              </div>
+        <ProtectedCard addictions={addictions} focusToday={focusToday} />
 
-              {addictions.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {addictions.map(a => {
-                    const ms = Date.now() - new Date(a.started_clean).getTime();
-                    const days = Math.max(0, Math.floor(ms / 86400000));
-                    return (
-                      <Link key={a.id} to="/sobriety" className="px-4 py-2 rounded-2xl bg-[#F4F1EA] hover:bg-sand transition-colors text-sm" data-testid={`addiction-pill-${a.id}`}>
-                        <span className="text-[#2D312E] font-medium">{a.name}</span>
-                        <span className="text-[#6B7270]"> · {days}d</span>
-                      </Link>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          </Card>
-        )}
+        <DailyBriefCard brief={brief} loading={briefLoading} onGenerate={getBrief} />
 
-        {/* Daily brief from companion */}
-        <Card className="md:col-span-3 bg-gradient-to-br from-[#FAF6EC] to-white border-0" data-testid="card-daily-brief">
-          <div className="flex items-center gap-2 mb-2">
-            <Compass size={18} strokeWidth={1.5} className="text-[#59745D]"/>
-            <Eyebrow>Companion's brief</Eyebrow>
-          </div>
-          {brief ? (
-            <div className="mt-3 grid grid-cols-1 md:grid-cols-5 gap-3">
-              {brief.split(/\n+/).filter(Boolean).slice(0, 5).map((line, i) => {
-                const m = line.match(/^([A-Z][A-Z &]+):\s*(.*)$/);
-                const label = m ? m[1] : ["GROOMING","STYLE","FOCUS","CONNECT","GEAR"][i] || "";
-                const body = m ? m[2] : line;
-                return (
-                  <div key={i} className="bg-white rounded-2xl border border-sand p-4" data-testid={`brief-${i}`}>
-                    <p className="text-[10px] uppercase tracking-widest text-[#C27A62]">{label}</p>
-                    <p className="text-sm text-[#2D312E] mt-1 leading-relaxed">{body}</p>
-                  </div>
-                );
-              })}
-            </div>
-          ) : (
-            <p className="text-[#6B7270] mt-2 max-w-2xl leading-relaxed">
-              Five tiny suggestions for today — grooming, style, focus, connection, gear — drawn from your profile, plan, and what your companion remembers.
-            </p>
-          )}
-          <Button
-            onClick={getBrief}
-            disabled={briefLoading}
-            className="mt-5 rounded-full bg-[#59745D] hover:bg-[#4A604D]"
-            data-testid="daily-brief-btn"
-          >
-            <Sparkles size={14} strokeWidth={1.5} className="mr-1"/>
-            {briefLoading ? "Listening to your day…" : brief ? "Refresh brief" : "Get today's brief"}
-          </Button>
-        </Card>
-
-        {/* Streak protector — appears after 6 PM if either streak hasn't been tended today */}
         {showProtector && (
-          <Card className="md:col-span-3 bg-gradient-to-r from-[#C27A62]/15 via-[#F4F1EA] to-transparent border-0" data-testid="streak-protector">
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-full bg-white border border-sand flex items-center justify-center shrink-0">
-                <Shield size={18} strokeWidth={1.5} className="text-[#C27A62]"/>
-              </div>
-              <div className="flex-1">
-                <Eyebrow>Streak protector</Eyebrow>
-                <p className="font-serif text-xl md:text-2xl text-[#2D312E] mt-1 leading-snug">
-                  {protectorMessages[0]}
-                </p>
-                {protectorMessages[1] && (
-                  <p className="text-sm text-[#6B7270] mt-2 leading-relaxed">{protectorMessages[1]}</p>
-                )}
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {!streaks.workout_today && (
-                    <Link to="/fitness">
-                      <Button size="sm" variant="outline" className="rounded-full border-[#59745D] text-[#59745D] hover:bg-[#59745D] hover:text-white" data-testid="protect-workout-btn">
-                        <Flame size={13} strokeWidth={1.5} className="mr-1"/> Log a small movement
-                      </Button>
-                    </Link>
-                  )}
-                  {!streaks.journal_today && (
-                    <Link to="/self-care">
-                      <Button size="sm" variant="outline" className="rounded-full border-[#C27A62] text-[#C27A62] hover:bg-[#C27A62] hover:text-white" data-testid="protect-journal-btn">
-                        <HeartPulse size={13} strokeWidth={1.5} className="mr-1"/> Write one sentence
-                      </Button>
-                    </Link>
-                  )}
-                </div>
-              </div>
-            </div>
-          </Card>
+          <StreakProtectorCard
+            workoutToday={streaks.workout_today}
+            journalToday={streaks.journal_today}
+          />
         )}
 
-        {/* Life progress */}
-        <Card className="md:col-span-1 flex flex-col items-center text-center" data-testid="card-life-progress">
-          <Eyebrow>Your life arc</Eyebrow>
-          <div className="relative">
-            <ProgressRing percent={pct} />
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <p className="font-serif text-4xl text-[#2D312E]">{yearsLeft}</p>
-              <p className="text-xs uppercase tracking-widest text-[#9A9F9D] mt-1">years ahead</p>
-            </div>
-          </div>
-          <p className="text-sm text-[#6B7270] mt-5 leading-relaxed">
-            You've lived {yearsLived} beautiful years. {yearsLeft} more to shape.
-          </p>
-          <Link to="/blueprint">
-            <Button
-              variant="outline"
-              className="mt-4 rounded-full border-[#59745D] text-[#59745D] hover:bg-[#59745D] hover:text-white"
-              data-testid="view-blueprint-btn"
-            >
-              View the blueprint
-            </Button>
-          </Link>
-        </Card>
+        <LifeArcCard ageNow={AGE_NOW} targetAge={TARGET_AGE} />
 
         {/* AI motivation */}
         <Card className="md:col-span-2 bg-[#F4F1EA] border-0 relative overflow-hidden" data-testid="card-ai-motivation">
@@ -465,31 +309,7 @@ export default function Today() {
         </Card>
 
         {/* Weekly letter */}
-        <Card className="md:col-span-3 bg-gradient-to-br from-[#F4F1EA] to-white border-0" data-testid="card-weekly-letter">
-          <div className="flex items-center gap-2 mb-2">
-            <Mail size={18} strokeWidth={1.5} className="text-[#A3897C]" />
-            <Eyebrow>Weekly letter</Eyebrow>
-          </div>
-          {letter ? (
-            <p className="font-serif text-lg md:text-xl text-[#2D312E] mt-3 leading-relaxed whitespace-pre-wrap max-w-3xl">
-              {letter}
-            </p>
-          ) : (
-            <p className="text-[#6B7270] mt-2 max-w-2xl leading-relaxed">
-              A tender letter to your future self — written from the past seven days of your movement, moods, and moments.
-            </p>
-          )}
-          <Button
-            onClick={getLetter}
-            disabled={letterLoading}
-            variant="outline"
-            className="mt-5 rounded-full border-[#A3897C] text-[#A3897C] hover:bg-[#A3897C] hover:text-white"
-            data-testid="weekly-letter-btn"
-          >
-            <Mail size={14} className="mr-1" strokeWidth={1.5} />
-            {letterLoading ? "Writing…" : letter ? "Write another" : "Write this week's letter"}
-          </Button>
-        </Card>
+        <WeeklyLetterCard letter={letter} loading={letterLoading} onGenerate={getLetter} />
       </div>
     </Container>
   );

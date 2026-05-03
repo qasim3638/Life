@@ -1,22 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { api } from "../lib/api";
-import { Container, Card, Eyebrow } from "../components/Layout";
+import { Container } from "../components/Layout";
 import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../components/ui/dialog";
-import { Send, Sparkles, Brain, Trash2, Plus, Settings, Star, BookOpen, Pin } from "lucide-react";
+import { Send, Sparkles, Brain, Trash2, Settings, Star } from "lucide-react";
 import { toast } from "sonner";
-
-const PERSONAS = [
-  { key: "friend", label: "Friend", desc: "Warm, present, curious" },
-  { key: "secretary", label: "Secretary", desc: "Organised & efficient" },
-  { key: "manager", label: "Manager", desc: "Direct & accountable" },
-  { key: "coach", label: "Coach", desc: "Reflective & growth-minded" },
-];
-
-const CATEGORIES = ["general", "family", "work", "health", "dream", "story"];
+import CompanionSidePanel, { PERSONAS } from "../components/companion/CompanionSidePanel";
+import CompanionSettings from "../components/companion/CompanionSettings";
+import MemoriesDialog from "../components/companion/MemoriesDialog";
 
 export default function Companion() {
   const [companion, setCompanion] = useState(null);
@@ -46,7 +37,6 @@ export default function Companion() {
   useEffect(() => {
     if (sessionStorage.getItem("companion_jump") === "1") {
       sessionStorage.removeItem("companion_jump");
-      // Re-fetch messages once more shortly after — the assistant reply may have just landed
       const t = setTimeout(load, 1200);
       return () => clearTimeout(t);
     }
@@ -65,8 +55,7 @@ export default function Companion() {
     setSending(true);
     setMessages((m) => [...m, { id: "tmp-u", role: "user", content: text, created_at: new Date().toISOString() }]);
     try {
-      const { data } = await api.post("/companion/chat", { message: text });
-      // Reload messages from server (cleaner than guess-merging)
+      await api.post("/companion/chat", { message: text });
       const m = await api.get("/companion/messages");
       setMessages(m.data);
     } catch {
@@ -214,140 +203,33 @@ export default function Companion() {
           </div>
         </div>
 
-        {/* Side panel — persona quick switch */}
-        <div className="hidden lg:flex flex-col gap-4">
-          <Card>
-            <Eyebrow>Mode</Eyebrow>
-            <p className="font-serif text-xl text-[#2D312E] mt-1 mb-3">How should {companion.name} show up?</p>
-            <div className="space-y-2">
-              {PERSONAS.map(p => (
-                <button
-                  key={p.key}
-                  onClick={() => updateCompanion({ persona: p.key })}
-                  className={`w-full text-left px-4 py-3 rounded-2xl transition-colors ${
-                    companion.persona === p.key
-                      ? "bg-[#59745D] text-white"
-                      : "bg-[#F4F1EA] text-[#2D312E] hover:bg-sand"
-                  }`}
-                  data-testid={`persona-${p.key}`}
-                >
-                  <p className="font-medium">{p.label}</p>
-                  <p className={`text-xs mt-0.5 ${companion.persona === p.key ? "text-white/80" : "text-[#6B7270]"}`}>
-                    {p.desc}
-                  </p>
-                </button>
-              ))}
-            </div>
-          </Card>
-          <Card>
-            <Eyebrow>Recent memories</Eyebrow>
-            {memories.length === 0 ? (
-              <p className="text-sm text-[#9A9F9D] mt-2 italic">Nothing saved yet. Use the star on your messages or add manually.</p>
-            ) : (
-              <ul className="mt-3 space-y-2 max-h-64 overflow-y-auto">
-                {memories.slice(0, 6).map(m => (
-                  <li key={m.id} className="text-sm text-[#2D312E] bg-[#F4F1EA] rounded-xl px-3 py-2">
-                    <span className="text-[10px] uppercase tracking-widest text-[#C27A62] block">{m.category}</span>
-                    {m.content}
-                  </li>
-                ))}
-              </ul>
-            )}
-            <Button variant="ghost" onClick={() => setMemoryOpen(true)} className="rounded-full text-[#59745D] mt-3 w-full" data-testid="manage-memories-btn">
-              <BookOpen size={14} strokeWidth={1.5} className="mr-1"/> Manage memories
-            </Button>
-          </Card>
-        </div>
+        <CompanionSidePanel
+          companion={companion}
+          memories={memories}
+          onPersonaChange={(key) => updateCompanion({ persona: key })}
+          onOpenMemories={() => setMemoryOpen(true)}
+        />
       </div>
 
-      {/* Settings dialog */}
-      <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
-        <DialogContent className="rounded-3xl">
-          <DialogHeader><DialogTitle className="font-serif text-2xl">Companion settings</DialogTitle></DialogHeader>
-          <div className="space-y-4 mt-2">
-            <div>
-              <p className="text-xs uppercase tracking-wider text-[#9A9F9D] mb-1">Their name</p>
-              <Input
-                value={companion.name}
-                onChange={(e) => setCompanion({ ...companion, name: e.target.value })}
-                onBlur={(e) => updateCompanion({ name: e.target.value })}
-                data-testid="settings-name"
-              />
-            </div>
-            <div>
-              <p className="text-xs uppercase tracking-wider text-[#9A9F9D] mb-1">What they call you</p>
-              <Input
-                value={companion.user_name}
-                onChange={(e) => setCompanion({ ...companion, user_name: e.target.value })}
-                onBlur={(e) => updateCompanion({ user_name: e.target.value })}
-                data-testid="settings-user-name"
-              />
-            </div>
-            <div>
-              <p className="text-xs uppercase tracking-wider text-[#9A9F9D] mb-1">Persona</p>
-              <Select value={companion.persona} onValueChange={(v) => updateCompanion({ persona: v })}>
-                <SelectTrigger data-testid="settings-persona"><SelectValue/></SelectTrigger>
-                <SelectContent>
-                  {PERSONAS.map(p => <SelectItem key={p.key} value={p.key}>{p.label} — {p.desc}</SelectItem>)}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <CompanionSettings
+        open={settingsOpen}
+        onOpenChange={setSettingsOpen}
+        companion={companion}
+        setCompanion={setCompanion}
+        onUpdate={updateCompanion}
+      />
 
-      {/* Memories drawer */}
-      <Dialog open={memoryOpen} onOpenChange={setMemoryOpen}>
-        <DialogContent className="rounded-3xl max-w-2xl max-h-[85vh] overflow-y-auto">
-          <DialogHeader><DialogTitle className="font-serif text-2xl">Things {companion.name} remembers</DialogTitle></DialogHeader>
-          <div className="space-y-4 mt-2">
-            <div className="bg-[#F4F1EA] rounded-2xl p-4">
-              <p className="text-xs uppercase tracking-widest text-[#9A9F9D] mb-2">Add a memory</p>
-              <Textarea
-                value={newMem.content}
-                onChange={(e) => setNewMem({ ...newMem, content: e.target.value })}
-                placeholder="Tell them something they should always remember…"
-                rows={3}
-                className="bg-white"
-                data-testid="memory-content-input"
-              />
-              <div className="flex gap-2 mt-3">
-                <Select value={newMem.category} onValueChange={(v) => setNewMem({ ...newMem, category: v })}>
-                  <SelectTrigger className="bg-white" data-testid="memory-category-select"><SelectValue/></SelectTrigger>
-                  <SelectContent>
-                    {CATEGORIES.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-                <Button onClick={addMemory} className="rounded-full bg-[#59745D]" data-testid="add-memory-btn">
-                  <Plus size={14} className="mr-1"/> Save
-                </Button>
-              </div>
-            </div>
-
-            <div>
-              <p className="text-xs uppercase tracking-widest text-[#9A9F9D] mb-2">Saved ({memories.length})</p>
-              {memories.length === 0 && <p className="text-sm text-[#9A9F9D] italic">Empty.</p>}
-              <div className="space-y-2">
-                {memories.map(m => (
-                  <div key={m.id} className="flex items-start gap-3 bg-white border border-sand rounded-2xl px-4 py-3" data-testid={`memory-${m.id}`}>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <span className="text-[10px] uppercase tracking-widest text-[#C27A62]">{m.category}</span>
-                        {m.pinned && <Pin size={11} strokeWidth={1.5} className="text-[#59745D] fill-[#59745D]"/>}
-                      </div>
-                      <p className="text-sm text-[#2D312E] leading-relaxed mt-1">{m.content}</p>
-                    </div>
-                    <button onClick={() => togglePin(m)} className={`shrink-0 ${m.pinned ? "text-[#59745D]" : "text-[#9A9F9D] hover:text-[#59745D]"}`} data-testid={`pin-memory-${m.id}`} title={m.pinned ? "Unpin" : "Pin (never auto-evicted)"}>
-                      <Pin size={14} strokeWidth={1.5} className={m.pinned ? "fill-[#59745D]" : ""}/>
-                    </button>
-                    <button onClick={() => removeMemory(m.id)} className="text-[#9A9F9D] hover:text-[#B85C50]"><Trash2 size={14} strokeWidth={1.5}/></button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <MemoriesDialog
+        open={memoryOpen}
+        onOpenChange={setMemoryOpen}
+        companionName={companion.name}
+        memories={memories}
+        newMem={newMem}
+        setNewMem={setNewMem}
+        onAdd={addMemory}
+        onRemove={removeMemory}
+        onTogglePin={togglePin}
+      />
     </Container>
   );
 }

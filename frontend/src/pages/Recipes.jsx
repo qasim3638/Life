@@ -6,8 +6,17 @@ import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../components/ui/dialog";
-import { Sparkles, Clock, Flame, Wheat, Beef, Plus } from "lucide-react";
+import { Sparkles, Clock, Flame, Wheat, Beef, Plus, Upload, X } from "lucide-react";
 import { toast } from "sonner";
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
+const toAbsolute = (url) => {
+  if (!url) return url;
+  if (url.startsWith("http://") || url.startsWith("https://")) return url;
+  if (url.startsWith("/api/")) return `${BACKEND_URL}${url}`;
+  return url;
+};
 
 const CUISINES = ["All", "Pakistani", "Indian", "Arab", "Mediterranean"];
 const MEALS = ["All", "Breakfast", "Lunch", "Dinner", "Snack"];
@@ -23,6 +32,8 @@ export default function Recipes() {
   const [aiCtx, setAiCtx] = useState("something high-protein for tonight");
   const [aiLoading, setAiLoading] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileRef = React.useRef(null);
   const [newRecipe, setNewRecipe] = useState({
     title: "", cuisine: "Pakistani", meal_type: "Dinner",
     prep_time: 30, servings: 2, calories: 400, protein: 35, carbs: 10, fat: 20,
@@ -120,7 +131,7 @@ export default function Recipes() {
             className="p-0 overflow-hidden cursor-pointer hover:-translate-y-1"
             onClick={() => setSelected(r)}
           >
-            <div className="h-44 bg-cover bg-center relative" style={{ backgroundImage: `url(${r.image})` }}>
+            <div className="h-44 bg-cover bg-center relative" style={{ backgroundImage: `url(${toAbsolute(r.image)})` }}>
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
               <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-white/90 text-[10px] uppercase tracking-wider text-[#2D312E]">
                 {r.cuisine}
@@ -150,7 +161,7 @@ export default function Recipes() {
         <DialogContent className="rounded-3xl max-w-2xl max-h-[90vh] overflow-y-auto p-0">
           {selected && (
             <>
-              <div className="h-56 bg-cover bg-center relative rounded-t-3xl" style={{ backgroundImage: `url(${selected.image})` }}>
+              <div className="h-56 bg-cover bg-center relative rounded-t-3xl" style={{ backgroundImage: `url(${toAbsolute(selected.image)})` }}>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent rounded-t-3xl" />
                 <div className="absolute bottom-5 left-6 right-6">
                   <p className="text-xs uppercase tracking-[0.3em] text-white/80">{selected.cuisine} · {selected.meal_type}</p>
@@ -198,9 +209,49 @@ export default function Recipes() {
             <Input placeholder="Recipe title" value={newRecipe.title}
               onChange={(e) => setNewRecipe({ ...newRecipe, title: e.target.value })}
               data-testid="new-recipe-title"/>
-            <Input placeholder="Image URL (optional)" value={newRecipe.image}
-              onChange={(e) => setNewRecipe({ ...newRecipe, image: e.target.value })}
-              data-testid="new-recipe-image"/>
+
+            {/* Image: preview + file upload + URL */}
+            <div className="space-y-2">
+              {newRecipe.image && (
+                <div className="relative h-36 rounded-2xl bg-cover bg-center border border-sand" style={{ backgroundImage: `url(${toAbsolute(newRecipe.image)})` }} data-testid="new-recipe-image-preview">
+                  <button
+                    type="button"
+                    onClick={() => setNewRecipe({ ...newRecipe, image: "" })}
+                    className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 hover:bg-white flex items-center justify-center border border-sand"
+                    data-testid="clear-recipe-image-btn"
+                  >
+                    <X size={14} strokeWidth={1.5} className="text-[#2D312E]"/>
+                  </button>
+                </div>
+              )}
+              <div className="flex items-center gap-2">
+                <input
+                  ref={fileRef}
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp,image/gif"
+                  onChange={(e) => handleFileUpload(e.target.files?.[0])}
+                  className="hidden"
+                  data-testid="recipe-image-file-input"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => fileRef.current?.click()}
+                  disabled={uploading}
+                  className="rounded-full border-[#59745D] text-[#59745D] hover:bg-[#59745D] hover:text-white shrink-0"
+                  data-testid="upload-recipe-image-btn"
+                >
+                  <Upload size={14} strokeWidth={1.5} className="mr-1"/>
+                  {uploading ? "Uploading…" : "Upload"}
+                </Button>
+                <Input
+                  placeholder="or paste image URL"
+                  value={newRecipe.image.startsWith("/api/") ? "" : newRecipe.image}
+                  onChange={(e) => setNewRecipe({ ...newRecipe, image: e.target.value })}
+                  data-testid="new-recipe-image"
+                />
+              </div>
+            </div>
             <div className="grid grid-cols-2 gap-3">
               <Select value={newRecipe.cuisine} onValueChange={(v) => setNewRecipe({ ...newRecipe, cuisine: v })}>
                 <SelectTrigger data-testid="new-recipe-cuisine"><SelectValue /></SelectTrigger>
