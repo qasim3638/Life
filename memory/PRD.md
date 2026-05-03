@@ -48,6 +48,7 @@ and anything that helps build a routine for staying healthy, happy and fit.
 - 2026-02: Shuffle / "Try another" — per-card shuffle button on every Motivation podcast and Meditate audio card cycles that slot to a random other video from the library.
 - 2026-02: Library expansion — 8→17 podcasts, 6→15 meditations, 15→40 quotes. All YouTube IDs HTTP-verified.
 - 2026-02: "Fresh batch" quote refresh button — displays 6 random quotes at a time; rotates to a new random sextet on click (respects active category filter).
+- 2026-02: Companion → actions — Claude returns a strict JSON envelope `{reply, actions[]}` when the user asks for something actionable. 4 action types supported: `add_time_block`, `add_event`, `add_priority`, `add_chore`. Each proposed action renders as a beige-bordered chip with an icon + human-readable summary + Apply/Cancel buttons beneath the assistant message. Apply writes to the corresponding collection (day_plans, events) and marks the chip APPLIED (green). Cancel marks SKIPPED (grey, line-through). Apply is idempotent (second call returns `{ok, already: 'applied'}`). Backend `/api/companion/messages/{mid}/actions/{aid}/apply` and `/cancel`. Backend 6/6 + frontend 3/3 tests pass.
 
 ## Prioritized Backlog
 - **P2** A11y: add `aria-describedby` / DialogDescription to all shadcn Dialogs (non-blocking warning surfaced by testing agent)
