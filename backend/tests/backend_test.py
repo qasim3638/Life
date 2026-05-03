@@ -436,3 +436,220 @@ class TestWeeklyLetter:
         assert r.status_code in (200, 422), r.text
         if r.status_code == 200:
             assert len(r.json().get("text", "")) > 50
+
+
+# ---------- day plans (iteration 3) ----------
+class TestDayPlans:
+    def test_get_default_when_missing(self, s):
+        date = "2030-12-31"  # unique future date
+        r = s.get(f"{API}/day-plans/{date}")
+        assert r.status_code == 200, r.text
+        plan = r.json()
+        assert "_id" not in plan
+        assert plan["date"] == date
+        assert plan["priorities"] == ["", "", ""]
+        assert plan["gym_planned"] is False
+        assert plan["hydration_oz"] == 80
+        assert plan["sleep_target"] == "23:00"
+        assert plan["wake_target"] == "06:30"
+        assert "breakfast" in plan["meals"] and "lunch" in plan["meals"]
+        assert plan["meals"]["breakfast"] == {"text": "", "recipe_id": ""}
+
+    def test_upsert_and_persist(self, s):
+        date = "2030-11-15"
+        payload = {
+            "date": date,
+            "priorities": ["Deep work block", "Gym at 6pm", "Call mum"],
+            "gym_planned": True,
+            "gym_workout_id": "w-123",
+            "gym_workout_name": "TEST_Strength A",
+            "meals": {
+                "breakfast": {"text": "Oats and eggs", "recipe_id": ""},
+                "lunch": {"text": "Chicken salad", "recipe_id": "r-1"},
+                "dinner": {"text": "Daal + roti", "recipe_id": ""},
+                "snack": {"text": "Almonds", "recipe_id": ""},
+            },
+            "supplements": [{"name": "Vit D", "taken": False}, {"name": "Omega-3", "taken": True}],
+            "house_chores": [{"text": "Laundry", "done": False}],
+            "work_chores": [{"text": "Ship PR", "done": True}],
+            "sleep_target": "22:30",
+            "wake_target": "06:00",
+            "hydration_oz": 96,
+            "notes": "TEST_ focus day",
+        }
+        u = s.put(f"{API}/day-plans/{date}", json=payload)
+        assert u.status_code == 200, u.text
+        saved = u.json()
+        assert "_id" not in saved
+        assert saved["date"] == date
+        assert saved["priorities"] == payload["priorities"]
+        assert saved["gym_planned"] is True
+        assert saved["hydration_oz"] == 96
+        assert "updated_at" in saved
+
+        # GET should return persisted plan
+        g = s.get(f"{API}/day-plans/{date}")
+        assert g.status_code == 200
+        gp = g.json()
+        assert gp["priorities"] == payload["priorities"]
+        assert gp["meals"]["lunch"]["text"] == "Chicken salad"
+        assert gp["sleep_target"] == "22:30"
+        assert gp["notes"] == "TEST_ focus day"
+
+        # Upsert again with changes
+        payload2 = {**payload, "hydration_oz": 64, "notes": "TEST_ updated"}
+        u2 = s.put(f"{API}/day-plans/{date}", json=payload2)
+        assert u2.status_code == 200
+        assert u2.json()["hydration_oz"] == 64
+
+        g2 = s.get(f"{API}/day-plans/{date}")
+        assert g2.json()["hydration_oz"] == 64
+        assert g2.json()["notes"] == "TEST_ updated"
+
+    def test_list_sorted_desc(self, s):
+        # ensure at least two plans exist
+        for d in ["2030-10-01", "2030-10-05"]:
+            s.put(f"{API}/day-plans/{d}", json={"date": d, "notes": f"TEST_{d}"})
+        r = s.get(f"{API}/day-plans")
+        assert r.status_code == 200, r.text
+        items = r.json()
+        assert isinstance(items, list)
+        for it in items:
+            assert "_id" not in it
+        dates = [it["date"] for it in items]
+        assert dates == sorted(dates, reverse=True), f"dates not desc: {dates[:5]}"
+
+
+# ---------- companion (iteration 3) ----------
+class TestCompanion:
+    @pytest.fixture(autouse=True)
+    def _reset(self, s):
+        # Clean messages + memories before each test, reset companion to defaults
+        s.delete(f"{API}/companion/messages")
+        mems = s.get(f"{API}/companion/memories").json()
+        for m in mems:
+            s.delete(f"{API}/companion/memories/{m['id']}")
+        s.put(f"{API}/companion", json={"name": "Najm", "user_name": "friend", "persona": "friend"})
+        yield
+
+    def test_get_creates_default(self, s):
+        r = s.get(f"{API}/companion")
+        assert r.status_code == 200, r.text
+        c = r.json()
+        assert "_id" not in c
+        assert c.get("id") == "default"
+        assert c["name"] == "Najm"
+        assert c["user_name"] == "friend"
+        assert c["persona"] == "friend"
+
+    def test_partial_update_preserves_fields(self, s):
+        u = s.put(f"{API}/companion", json={"name": "Layla"})
+        assert u.status_code == 200
+        c = u.json()
+        assert c["name"] == "Layla"
+        assert c["user_name"] == "friend"  # unchanged
+        assert c["persona"] == "friend"
+
+        u2 = s.put(f"{API}/companion", json={"persona": "manager"})
+        c2 = u2.json()
+        assert c2["name"] == "Layla"  # preserved
+        assert c2["persona"] == "manager"
+        assert c2["user_name"] == "friend"
+
+    def test_memories_crud_and_sort(self, s):
+        m1 = s.post(f"{API}/companion/memories", json={"content": "I am vegetarian", "category": "health"}).json()
+        m2 = s.post(f"{API}/companion/memories", json={"content": "Daughter is Aisha", "category": "family"}).json()
+        assert "id" in m1 and m1["category"] == "health"
+        assert "_id" not in m1
+
+        lst = s.get(f"{API}/companion/memories").json()
+        ids = [m["id"] for m in lst]
+        assert m1["id"] in ids and m2["id"] in ids
+        for m in lst:
+            assert "_id" not in m
+        # desc by created_at — m2 (later) should be first
+        assert lst[0]["id"] == m2["id"], f"expected m2 first, got {lst[0]}"
+
+        d = s.delete(f"{API}/companion/memories/{m1['id']}")
+        assert d.status_code == 200
+        lst2 = s.get(f"{API}/companion/memories").json()
+        assert m1["id"] not in [m["id"] for m in lst2]
+
+    def test_messages_list_and_clear(self, s):
+        # send a quick chat to populate
+        r = s.post(f"{API}/companion/chat", json={"message": "Hello"}, timeout=90)
+        assert r.status_code == 200, r.text
+        msgs = s.get(f"{API}/companion/messages").json()
+        assert len(msgs) >= 2
+        for m in msgs:
+            assert "_id" not in m
+        # Chronological asc
+        ts = [m["created_at"] for m in msgs]
+        assert ts == sorted(ts), "messages not chronological asc"
+
+        # add a memory, clear messages, ensure memory survives
+        mem = s.post(f"{API}/companion/memories", json={"content": "TEST keep me"}).json()
+        s.delete(f"{API}/companion/messages")
+        assert s.get(f"{API}/companion/messages").json() == []
+        kept = s.get(f"{API}/companion/memories").json()
+        assert any(m["id"] == mem["id"] for m in kept), "memory was wiped along with messages!"
+
+    def test_chat_persists_and_real_reply(self, s):
+        r = s.post(f"{API}/companion/chat", json={"message": "What should I focus on this morning?"}, timeout=90)
+        assert r.status_code == 200, r.text
+        body = r.json()
+        assert "user_message" in body and "reply" in body
+        um = body["user_message"]
+        rep = body["reply"]
+        assert um["role"] == "user" and um["content"] == "What should I focus on this morning?"
+        assert rep["role"] == "assistant"
+        assert "_id" not in um and "_id" not in rep
+        assert isinstance(rep["content"], str)
+        # Real Claude response, not fallback ("I'm here. Let's try that again in a moment.")
+        assert len(rep["content"]) > 50, f"reply too short, likely fallback: {rep['content']!r}"
+        assert rep["content"].strip() != "I'm here. Let's try that again in a moment."
+
+        # Persisted in messages
+        msgs = s.get(f"{API}/companion/messages").json()
+        ids = [m["id"] for m in msgs]
+        assert um["id"] in ids and rep["id"] in ids
+
+    def test_chat_respects_user_name(self, s):
+        s.put(f"{API}/companion", json={"user_name": "Captain"})
+        r = s.post(
+            f"{API}/companion/chat",
+            json={"message": "Address me by my name in your reply please."},
+            timeout=90,
+        )
+        assert r.status_code == 200
+        reply = r.json()["reply"]["content"]
+        assert "captain" in reply.lower(), f"reply did not address user as Captain: {reply!r}"
+
+    def test_chat_persona_persisted_on_message(self, s):
+        s.put(f"{API}/companion", json={"persona": "manager"})
+        r = s.post(f"{API}/companion/chat", json={"message": "Quick check-in."}, timeout=90)
+        assert r.status_code == 200
+        body = r.json()
+        assert body["user_message"]["persona"] == "manager"
+        assert body["reply"]["persona"] == "manager"
+        assert len(body["reply"]["content"]) > 30
+
+    def test_memory_injection_vegetarian(self, s):
+        s.post(
+            f"{API}/companion/memories",
+            json={"content": "I am strictly vegetarian — I never eat meat, chicken, fish, or seafood.", "category": "health"},
+        )
+        r = s.post(
+            f"{API}/companion/chat",
+            json={"message": "Suggest one specific dinner idea for tonight."},
+            timeout=90,
+        )
+        assert r.status_code == 200
+        reply = r.json()["reply"]["content"].lower()
+        meat_terms = ["chicken", "beef", "lamb", "mutton", "fish", "salmon", "tuna", "shrimp", "prawn", "steak", "turkey"]
+        hits = [t for t in meat_terms if t in reply]
+        # Allow if memory is referenced (e.g. "since you're vegetarian")
+        references_memory = "vegetarian" in reply or "no meat" in reply or "plant" in reply
+        assert not hits or references_memory, (
+            f"Reply suggested meat ({hits}) without acknowledging vegetarian memory: {reply!r}"
+        )

@@ -199,6 +199,66 @@ class AIPrompt(BaseModel):
     context: Optional[str] = ""
 
 
+class DayPlan(BaseModel):
+    date: str  # YYYY-MM-DD (also the unique key)
+    priorities: List[str] = ["", "", ""]
+    gym_planned: bool = False
+    gym_workout_id: Optional[str] = ""
+    gym_workout_name: Optional[str] = ""
+    meals: dict = Field(default_factory=lambda: {
+        "breakfast": {"text": "", "recipe_id": ""},
+        "lunch": {"text": "", "recipe_id": ""},
+        "dinner": {"text": "", "recipe_id": ""},
+        "snack": {"text": "", "recipe_id": ""},
+    })
+    supplements: List[dict] = []  # [{name, taken}]
+    house_chores: List[dict] = []  # [{text, done}]
+    work_chores: List[dict] = []
+    sleep_target: str = "23:00"
+    wake_target: str = "06:30"
+    hydration_oz: int = 80
+    notes: str = ""
+    updated_at: str = Field(default_factory=now_iso)
+
+
+class Companion(BaseModel):
+    id: str = "default"
+    name: str = "Najm"
+    user_name: str = "friend"
+    persona: str = "friend"  # friend, secretary, manager, coach
+    created_at: str = Field(default_factory=now_iso)
+
+
+class CompanionUpdate(BaseModel):
+    name: Optional[str] = None
+    user_name: Optional[str] = None
+    persona: Optional[str] = None
+
+
+class CompanionMemory(BaseModel):
+    id: str = Field(default_factory=new_id)
+    content: str
+    category: str = "general"  # general, family, work, health, dream, story
+    created_at: str = Field(default_factory=now_iso)
+
+
+class CompanionMemoryCreate(BaseModel):
+    content: str
+    category: str = "general"
+
+
+class CompanionMessage(BaseModel):
+    id: str = Field(default_factory=new_id)
+    role: str  # user | assistant
+    content: str
+    persona: str = "friend"
+    created_at: str = Field(default_factory=now_iso)
+
+
+class ChatRequest(BaseModel):
+    message: str
+
+
 # ============ ROOT ============
 @api_router.get("/")
 async def root():
@@ -559,6 +619,160 @@ async def ai_weekly_letter(body: WeeklyLetterRequest = WeeklyLetterRequest()):
     except Exception as e:
         logger.error(f"AI weekly letter error: {e}")
         return {"text": "Dear you — be gentle with yourself this week.", "error": str(e)}
+
+
+# ============ DAY PLANS ============
+@api_router.get("/day-plans/{date}")
+async def get_day_plan(date: str):
+    item = await db.day_plans.find_one({"date": date}, {"_id": 0})
+    if not item:
+        return DayPlan(date=date).model_dump()
+    return item
+
+
+@api_router.put("/day-plans/{date}")
+async def upsert_day_plan(date: str, payload: DayPlan):
+    doc = payload.model_dump()
+    doc["date"] = date
+    doc["updated_at"] = now_iso()
+    await db.day_plans.update_one({"date": date}, {"$set": doc}, upsert=True)
+    return doc
+
+
+@api_router.get("/day-plans")
+async def list_day_plans():
+    items = await db.day_plans.find({}, {"_id": 0}).sort("date", -1).to_list(60)
+    return items
+
+
+# ============ COMPANION ============
+async def _get_or_create_companion() -> dict:
+    item = await db.companion.find_one({"id": "default"}, {"_id": 0})
+    if not item:
+        c = Companion()
+        await db.companion.insert_one(c.model_dump())
+        return c.model_dump()
+    return item
+
+
+@api_router.get("/companion")
+async def get_companion():
+    return await _get_or_create_companion()
+
+
+@api_router.put("/companion")
+async def update_companion(payload: CompanionUpdate):
+    await _get_or_create_companion()
+    update = {k: v for k, v in payload.model_dump().items() if v is not None}
+    if update:
+        await db.companion.update_one({"id": "default"}, {"$set": update})
+    item = await db.companion.find_one({"id": "default"}, {"_id": 0})
+    return item
+
+
+@api_router.get("/companion/memories")
+async def list_memories():
+    items = await db.companion_memories.find({}, {"_id": 0}).sort("created_at", -1).to_list(500)
+    return items
+
+
+@api_router.post("/companion/memories")
+async def add_memory(payload: CompanionMemoryCreate):
+    m = CompanionMemory(**payload.model_dump())
+    await db.companion_memories.insert_one(m.model_dump())
+    return m
+
+
+@api_router.delete("/companion/memories/{memory_id}")
+async def delete_memory(memory_id: str):
+    await db.companion_memories.delete_one({"id": memory_id})
+    return {"ok": True}
+
+
+@api_router.get("/companion/messages")
+async def list_messages():
+    items = await db.companion_messages.find({}, {"_id": 0}).sort("created_at", 1).to_list(2000)
+    return items
+
+
+@api_router.delete("/companion/messages")
+async def clear_messages():
+    await db.companion_messages.delete_many({})
+    return {"ok": True}
+
+
+PERSONA_PROMPTS = {
+    "friend": (
+        "You are a warm, present, deeply attentive friend. You speak like someone who has known the user for years. "
+        "Casual, gentle, curious. Ask follow-up questions. Make them feel seen. Never preachy."
+    ),
+    "secretary": (
+        "You are an organised, kind, efficient personal secretary. You help plan, summarise, draft, schedule, and remember details. "
+        "Be concise, action-oriented, and proactive. Suggest next steps."
+    ),
+    "manager": (
+        "You are a direct, performance-minded manager who genuinely cares about the user's growth. "
+        "Hold them to their stated goals with warmth. Be honest about gaps. Offer one clear next action."
+    ),
+    "coach": (
+        "You are a thoughtful life coach blending stoic wisdom and present-moment awareness. "
+        "Ask one powerful question, reflect what you hear, and offer one small concrete step."
+    ),
+}
+
+
+@api_router.post("/companion/chat")
+async def companion_chat(req: ChatRequest):
+    companion = await _get_or_create_companion()
+    persona = companion.get("persona", "friend")
+    name = companion.get("name", "Najm")
+    user_name = companion.get("user_name", "friend")
+
+    memories = await db.companion_memories.find({}, {"_id": 0}).sort("created_at", -1).to_list(50)
+    history = await db.companion_messages.find({}, {"_id": 0}).sort("created_at", -1).to_list(20)
+    history.reverse()
+
+    persona_msg = PERSONA_PROMPTS.get(persona, PERSONA_PROMPTS["friend"])
+    memory_block = ""
+    if memories:
+        memory_block = "\n\nThings you remember about the user:\n" + "\n".join(
+            f"- ({m.get('category', 'general')}) {m.get('content', '')}" for m in memories[:30]
+        )
+
+    history_block = ""
+    if history:
+        lines = []
+        for m in history[-12:]:
+            role = "User" if m["role"] == "user" else "You"
+            lines.append(f"{role}: {m['content']}")
+        history_block = "\n\nRecent conversation:\n" + "\n".join(lines)
+
+    system_msg = (
+        f"Your name is {name}. You are speaking to {user_name}. "
+        f"{persona_msg} "
+        "Keep replies under 180 words unless asked for more. Never use bullet lists longer than 3 items. "
+        "Refer back to the user's memories naturally when relevant — you genuinely remember them. "
+        "Never use emojis."
+        f"{memory_block}{history_block}"
+    )
+
+    # Save user message immediately
+    user_msg = CompanionMessage(role="user", content=req.message, persona=persona)
+    await db.companion_messages.insert_one(user_msg.model_dump())
+
+    try:
+        reply_text = await _run_ai(system_msg, req.message)
+    except Exception as e:
+        logger.error(f"Companion chat error: {e}")
+        reply_text = "I'm here. Let's try that again in a moment."
+
+    assistant_msg = CompanionMessage(role="assistant", content=reply_text, persona=persona)
+    await db.companion_messages.insert_one(assistant_msg.model_dump())
+
+    return {
+        "user_message": user_msg.model_dump(),
+        "reply": assistant_msg.model_dump(),
+    }
 
 
 # ============ REGISTER ============

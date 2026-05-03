@@ -4,9 +4,11 @@ import { Toaster } from "sonner";
 import Sidebar from "./components/Sidebar";
 import MobileNav from "./components/MobileNav";
 import Today from "./pages/Today";
+import Tomorrow from "./pages/Tomorrow";
 import Blueprint from "./pages/Blueprint";
 import Fitness from "./pages/Fitness";
 import Recipes from "./pages/Recipes";
+import Companion from "./pages/Companion";
 import Motivation from "./pages/Motivation";
 import Meditate from "./pages/Meditate";
 import SelfCare from "./pages/SelfCare";
@@ -20,9 +22,11 @@ function Shell() {
       <main className="flex-1 pb-24 lg:pb-0">
         <Routes>
           <Route path="/" element={<Today />} />
+          <Route path="/tomorrow" element={<Tomorrow />} />
           <Route path="/blueprint" element={<Blueprint />} />
           <Route path="/fitness" element={<Fitness />} />
           <Route path="/recipes" element={<Recipes />} />
+          <Route path="/companion" element={<Companion />} />
           <Route path="/motivation" element={<Motivation />} />
           <Route path="/meditate" element={<Meditate />} />
           <Route path="/self-care" element={<SelfCare />} />
