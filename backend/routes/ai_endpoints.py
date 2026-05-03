@@ -1,7 +1,11 @@
 """AI endpoints: motivation, reflection, meal/workout suggestions, weekly letter."""
+import json
+import re
 import logging
 from datetime import datetime, timezone, timedelta
+from typing import List, Optional
 from fastapi import APIRouter
+from pydantic import BaseModel
 from db import db
 from models import AIPrompt, WeeklyLetterRequest
 from ai_helper import run_ai, AI_SYSTEM_MSG
@@ -56,6 +60,57 @@ async def ai_meal(body: AIPrompt):
     except Exception as e:
         logger.error(f"AI meal error: {e}")
         return {"text": "Try grilled chicken with cucumber-yogurt salad and mint.", "error": str(e)}
+
+
+class RecipeMacroRequest(BaseModel):
+    title: Optional[str] = ""
+    ingredients: List[str] = []
+    cuisine: Optional[str] = ""
+    meal_type: Optional[str] = ""
+    servings: int = 2
+
+
+@router.post("/ai/recipe-macros")
+async def ai_recipe_macros(body: RecipeMacroRequest):
+    """Estimate prep_time + kcal + macros from ingredient list. Returns ints only."""
+    if not body.ingredients:
+        return {"error": "Add ingredients first", "prep_time": 0, "calories": 0, "protein": 0, "carbs": 0, "fat": 0}
+
+    prompt = (
+        "You are a nutritionist. Estimate macros PER SERVING for the recipe below. "
+        "Return ONLY a JSON object with integer fields, nothing else — no prose, no code fences: "
+        '{"prep_time": <minutes int>, "calories": <kcal int>, "protein": <grams int>, '
+        '"carbs": <grams int>, "fat": <grams int>}\n\n'
+        f"Recipe: {body.title or 'Untitled'}\n"
+        f"Cuisine: {body.cuisine or 'general'}\n"
+        f"Meal type: {body.meal_type or 'any'}\n"
+        f"Servings: {body.servings}\n"
+        f"Ingredients:\n- " + "\n- ".join(body.ingredients[:30]) +
+        "\n\nAssume typical cooking methods and reasonable portions. Round to whole numbers."
+    )
+    try:
+        text = await run_ai(
+            "You return compact JSON only. No markdown, no commentary.",
+            prompt,
+        )
+        # Extract JSON (tolerate code fences / stray text)
+        m = re.search(r"\{[^{}]*\}", text)
+        if not m:
+            raise ValueError(f"No JSON in response: {text[:200]}")
+        parsed = json.loads(m.group(0))
+        return {
+            "prep_time": int(parsed.get("prep_time", 30)),
+            "calories": int(parsed.get("calories", 400)),
+            "protein": int(parsed.get("protein", 30)),
+            "carbs": int(parsed.get("carbs", 20)),
+            "fat": int(parsed.get("fat", 15)),
+        }
+    except Exception as e:
+        logger.error(f"AI recipe-macros error: {e}")
+        return {
+            "error": str(e),
+            "prep_time": 30, "calories": 400, "protein": 30, "carbs": 20, "fat": 15,
+        }
 
 
 @router.post("/ai/workout-suggestion")

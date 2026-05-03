@@ -6,7 +6,7 @@ import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../components/ui/dialog";
-import { Sparkles, Clock, Flame, Wheat, Beef, Plus, Upload, X } from "lucide-react";
+import { Sparkles, Clock, Flame, Wheat, Beef, Plus, Upload, X, Calculator } from "lucide-react";
 import { toast } from "sonner";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -33,6 +33,7 @@ export default function Recipes() {
   const [aiLoading, setAiLoading] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [estimating, setEstimating] = useState(false);
   const fileRef = React.useRef(null);
   const [newRecipe, setNewRecipe] = useState({
     title: "", cuisine: "Pakistani", meal_type: "Dinner",
@@ -105,6 +106,32 @@ export default function Recipes() {
       setUploading(false);
       if (fileRef.current) fileRef.current.value = "";
     }
+  };
+
+  const estimateMacros = async () => {
+    const list = newRecipe.ingredients.split("\n").map(s => s.trim()).filter(Boolean);
+    if (list.length < 2) return toast.error("Add at least 2 ingredients first");
+    setEstimating(true);
+    try {
+      const { data } = await api.post("/ai/recipe-macros", {
+        title: newRecipe.title,
+        ingredients: list,
+        cuisine: newRecipe.cuisine,
+        meal_type: newRecipe.meal_type,
+        servings: newRecipe.servings,
+      });
+      setNewRecipe(r => ({
+        ...r,
+        prep_time: data.prep_time ?? r.prep_time,
+        calories: data.calories ?? r.calories,
+        protein: data.protein ?? r.protein,
+        carbs: data.carbs ?? r.carbs,
+        fat: data.fat ?? r.fat,
+      }));
+      toast.success("Macros estimated");
+    } catch {
+      toast.error("Couldn't estimate — try again");
+    } finally { setEstimating(false); }
   };
 
   return (
@@ -325,6 +352,17 @@ export default function Recipes() {
               value={newRecipe.ingredients}
               onChange={(e) => setNewRecipe({ ...newRecipe, ingredients: e.target.value })}
               data-testid="new-recipe-ingredients"/>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={estimateMacros}
+              disabled={estimating}
+              className="w-full rounded-full border-[#C27A62] text-[#C27A62] hover:bg-[#C27A62] hover:text-white"
+              data-testid="estimate-macros-btn"
+            >
+              <Calculator size={14} strokeWidth={1.5} className="mr-1"/>
+              {estimating ? "Estimating from ingredients…" : "Estimate macros & prep time from ingredients"}
+            </Button>
             <Textarea placeholder="Method steps (one per line)" rows={4}
               value={newRecipe.instructions}
               onChange={(e) => setNewRecipe({ ...newRecipe, instructions: e.target.value })}
