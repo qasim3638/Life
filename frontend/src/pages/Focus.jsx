@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { api } from "../lib/api";
+import { sendToCompanion } from "../lib/companion";
 import { Container, Card, Eyebrow, PageHeader } from "../components/Layout";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../components/ui/dialog";
-import { Play, Pause, RotateCcw, Sparkles, Zap, Timer, AlertCircle } from "lucide-react";
+import { Play, Pause, RotateCcw, Sparkles, Zap, Timer, AlertCircle, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 
 const TRIGGERS = ["phone", "notification", "browser", "hunger", "thought", "person", "fatigue", "other"];
@@ -24,6 +26,7 @@ export default function Focus() {
   const [aiText, setAiText] = useState("");
   const [aiLoading, setAiLoading] = useState(false);
   const intervalRef = useRef(null);
+  const navigate = useNavigate();
 
   const refresh = async () => {
     const [s, d, ss] = await Promise.all([
@@ -104,6 +107,14 @@ export default function Focus() {
       setAiText(data.text);
     } catch { toast.error("AI is resting"); }
     finally { setAiLoading(false); }
+  };
+
+  const talkToCompanion = async () => {
+    const top = recentDistractions.slice(0, 5).map(d => `${d.trigger}${d.note ? `: ${d.note}` : ""}`);
+    const msg = `I'm struggling with focus today. Today: ${stats.today_focus_min} min focused, ${stats.today_distractions} distractions. Recent triggers: ${top.join("; ") || "none logged"}. Can you help me think this through?`;
+    try {
+      await sendToCompanion(msg, navigate);
+    } catch { toast.error("Couldn't reach the companion"); }
   };
 
   const mm = String(Math.floor(remaining / 60)).padStart(2, "0");
@@ -206,6 +217,12 @@ export default function Focus() {
             >
               <Sparkles size={13} className="mr-1" strokeWidth={1.5}/>
               {aiLoading ? "Thinking…" : aiText ? "Refresh" : "Get tips"}
+            </Button>
+            <Button onClick={talkToCompanion} variant="ghost" size="sm"
+              className="rounded-full text-[#59745D] hover:bg-[#F4F1EA] mt-3 ml-2"
+              data-testid="focus-talk-btn"
+            >
+              <MessageCircle size={13} className="mr-1" strokeWidth={1.5}/> Talk to companion
             </Button>
           </Card>
         </div>

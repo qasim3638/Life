@@ -55,6 +55,14 @@ async def create_memory(payload: FamilyMemoryCreate):
     return m
 
 
+@router.put("/family/memories/{memory_id}", response_model=FamilyMemory)
+async def update_memory(memory_id: str, payload: FamilyMemoryCreate):
+    res = await db.family_memories.update_one({"id": memory_id}, {"$set": payload.model_dump()})
+    if res.matched_count == 0:
+        raise HTTPException(404, "Memory not found")
+    return await db.family_memories.find_one({"id": memory_id}, {"_id": 0})
+
+
 @router.delete("/family/memories/{memory_id}")
 async def delete_memory(memory_id: str):
     await db.family_memories.delete_one({"id": memory_id})

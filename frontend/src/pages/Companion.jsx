@@ -42,6 +42,16 @@ export default function Companion() {
 
   useEffect(() => { load(); }, []);
 
+  // If user arrived via "send to companion" from another page, ensure latest messages
+  useEffect(() => {
+    if (sessionStorage.getItem("companion_jump") === "1") {
+      sessionStorage.removeItem("companion_jump");
+      // Re-fetch messages once more shortly after — the assistant reply may have just landed
+      const t = setTimeout(load, 1200);
+      return () => clearTimeout(t);
+    }
+  }, []);
+
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;

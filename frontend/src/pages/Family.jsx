@@ -249,18 +249,45 @@ function Members({ members, reload }) {
 function Memories({ memories, members, reload }) {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ title: "", date: new Date().toISOString().slice(0,10), location: "", story: "", photo_url: "", member_ids: [] });
+  const [editingId, setEditingId] = useState(null);
   const [aiOpen, setAiOpen] = useState(false);
   const [aiText, setAiText] = useState("");
   const [aiLoading, setAiLoading] = useState(false);
   const [active, setActive] = useState(null);
 
+  const openCreate = () => {
+    setEditingId(null);
+    setForm({ title: "", date: new Date().toISOString().slice(0,10), location: "", story: "", photo_url: "", member_ids: [] });
+    setOpen(true);
+  };
+
+  const openEdit = (mem) => {
+    setEditingId(mem.id);
+    setForm({
+      title: mem.title || "",
+      date: mem.date || new Date().toISOString().slice(0,10),
+      location: mem.location || "",
+      story: mem.story || "",
+      photo_url: mem.photo_url || "",
+      member_ids: mem.member_ids || [],
+    });
+    setActive(null);
+    setOpen(true);
+  };
+
   const save = async () => {
     if (!form.title.trim()) return toast.error("Give it a title");
-    await api.post("/family/memories", form);
+    if (editingId) {
+      await api.put(`/family/memories/${editingId}`, form);
+      toast.success("Updated");
+    } else {
+      await api.post("/family/memories", form);
+      toast.success("Saved");
+    }
     setOpen(false);
+    setEditingId(null);
     setForm({ title: "", date: new Date().toISOString().slice(0,10), location: "", story: "", photo_url: "", member_ids: [] });
     reload();
-    toast.success("Saved");
   };
 
   const remove = async (id) => { await api.delete(`/family/memories/${id}`); reload(); };
@@ -284,10 +311,10 @@ function Memories({ memories, members, reload }) {
       <div className="flex justify-end mb-4">
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button className="rounded-full bg-[#59745D]" data-testid="add-memory-btn"><Plus size={14} className="mr-1"/> Capture a memory</Button>
+            <Button onClick={openCreate} className="rounded-full bg-[#59745D]" data-testid="add-memory-btn"><Plus size={14} className="mr-1"/> Capture a memory</Button>
           </DialogTrigger>
           <DialogContent className="rounded-3xl max-w-xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader><DialogTitle className="font-serif text-2xl">A moment worth keeping</DialogTitle></DialogHeader>
+            <DialogHeader><DialogTitle className="font-serif text-2xl">{editingId ? "Edit memory" : "A moment worth keeping"}</DialogTitle></DialogHeader>
             <div className="space-y-3 mt-2">
               <Input placeholder="Title (e.g., First snow with Maya)" value={form.title} onChange={(e) => setForm({...form, title: e.target.value})} data-testid="memory-title-input"/>
               <div className="grid grid-cols-2 gap-3">
@@ -308,7 +335,7 @@ function Memories({ memories, members, reload }) {
                   </div>
                 </div>
               )}
-              <Button onClick={save} className="w-full rounded-full bg-[#59745D]" data-testid="save-memory-btn">Keep this</Button>
+              <Button onClick={save} className="w-full rounded-full bg-[#59745D]" data-testid="save-memory-btn">{editingId ? "Update" : "Keep this"}</Button>
             </div>
           </DialogContent>
         </Dialog>
@@ -362,6 +389,9 @@ function Memories({ memories, members, reload }) {
                 <div className="flex gap-2 mt-6">
                   <Button onClick={() => weave(active)} variant="outline" className="rounded-full border-[#C27A62] text-[#C27A62] hover:bg-[#C27A62] hover:text-white" data-testid="weave-memory-btn">
                     <Sparkles size={14} className="mr-1" strokeWidth={1.5}/> Weave a reflection
+                  </Button>
+                  <Button onClick={() => openEdit(active)} variant="ghost" className="rounded-full text-[#59745D]" data-testid="edit-memory-btn">
+                    Edit
                   </Button>
                   <Button onClick={() => { remove(active.id); setActive(null); }} variant="ghost" className="rounded-full text-[#9A9F9D] hover:text-[#B85C50] ml-auto">
                     <Trash2 size={14} strokeWidth={1.5}/>

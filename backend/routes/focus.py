@@ -71,13 +71,30 @@ async def list_distractions():
 
 
 @router.get("/focus-stats")
-async def focus_stats():
-    today = datetime.now(timezone.utc).date().isoformat()
+async def focus_stats(date: Optional[str] = None, tz_offset_min: int = 0):
+    """Stats for today (local time when date+tz_offset_min provided, else UTC date)."""
+    if date:
+        try:
+            local_midnight = datetime.fromisoformat(f"{date}T00:00:00+00:00")
+            # tz_offset_min = -new Date().getTimezoneOffset() in JS
+            # For PKT (UTC+5): tz_offset_min = 300, local midnight in UTC = midnight - 300 min
+            start = local_midnight - timedelta(minutes=tz_offset_min)
+            end = start + timedelta(days=1)
+        except ValueError:
+            today = datetime.now(timezone.utc).date()
+            start = datetime.combine(today, datetime.min.time(), tzinfo=timezone.utc)
+            end = start + timedelta(days=1)
+    else:
+        today = datetime.now(timezone.utc).date()
+        start = datetime.combine(today, datetime.min.time(), tzinfo=timezone.utc)
+        end = start + timedelta(days=1)
+
+    range_q = {"$gte": start.isoformat(), "$lt": end.isoformat()}
     sessions = await db.focus_sessions.find(
-        {"started_at": {"$gte": today}}, {"_id": 0}
-    ).to_list(200)
+        {"started_at": range_q}, {"_id": 0}
+    ).to_list(500)
     distractions = await db.distractions.find(
-        {"at": {"$gte": today}}, {"_id": 0}
+        {"at": range_q}, {"_id": 0}
     ).to_list(500)
     return {
         "today_focus_min": sum(s.get("actual_min") or 0 for s in sessions),

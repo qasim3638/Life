@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { api } from "../lib/api";
 import { Container, Card, Eyebrow, PageHeader } from "../components/Layout";
 import { Button } from "../components/ui/button";
-import { Sparkles, Flame, HeartPulse, CalendarDays, Quote as QuoteIcon, Trophy, Mail, Shield, Compass } from "lucide-react";
+import { Sparkles, Flame, HeartPulse, CalendarDays, Quote as QuoteIcon, Trophy, Mail, Shield, Compass, Timer } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 
@@ -40,6 +40,8 @@ export default function Today() {
   const [brief, setBrief] = useState("");
   const [briefLoading, setBriefLoading] = useState(false);
   const [echo, setEcho] = useState("");
+  const [addictions, setAddictions] = useState([]);
+  const [focusToday, setFocusToday] = useState({ today_focus_min: 0 });
 
   // Echo of yesterday — auto-loads on mount
   useEffect(() => {
@@ -51,6 +53,23 @@ export default function Today() {
       } catch { /* silent */ }
     })();
     return () => { cancelled = true; };
+  }, []);
+
+  // Sobriety + focus side-by-side
+  useEffect(() => {
+    const tz_offset_min = -new Date().getTimezoneOffset();
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, "0");
+    const dd = String(today.getDate()).padStart(2, "0");
+    const localDate = `${yyyy}-${mm}-${dd}`;
+    Promise.all([
+      api.get("/addictions"),
+      api.get(`/focus-stats?date=${localDate}&tz_offset_min=${tz_offset_min}`),
+    ]).then(([a, f]) => {
+      setAddictions(a.data);
+      setFocusToday(f.data);
+    }).catch(() => {});
   }, []);
   const [letter, setLetter] = useState("");
   const [letterLoading, setLetterLoading] = useState(false);
@@ -150,6 +169,58 @@ export default function Today() {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Sober & focused — what you're protecting */}
+        {(addictions.length > 0 || focusToday.today_focus_min > 0) && (
+          <Card className="md:col-span-3" data-testid="card-protected">
+            <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2 mb-3">
+              <Eyebrow>What you're protecting</Eyebrow>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-6 items-start">
+              <div className="flex items-baseline gap-x-3 gap-y-1 flex-wrap">
+                {(() => {
+                  const longest = addictions.reduce((max, a) => {
+                    const ms = Date.now() - new Date(a.started_clean).getTime();
+                    const days = Math.max(0, Math.floor(ms / 86400000));
+                    return days > max ? days : max;
+                  }, 0);
+                  return addictions.length > 0 ? (
+                    <>
+                      <Shield size={16} strokeWidth={1.5} className="text-[#59745D]"/>
+                      <span className="font-serif text-3xl text-[#2D312E]">{longest}</span>
+                      <span className="text-sm text-[#6B7270]">day{longest === 1 ? "" : "s"} clean</span>
+                    </>
+                  ) : null;
+                })()}
+                {addictions.length > 0 && focusToday.today_focus_min > 0 && (
+                  <span className="text-[#9A9F9D] mx-1">·</span>
+                )}
+                {focusToday.today_focus_min > 0 && (
+                  <>
+                    <Timer size={16} strokeWidth={1.5} className="text-[#C27A62]"/>
+                    <span className="font-serif text-3xl text-[#2D312E]">{focusToday.today_focus_min}</span>
+                    <span className="text-sm text-[#6B7270]">min focused today</span>
+                  </>
+                )}
+              </div>
+
+              {addictions.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {addictions.map(a => {
+                    const ms = Date.now() - new Date(a.started_clean).getTime();
+                    const days = Math.max(0, Math.floor(ms / 86400000));
+                    return (
+                      <Link key={a.id} to="/sobriety" className="px-4 py-2 rounded-2xl bg-[#F4F1EA] hover:bg-sand transition-colors text-sm" data-testid={`addiction-pill-${a.id}`}>
+                        <span className="text-[#2D312E] font-medium">{a.name}</span>
+                        <span className="text-[#6B7270]"> · {days}d</span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </Card>
+        )}
+
         {/* Daily brief from companion */}
         <Card className="md:col-span-3 bg-gradient-to-br from-[#FAF6EC] to-white border-0" data-testid="card-daily-brief">
           <div className="flex items-center gap-2 mb-2">

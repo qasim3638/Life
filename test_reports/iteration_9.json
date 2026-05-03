@@ -1,0 +1,52 @@
+{
+  "summary": "Iter 9 backend testing complete. 9 new tests added for tz-aware focus-stats, family memory edit, and 'send to companion' helper — all 9 pass. Full regression: 110/111 passed (1 known-flaky LLM-based Jaccard dedupe test in iter5, unrelated to iter9 scope). New coverage: GET /api/focus-stats no-params back-compat (4 int keys), tz-aware filtering (PKT date 2026-02-15 with tz_offset_min=300 → UTC range [2026-02-14T19:00Z, 2026-02-15T19:00Z); seeded 1 inside (2026-02-14T20:00Z) and 1 outside (2026-02-15T20:00Z) row directly via pymongo, asserted only the inside row falls in range and the outside row falls in next day's range), invalid-date fallback (with and without tz_offset_min — both 200, no 500), PUT /api/family/memories/{id} full-field update + GET-verify persistence + 404 on non-existent id, POST /api/companion/chat accepts long contextual 'Send to companion' messages and returns reply.content. _id leak check passes recursively on every new response.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "GET /api/focus-stats",
+        "issue": "When date= is provided but tz_offset_min is omitted/0, the route uses local_midnight_at_UTC and treats the local day as a UTC day. That is intentional back-compat, but the docstring says 'local time when date+tz_offset_min provided, else UTC date' — when only date is provided the behaviour is UTC-of-that-date, which is consistent with the code but worth documenting in the API. Not a bug per spec."
+      },
+      {
+        "endpoint": "GET /api/focus-stats",
+        "issue": "tz_offset_min has no upper/lower clamp (e.g., tz_offset_min=999999 silently shifts the window by 694 days). Real timezones are ±840 minutes; consider validating range. Non-blocking."
+      }
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iteration9.py",
+    "/app/test_reports/pytest/iter9_results.xml",
+    "/app/test_reports/pytest/iter9_full_results.xml"
+  ],
+  "action_items": [
+    "OPTIONAL: Validate/clamp tz_offset_min in /api/focus-stats to a sane range (-840..840).",
+    "OPTIONAL (carry-over from iter8): Normalise empty {} body handling on /api/ai/focus-tips and /api/ai/sobriety-support/{id} (still 422 on `{}`).",
+    "FLAKY (not iter9 scope): test_iteration5.py::TestJaccardDedupe::test_near_duplicate_message_does_not_create_duplicate fails intermittently because dedupe relies on Claude paraphrasing similarly enough to clear the Jaccard threshold. This run got 2 near-duplicate auto-memories instead of ≤1. Consider raising threshold, lowering temperature, or marking the test as flaky/retry."
+  ],
+  "critical_code_review_comments": [
+    "routes/focus.py /focus-stats: tz math is correct. utc_start = local_midnight - timedelta(minutes=tz_offset_min) for east-positive offsets verified end-to-end with pymongo seed (PKT +300 → [2026-02-14T19:00Z, 2026-02-15T19:00Z)). Range filter uses $gte/$lt — good half-open interval. Fallback in except ValueError path is correct.",
+    "routes/focus.py /focus-stats: minor — `local_midnight = datetime.fromisoformat(f'{date}T00:00:00+00:00')` will accept odd inputs like '2026-2-5' (single digit month) without ValueError on Py3.11+, then offset-shift them — probably fine but worth a strict regex. Edge cases like date='2026-13-40' DO raise ValueError and are correctly handled by the fallback.",
+    "routes/family.py PUT /family/memories/{memory_id}: clean — uses matched_count for 404, returns the full re-fetched doc with `{'_id': 0}` projection. id field is preserved because $set only updates payload fields and id was set at create time. ✓",
+    "routes/companion.py /companion/chat: response shape is `{'user_message': {...}, 'reply': {...}}` with reply.content being the model output. This is fine for the 'Send to companion' helper as long as the frontend extracts reply.content (verify on the FE side).",
+    "Consistency: every route in scope uses `{'_id': 0}` projection; recursive _id-leak sweep over all 9 iter9 responses found nothing. ✓",
+    "Carry-over (out of iter9 scope): family_models.Holiday.todos still List[dict]; routes/audio.py hard-coded limit 500."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iteration9.py"
+  ],
+  "success_rate": {
+    "backend": "100% on iter9 scope (9/9). Full suite: 110/111 (99.1%) — 1 pre-existing flaky LLM-dedupe test in iter5.",
+    "frontend": "skipped per request (main agent verified Today protection card visually)"
+  },
+  "test_credentials": "no auth required",
+  "seed_data_creation": "TestFocusStatsTzAware seeds 2 focus_sessions directly via pymongo with tag TEST_iter9_tz_<uuid> and started_at 2026-02-14T20:00:00+00:00 / 2026-02-15T20:00:00+00:00, then deletes them in fixture teardown. TestFamilyMemoryUpdate creates 1 family member + 1 memory (TEST_iter9 prefixed) and deletes both in fixture teardown. TestCompanionChatSendHelper inserts 1 user_message + 1 assistant_message via the chat endpoint (not cleaned up — same pattern as iter8 chat tests).",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Iter9 green: 9/9 new tests pass. Full regression 110/111 — the single failure (TestJaccardDedupe in iter5) is flaky LLM behaviour, not a regression caused by iter9. To run: `export $(grep -v '^#' /app/frontend/.env | xargs) && export $(grep -v '^#' /app/backend/.env | xargs) && pytest /app/backend/tests/ -v`. The iter9 test file uses pymongo to seed focus_sessions with controlled started_at because the POST /focus-sessions API uses default_factory=now_iso() and ignores any user-supplied started_at. Future tz tests should follow the same pattern.",
+  "rca of the issue": "No iter9 bugs. The one failure (TestJaccardDedupe in iter5) is a known flaky test caused by LLM nondeterminism — Claude rephrased the daughter/Aisha facts differently enough to score below the Jaccard dedupe threshold, yielding 2 auto-memories instead of ≤1. Mitigation: lower temperature on the auto-extract LLM call, raise dedupe threshold, normalise text (lowercase + remove proper nouns) before Jaccard, or mark this test with @pytest.mark.flaky(reruns=2)."
+}

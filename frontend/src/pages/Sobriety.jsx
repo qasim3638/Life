@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { api } from "../lib/api";
+import { sendToCompanion } from "../lib/companion";
 import { Container, Card, Eyebrow, PageHeader } from "../components/Layout";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../components/ui/dialog";
-import { Plus, Trash2, Trophy, RefreshCcw, Sparkles, Heart } from "lucide-react";
+import { Plus, Trash2, Trophy, RefreshCcw, Sparkles, Heart, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 
 function useTicker() {
@@ -97,6 +99,7 @@ function AddictionCard({ item, reload }) {
   const [supportLoading, setSupportLoading] = useState(false);
   const [slips, setSlips] = useState([]);
   const [showSlips, setShowSlips] = useState(false);
+  const navigate = useNavigate();
 
   const { d, h, m, s, totalDays } = streakParts(item.started_clean);
 
@@ -129,6 +132,13 @@ function AddictionCard({ item, reload }) {
       const { data } = await api.get(`/addictions/${item.id}/slips`);
       setSlips(data);
     }
+  };
+
+  const talkToCompanion = async () => {
+    const msg = `I want to talk about staying free from ${item.name}. I've been clean ${totalDays} days. My longest was ${Math.max(item.longest_streak_days || 0, totalDays)} days. ${item.notes ? `Why I want this: ${item.notes}.` : ""} Can you help me think this through?`;
+    try {
+      await sendToCompanion(msg, navigate);
+    } catch { toast.error("Couldn't reach the companion"); }
   };
 
   const isLongest = totalDays >= (item.longest_streak_days || 0) && totalDays > 0;
@@ -171,9 +181,12 @@ function AddictionCard({ item, reload }) {
 
       <div className="flex flex-wrap gap-2 mt-5">
         <Button size="sm" onClick={support} variant="outline" className="rounded-full border-[#59745D] text-[#59745D] hover:bg-[#59745D] hover:text-white" data-testid={`support-${item.id}`}>
-          <Sparkles size={13} strokeWidth={1.5} className="mr-1"/> Get encouragement
+          <Sparkles size={13} strokeWidth={1.5} className="mr-1"/> Encouragement
         </Button>
-        <Button size="sm" onClick={() => setSlipOpen(true)} variant="outline" className="rounded-full border-[#A3897C] text-[#A3897C] hover:bg-[#A3897C] hover:text-white" data-testid={`slip-${item.id}`}>
+        <Button size="sm" onClick={talkToCompanion} variant="outline" className="rounded-full border-[#A3897C] text-[#A3897C] hover:bg-[#A3897C] hover:text-white" data-testid={`talk-${item.id}`}>
+          <MessageCircle size={13} strokeWidth={1.5} className="mr-1"/> Talk it through
+        </Button>
+        <Button size="sm" onClick={() => setSlipOpen(true)} variant="ghost" className="rounded-full text-[#9A9F9D] hover:text-[#B85C50]" data-testid={`slip-${item.id}`}>
           <Heart size={13} strokeWidth={1.5} className="mr-1"/> I slipped
         </Button>
         <button onClick={loadSlips} className="text-xs text-[#9A9F9D] hover:text-[#6B7270] ml-auto self-center" data-testid={`history-${item.id}`}>
