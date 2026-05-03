@@ -210,6 +210,9 @@ class Companion(BaseModel):
     name: str = "Najm"
     user_name: str = "friend"
     persona: PersonaLiteral = "friend"
+    location_name: str = ""
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
     created_at: str = Field(default_factory=now_iso)
 
 
@@ -217,6 +220,9 @@ class CompanionUpdate(BaseModel):
     name: Optional[str] = None
     user_name: Optional[str] = None
     persona: Optional[PersonaLiteral] = None
+    location_name: Optional[str] = None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
 
 
 class CompanionMemory(BaseModel):

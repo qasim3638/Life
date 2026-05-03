@@ -11,6 +11,7 @@ from models import (
 )
 from ai_helper import run_ai, PERSONA_PROMPTS
 from companion_actions import validate_action, execute_action
+from weather import geocode, forecast, summarise, is_weather_question
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -54,6 +55,32 @@ async def update_companion(payload: CompanionUpdate):
     update = {k: v for k, v in payload.model_dump().items() if v is not None}
     if update:
         await db.companion.update_one({"id": "default"}, {"$set": update})
+    return await db.companion.find_one({"id": "default"}, {"_id": 0})
+
+
+@router.post("/companion/location")
+async def set_location(payload: dict):
+    """Resolve a city name to lat/lon via Open-Meteo geocoding and save."""
+    query = (payload or {}).get("query", "").strip()
+    if not query:
+        raise HTTPException(400, "Missing 'query'")
+    hit = await geocode(query)
+    if not hit:
+        raise HTTPException(404, f"Couldn't find '{query}'. Try a larger nearby city.")
+    pretty = hit["name"]
+    if hit.get("admin1"):
+        pretty = f"{hit['name']}, {hit['admin1']}"
+    if hit.get("country"):
+        pretty = f"{pretty}, {hit['country']}"
+    await get_or_create_companion()
+    await db.companion.update_one(
+        {"id": "default"},
+        {"$set": {
+            "location_name": pretty,
+            "latitude": hit["latitude"],
+            "longitude": hit["longitude"],
+        }},
+    )
     return await db.companion.find_one({"id": "default"}, {"_id": 0})
 
 
@@ -180,6 +207,23 @@ async def companion_chat(req: ChatRequest, background: BackgroundTasks):
             lines.append(f"{role}: {m['content']}")
         history_block = "\n\nRecent conversation:\n" + "\n".join(lines)
 
+    # Inject real-world weather if the user seems to be asking about it
+    tools_block = ""
+    if is_weather_question(req.message):
+        lat = companion.get("latitude")
+        lon = companion.get("longitude")
+        loc = companion.get("location_name") or ""
+        if lat is not None and lon is not None:
+            data = await forecast(lat, lon, days=3)
+            if data:
+                tools_block = "\n\n=== LIVE DATA ===\n" + summarise(loc or "your location", data)
+        else:
+            tools_block = (
+                "\n\n=== LIVE DATA ===\nThe user has no saved location yet. "
+                "Tell them kindly: they can set their city in Companion settings (gear icon) "
+                "and you'll start including live weather in your answers."
+            )
+
     # Action envelope: today + tomorrow dates so Claude can resolve "tomorrow", "Friday", etc.
     today = datetime.now(timezone.utc)
     today_iso = today.strftime("%Y-%m-%d")
@@ -208,7 +252,7 @@ async def companion_chat(req: ChatRequest, background: BackgroundTasks):
         "Keep replies under 180 words unless asked for more. Never use bullet lists longer than 3 items. "
         "Refer back to the user's memories naturally when relevant - you genuinely remember them. "
         "Never use emojis."
-        f"{memory_block}{history_block}{action_instructions}"
+        f"{memory_block}{history_block}{tools_block}{action_instructions}"
     )
 
     user_msg = CompanionMessage(role="user", content=req.message, persona=persona)
