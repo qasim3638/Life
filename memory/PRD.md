@@ -6,40 +6,40 @@ fitness (customizable workouts), healthy recipes (Pakistani/Indian/Arab, low-car
 self-love & self-care, motivational podcasts/speeches/quotes, meditations, personal dates/events/reminders,
 and anything that helps build a routine for staying healthy, happy and fit.
 
-## User Choices (from first ask_human)
-- AI features via **Claude Sonnet 4.5** (Emergent LLM key)
+## User Choices
+- AI via **Claude Sonnet 4.5** (Emergent LLM key)
 - **No auth** — single-user local app
-- Motivation = **curated quotes + YouTube embeds**
-- **In-app reminders only**
-- Design vibe: **Warm & calm** (earthy tones, serene)
+- Motivation = curated quotes + YouTube embeds
+- In-app reminders only
+- Design vibe: **Warm & calm** — Cormorant Garamond + Manrope, #FDFBF7 / #59745D moss / #C27A62 terracotta / #A3897C clay / #E8E2D2 sand
 
 ## Architecture
-- Backend: FastAPI + MongoDB (Motor) — `/app/backend/server.py`
+- Backend: FastAPI + MongoDB (Motor), modular routes under `/app/backend/routes/`
+  (`workouts, recipes, journal, events, life_goals, content, day_plans, streaks, ai_endpoints, companion, family, audio, self_profile, focus, sobriety, echo, sunday_review`)
 - AI: `emergentintegrations` → Claude Sonnet 4.5 (`claude-sonnet-4-5-20250929`)
-- Frontend: React + shadcn/ui + Tailwind — `/app/frontend/src`
-- Fonts: Cormorant Garamond (serif) + Manrope (body)
-- Palette: #FDFBF7 base, #59745D moss-green, #C27A62 terracotta, #A3897C clay, #E8E2D2 sand
+- Frontend: React + shadcn/ui + Tailwind, pages under `/app/frontend/src/pages/`
 
-## Feature Areas Implemented (2026-02)
-1. **Today (Dashboard)** – life-arc progress ring (40 yrs ahead), AI "wisdom for today", daily quote, stats bento, upcoming events
-2. **Blueprint** – 40-year life goals plotted by 5-year age brackets (40–80), category-tagged, status cycling (planted → tending → bloomed)
-3. **Fitness** – workout builder (exercises/sets/reps/rest), workout CRUD, logging, AI coach suggestion
-4. **Recipes** – 12 seeded halal low-carb high-protein recipes (Pakistani/Indian/Arab/Mediterranean) with macros, search + cuisine/meal filters, detail modal, AI chef
-5. **Motivation** – 15 curated quotes (filterable by category) + 8 YouTube podcast/speech embeds
-6. **Meditate** – breath-ring timer (5/10/15/20 min presets) + 6 guided YouTube sessions
-7. **Self-Care** – daily mood, 3-gratitude, reflection journal, 8 affirmations, AI compassionate coach reflection
-8. **Events** – shadcn Calendar with event markers, add birthdays/anniversaries/goals/reminders (recurring option)
+## Features Shipped
+1. **Today** – life-arc ring, AI wisdom, quote, echo-of-yesterday, protected (sober+focus) card, daily AI brief, streak protector (after 6pm), Sunday banner, weekly letter
+2. **Tomorrow** – time-blocked schedule, morning routine, meals, supplements, chores
+3. **Blueprint** – 40-year goals + jsPDF export
+4. **Fitness** – workout builder, logs, AI coach
+5. **Recipes** – 12 seeded halal low-carb high-protein recipes, filters, AI chef
+6. **Motivation** – quotes + YouTube podcasts/speeches
+7. **Meditate** – breath timer + global sticky audio player (meditation music, sleep stories, wisdom stories)
+8. **Self-Care** – mood, gratitude, journal, affirmations, AI coach
+9. **Events** – shadcn Calendar, recurring dates/reminders
+10. **Self Profile** – appearance/personality/mind/style/gear + AI Daily Brief
+11. **Focus** – Pomodoro sessions + distraction logging, tz-aware stats
+12. **Sobriety** – multi-addiction tracker, clean streak, slip logging
+13. **Family** – timeline of memories + holidays, edit/delete
+14. **Companion** – AI friend with auto-memory extraction, pinning, TTL
+15. **Sunday Rhythm Review** *(2026-02)* – weekly AI reflection pulled from workouts/journal/focus/slips/family/plan data. Featured card + past reviews with 5 stat tiles. Sunday-only banner on Today dashboard.
 
-## What Works
-- All 18 backend tests pass (recipes, quotes, podcasts, meditations, affirmations, workouts CRUD + logs, journal, events, life-goals, 4 AI endpoints)
-- No MongoDB `_id` leaks, no pork/bacon in recipes or AI output
-- Claude Sonnet 4.5 responses flowing through for motivation/reflection/meal/workout
+## Changelog
+- 2026-02: Sunday Rhythm Review frontend shipped (Review.jsx + nav + Today banner). All 102/102 backend tests + frontend E2E pass.
 
 ## Prioritized Backlog
-- **P1** Sound for meditation breath timer (bell on complete)
-- **P1** Export/PDF the 40-year blueprint as a keepsake
-- **P1** Replace `@app.on_event` with FastAPI `lifespan` (tech debt)
-- **P2** Streaks / habit tracker (daily workout + journal streaks)
-- **P2** Push (or email) reminders for upcoming events
-- **P2** Image upload for custom recipes
-- **P2** Weekly AI-written "letter to future me" summary
+- **P2** Recipe image upload support
+- **P3** Drag-to-rearrange time blocks on Tomorrow page
+- **P3** Split large pages (Today.jsx, Companion.jsx) into smaller components
