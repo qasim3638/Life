@@ -6,7 +6,7 @@ from fastapi import APIRouter
 from pydantic import BaseModel, Field
 
 from db import db
-from models import new_id, now_iso, AIPrompt
+from models import new_id, now_iso
 from ai_helper import run_ai, AI_SYSTEM_MSG
 
 router = APIRouter()
@@ -88,7 +88,7 @@ async def focus_stats():
 
 
 @router.post("/ai/focus-tips")
-async def ai_focus_tips(_: AIPrompt | None = None):
+async def ai_focus_tips():
     cutoff = (datetime.now(timezone.utc) - timedelta(days=7)).isoformat()
     distractions = await db.distractions.find(
         {"at": {"$gte": cutoff}}, {"_id": 0}

@@ -6,7 +6,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
 from db import db
-from models import new_id, now_iso, AIPrompt
+from models import new_id, now_iso
 from ai_helper import run_ai, AI_SYSTEM_MSG
 
 router = APIRouter()
@@ -114,7 +114,7 @@ async def list_slips(addiction_id: str):
 
 
 @router.post("/ai/sobriety-support/{addiction_id}")
-async def ai_sobriety_support(addiction_id: str, _: AIPrompt | None = None):
+async def ai_sobriety_support(addiction_id: str):
     a = await db.addictions.find_one({"id": addiction_id}, {"_id": 0})
     if not a:
         raise HTTPException(404, "Not found")
