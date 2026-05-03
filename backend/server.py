@@ -551,6 +551,7 @@ async def ai_weekly_letter(body: WeeklyLetterRequest = WeeklyLetterRequest()):
         "Offer one gentle observation and one small intention for the coming week. "
         "No bullet lists. Sign off simply. "
         f"Data from the past week: {' | '.join(summary)}"
+        + (f" | extra note from user: {body.note[:300]}" if body.note else "")
     )
     try:
         text = await _run_ai(AI_SYSTEM_MSG, prompt)
