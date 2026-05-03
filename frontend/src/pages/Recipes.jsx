@@ -153,7 +153,16 @@ export default function Recipes() {
             className="p-0 overflow-hidden cursor-pointer hover:-translate-y-1"
             onClick={() => setSelected(r)}
           >
-            <div className="h-44 bg-cover bg-center relative" style={{ backgroundImage: `url(${toAbsolute(r.thumb || r.image)})` }}>
+            <div className="h-44 relative overflow-hidden">
+              <img
+                src={toAbsolute(r.thumb || r.image)}
+                alt={r.title}
+                width="400"
+                height="300"
+                loading="lazy"
+                decoding="async"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
               <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-white/90 text-[10px] uppercase tracking-wider text-[#2D312E]">
                 {r.cuisine}
@@ -183,8 +192,16 @@ export default function Recipes() {
         <DialogContent className="rounded-3xl max-w-2xl max-h-[90vh] overflow-y-auto p-0">
           {selected && (
             <>
-              <div className="h-56 bg-cover bg-center relative rounded-t-3xl" style={{ backgroundImage: `url(${toAbsolute(selected.image)})` }}>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent rounded-t-3xl" />
+              <div className="h-56 relative overflow-hidden rounded-t-3xl">
+                <img
+                  src={toAbsolute(selected.image)}
+                  alt={selected.title}
+                  width="800"
+                  height="448"
+                  decoding="async"
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <div className="absolute bottom-5 left-6 right-6">
                   <p className="text-xs uppercase tracking-[0.3em] text-white/80">{selected.cuisine} · {selected.meal_type}</p>
                   <h2 className="font-serif text-3xl text-white mt-1">{selected.title}</h2>
