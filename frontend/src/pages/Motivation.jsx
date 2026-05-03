@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../lib/api";
 import { Container, Card, Eyebrow, PageHeader } from "../components/Layout";
-import { Quote as QuoteIcon, Play, Trash2 } from "lucide-react";
+import { Quote as QuoteIcon, Play, Trash2, Shuffle } from "lucide-react";
 import { YouTubeThumb, WatchOnYouTube } from "../components/YouTubeThumb";
 import AddYouTubeDialog from "../components/AddYouTubeDialog";
 import { toast } from "sonner";
@@ -11,8 +11,9 @@ export default function Motivation() {
   const [podcasts, setPodcasts] = useState([]);
   const [activeCat, setActiveCat] = useState("All");
   const [playing, setPlaying] = useState(null);
+  const [shuffled, setShuffled] = useState({}); // slot.id -> replacement podcast
 
-  const loadPodcasts = () => api.get("/podcasts").then(r => setPodcasts(r.data));
+  const loadPodcasts = () => api.get("/podcasts").then(r => { setPodcasts(r.data); setShuffled({}); });
 
   useEffect(() => {
     (async () => {
@@ -30,6 +31,22 @@ export default function Motivation() {
     } catch {
       toast.error("Couldn't remove");
     }
+  };
+
+  // Cards display: each slot shows either the original podcast or a shuffled replacement
+  const displayed = podcasts.map(p => shuffled[p.id] || p);
+
+  const tryAnother = (slotId) => {
+    const current = displayed.find(d => d && (shuffled[slotId]?.id === d.id || slotId === d.id));
+    const currentYid = (shuffled[slotId] || podcasts.find(p => p.id === slotId))?.youtube_id;
+    const candidates = podcasts.filter(p => p.youtube_id !== currentYid);
+    if (candidates.length === 0) {
+      toast.message("Add more to your library to shuffle");
+      return;
+    }
+    const pick = candidates[Math.floor(Math.random() * candidates.length)];
+    setShuffled(s => ({ ...s, [slotId]: pick }));
+    if (playing === slotId) setPlaying(null); // stop the old embed
   };
 
   const cats = ["All", ...Array.from(new Set(quotes.map(q => q.category)))];
@@ -58,9 +75,20 @@ export default function Motivation() {
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {podcasts.map(p => (
-            <Card key={p.id} className="p-0 overflow-hidden" data-testid={`podcast-${p.id}`}>
-              {playing === p.id ? (
+          {podcasts.map(slot => {
+            const p = shuffled[slot.id] || slot;
+            const isPlaying = playing === slot.id;
+            return (
+            <Card key={slot.id} className="p-0 overflow-hidden relative" data-testid={`podcast-${slot.id}`}>
+              <button
+                onClick={(e) => { e.stopPropagation(); tryAnother(slot.id); }}
+                className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/90 hover:bg-white border border-sand flex items-center justify-center shadow-sm transition-transform hover:rotate-180"
+                title="Try another"
+                data-testid={`shuffle-podcast-${slot.id}`}
+              >
+                <Shuffle size={14} strokeWidth={1.5} className="text-[#2D312E]"/>
+              </button>
+              {isPlaying ? (
                 <div className="aspect-video bg-black rounded-t-3xl overflow-hidden">
                   <iframe
                     src={`https://www.youtube.com/embed/${p.youtube_id}?autoplay=1&rel=0`}
@@ -70,9 +98,9 @@ export default function Motivation() {
                 </div>
               ) : (
                 <button
-                  onClick={() => setPlaying(p.id)}
+                  onClick={() => setPlaying(slot.id)}
                   className="aspect-video w-full relative group block"
-                  data-testid={`play-podcast-${p.id}`}
+                  data-testid={`play-podcast-${slot.id}`}
                 >
                   <YouTubeThumb youtubeId={p.youtube_id} title={p.title} className="absolute inset-0" />
                   <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors flex items-center justify-center">
@@ -103,7 +131,7 @@ export default function Motivation() {
                 </div>
               </div>
             </Card>
-          ))}
+          );})}
         </div>
       </section>
 

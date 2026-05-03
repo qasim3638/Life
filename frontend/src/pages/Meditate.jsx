@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { api } from "../lib/api";
 import { Container, Card, Eyebrow, PageHeader } from "../components/Layout";
 import { Button } from "../components/ui/button";
-import { Play, Pause, RotateCcw, Trash2 } from "lucide-react";
+import { Play, Pause, RotateCcw, Trash2, Shuffle } from "lucide-react";
 import { usePlayer } from "../components/Player";
 import { YouTubeThumb, WatchOnYouTube } from "../components/YouTubeThumb";
 import AddYouTubeDialog from "../components/AddYouTubeDialog";
@@ -23,6 +23,7 @@ export default function Meditate() {
   const [duration, setDuration] = useState(600);
   const [remaining, setRemaining] = useState(600);
   const [running, setRunning] = useState(false);
+  const [shuffled, setShuffled] = useState({}); // slot.id -> replacement
   const intervalRef = useRef(null);
   const player = usePlayer();
 
@@ -54,6 +55,19 @@ export default function Meditate() {
     })();
   }, []);
 
+  const loadGuided = () => api.get("/meditations").then(r => { setGuided(r.data); setShuffled({}); });
+
+  const deleteMeditation = async (id) => {
+    if (!window.confirm("Remove this meditation?")) return;
+    try {
+      await api.delete(`/meditations/${id}`);
+      setGuided(g => g.filter(x => x.id !== id));
+      toast.success("Removed");
+    } catch {
+      toast.error("Couldn't remove — seeded items can't be deleted");
+    }
+  };
+
   useEffect(() => {
     if (!running) return;
     intervalRef.current = setInterval(() => {
@@ -75,6 +89,21 @@ export default function Meditate() {
   const items = tab === "Guided"
     ? guided.map(m => ({ ...m, category: "Guided" }))
     : audio.filter(a => a.category === tab);
+
+  // Pool for shuffling: everything the user could swap to in this tab
+  const pool = tab === "Guided" ? [...guided, ...audio] : audio;
+
+  const tryAnother = (slotId) => {
+    const slotOriginal = items.find(x => x.id === slotId);
+    const currentYid = (shuffled[slotId] || slotOriginal)?.youtube_id;
+    const candidates = pool.filter(x => x.youtube_id !== currentYid);
+    if (candidates.length === 0) {
+      toast.message("Add more to your library to shuffle");
+      return;
+    }
+    const pick = candidates[Math.floor(Math.random() * candidates.length)];
+    setShuffled(s => ({ ...s, [slotId]: pick }));
+  };
 
   return (
     <Container>
@@ -151,8 +180,18 @@ export default function Meditate() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {items.map(item => (
-          <Card key={item.id} className="p-0 overflow-hidden cursor-pointer group" onClick={() => player.play({ youtube_id: item.youtube_id, title: item.title, category: item.category })} data-testid={`audio-${item.id}`}>
+        {items.map(slot => {
+          const item = shuffled[slot.id] || slot;
+          return (
+          <Card key={slot.id} className="p-0 overflow-hidden cursor-pointer group relative" onClick={() => player.play({ youtube_id: item.youtube_id, title: item.title, category: item.category })} data-testid={`audio-${slot.id}`}>
+            <button
+              onClick={(e) => { e.stopPropagation(); tryAnother(slot.id); }}
+              className="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-white/90 hover:bg-white border border-sand flex items-center justify-center shadow-sm transition-transform hover:rotate-180"
+              title="Try another"
+              data-testid={`shuffle-audio-${slot.id}`}
+            >
+              <Shuffle size={13} strokeWidth={1.5} className="text-[#2D312E]"/>
+            </button>
             <div className="aspect-video relative">
               <YouTubeThumb youtubeId={item.youtube_id} title={item.title} className="absolute inset-0" />
               <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors flex items-center justify-center">
@@ -180,7 +219,7 @@ export default function Meditate() {
               </div>
             </div>
           </Card>
-        ))}
+        );})}
         {items.length === 0 && (
           <p className="md:col-span-2 lg:col-span-3 text-center text-[#6B7270] py-10">Nothing yet in this section.</p>
         )}
