@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { api } from "../lib/api";
 import { Container, Card, Eyebrow, PageHeader } from "../components/Layout";
 import { Button } from "../components/ui/button";
-import { Sparkles, Flame, HeartPulse, CalendarDays, Quote as QuoteIcon, Trophy, Mail, Shield } from "lucide-react";
+import { Sparkles, Flame, HeartPulse, CalendarDays, Quote as QuoteIcon, Trophy, Mail, Shield, Compass } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 
@@ -37,6 +37,8 @@ export default function Today() {
   const [journal, setJournal] = useState([]);
   const [goals, setGoals] = useState([]);
   const [streaks, setStreaks] = useState({ workout_streak: 0, journal_streak: 0, workout_today: false, journal_today: false });
+  const [brief, setBrief] = useState("");
+  const [briefLoading, setBriefLoading] = useState(false);
   const [letter, setLetter] = useState("");
   const [letterLoading, setLetterLoading] = useState(false);
 
@@ -86,6 +88,16 @@ export default function Today() {
     } finally { setLetterLoading(false); }
   };
 
+  const getBrief = async () => {
+    setBriefLoading(true);
+    try {
+      const { data } = await api.post("/ai/daily-brief", {});
+      setBrief(data.text);
+    } catch {
+      toast.error("AI is resting. Try again shortly.");
+    } finally { setBriefLoading(false); }
+  };
+
   const today = new Date().toISOString().slice(0, 10);
   const upcoming = events
     .filter(e => e.date >= today)
@@ -118,6 +130,42 @@ export default function Today() {
       />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Daily brief from companion */}
+        <Card className="md:col-span-3 bg-gradient-to-br from-[#FAF6EC] to-white border-0" data-testid="card-daily-brief">
+          <div className="flex items-center gap-2 mb-2">
+            <Compass size={18} strokeWidth={1.5} className="text-[#59745D]"/>
+            <Eyebrow>Companion's brief</Eyebrow>
+          </div>
+          {brief ? (
+            <div className="mt-3 grid grid-cols-1 md:grid-cols-5 gap-3">
+              {brief.split(/\n+/).filter(Boolean).slice(0, 5).map((line, i) => {
+                const m = line.match(/^([A-Z][A-Z &]+):\s*(.*)$/);
+                const label = m ? m[1] : ["GROOMING","STYLE","FOCUS","CONNECT","GEAR"][i] || "";
+                const body = m ? m[2] : line;
+                return (
+                  <div key={i} className="bg-white rounded-2xl border border-sand p-4" data-testid={`brief-${i}`}>
+                    <p className="text-[10px] uppercase tracking-widest text-[#C27A62]">{label}</p>
+                    <p className="text-sm text-[#2D312E] mt-1 leading-relaxed">{body}</p>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <p className="text-[#6B7270] mt-2 max-w-2xl leading-relaxed">
+              Five tiny suggestions for today — grooming, style, focus, connection, gear — drawn from your profile, plan, and what your companion remembers.
+            </p>
+          )}
+          <Button
+            onClick={getBrief}
+            disabled={briefLoading}
+            className="mt-5 rounded-full bg-[#59745D] hover:bg-[#4A604D]"
+            data-testid="daily-brief-btn"
+          >
+            <Sparkles size={14} strokeWidth={1.5} className="mr-1"/>
+            {briefLoading ? "Listening to your day…" : brief ? "Refresh brief" : "Get today's brief"}
+          </Button>
+        </Card>
+
         {/* Streak protector — appears after 6 PM if either streak hasn't been tended today */}
         {showProtector && (
           <Card className="md:col-span-3 bg-gradient-to-r from-[#C27A62]/15 via-[#F4F1EA] to-transparent border-0" data-testid="streak-protector">

@@ -1,12 +1,13 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { Home, Dumbbell, UtensilsCrossed, Sparkles, Brain, Heart, CalendarDays, Compass, MessageCircle, Sunrise, Users } from "lucide-react";
+import { Home, Dumbbell, UtensilsCrossed, Sparkles, Brain, Heart, CalendarDays, Compass, MessageCircle, Sunrise, Users, User as UserIcon } from "lucide-react";
 
 const items = [
   { to: "/", label: "Today", icon: Home },
   { to: "/tomorrow", label: "Tomorrow", icon: Sunrise },
   { to: "/blueprint", label: "Plan", icon: Compass },
   { to: "/family", label: "Family", icon: Users },
+  { to: "/self", label: "Self", icon: UserIcon },
   { to: "/companion", label: "Chat", icon: MessageCircle },
   { to: "/fitness", label: "Move", icon: Dumbbell },
   { to: "/recipes", label: "Eat", icon: UtensilsCrossed },

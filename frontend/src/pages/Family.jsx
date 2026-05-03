@@ -13,6 +13,7 @@ const RELATIONS = ["spouse", "daughter", "son", "mother", "father", "sister", "b
 
 export default function Family() {
   const [tab, setTab] = useState("members");
+  const [view, setView] = useState("cards"); // cards | timeline
   const [members, setMembers] = useState([]);
   const [memories, setMemories] = useState([]);
   const [holidays, setHolidays] = useState([]);
@@ -34,7 +35,7 @@ export default function Family() {
         image="https://images.unsplash.com/photo-1776926635448-1bd49c2ae248"
       />
 
-      <div className="flex flex-wrap gap-2 mb-8">
+      <div className="flex flex-wrap items-center gap-2 mb-8">
         {[
           { k: "members", label: "People", icon: Users },
           { k: "memories", label: "Memories", icon: BookHeart },
@@ -51,12 +52,121 @@ export default function Family() {
             <Icon size={14} strokeWidth={1.5}/> {label}
           </button>
         ))}
+        <div className="ml-auto flex items-center gap-2 bg-[#F4F1EA] rounded-full p-1">
+          {["cards", "timeline"].map(v => (
+            <button
+              key={v}
+              onClick={() => setView(v)}
+              className={`px-4 py-1 rounded-full text-xs uppercase tracking-wider transition-colors ${
+                view === v ? "bg-white text-[#2D312E] shadow-sm" : "text-[#6B7270] hover:text-[#2D312E]"
+              }`}
+              data-testid={`view-${v}`}
+            >{v}</button>
+          ))}
+        </div>
       </div>
 
-      {tab === "members" && <Members members={members} reload={load}/>}
-      {tab === "memories" && <Memories memories={memories} members={members} reload={load}/>}
-      {tab === "holidays" && <Holidays holidays={holidays} members={members} reload={load}/>}
+      {view === "timeline" ? (
+        <Timeline members={members} memories={memories} holidays={holidays}/>
+      ) : (
+        <>
+          {tab === "members" && <Members members={members} reload={load}/>}
+          {tab === "memories" && <Memories memories={memories} members={members} reload={load}/>}
+          {tab === "holidays" && <Holidays holidays={holidays} members={members} reload={load}/>}
+        </>
+      )}
     </Container>
+  );
+}
+
+/* ---------- TIMELINE ---------- */
+function Timeline({ members, memories, holidays }) {
+  // Build flat events list, sort by date, group by year
+  const events = [];
+  const today = new Date().toISOString().slice(0, 10);
+  members.filter(m => m.birthday).forEach(m => {
+    events.push({ kind: "birthday", date: m.birthday, label: `${m.name}'s birthday`, sublabel: m.relation, photo: m.photo_url, future: m.birthday >= today });
+  });
+  memories.forEach(m => {
+    events.push({ kind: "memory", date: m.date, label: m.title, sublabel: m.location, photo: m.photo_url, future: false });
+  });
+  holidays.forEach(h => {
+    events.push({ kind: "holiday", date: h.start_date, label: h.destination, sublabel: `${h.start_date} → ${h.end_date}`, photo: (h.photo_urls || [])[0] || "", future: h.start_date >= today });
+  });
+  events.sort((a, b) => a.date.localeCompare(b.date));
+
+  // Group by year
+  const groups = events.reduce((acc, e) => {
+    const y = (e.date || "").slice(0, 4) || "—";
+    (acc[y] = acc[y] || []).push(e);
+    return acc;
+  }, {});
+  const years = Object.keys(groups).sort();
+
+  if (events.length === 0) {
+    return (
+      <Card className="text-center py-16" data-testid="timeline-empty">
+        <p className="font-serif text-2xl text-[#2D312E]">Your timeline is waiting.</p>
+        <p className="text-[#6B7270] mt-2">Add a person, a memory, or a holiday and watch the chronicle unfold.</p>
+      </Card>
+    );
+  }
+
+  const colors = {
+    birthday: "#C27A62",
+    memory: "#59745D",
+    holiday: "#A3897C",
+  };
+
+  return (
+    <div className="overflow-x-auto pb-4 -mx-2 px-2" data-testid="timeline-view">
+      <div className="relative min-w-[900px]">
+        {/* horizontal axis */}
+        <div className="absolute left-0 right-0 top-[88px] h-px bg-sand"/>
+        <div className="flex gap-12">
+          {years.map(y => (
+            <section key={y} className="shrink-0" data-testid={`timeline-year-${y}`}>
+              <p className="font-serif text-3xl text-[#2D312E] mb-4 pl-1">{y}</p>
+              <div className="flex gap-4">
+                {groups[y].map((e, i) => (
+                  <article
+                    key={i}
+                    className={`w-56 shrink-0 relative ${e.future ? "" : "opacity-95"}`}
+                    data-testid={`timeline-item-${e.kind}`}
+                  >
+                    {/* dot on axis */}
+                    <div className="flex justify-start pl-3">
+                      <div
+                        className="w-4 h-4 rounded-full ring-4 ring-[#FDFBF7] z-10 relative"
+                        style={{ backgroundColor: colors[e.kind] }}
+                      />
+                    </div>
+                    <div className="mt-3 bg-white rounded-2xl border border-sand p-3 hover:-translate-y-1 transition-transform">
+                      {e.photo ? (
+                        <img src={e.photo} alt="" className="w-full h-28 object-cover rounded-xl mb-2"/>
+                      ) : (
+                        <div className="w-full h-28 rounded-xl mb-2 flex items-center justify-center"
+                          style={{ background: `linear-gradient(135deg, ${colors[e.kind]}33, #F4F1EA)` }}>
+                          <span className="font-serif text-3xl" style={{ color: colors[e.kind] }}>
+                            {e.kind === "birthday" ? "♡" : e.kind === "holiday" ? "✦" : "·"}
+                          </span>
+                        </div>
+                      )}
+                      <p className="text-[10px] uppercase tracking-widest" style={{ color: colors[e.kind] }}>
+                        {e.kind} · {e.date}
+                      </p>
+                      <p className="font-serif text-base text-[#2D312E] leading-tight mt-0.5">{e.label}</p>
+                      {e.sublabel && <p className="text-xs text-[#6B7270] mt-1">{e.sublabel}</p>}
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+        <p className="text-xs text-[#9A9F9D] italic mt-4 pl-1">Scroll horizontally to walk through your years →</p>
+      </div>
+    </div>
   );
 }
 

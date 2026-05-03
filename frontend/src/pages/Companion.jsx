@@ -6,7 +6,7 @@ import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../components/ui/dialog";
-import { Send, Sparkles, Brain, Trash2, Plus, Settings, Star, BookOpen } from "lucide-react";
+import { Send, Sparkles, Brain, Trash2, Plus, Settings, Star, BookOpen, Pin } from "lucide-react";
 import { toast } from "sonner";
 
 const PERSONAS = [
