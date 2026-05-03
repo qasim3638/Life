@@ -2,13 +2,15 @@
 import json
 import re
 import logging
-from fastapi import APIRouter, BackgroundTasks
+from datetime import datetime, timezone, timedelta
+from fastapi import APIRouter, BackgroundTasks, HTTPException
 from db import db
 from models import (
     Companion, CompanionUpdate, CompanionMemory, CompanionMemoryCreate,
-    CompanionMemoryUpdate, CompanionMessage, ChatRequest,
+    CompanionMemoryUpdate, CompanionMessage, ChatRequest, new_id,
 )
 from ai_helper import run_ai, PERSONA_PROMPTS
+from companion_actions import validate_action, execute_action
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -178,25 +180,55 @@ async def companion_chat(req: ChatRequest, background: BackgroundTasks):
             lines.append(f"{role}: {m['content']}")
         history_block = "\n\nRecent conversation:\n" + "\n".join(lines)
 
+    # Action envelope: today + tomorrow dates so Claude can resolve "tomorrow", "Friday", etc.
+    today = datetime.now(timezone.utc)
+    today_iso = today.strftime("%Y-%m-%d")
+    tomorrow_iso = (today + timedelta(days=1)).strftime("%Y-%m-%d")
+    weekday_name = today.strftime("%A")
+    action_instructions = (
+        "\n\n=== ACTION PROTOCOL ===\n"
+        f"Today is {weekday_name} {today_iso}. Tomorrow is {tomorrow_iso}.\n"
+        "If the user is asking you to actually DO something in the app "
+        "(add to schedule, add event, add priority, add chore), respond with ONLY a JSON "
+        "object in this exact shape — no prose outside the JSON, no code fences:\n"
+        '{"reply": "<friendly 1-sentence confirmation>", "actions": [ <action>, ... ]}\n'
+        "Allowed action shapes:\n"
+        '  {"type": "add_time_block", "date": "YYYY-MM-DD", "hour": "HH:MM", "text": "<≤80 chars>"}\n'
+        '  {"type": "add_event", "date": "YYYY-MM-DD", "title": "<title>", "notes": "<optional>"}\n'
+        '  {"type": "add_priority", "date": "YYYY-MM-DD", "text": "<≤120 chars>"}\n'
+        '  {"type": "add_chore", "kind": "house"|"work"|"morning", "text": "<≤120 chars>", "date": "YYYY-MM-DD"}\n'
+        "Use 24h hours. If user says 'tomorrow', resolve to the date above. "
+        "If the user is NOT asking for an action (chatting, venting, asking a question), "
+        "respond with plain prose — NOT the JSON shape."
+    )
+
     system_msg = (
         f"Your name is {name}. You are speaking to {user_name}. "
         f"{persona_msg} "
         "Keep replies under 180 words unless asked for more. Never use bullet lists longer than 3 items. "
         "Refer back to the user's memories naturally when relevant - you genuinely remember them. "
         "Never use emojis."
-        f"{memory_block}{history_block}"
+        f"{memory_block}{history_block}{action_instructions}"
     )
 
     user_msg = CompanionMessage(role="user", content=req.message, persona=persona)
     await db.companion_messages.insert_one(user_msg.model_dump())
 
     try:
-        reply_text = await run_ai(system_msg, req.message)
+        raw_reply = await run_ai(system_msg, req.message)
     except Exception as e:
         logger.error(f"Companion chat error: {e}")
-        reply_text = "I'm here. Let's try that again in a moment."
+        raw_reply = "I'm here. Let's try that again in a moment."
 
-    assistant_msg = CompanionMessage(role="assistant", content=reply_text, persona=persona)
+    # Try to parse the action envelope. Fall back to plain text.
+    reply_text, actions = _parse_action_envelope(raw_reply)
+
+    assistant_msg = CompanionMessage(
+        role="assistant",
+        content=reply_text,
+        persona=persona,
+        actions=actions,
+    )
     await db.companion_messages.insert_one(assistant_msg.model_dump())
 
     # Fire-and-forget background memory extraction
@@ -206,3 +238,78 @@ async def companion_chat(req: ChatRequest, background: BackgroundTasks):
         "user_message": user_msg.model_dump(),
         "reply": assistant_msg.model_dump(),
     }
+
+
+def _parse_action_envelope(text: str) -> tuple[str, list]:
+    """Try to parse `{reply, actions}` envelope. Return (reply_text, [actions_with_status])."""
+    if not text or "actions" not in text or "{" not in text:
+        return text, []
+    # Strip code fences if Claude used them despite instructions
+    stripped = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.MULTILINE).strip()
+    # Grab the first JSON object
+    m = re.search(r"\{.*\}", stripped, re.DOTALL)
+    if not m:
+        return text, []
+    try:
+        obj = json.loads(m.group(0))
+    except Exception:
+        return text, []
+    if not isinstance(obj, dict) or not isinstance(obj.get("actions"), list):
+        return text, []
+    reply = str(obj.get("reply") or "").strip() or "Here's what I've got:"
+    actions_out = []
+    for raw in obj["actions"]:
+        ok, reason = validate_action(raw)
+        if not ok:
+            continue
+        # Whitelist only allowed keys by type; don't trust extras
+        cleaned = {k: v for k, v in raw.items() if k in {
+            "type", "date", "hour", "text", "title", "notes", "kind", "event_type", "recurring"
+        }}
+        cleaned["status"] = "pending"
+        cleaned["id"] = new_id()
+        actions_out.append(cleaned)
+    return reply, actions_out
+
+
+@router.post("/companion/messages/{mid}/actions/{aid}/apply")
+async def apply_action(mid: str, aid: str):
+    msg = await db.companion_messages.find_one({"id": mid}, {"_id": 0})
+    if not msg:
+        raise HTTPException(404, "Message not found")
+    actions = list(msg.get("actions") or [])
+    idx = next((i for i, a in enumerate(actions) if a.get("id") == aid), -1)
+    if idx < 0:
+        raise HTTPException(404, "Action not found on this message")
+    action = actions[idx]
+    if action.get("status") != "pending":
+        return {"ok": True, "already": action.get("status")}
+    ok, reason = validate_action(action)
+    if not ok:
+        raise HTTPException(400, f"Invalid action: {reason}")
+    try:
+        result = await execute_action(action)
+    except Exception as e:
+        logger.exception("Action execution failed")
+        raise HTTPException(500, f"Couldn't apply: {e}")
+    actions[idx] = {**action, "status": "applied", "result": result.get("message", "")}
+    await db.companion_messages.update_one({"id": mid}, {"$set": {"actions": actions}})
+    return {"ok": True, "action": actions[idx]}
+
+
+@router.post("/companion/messages/{mid}/actions/{aid}/cancel")
+async def cancel_action(mid: str, aid: str):
+    msg = await db.companion_messages.find_one({"id": mid}, {"_id": 0})
+    if not msg:
+        raise HTTPException(404, "Message not found")
+    actions = list(msg.get("actions") or [])
+    idx = next((i for i, a in enumerate(actions) if a.get("id") == aid), -1)
+    if idx < 0:
+        raise HTTPException(404, "Action not found")
+    if actions[idx].get("status") == "pending":
+        actions[idx] = {**actions[idx], "status": "cancelled"}
+        await db.companion_messages.update_one({"id": mid}, {"$set": {"actions": actions}})
+    return {"ok": True, "action": actions[idx]}
+
+
+# Local import no longer needed; new_id imported at top of module via models in companion_actions usage

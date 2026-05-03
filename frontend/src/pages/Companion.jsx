@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import CompanionSidePanel, { PERSONAS } from "../components/companion/CompanionSidePanel";
 import CompanionSettings from "../components/companion/CompanionSettings";
 import MemoriesDialog from "../components/companion/MemoriesDialog";
+import ActionChips from "../components/companion/ActionChips";
 
 export default function Companion() {
   const [companion, setCompanion] = useState(null);
@@ -151,20 +152,28 @@ export default function Companion() {
             )}
             {messages.map((m) => (
               <div key={m.id} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`} data-testid={`msg-${m.role}`}>
-                <div className={`group relative max-w-[78%] rounded-3xl px-5 py-3 ${
-                  m.role === "user"
-                    ? "bg-[#59745D] text-white rounded-br-md"
-                    : "bg-[#F4F1EA] text-[#2D312E] rounded-bl-md"
-                }`}>
-                  <p className="leading-relaxed whitespace-pre-wrap">{m.content}</p>
-                  {m.role === "user" && m.id !== "tmp-u" && (
-                    <button
-                      onClick={() => rememberMessage(m)}
-                      className="absolute -bottom-7 right-2 opacity-0 group-hover:opacity-100 transition-opacity text-[10px] uppercase tracking-widest text-[#A3897C] hover:text-[#C27A62]"
-                      data-testid={`remember-${m.id}`}
-                    >
-                      <Star size={11} strokeWidth={1.5} className="inline mr-1"/> remember this
-                    </button>
+                <div className="max-w-[78%] flex flex-col items-stretch gap-1">
+                  <div className={`group relative rounded-3xl px-5 py-3 ${
+                    m.role === "user"
+                      ? "bg-[#59745D] text-white rounded-br-md self-end"
+                      : "bg-[#F4F1EA] text-[#2D312E] rounded-bl-md self-start"
+                  }`}>
+                    <p className="leading-relaxed whitespace-pre-wrap">{m.content}</p>
+                    {m.role === "user" && m.id !== "tmp-u" && (
+                      <button
+                        onClick={() => rememberMessage(m)}
+                        className="absolute -bottom-7 right-2 opacity-0 group-hover:opacity-100 transition-opacity text-[10px] uppercase tracking-widest text-[#A3897C] hover:text-[#C27A62]"
+                        data-testid={`remember-${m.id}`}
+                      >
+                        <Star size={11} strokeWidth={1.5} className="inline mr-1"/> remember this
+                      </button>
+                    )}
+                  </div>
+                  {m.role === "assistant" && (m.actions || []).length > 0 && (
+                    <ActionChips
+                      message={m}
+                      onMessageUpdate={(updated) => setMessages(prev => prev.map(x => x.id === updated.id ? updated : x))}
+                    />
                   )}
                 </div>
               </div>

@@ -1,0 +1,26 @@
+{
+  "summary": "Tested Companion action envelope end-to-end. Backend: 6/6 pytest cases pass (plain-chat produces empty actions + prose, add_time_block with 'tomorrow' resolves date and hour='07:00', add_priority with correct date+text, add_event 'Aisha's birthday June 12 2026' → date=2026-06-12, apply writes to day_plans.time_blocks/priorities and events, cancel leaves DB untouched, double-apply returns already='applied', bad mid/aid → 404). Frontend /companion: plain 'Hi, how are you?' renders no chip; 'Add gym at 8am tomorrow' renders action chip with data-testid=action-{aid}, apply-{aid}, cancel-{aid}. Clicking Apply replaces buttons with 'APPLIED' label (green styling) and shows success toast 'Added \"Gym\" at 08:00 on 2026-05-04'. Clicking Cancel on a second action turns chip into grey SKIPPED with line-through. No JS console errors during the flow.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_companion_actions.py",
+    "/app/test_reports/pytest/iter14_companion.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "routes/companion.py line 315 has a dangling comment ('Local import no longer needed...'); harmless but unused and can be deleted.",
+    "_parse_action_envelope fence-stripping regex (line 248) only strips fence markers at line start/end, but Claude sometimes wraps just the opening with ```json and the closing on a non-final line. Current parser still works because it grabs the first {...} blob. Edge case, not a bug today.",
+    "apply_action stores action.result as a truncated message string; result schema matches contract. Good.",
+    "Idempotent apply branch at routes/companion.py:286 returns 200 with already='applied' but does not echo the action payload; contract only required ok+already, so this is fine.",
+    "ActionChips.jsx uses sonner toast; confirmed success toast renders 'Added ... at HH:MM on DATE' exactly from backend result.message."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_companion_actions.py"
+  ],
+  "success_rate": {"backend": "100% (6/6)", "frontend": "100% (3/3 flows)"},
+  "test_credentials": "n/a",
+  "seed_data_creation": "Tests cleared chat via UI before running; backend tests create their own messages/actions. Added time_blocks on tomorrow's date, a priority 'finish the proposal' for tomorrow, and an event 'Aisha's birthday' on 2026-06-12 in the app DB as a side-effect of successful apply tests.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Companion action envelope is fully wired. If retesting, use /app/backend/tests/test_companion_actions.py; it covers all 4 action types for validation, apply persistence into day_plans/events, idempotency, cancel, and 404 paths. Claude responses take 5-15s so pytest runtime ~13s. Frontend renders ActionChips with data-testids: action-{aid}, apply-{aid}, cancel-{aid}, actions-{message.id}."
+}

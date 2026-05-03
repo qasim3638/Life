@@ -244,6 +244,7 @@ class CompanionMessage(BaseModel):
     role: str
     content: str
     persona: str = "friend"
+    actions: List[dict] = Field(default_factory=list)  # proposed actions, each with status
     created_at: str = Field(default_factory=now_iso)
 
 
