@@ -85,6 +85,28 @@ export default function Recipes() {
     } catch { toast.error("Couldn't save"); }
   };
 
+  const handleFileUpload = async (file) => {
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      return toast.error("Image must be under 5MB");
+    }
+    setUploading(true);
+    try {
+      const form = new FormData();
+      form.append("file", file);
+      const { data } = await api.post("/upload/image", form, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      setNewRecipe(r => ({ ...r, image: data.url }));
+      toast.success("Image uploaded");
+    } catch {
+      toast.error("Upload failed");
+    } finally {
+      setUploading(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  };
+
   return (
     <Container>
       <PageHeader

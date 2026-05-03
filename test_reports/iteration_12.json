@@ -1,0 +1,28 @@
+{
+  "summary": "Retested Recipes file-picker upload after handleFileUpload was added. Full flow works end-to-end: open Add Recipe dialog → set file on hidden input → POST /api/upload/image returns 200 → 'Image uploaded' toast renders → preview shows uploaded image (/api/uploads/<id>.png) → URL input stays empty (because image starts with /api/) → clear button removes preview & clears state → saved recipe card uses the uploaded image (not the default Unsplash). Regression on Today (/) and Companion (/companion): both load cleanly, no console/page errors.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Dialogs (Save a recipe, AI chef, etc.)", "issues": ["A11y warning: Missing `Description` or `aria-describedby={undefined}` on DialogContent. Non-blocking but should be fixed for accessibility."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Optional: add DialogDescription / aria-describedby to all Radix DialogContent instances to silence a11y warnings."
+  ],
+  "critical_code_review_comments": [
+    "Recipes.jsx handleFileUpload correctly uses api instance (respects REACT_APP_BACKEND_URL), clears file input on finally, guards 5MB size, and toasts on success/error — good.",
+    "The URL input correctly hides backend paths via `newRecipe.image.startsWith('/api/') ? '' : newRecipe.image`, preventing confusing paths in the URL field.",
+    "toAbsolute() helper correctly prepends BACKEND_URL for /api/ relative paths when rendering previews/cards."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a (not retested per request)", "frontend": "100%"},
+  "test_credentials": "none",
+  "seed_data_creation": "Created 1 test recipe 'TEST_Upload_Recipe' with uploaded image (/api/uploads/<hash>.png). Not cleaned up — low risk, consistent TEST_ prefix.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Iteration 11 fix validated. handleFileUpload (Recipes.jsx L88-108) works. Backend /api/upload/image + static /api/uploads/ serve already green in iter_11. Dialog a11y warnings are pre-existing and cosmetic.",
+  "rca of the issue": "Previously (iter_11) handleFileUpload was referenced by the hidden <input type='file'> onChange but never defined, throwing ReferenceError when a file was selected. Fix: function added between saveRecipe and the JSX return — uses FormData + api.post('/upload/image') with multipart/form-data, sets newRecipe.image to returned url, toasts, resets fileRef on finally. Validated by observing: 200 response from /api/upload/image, preview rendered, toast shown, card uses uploaded image after save."
+}
