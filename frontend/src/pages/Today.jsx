@@ -39,6 +39,19 @@ export default function Today() {
   const [streaks, setStreaks] = useState({ workout_streak: 0, journal_streak: 0, workout_today: false, journal_today: false });
   const [brief, setBrief] = useState("");
   const [briefLoading, setBriefLoading] = useState(false);
+  const [echo, setEcho] = useState("");
+
+  // Echo of yesterday — auto-loads on mount
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const { data } = await api.post("/ai/echo-yesterday", {});
+        if (!cancelled) setEcho(data.text || "");
+      } catch { /* silent */ }
+    })();
+    return () => { cancelled = true; };
+  }, []);
   const [letter, setLetter] = useState("");
   const [letterLoading, setLetterLoading] = useState(false);
 
@@ -128,6 +141,13 @@ export default function Today() {
         subtitle="The next 40 years are built from days like this one."
         image={HERO_IMG}
       />
+
+      {echo && (
+        <div className="mb-8 -mt-2 px-6 py-3 rounded-full bg-[#F4F1EA] border border-sand text-sm text-[#6B7270] flex items-center gap-3" data-testid="echo-yesterday">
+          <span className="text-[10px] uppercase tracking-[0.3em] text-[#A3897C] shrink-0">Yesterday</span>
+          <span className="font-serif text-base text-[#2D312E] leading-snug">{echo}</span>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Daily brief from companion */}

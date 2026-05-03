@@ -3,11 +3,14 @@ import { NavLink, useLocation } from "react-router-dom";
 import {
   Home, Dumbbell, UtensilsCrossed, Sparkles, Brain,
   Heart, CalendarDays, Compass, MessageCircle, Sunrise, Users, User as UserIcon,
+  Timer, Shield as ShieldIcon,
 } from "lucide-react";
 
 const items = [
   { to: "/", label: "Today", icon: Home, testid: "nav-today" },
   { to: "/tomorrow", label: "Tomorrow", icon: Sunrise, testid: "nav-tomorrow" },
+  { to: "/focus", label: "Focus", icon: Timer, testid: "nav-focus" },
+  { to: "/sobriety", label: "Sobriety", icon: ShieldIcon, testid: "nav-sobriety" },
   { to: "/blueprint", label: "Blueprint", icon: Compass, testid: "nav-blueprint" },
   { to: "/family", label: "Family", icon: Users, testid: "nav-family" },
   { to: "/self", label: "Self", icon: UserIcon, testid: "nav-self" },

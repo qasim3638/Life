@@ -10,6 +10,8 @@ import Blueprint from "./pages/Blueprint";
 import Fitness from "./pages/Fitness";
 import Recipes from "./pages/Recipes";
 import Self from "./pages/Self";
+import Focus from "./pages/Focus";
+import Sobriety from "./pages/Sobriety";
 import Family from "./pages/Family";
 import Companion from "./pages/Companion";
 import Motivation from "./pages/Motivation";
@@ -31,6 +33,8 @@ function Shell() {
           <Route path="/recipes" element={<Recipes />} />
           <Route path="/family" element={<Family />} />
           <Route path="/self" element={<Self />} />
+          <Route path="/focus" element={<Focus />} />
+          <Route path="/sobriety" element={<Sobriety />} />
           <Route path="/companion" element={<Companion />} />
           <Route path="/motivation" element={<Motivation />} />
           <Route path="/meditate" element={<Meditate />} />
