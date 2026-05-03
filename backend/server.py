@@ -20,7 +20,7 @@ from seed_data import (  # noqa: E402
 from routes import (  # noqa: E402
     workouts, recipes, journal, events, life_goals, content,
     day_plans, streaks, ai_endpoints, companion, family, audio, self_profile,
-    focus, sobriety, echo,
+    focus, sobriety, echo, sunday_review,
 )
 from audio_seed import (  # noqa: E402
     WISDOM_STORIES_SEED, SLEEP_STORIES_SEED, MEDITATION_MUSIC_SEED,
@@ -87,6 +87,7 @@ api_router.include_router(self_profile.router)
 api_router.include_router(focus.router)
 api_router.include_router(sobriety.router)
 api_router.include_router(echo.router)
+api_router.include_router(sunday_review.router)
 
 app.include_router(api_router)
 

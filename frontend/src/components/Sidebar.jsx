@@ -3,7 +3,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import {
   Home, Dumbbell, UtensilsCrossed, Sparkles, Brain,
   Heart, CalendarDays, Compass, MessageCircle, Sunrise, Users, User as UserIcon,
-  Timer, Shield as ShieldIcon,
+  Timer, Shield as ShieldIcon, BookOpen,
 } from "lucide-react";
 
 const items = [
@@ -21,6 +21,7 @@ const items = [
   { to: "/meditate", label: "Meditate", icon: Brain, testid: "nav-meditate" },
   { to: "/self-care", label: "Self-Care", icon: Heart, testid: "nav-selfcare" },
   { to: "/events", label: "Events", icon: CalendarDays, testid: "nav-events" },
+  { to: "/review", label: "Sunday Review", icon: BookOpen, testid: "nav-review" },
 ];
 
 export default function Sidebar() {

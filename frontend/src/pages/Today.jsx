@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { api } from "../lib/api";
 import { Container, Card, Eyebrow, PageHeader } from "../components/Layout";
 import { Button } from "../components/ui/button";
-import { Sparkles, Flame, HeartPulse, CalendarDays, Quote as QuoteIcon, Trophy, Mail, Shield, Compass, Timer } from "lucide-react";
+import { Sparkles, Flame, HeartPulse, CalendarDays, Quote as QuoteIcon, Trophy, Mail, Shield, Compass, Timer, BookOpen } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 
@@ -42,6 +42,7 @@ export default function Today() {
   const [echo, setEcho] = useState("");
   const [addictions, setAddictions] = useState([]);
   const [focusToday, setFocusToday] = useState({ today_focus_min: 0 });
+  const [weekReview, setWeekReview] = useState(null);
 
   // Echo of yesterday — auto-loads on mount
   useEffect(() => {
@@ -71,6 +72,14 @@ export default function Today() {
       setFocusToday(f.data);
     }).catch(() => {});
   }, []);
+  // Sunday reflection availability — only fetch on Sunday
+  useEffect(() => {
+    if (new Date().getDay() !== 0) return;
+    api.get("/sunday-reviews/latest").then(({ data }) => {
+      setWeekReview(data && data.week_start ? data : null);
+    }).catch(() => {});
+  }, []);
+
   const [letter, setLetter] = useState("");
   const [letterLoading, setLetterLoading] = useState(false);
 
@@ -145,6 +154,12 @@ export default function Today() {
   });
 
   const hourNow = new Date().getHours();
+  const isSunday = new Date().getDay() === 0;
+  // Monday ISO of current week (for comparing against latest review)
+  const _mon = new Date();
+  _mon.setDate(_mon.getDate() - ((_mon.getDay() + 6) % 7));
+  const currentWeekMondayISO = _mon.toISOString().slice(0, 10);
+  const currentWeekReviewed = weekReview && weekReview.week_start === currentWeekMondayISO;
   const showProtector =
     hourNow >= 18 && (!streaks.workout_today || !streaks.journal_today);
   const protectorMessages = [
@@ -166,6 +181,27 @@ export default function Today() {
           <span className="text-[10px] uppercase tracking-[0.3em] text-[#A3897C] shrink-0">Yesterday</span>
           <span className="font-serif text-base text-[#2D312E] leading-snug">{echo}</span>
         </div>
+      )}
+
+      {isSunday && (
+        <Link to="/review" className="block mb-8 group" data-testid="sunday-banner">
+          <div className="px-6 py-4 rounded-3xl bg-gradient-to-r from-[#FAF6EC] via-[#F4F1EA] to-transparent border border-sand flex items-center gap-4 transition-all group-hover:border-[#59745D]/40 group-hover:shadow-sm">
+            <div className="w-10 h-10 rounded-full bg-white border border-sand flex items-center justify-center shrink-0">
+              <BookOpen size={18} strokeWidth={1.5} className="text-[#59745D]" />
+            </div>
+            <div className="flex-1">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-[#A3897C]">Sunday</p>
+              <p className="font-serif text-lg md:text-xl text-[#2D312E] leading-snug mt-0.5">
+                {currentWeekReviewed
+                  ? "Your week's reflection is ready to read."
+                  : "Close the week with a quiet reflection."}
+              </p>
+            </div>
+            <span className="hidden sm:inline text-sm text-[#59745D] font-medium group-hover:underline underline-offset-4">
+              {currentWeekReviewed ? "Read it →" : "Open →"}
+            </span>
+          </div>
+        </Link>
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
