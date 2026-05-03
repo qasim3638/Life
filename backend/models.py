@@ -168,7 +168,7 @@ class ChoreItem(BaseModel):
 
 
 class TimeBlock(BaseModel):
-    hour: str  # "HH:MM" 24h
+    hour: str = Field(pattern=r"^([01]\d|2[0-3]):[0-5]\d$")
     text: str = ""
 
 
@@ -189,7 +189,7 @@ class DayPlan(BaseModel):
     supplements: List[Supplement] = []
     house_chores: List[ChoreItem] = []
     work_chores: List[ChoreItem] = []
-    time_blocks: List[TimeBlock] = []
+    time_blocks: List[TimeBlock] = Field(default_factory=list, max_length=24)
     sleep_target: str = "23:00"
     wake_target: str = "06:30"
     hydration_oz: int = 80
