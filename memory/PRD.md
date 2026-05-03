@@ -15,16 +15,17 @@ and anything that helps build a routine for staying healthy, happy and fit.
 
 ## Architecture
 - Backend: FastAPI + MongoDB (Motor), modular routes under `/app/backend/routes/`
-  (`workouts, recipes, journal, events, life_goals, content, day_plans, streaks, ai_endpoints, companion, family, audio, self_profile, focus, sobriety, echo, sunday_review`)
+  (`workouts, recipes, journal, events, life_goals, content, day_plans, streaks, ai_endpoints, companion, family, audio, self_profile, focus, sobriety, echo, sunday_review, uploads`)
+- Static files served at `/api/uploads/*` from `/app/backend/uploads/`
 - AI: `emergentintegrations` → Claude Sonnet 4.5 (`claude-sonnet-4-5-20250929`)
-- Frontend: React + shadcn/ui + Tailwind, pages under `/app/frontend/src/pages/`
+- Frontend: React + shadcn/ui + Tailwind. Pages in `/app/frontend/src/pages/`, shared card components under `/app/frontend/src/components/{today,companion}/`.
 
 ## Features Shipped
-1. **Today** – life-arc ring, AI wisdom, quote, echo-of-yesterday, protected (sober+focus) card, daily AI brief, streak protector (after 6pm), Sunday banner, weekly letter
+1. **Today** – life-arc ring, AI wisdom, quote, echo-of-yesterday, protected (sober+focus) card, daily AI brief, streak protector (after 6pm), Sunday banner, weekly letter. Cards extracted into `/components/today/*` for maintainability.
 2. **Tomorrow** – time-blocked schedule, morning routine, meals, supplements, chores
 3. **Blueprint** – 40-year goals + jsPDF export
 4. **Fitness** – workout builder, logs, AI coach
-5. **Recipes** – 12 seeded halal low-carb high-protein recipes, filters, AI chef
+5. **Recipes** – 12 seeded halal low-carb high-protein recipes, filters, AI chef, **file-upload OR URL-paste for recipe images** (stored in `/app/backend/uploads/`, max 5MB, .jpg/.jpeg/.png/.webp/.gif)
 6. **Motivation** – quotes + YouTube podcasts/speeches
 7. **Meditate** – breath timer + global sticky audio player (meditation music, sleep stories, wisdom stories)
 8. **Self-Care** – mood, gratitude, journal, affirmations, AI coach
@@ -33,13 +34,14 @@ and anything that helps build a routine for staying healthy, happy and fit.
 11. **Focus** – Pomodoro sessions + distraction logging, tz-aware stats
 12. **Sobriety** – multi-addiction tracker, clean streak, slip logging
 13. **Family** – timeline of memories + holidays, edit/delete
-14. **Companion** – AI friend with auto-memory extraction, pinning, TTL
-15. **Sunday Rhythm Review** *(2026-02)* – weekly AI reflection pulled from workouts/journal/focus/slips/family/plan data. Featured card + past reviews with 5 stat tiles. Sunday-only banner on Today dashboard.
+14. **Companion** – AI friend with auto-memory extraction, pinning, TTL. Sidebar/dialogs extracted into `/components/companion/*`.
+15. **Sunday Rhythm Review** – weekly AI reflection pulled from workouts/journal/focus/slips/family/plan data. Featured card + past reviews with 5 stat tiles. Sunday-only banner on Today dashboard.
 
 ## Changelog
-- 2026-02: Sunday Rhythm Review frontend shipped (Review.jsx + nav + Today banner). All 102/102 backend tests + frontend E2E pass.
+- 2026-02: Sunday Rhythm Review frontend (Review.jsx + nav + Today banner). 102/102 backend tests + frontend E2E pass.
+- 2026-02: Recipe image upload endpoint + file-picker/URL UI. Today.jsx refactored into 5 cards (316 lines, was 461). Companion.jsx refactored into 3 extracted components. 100% backend + frontend tests.
 
 ## Prioritized Backlog
-- **P2** Recipe image upload support
+- **P2** A11y: add `aria-describedby` / DialogDescription to all shadcn Dialogs (non-blocking warning surfaced by testing agent)
 - **P3** Drag-to-rearrange time blocks on Tomorrow page
-- **P3** Split large pages (Today.jsx, Companion.jsx) into smaller components
+- **P3** Emailable weekly-review keepsake / year-in-review compile
