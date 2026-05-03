@@ -1,0 +1,33 @@
+{
+  "summary": "Iteration 6 retest of the two iter5 bugs in routes/companion.py auto-memory pipeline. Both fixes verified. Full suite 67/67 passing (51 regression + 16 iter5). Targeted retest of TestCompanionMemoryTTL (2 tests) + TestJaccardDedupe (1 test) all PASS in 58s. Previously flaky TTL test now reliably passes because _prune_auto_memories runs unconditionally in a try/finally regardless of AI parse outcome. Jaccard dedupe now correctly suppresses near-duplicate auto memories about the same fact.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iteration5.py",
+    "/app/backend/tests/test_iteration4.py",
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/iter5_retest_results.xml",
+    "/app/test_reports/pytest/iter5_retest_full.xml",
+    "/app/test_reports/pytest/iter5_retest_regression.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "routes/companion.py: clean fix — _prune_auto_memories extracted as a standalone async helper, _auto_extract_memories wraps the AI/parse block in try/finally so prune ALWAYS runs. _tokens applies light stemming (strips trailing 's' on tokens >3 chars) which correctly merges years/year, loves/love. DEDUPE_THRESHOLD lowered to 0.55. Looks correct and minimal.",
+    "Minor (carry-over from iter5, not blocking): family_models.Holiday.todos still typed as List[dict] instead of typed sub-model; routes/family.py still missing PUT/PATCH for memories; routes/audio.py hard-coded limit 500. These are not regressions and not in scope for this retest."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (67/67)", "frontend": "skipped per request"},
+  "test_credentials": "no auth required",
+  "seed_data_creation": "TestCompanionMemoryTTL inserts up to 206 synthetic auto-memory docs into companion_memories collection; cleaned up via fixture teardown.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "All iter1-5 bugs resolved. Suite is green: pytest /app/backend/tests/ → 67 passed in ~3 min. Companion auto-memory pipeline is now well-behaved (TTL prune always runs, Jaccard dedupe with stemming at 0.55 catches reworded duplicates).",
+  "rca of the issue": "Both iter5 bugs fixed correctly: (1) Jaccard — _tokens() now strips trailing 's' on tokens >3 chars (years→year, loves→love), threshold 0.55 instead of 0.7. Verified with TestJaccardDedupe message pair: msg1 vs msg2 about Aisha → only 0-1 net new auto memories (down from ~3 previously). (2) TTL prune — _prune_auto_memories extracted to a standalone async function; _auto_extract_memories now wraps AI+parse in try, calls prune in finally, so cap of 200 is enforced even when AI returns non-JSON. Verified with 205 seeded old auto memories + junk 'x'*200 message → count drops to <=200 within 25s; pinned memory survives."
+}
