@@ -11,8 +11,10 @@ import { toast } from "sonner";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
+const FALLBACK_IMG = "https://images.unsplash.com/photo-1659275798977-6eee03f687a2";
+
 const toAbsolute = (url) => {
-  if (!url) return url;
+  if (!url) return FALLBACK_IMG;
   if (url.startsWith("http://") || url.startsWith("https://")) return url;
   if (url.startsWith("/api/")) return `${BACKEND_URL}${url}`;
   return url;
