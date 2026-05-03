@@ -1,88 +1,494 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, HTTPException
+from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 from pathlib import Path
-from pydantic import BaseModel, Field, ConfigDict
-from typing import List
+from pydantic import BaseModel, Field
+from typing import List, Optional
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timezone, date
 
+from seed_data import (
+    RECIPES_SEED,
+    QUOTES_SEED,
+    PODCASTS_SEED,
+    MEDITATIONS_SEED,
+    AFFIRMATIONS_SEED,
+)
 
 ROOT_DIR = Path(__file__).parent
-load_dotenv(ROOT_DIR / '.env')
+load_dotenv(ROOT_DIR / ".env")
 
-# MongoDB connection
-mongo_url = os.environ['MONGO_URL']
+mongo_url = os.environ["MONGO_URL"]
 client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+db = client[os.environ["DB_NAME"]]
 
-# Create the main app without a prefix
-app = FastAPI()
-
-# Create a router with the /api prefix
+app = FastAPI(title="Life Blueprint API")
 api_router = APIRouter(prefix="/api")
 
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
-# Define Models
-class StatusCheck(BaseModel):
-    model_config = ConfigDict(extra="ignore")  # Ignore MongoDB's _id field
-    
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    client_name: str
-    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
-class StatusCheckCreate(BaseModel):
-    client_name: str
+# ============ UTIL ============
+def new_id() -> str:
+    return str(uuid.uuid4())
 
-# Add your routes to the router instead of directly to app
+
+def now_iso() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
+# ============ MODELS ============
+class Workout(BaseModel):
+    id: str = Field(default_factory=new_id)
+    name: str
+    category: str = "Strength"  # Strength, Cardio, Mobility, Yoga, HIIT
+    notes: Optional[str] = ""
+    exercises: List[dict] = []  # [{name, sets, reps, rest, weight}]
+    created_at: str = Field(default_factory=now_iso)
+
+
+class WorkoutCreate(BaseModel):
+    name: str
+    category: str = "Strength"
+    notes: Optional[str] = ""
+    exercises: List[dict] = []
+
+
+class WorkoutLog(BaseModel):
+    id: str = Field(default_factory=new_id)
+    workout_id: str
+    workout_name: str
+    date: str
+    duration_min: int = 0
+    notes: str = ""
+    created_at: str = Field(default_factory=now_iso)
+
+
+class WorkoutLogCreate(BaseModel):
+    workout_id: str
+    workout_name: str
+    date: str
+    duration_min: int = 0
+    notes: str = ""
+
+
+class Recipe(BaseModel):
+    id: str = Field(default_factory=new_id)
+    title: str
+    cuisine: str
+    meal_type: str
+    prep_time: int
+    servings: int
+    calories: int
+    protein: int
+    carbs: int
+    fat: int
+    ingredients: List[str]
+    instructions: List[str]
+    tags: List[str] = []
+    image: Optional[str] = ""
+    is_custom: bool = False
+    created_at: str = Field(default_factory=now_iso)
+
+
+class RecipeCreate(BaseModel):
+    title: str
+    cuisine: str
+    meal_type: str
+    prep_time: int
+    servings: int
+    calories: int
+    protein: int
+    carbs: int
+    fat: int
+    ingredients: List[str]
+    instructions: List[str]
+    tags: List[str] = []
+    image: Optional[str] = ""
+
+
+class JournalEntry(BaseModel):
+    id: str = Field(default_factory=new_id)
+    date: str  # YYYY-MM-DD
+    mood: int = 3  # 1-5
+    gratitude: List[str] = []
+    reflection: str = ""
+    created_at: str = Field(default_factory=now_iso)
+
+
+class JournalEntryCreate(BaseModel):
+    date: str
+    mood: int = 3
+    gratitude: List[str] = []
+    reflection: str = ""
+
+
+class Event(BaseModel):
+    id: str = Field(default_factory=new_id)
+    title: str
+    date: str  # YYYY-MM-DD
+    type: str = "event"  # birthday, anniversary, goal, reminder, event
+    recurring: bool = False
+    notes: str = ""
+    created_at: str = Field(default_factory=now_iso)
+
+
+class EventCreate(BaseModel):
+    title: str
+    date: str
+    type: str = "event"
+    recurring: bool = False
+    notes: str = ""
+
+
+class LifeGoal(BaseModel):
+    id: str = Field(default_factory=new_id)
+    year: int  # Target year (e.g., 2026-2065)
+    age: int  # Age at target (40-80)
+    category: str = "Life"  # Health, Career, Family, Spiritual, Financial, Adventure
+    title: str
+    description: str = ""
+    status: str = "planned"  # planned, in_progress, achieved
+    created_at: str = Field(default_factory=now_iso)
+
+
+class LifeGoalCreate(BaseModel):
+    year: int
+    age: int
+    category: str = "Life"
+    title: str
+    description: str = ""
+    status: str = "planned"
+
+
+class AIPrompt(BaseModel):
+    prompt: str
+    context: Optional[str] = ""
+
+
+# ============ SEED ============
+@app.on_event("startup")
+async def seed_data():
+    try:
+        if await db.recipes.count_documents({"is_custom": False}) == 0:
+            for r in RECIPES_SEED:
+                doc = Recipe(**r, is_custom=False).model_dump()
+                await db.recipes.insert_one(doc)
+        if await db.quotes.count_documents({}) == 0:
+            for q in QUOTES_SEED:
+                await db.quotes.insert_one({"id": new_id(), **q})
+        if await db.podcasts.count_documents({}) == 0:
+            for p in PODCASTS_SEED:
+                await db.podcasts.insert_one({"id": new_id(), **p})
+        if await db.meditations.count_documents({}) == 0:
+            for m in MEDITATIONS_SEED:
+                await db.meditations.insert_one({"id": new_id(), **m})
+        if await db.affirmations.count_documents({}) == 0:
+            for a in AFFIRMATIONS_SEED:
+                await db.affirmations.insert_one({"id": new_id(), "text": a})
+        logger.info("Seed data ready.")
+    except Exception as e:
+        logger.error(f"Seeding error: {e}")
+
+
+# ============ ROOT ============
 @api_router.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Life Blueprint API", "status": "ok"}
 
-@api_router.post("/status", response_model=StatusCheck)
-async def create_status_check(input: StatusCheckCreate):
-    status_dict = input.model_dump()
-    status_obj = StatusCheck(**status_dict)
-    
-    # Convert to dict and serialize datetime to ISO string for MongoDB
-    doc = status_obj.model_dump()
-    doc['timestamp'] = doc['timestamp'].isoformat()
-    
-    _ = await db.status_checks.insert_one(doc)
-    return status_obj
 
-@api_router.get("/status", response_model=List[StatusCheck])
-async def get_status_checks():
-    # Exclude MongoDB's _id field from the query results
-    status_checks = await db.status_checks.find({}, {"_id": 0}).to_list(1000)
-    
-    # Convert ISO string timestamps back to datetime objects
-    for check in status_checks:
-        if isinstance(check['timestamp'], str):
-            check['timestamp'] = datetime.fromisoformat(check['timestamp'])
-    
-    return status_checks
+# ============ WORKOUTS ============
+@api_router.post("/workouts", response_model=Workout)
+async def create_workout(payload: WorkoutCreate):
+    w = Workout(**payload.model_dump())
+    await db.workouts.insert_one(w.model_dump())
+    return w
 
-# Include the router in the main app
+
+@api_router.get("/workouts", response_model=List[Workout])
+async def list_workouts():
+    items = await db.workouts.find({}, {"_id": 0}).sort("created_at", -1).to_list(500)
+    return items
+
+
+@api_router.get("/workouts/{workout_id}", response_model=Workout)
+async def get_workout(workout_id: str):
+    item = await db.workouts.find_one({"id": workout_id}, {"_id": 0})
+    if not item:
+        raise HTTPException(404, "Workout not found")
+    return item
+
+
+@api_router.put("/workouts/{workout_id}", response_model=Workout)
+async def update_workout(workout_id: str, payload: WorkoutCreate):
+    res = await db.workouts.update_one({"id": workout_id}, {"$set": payload.model_dump()})
+    if res.matched_count == 0:
+        raise HTTPException(404, "Workout not found")
+    item = await db.workouts.find_one({"id": workout_id}, {"_id": 0})
+    return item
+
+
+@api_router.delete("/workouts/{workout_id}")
+async def delete_workout(workout_id: str):
+    await db.workouts.delete_one({"id": workout_id})
+    return {"ok": True}
+
+
+@api_router.post("/workout-logs", response_model=WorkoutLog)
+async def create_workout_log(payload: WorkoutLogCreate):
+    log = WorkoutLog(**payload.model_dump())
+    await db.workout_logs.insert_one(log.model_dump())
+    return log
+
+
+@api_router.get("/workout-logs", response_model=List[WorkoutLog])
+async def list_workout_logs():
+    items = await db.workout_logs.find({}, {"_id": 0}).sort("date", -1).to_list(500)
+    return items
+
+
+# ============ RECIPES ============
+@api_router.get("/recipes", response_model=List[Recipe])
+async def list_recipes(cuisine: Optional[str] = None, meal_type: Optional[str] = None):
+    q: dict = {}
+    if cuisine:
+        q["cuisine"] = cuisine
+    if meal_type:
+        q["meal_type"] = meal_type
+    items = await db.recipes.find(q, {"_id": 0}).to_list(500)
+    return items
+
+
+@api_router.get("/recipes/{recipe_id}", response_model=Recipe)
+async def get_recipe(recipe_id: str):
+    item = await db.recipes.find_one({"id": recipe_id}, {"_id": 0})
+    if not item:
+        raise HTTPException(404, "Recipe not found")
+    return item
+
+
+@api_router.post("/recipes", response_model=Recipe)
+async def create_recipe(payload: RecipeCreate):
+    r = Recipe(**payload.model_dump(), is_custom=True)
+    await db.recipes.insert_one(r.model_dump())
+    return r
+
+
+@api_router.delete("/recipes/{recipe_id}")
+async def delete_recipe(recipe_id: str):
+    await db.recipes.delete_one({"id": recipe_id, "is_custom": True})
+    return {"ok": True}
+
+
+# ============ JOURNAL ============
+@api_router.post("/journal-entries", response_model=JournalEntry)
+async def create_journal(payload: JournalEntryCreate):
+    j = JournalEntry(**payload.model_dump())
+    await db.journal_entries.insert_one(j.model_dump())
+    return j
+
+
+@api_router.get("/journal-entries", response_model=List[JournalEntry])
+async def list_journal():
+    items = await db.journal_entries.find({}, {"_id": 0}).sort("date", -1).to_list(500)
+    return items
+
+
+@api_router.delete("/journal-entries/{entry_id}")
+async def delete_journal(entry_id: str):
+    await db.journal_entries.delete_one({"id": entry_id})
+    return {"ok": True}
+
+
+# ============ EVENTS ============
+@api_router.post("/events", response_model=Event)
+async def create_event(payload: EventCreate):
+    e = Event(**payload.model_dump())
+    await db.events.insert_one(e.model_dump())
+    return e
+
+
+@api_router.get("/events", response_model=List[Event])
+async def list_events():
+    items = await db.events.find({}, {"_id": 0}).sort("date", 1).to_list(500)
+    return items
+
+
+@api_router.put("/events/{event_id}", response_model=Event)
+async def update_event(event_id: str, payload: EventCreate):
+    res = await db.events.update_one({"id": event_id}, {"$set": payload.model_dump()})
+    if res.matched_count == 0:
+        raise HTTPException(404, "Event not found")
+    item = await db.events.find_one({"id": event_id}, {"_id": 0})
+    return item
+
+
+@api_router.delete("/events/{event_id}")
+async def delete_event(event_id: str):
+    await db.events.delete_one({"id": event_id})
+    return {"ok": True}
+
+
+# ============ LIFE GOALS ============
+@api_router.post("/life-goals", response_model=LifeGoal)
+async def create_life_goal(payload: LifeGoalCreate):
+    g = LifeGoal(**payload.model_dump())
+    await db.life_goals.insert_one(g.model_dump())
+    return g
+
+
+@api_router.get("/life-goals", response_model=List[LifeGoal])
+async def list_life_goals():
+    items = await db.life_goals.find({}, {"_id": 0}).sort("year", 1).to_list(500)
+    return items
+
+
+@api_router.put("/life-goals/{goal_id}", response_model=LifeGoal)
+async def update_life_goal(goal_id: str, payload: LifeGoalCreate):
+    res = await db.life_goals.update_one({"id": goal_id}, {"$set": payload.model_dump()})
+    if res.matched_count == 0:
+        raise HTTPException(404, "Goal not found")
+    item = await db.life_goals.find_one({"id": goal_id}, {"_id": 0})
+    return item
+
+
+@api_router.delete("/life-goals/{goal_id}")
+async def delete_life_goal(goal_id: str):
+    await db.life_goals.delete_one({"id": goal_id})
+    return {"ok": True}
+
+
+# ============ CURATED CONTENT ============
+@api_router.get("/quotes")
+async def list_quotes():
+    items = await db.quotes.find({}, {"_id": 0}).to_list(500)
+    return items
+
+
+@api_router.get("/podcasts")
+async def list_podcasts():
+    items = await db.podcasts.find({}, {"_id": 0}).to_list(500)
+    return items
+
+
+@api_router.get("/meditations")
+async def list_meditations():
+    items = await db.meditations.find({}, {"_id": 0}).to_list(500)
+    return items
+
+
+@api_router.get("/affirmations")
+async def list_affirmations():
+    items = await db.affirmations.find({}, {"_id": 0}).to_list(500)
+    return items
+
+
+# ============ AI (Claude Sonnet 4.5) ============
+AI_SYSTEM_MSG = (
+    "You are a warm, wise, grounded life coach for a 40-year-old Muslim man "
+    "planning the next 40 years of his life. Your voice blends Rumi's poetic "
+    "softness, stoic discipline, and practical modern wisdom. Be concise, "
+    "specific, and never clinical. Never use bullet lists longer than 4 items. "
+    "Never use emojis. Avoid cliches."
+)
+
+
+async def _run_ai(system: str, prompt: str) -> str:
+    from emergentintegrations.llm.chat import LlmChat, UserMessage
+
+    api_key = os.environ.get("EMERGENT_LLM_KEY")
+    if not api_key:
+        raise HTTPException(500, "AI key missing")
+    chat = LlmChat(
+        api_key=api_key,
+        session_id=f"life-blueprint-{new_id()}",
+        system_message=system,
+    ).with_model("anthropic", "claude-sonnet-4-5-20250929")
+    msg = UserMessage(text=prompt)
+    return await chat.send_message(msg)
+
+
+@api_router.post("/ai/motivation")
+async def ai_motivation(body: AIPrompt):
+    prompt = (
+        "Write a single short, powerful motivational reflection (80-120 words) "
+        "for today. Ground it in stoic wisdom or Rumi-like poetry. "
+        f"Context from the user: {body.context or 'Starting a new week'}."
+    )
+    try:
+        text = await _run_ai(AI_SYSTEM_MSG, prompt)
+        return {"text": text}
+    except Exception as e:
+        logger.error(f"AI motivation error: {e}")
+        return {"text": "The path forward is made by walking it. Take one honest step today.", "error": str(e)}
+
+
+@api_router.post("/ai/reflect")
+async def ai_reflect(body: AIPrompt):
+    prompt = (
+        f"The user shared this reflection: '{body.prompt}'. "
+        "Respond as a wise, compassionate coach. 100-150 words. "
+        "Acknowledge what you hear, offer one gentle insight, and one small "
+        "action they can take within 24 hours."
+    )
+    try:
+        text = await _run_ai(AI_SYSTEM_MSG, prompt)
+        return {"text": text}
+    except Exception as e:
+        logger.error(f"AI reflect error: {e}")
+        return {"text": "Your words matter. Sit with them gently today.", "error": str(e)}
+
+
+@api_router.post("/ai/meal-suggestion")
+async def ai_meal(body: AIPrompt):
+    prompt = (
+        "Suggest ONE specific halal, low-carb high-protein meal idea suited for a "
+        "40-year-old wanting to stay lean and energetic. Prefer Pakistani, Indian, "
+        "or Arab cuisine. No pork or bacon. Include: meal name, 5-8 ingredients, "
+        "brief 3-step method, and estimated macros. 150 words max. "
+        f"User context: {body.prompt}"
+    )
+    try:
+        text = await _run_ai(AI_SYSTEM_MSG, prompt)
+        return {"text": text}
+    except Exception as e:
+        logger.error(f"AI meal error: {e}")
+        return {"text": "Try grilled chicken with cucumber-yogurt salad and mint.", "error": str(e)}
+
+
+@api_router.post("/ai/workout-suggestion")
+async def ai_workout(body: AIPrompt):
+    prompt = (
+        "Design a single 30-40 minute workout for a 40-year-old man wanting "
+        "sustainable strength, mobility, and longevity (not bro-gym). "
+        "Return a name, 5-6 exercises with sets/reps/rest, and a short note on "
+        "form/breath. 180 words max. "
+        f"User focus: {body.prompt}"
+    )
+    try:
+        text = await _run_ai(AI_SYSTEM_MSG, prompt)
+        return {"text": text}
+    except Exception as e:
+        logger.error(f"AI workout error: {e}")
+        return {"text": "Try: squats, push-ups, rows, planks. 3 rounds of 10 reps.", "error": str(e)}
+
+
+# ============ REGISTER ============
 app.include_router(api_router)
 
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
+    allow_origins=os.environ.get("CORS_ORIGINS", "*").split(","),
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
