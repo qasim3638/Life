@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { api } from "../lib/api";
 import { Container, Card, Eyebrow, PageHeader } from "../components/Layout";
 import { Button } from "../components/ui/button";
-import { Sparkles, Flame, HeartPulse, CalendarDays, Quote as QuoteIcon, Trophy, Mail } from "lucide-react";
+import { Sparkles, Flame, HeartPulse, CalendarDays, Quote as QuoteIcon, Trophy, Mail, Shield } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 
@@ -36,7 +36,7 @@ export default function Today() {
   const [logs, setLogs] = useState([]);
   const [journal, setJournal] = useState([]);
   const [goals, setGoals] = useState([]);
-  const [streaks, setStreaks] = useState({ workout_streak: 0, journal_streak: 0 });
+  const [streaks, setStreaks] = useState({ workout_streak: 0, journal_streak: 0, workout_today: false, journal_today: false });
   const [letter, setLetter] = useState("");
   const [letterLoading, setLetterLoading] = useState(false);
 
@@ -100,6 +100,14 @@ export default function Today() {
     weekday: "long", month: "long", day: "numeric",
   });
 
+  const hourNow = new Date().getHours();
+  const showProtector =
+    hourNow >= 18 && (!streaks.workout_today || !streaks.journal_today);
+  const protectorMessages = [
+    !streaks.workout_today && "A five-minute walk still counts. Even one set, even one breath of effort.",
+    !streaks.journal_today && "A single sentence still counts. One thing you noticed today.",
+  ].filter(Boolean);
+
   return (
     <Container>
       <PageHeader
@@ -110,6 +118,42 @@ export default function Today() {
       />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Streak protector — appears after 6 PM if either streak hasn't been tended today */}
+        {showProtector && (
+          <Card className="md:col-span-3 bg-gradient-to-r from-[#C27A62]/15 via-[#F4F1EA] to-transparent border-0" data-testid="streak-protector">
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-full bg-white border border-sand flex items-center justify-center shrink-0">
+                <Shield size={18} strokeWidth={1.5} className="text-[#C27A62]"/>
+              </div>
+              <div className="flex-1">
+                <Eyebrow>Streak protector</Eyebrow>
+                <p className="font-serif text-xl md:text-2xl text-[#2D312E] mt-1 leading-snug">
+                  {protectorMessages[0]}
+                </p>
+                {protectorMessages[1] && (
+                  <p className="text-sm text-[#6B7270] mt-2 leading-relaxed">{protectorMessages[1]}</p>
+                )}
+                <div className="flex flex-wrap gap-2 mt-4">
+                  {!streaks.workout_today && (
+                    <Link to="/fitness">
+                      <Button size="sm" variant="outline" className="rounded-full border-[#59745D] text-[#59745D] hover:bg-[#59745D] hover:text-white" data-testid="protect-workout-btn">
+                        <Flame size={13} strokeWidth={1.5} className="mr-1"/> Log a small movement
+                      </Button>
+                    </Link>
+                  )}
+                  {!streaks.journal_today && (
+                    <Link to="/self-care">
+                      <Button size="sm" variant="outline" className="rounded-full border-[#C27A62] text-[#C27A62] hover:bg-[#C27A62] hover:text-white" data-testid="protect-journal-btn">
+                        <HeartPulse size={13} strokeWidth={1.5} className="mr-1"/> Write one sentence
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+              </div>
+            </div>
+          </Card>
+        )}
+
         {/* Life progress */}
         <Card className="md:col-span-1 flex flex-col items-center text-center" data-testid="card-life-progress">
           <Eyebrow>Your life arc</Eyebrow>

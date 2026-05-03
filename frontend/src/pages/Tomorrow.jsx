@@ -5,7 +5,7 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
-import { Plus, X, Save, Sun, Moon, Pill, Briefcase, Home as HomeIcon, Droplet, Dumbbell, ChefHat } from "lucide-react";
+import { Plus, X, Save, Sun, Moon, Pill, Briefcase, Home as HomeIcon, Droplet, Dumbbell, ChefHat, Clock } from "lucide-react";
 import { toast } from "sonner";
 
 const MEAL_KEYS = [
@@ -29,11 +29,27 @@ const empty = {
   supplements: [],
   house_chores: [],
   work_chores: [],
+  time_blocks: [],
   sleep_target: "23:00",
   wake_target: "06:30",
   hydration_oz: 80,
   notes: "",
 };
+
+function buildHourSlots(wake, sleep) {
+  // Generate 1-hour slots from wake to sleep (handles wrap)
+  const [wh, wm] = (wake || "06:30").split(":").map(Number);
+  const [sh, sm] = (sleep || "23:00").split(":").map(Number);
+  const startMin = wh * 60 + wm;
+  let endMin = sh * 60 + sm;
+  if (endMin <= startMin) endMin += 24 * 60;
+  const slots = [];
+  for (let m = Math.floor(startMin / 60) * 60; m < endMin; m += 60) {
+    const h = Math.floor((m % (24 * 60)) / 60);
+    slots.push(`${String(h).padStart(2, "0")}:00`);
+  }
+  return slots;
+}
 
 export default function Tomorrow() {
   const tomorrow = new Date(Date.now() + 86400000).toISOString().slice(0, 10);
@@ -90,6 +106,22 @@ export default function Tomorrow() {
     setPlan({ ...plan, supplements: arr });
   };
   const removeSupp = (i) => setPlan({ ...plan, supplements: plan.supplements.filter((_, idx) => idx !== i) });
+
+  const slots = buildHourSlots(plan.wake_target, plan.sleep_target);
+  const blockMap = (plan.time_blocks || []).reduce((m, b) => ({ ...m, [b.hour]: b.text }), {});
+  const setBlock = (hour, text) => {
+    const others = (plan.time_blocks || []).filter(b => b.hour !== hour);
+    const blocks = text ? [...others, { hour, text }] : others;
+    blocks.sort((a, b) => a.hour.localeCompare(b.hour));
+    setPlan({ ...plan, time_blocks: blocks });
+  };
+
+  const fmtHour = (hh) => {
+    const [h] = hh.split(":").map(Number);
+    const ap = h < 12 ? "AM" : "PM";
+    const h12 = ((h + 11) % 12) + 1;
+    return `${h12} ${ap}`;
+  };
 
   const dateLabel = new Date(date + "T00:00").toLocaleDateString(undefined, {
     weekday: "long", month: "long", day: "numeric",
@@ -338,6 +370,30 @@ export default function Tomorrow() {
             rows={3}
             data-testid="plan-notes"
           />
+        </Card>
+
+        {/* Time blocks */}
+        <Card className="lg:col-span-3" data-testid="time-blocks-card">
+          <div className="flex items-center gap-2 mb-1">
+            <Clock size={18} strokeWidth={1.5} className="text-[#59745D]"/>
+            <Eyebrow>The shape of the day</Eyebrow>
+          </div>
+          <p className="text-sm text-[#9A9F9D] mb-4">
+            Hour by hour from {fmtHour(plan.wake_target || "06:30")} to {fmtHour(plan.sleep_target || "23:00")}. Leave blank where flexibility lives.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            {slots.map(h => (
+              <div key={h} className="flex items-center gap-3 px-3 py-2 rounded-2xl bg-[#F4F1EA]" data-testid={`time-block-${h}`}>
+                <span className="font-serif text-sm text-[#A3897C] w-14 shrink-0">{fmtHour(h)}</span>
+                <Input
+                  value={blockMap[h] || ""}
+                  onChange={(e) => setBlock(h, e.target.value)}
+                  placeholder="—"
+                  className="bg-white border-0 rounded-full"
+                />
+              </div>
+            ))}
+          </div>
         </Card>
       </div>
     </Container>
