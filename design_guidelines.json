@@ -1,0 +1,137 @@
+{
+  "project_name": "Life Blueprint App",
+  "theme": "light",
+  "archetype": "Organic & Earthy",
+  "global_vibe": "Warm, serene, grounded, calm, motivational. Rejects the clinical 'productivity bro' aesthetic in favor of a thoughtful, elegant life journal.",
+  "colors": {
+    "backgrounds": {
+      "base": "#FDFBF7",
+      "surface": "#FFFFFF",
+      "surface_alt": "#F4F1EA",
+      "overlay": "rgba(45, 49, 46, 0.4)"
+    },
+    "text": {
+      "primary": "#2D312E",
+      "secondary": "#6B7270",
+      "muted": "#9A9F9D",
+      "inverse": "#FDFBF7"
+    },
+    "brand": {
+      "primary": "#59745D",
+      "primary_hover": "#4A604D",
+      "terracotta": "#C27A62",
+      "clay": "#A3897C",
+      "sand": "#E8E2D2"
+    },
+    "status": {
+      "success": "#59745D",
+      "warning": "#C27A62",
+      "error": "#B85C50",
+      "info": "#A3897C"
+    }
+  },
+  "typography": {
+    "fonts": {
+      "heading": "Cormorant Garamond, serif",
+      "body": "Manrope, sans-serif"
+    },
+    "scales": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-none font-medium",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl tracking-tight leading-snug font-medium",
+      "h3": "text-xl sm:text-2xl leading-snug font-medium",
+      "h4": "text-lg sm:text-xl font-medium",
+      "body_lg": "text-lg leading-relaxed",
+      "body": "text-base leading-relaxed",
+      "small": "text-sm leading-normal text-secondary",
+      "overline": "text-xs tracking-[0.2em] uppercase font-bold text-muted"
+    },
+    "instructions": "Never use Inter for headings. Keep headings elegant and tight. Use Manrope for high-legibility body text. Ensure all text meets APCA contrast standards."
+  },
+  "spacing_and_layout": {
+    "philosophy": "Generous Spacing. A cluttered mind needs an uncluttered UI.",
+    "container_padding": "p-6 md:p-8 lg:p-12",
+    "grid_strategy": {
+      "dashboard": "grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8. Use 'Bento' style with varying col-spans. Summary cards: col-span-1. Main charts/features: col-span-2 row-span-2.",
+      "content": "Max-width containers for reading (max-w-3xl) to maintain optimal line length."
+    },
+    "borders_and_radius": {
+      "radius_card": "rounded-3xl",
+      "radius_button": "rounded-full",
+      "border_default": "border border-[#E8E2D2]"
+    }
+  },
+  "ui_components": {
+    "buttons": {
+      "primary": "bg-[#59745D] text-white hover:bg-[#4A604D] rounded-full px-6 py-3 transition-colors",
+      "secondary": "bg-transparent border-2 border-[#59745D] text-[#59745D] hover:bg-[#59745D] hover:text-white rounded-full px-6 py-3 transition-colors",
+      "ghost": "text-[#6B7270] hover:text-[#2D312E] hover:bg-[#F4F1EA] rounded-full px-4 py-2 transition-colors"
+    },
+    "cards": {
+      "style": "bg-white rounded-3xl border border-[#E8E2D2] shadow-sm hover:shadow-md transition-shadow p-6 md:p-8"
+    },
+    "navigation": {
+      "style": "Sticky top-0 z-50 bg-[#FDFBF7]/80 backdrop-blur-xl border-b border-[#E8E2D2] px-6 py-4"
+    },
+    "shadcn_customizations": "Use raw HTML/Tailwind for creative landing pages. For functional app areas (Forms, Tabs, Modals), heavily customize Shadcn UI components. Override default hard borders with soft `rounded-3xl` and replace 'Vercel Black' with Primary (#59745D) or Secondary text colors. Strip aggressive shadows."
+  },
+  "motion_and_interactions": {
+    "hover": "Subtle translations (-translate-y-1) and shadow increases on cards. Color shifts on buttons.",
+    "page_transitions": "Fade in with a slight upward translation (staggered for lists).",
+    "scrolling": "Use smooth scrolling (Lenis recommended if marketing). For dashboards, ensure sticky headers have backdrop blur.",
+    "accessibility": "Respect prefers-reduced-motion. Ensure focus states use `focus:ring-2 focus:ring-[#C27A62] focus:outline-none`."
+  },
+  "icons_and_assets": {
+    "library": "lucide-react",
+    "usage": "Use strokeWidth={1.5} for a more delicate, elegant feel matching the serif typography.",
+    "testing": "All interactive elements MUST include a kebab-case `data-testid` attribute (e.g., `data-testid='log-workout-button'`)."
+  },
+  "media_urls": {
+    "hero_backgrounds": [
+      {
+        "url": "https://static.prod-images.emergentagent.com/jobs/b8c548de-315f-4118-954b-1d59454f577f/images/88d7a1e1cd54c6844dea228aa477f14500b11d196a0c92a02a314032a7889ac8.png",
+        "description": "Abstract warm sand and terracotta watercolor background. Use for onboarding or soft hero sections.",
+        "category": "background"
+      },
+      {
+        "url": "https://static.prod-images.emergentagent.com/jobs/b8c548de-315f-4118-954b-1d59454f577f/images/252006b3fbe027b3d88a8673d327c4616289615eec678e0bbb491a6b1e1f603e.png",
+        "description": "Minimalist 40 year life journey concept, terracotta and moss green colors. Perfect for the 40-year life roadmap cover.",
+        "category": "hero"
+      },
+      {
+        "url": "https://static.prod-images.emergentagent.com/jobs/b8c548de-315f-4118-954b-1d59454f577f/images/089d41eba1d432a1fa65b246e0d0a157f3fd5d31d0135f2274dbded8c0379d43.png",
+        "description": "Serene morning light passing through linen curtains. Great texture overlay or card background for meditation/self-love sections.",
+        "category": "texture"
+      }
+    ],
+    "content_images": [
+      {
+        "url": "https://images.unsplash.com/photo-1764192114257-ae9ecf97eb6f",
+        "description": "Two stones stacked on a beach at sunset. Use for Meditation or Self-care section.",
+        "category": "meditation"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1776926635448-1bd49c2ae248",
+        "description": "Man meditating in tall grass by the ocean. Use for Fitness or Mindfulness header.",
+        "category": "fitness_mindfulness"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1659275798977-6eee03f687a2",
+        "description": "A plate of healthy Middle Eastern style food. Use for the Recipes/Nutrition section.",
+        "category": "recipes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1772795682257-ccb3ac896e4a",
+        "description": "A green plate filled with falafel and vegetables. Use for healthy snacks/meals.",
+        "category": "recipes"
+      }
+    ]
+  },
+  "specific_section_rules": {
+    "dashboard_roadmap": "The 40-year blueprint should feel like a serene scrollable timeline, utilizing the 'Life Journey Hero' image as a header. Use muted terracotta and moss accents to indicate past/present/future milestones.",
+    "fitness_section": "Avoid aggressive neon colors typical of gym apps. Use the 'Organic & Earthy' palette to frame workouts as 'joyful movement' rather than punishment.",
+    "recipes": "Focus on high visual imagery with the Unsplash food photos. Use 'Bento' style cards for quick recipe stats (macros, time).",
+    "motivation_podcasts": "Since YouTube embeds are required, style the iframe containers with rounded-2xl and a subtle border. Use the serif font for pulled quotes overlaid on the 'Morning Light Texture'.",
+    "meditation": "Minimalist screen. Large timer. Perhaps a slow pulsating ring animation matching the breath, colored in soft moss green (#59745D)."
+  },
+  "testing_requirements": "All interactive elements must use data-testid. Examples: data-testid='meditation-start-button', data-testid='recipe-card-falafel'."
+}
