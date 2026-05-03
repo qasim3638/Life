@@ -6,12 +6,25 @@ from fastapi import APIRouter, BackgroundTasks
 from db import db
 from models import (
     Companion, CompanionUpdate, CompanionMemory, CompanionMemoryCreate,
-    CompanionMessage, ChatRequest,
+    CompanionMemoryUpdate, CompanionMessage, ChatRequest,
 )
 from ai_helper import run_ai, PERSONA_PROMPTS
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
+
+AUTO_MEMORY_CAP = 200  # max non-pinned auto memories
+
+
+def _tokens(s: str) -> set:
+    return set(re.findall(r"[a-z0-9]+", (s or "").lower()))
+
+
+def _jaccard(a: str, b: str) -> float:
+    ta, tb = _tokens(a), _tokens(b)
+    if not ta or not tb:
+        return 0.0
+    return len(ta & tb) / len(ta | tb)
 
 
 async def get_or_create_companion() -> dict:
@@ -55,6 +68,16 @@ async def delete_memory(memory_id: str):
     return {"ok": True}
 
 
+@router.patch("/companion/memories/{memory_id}")
+async def update_memory(memory_id: str, payload: CompanionMemoryUpdate):
+    update = {k: v for k, v in payload.model_dump().items() if v is not None}
+    if not update:
+        return {"ok": True}
+    await db.companion_memories.update_one({"id": memory_id}, {"$set": update})
+    item = await db.companion_memories.find_one({"id": memory_id}, {"_id": 0})
+    return item or {"ok": True}
+
+
 @router.get("/companion/messages")
 async def list_messages():
     return await db.companion_messages.find({}, {"_id": 0}).sort("created_at", 1).to_list(2000)
@@ -69,13 +92,13 @@ async def clear_messages():
 async def _auto_extract_memories(user_message: str):
     """Background task: extract 0-3 memorable facts from a user message and save them."""
     if len(user_message.strip()) < 80:
-        return  # Skip short messages
+        return
     try:
-        # Avoid duplicate auto-extractions for very similar recent ones
+        # Pull recent auto memories for dedupe
         recent_auto = await db.companion_memories.find(
             {"category": "auto"}, {"_id": 0, "content": 1}
-        ).sort("created_at", -1).to_list(20)
-        recent_set = {(m.get("content") or "").lower().strip() for m in recent_auto}
+        ).sort("created_at", -1).to_list(50)
+        recent_contents = [m.get("content", "") for m in recent_auto]
 
         system = (
             "You extract durable facts to remember about the user from a single message. "
@@ -85,23 +108,35 @@ async def _auto_extract_memories(user_message: str):
             "preferences, beliefs, milestones, hopes)."
         )
         text = await run_ai(system, user_message)
-        # Find first JSON array in response
         match = re.search(r"\[.*\]", text, re.DOTALL)
         if not match:
             return
         items = json.loads(match.group(0))
         if not isinstance(items, list):
             return
+
         for fact in items:
             if not isinstance(fact, str):
                 continue
             fact = fact.strip()
             if not fact or len(fact) > 240:
                 continue
-            if fact.lower() in recent_set:
+            # Jaccard dedupe vs recent auto memories
+            if any(_jaccard(fact, prev) >= 0.7 for prev in recent_contents):
                 continue
             mem = CompanionMemory(content=fact, category="auto")
             await db.companion_memories.insert_one(mem.model_dump())
+            recent_contents.append(fact)
+
+        # TTL prune: if non-pinned auto memories exceed cap, evict oldest
+        total_auto = await db.companion_memories.count_documents({"category": "auto", "pinned": {"$ne": True}})
+        if total_auto > AUTO_MEMORY_CAP:
+            evict_count = total_auto - AUTO_MEMORY_CAP
+            old = await db.companion_memories.find(
+                {"category": "auto", "pinned": {"$ne": True}}, {"_id": 0, "id": 1}
+            ).sort("created_at", 1).to_list(evict_count)
+            for o in old:
+                await db.companion_memories.delete_one({"id": o["id"]})
     except Exception as e:
         logger.warning(f"Auto-extract memory failed: {e}")
 

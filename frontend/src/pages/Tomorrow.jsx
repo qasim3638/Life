@@ -5,7 +5,7 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
-import { Plus, X, Save, Sun, Moon, Pill, Briefcase, Home as HomeIcon, Droplet, Dumbbell, ChefHat, Clock } from "lucide-react";
+import { Plus, X, Save, Sun, Moon, Pill, Briefcase, Home as HomeIcon, Droplet, Dumbbell, ChefHat, Clock, Sunrise, Wand2 } from "lucide-react";
 import { toast } from "sonner";
 
 const MEAL_KEYS = [
@@ -20,6 +20,7 @@ const empty = {
   gym_planned: false,
   gym_workout_id: "",
   gym_workout_name: "",
+  morning_routine: [],
   meals: {
     breakfast: { text: "", recipe_id: "" },
     lunch: { text: "", recipe_id: "" },
@@ -34,6 +35,37 @@ const empty = {
   wake_target: "06:30",
   hydration_oz: 80,
   notes: "",
+};
+
+const TEMPLATES = {
+  Workday: {
+    morning_routine: [
+      { text: "Wake & water", done: false },
+      { text: "5 min stretch", done: false },
+      { text: "Wudu & Fajr", done: false },
+      { text: "Quiet coffee, no phone", done: false },
+    ],
+    work_chores: [
+      { text: "Inbox triage (20 min cap)", done: false },
+      { text: "Deep work block 1", done: false },
+      { text: "Deep work block 2", done: false },
+    ],
+    supplements: [{ name: "Vitamin D", taken: false }, { name: "Omega-3", taken: false }],
+    sleep_target: "23:00", wake_target: "06:30", hydration_oz: 90,
+  },
+  Weekend: {
+    morning_routine: [
+      { text: "Slow wake — no alarm if possible", done: false },
+      { text: "Stretch + 10 min walk outside", done: false },
+      { text: "Long breakfast with family", done: false },
+    ],
+    house_chores: [
+      { text: "Family time block", done: false },
+      { text: "One small home thing", done: false },
+    ],
+    supplements: [{ name: "Vitamin D", taken: false }],
+    sleep_target: "23:30", wake_target: "07:30", hydration_oz: 80,
+  },
 };
 
 function buildHourSlots(wake, sleep) {
@@ -143,6 +175,18 @@ export default function Tomorrow() {
           className="max-w-xs rounded-full"
           data-testid="plan-date-input"
         />
+        {Object.keys(TEMPLATES).map(t => (
+          <Button
+            key={t}
+            variant="outline"
+            size="sm"
+            onClick={() => setPlan(p => ({ ...p, ...TEMPLATES[t] }))}
+            className="rounded-full border-[#A3897C] text-[#A3897C] hover:bg-[#A3897C] hover:text-white"
+            data-testid={`template-${t.toLowerCase()}`}
+          >
+            <Wand2 size={13} className="mr-1" strokeWidth={1.5}/> {t}
+          </Button>
+        ))}
         <Button
           onClick={save}
           disabled={saving}
@@ -174,6 +218,25 @@ export default function Tomorrow() {
               </div>
             ))}
           </div>
+        </Card>
+
+        {/* Morning routine */}
+        <Card className="lg:col-span-3" data-testid="morning-routine-card">
+          <div className="flex items-center gap-2 mb-3">
+            <Sunrise size={18} strokeWidth={1.5} className="text-[#C27A62]"/>
+            <Eyebrow>Morning routine</Eyebrow>
+          </div>
+          <ChoreList
+            items={plan.morning_routine || []}
+            field="morning_routine"
+            onUpdate={updItem}
+            onRemove={removeItem}
+            placeholder="Wake & water, stretch, Fajr…"
+            testid="morning"
+          />
+          <Button variant="ghost" onClick={() => addItem("morning_routine")} className="rounded-full text-[#59745D] mt-2" data-testid="add-morning-routine">
+            <Plus size={14} className="mr-1"/> Add step
+          </Button>
         </Card>
 
         {/* Gym */}

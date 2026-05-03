@@ -3,21 +3,30 @@ import { api } from "../lib/api";
 import { Container, Card, Eyebrow, PageHeader } from "../components/Layout";
 import { Button } from "../components/ui/button";
 import { Play, Pause, RotateCcw } from "lucide-react";
+import { usePlayer } from "../components/Player";
 
 const PRESETS = [5, 10, 15, 20];
+const CATEGORIES = [
+  { key: "Guided", label: "Guided" },
+  { key: "Wisdom Story", label: "Wisdom Stories" },
+  { key: "Sleep Story", label: "Sleep Stories" },
+  { key: "Meditation Music", label: "Music & Sound" },
+];
 
 export default function Meditate() {
-  const [meditations, setMeditations] = useState([]);
-  const [duration, setDuration] = useState(600); // 10m
+  const [guided, setGuided] = useState([]);
+  const [audio, setAudio] = useState([]);
+  const [tab, setTab] = useState("Guided");
+  const [duration, setDuration] = useState(600);
   const [remaining, setRemaining] = useState(600);
   const [running, setRunning] = useState(false);
-  const [active, setActive] = useState(null);
   const intervalRef = useRef(null);
+  const player = usePlayer();
 
   const playChime = () => {
     try {
       const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const tones = [523.25, 659.25, 783.99]; // C-E-G chord (peaceful)
+      const tones = [523.25, 659.25, 783.99];
       tones.forEach((freq, i) => {
         const o = ctx.createOscillator();
         const g = ctx.createGain();
@@ -31,13 +40,14 @@ export default function Meditate() {
         o.start(start);
         o.stop(start + 2.6);
       });
-    } catch (e) { /* silent fail */ }
+    } catch (e) { /* silent */ }
   };
 
   useEffect(() => {
     (async () => {
-      const { data } = await api.get("/meditations");
-      setMeditations(data);
+      const [g, a] = await Promise.all([api.get("/meditations"), api.get("/audio")]);
+      setGuided(g.data);
+      setAudio(a.data);
     })();
   }, []);
 
@@ -45,11 +55,7 @@ export default function Meditate() {
     if (!running) return;
     intervalRef.current = setInterval(() => {
       setRemaining((r) => {
-        if (r <= 1) {
-          setRunning(false);
-          playChime();
-          return 0;
-        }
+        if (r <= 1) { setRunning(false); playChime(); return 0; }
         return r - 1;
       });
     }, 1000);
@@ -57,29 +63,31 @@ export default function Meditate() {
   }, [running]);
 
   const setPreset = (min) => {
-    setDuration(min * 60);
-    setRemaining(min * 60);
-    setRunning(false);
+    setDuration(min * 60); setRemaining(min * 60); setRunning(false);
   };
 
   const mm = String(Math.floor(remaining / 60)).padStart(2, "0");
   const ss = String(remaining % 60).padStart(2, "0");
 
+  const items = tab === "Guided"
+    ? guided.map(m => ({ ...m, category: "Guided" }))
+    : audio.filter(a => a.category === tab);
+
   return (
     <Container>
       <PageHeader
         eyebrow="Come back to yourself"
-        title="Breathe. Then begin again."
-        subtitle="A few moments of stillness is not time lost. It is the only time you truly live."
+        title="Breathe. Listen. Begin again."
+        subtitle="A timer for stillness. Stories for wisdom. Sounds for sleep. Music for the in-between."
         image="https://images.unsplash.com/photo-1764192114257-ae9ecf97eb6f"
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
         {/* Timer */}
-        <Card className="flex flex-col items-center py-14 bg-[#F4F1EA] border-0 relative overflow-hidden" data-testid="meditation-timer-card">
+        <Card className="flex flex-col items-center py-12 bg-[#F4F1EA] border-0 relative overflow-hidden" data-testid="meditation-timer-card">
           <div className="relative">
-            <div className="breath-ring absolute inset-0 rounded-full bg-[#59745D]/20 blur-2xl" />
-            <div className="relative w-56 h-56 rounded-full flex items-center justify-center bg-white border border-sand shadow-sm">
+            <div className="breath-ring absolute inset-0 rounded-full bg-[#59745D]/20 blur-2xl"/>
+            <div className="relative w-52 h-52 rounded-full flex items-center justify-center bg-white border border-sand shadow-sm">
               <div className="text-center">
                 <p className="font-serif text-6xl text-[#2D312E] tracking-tight">{mm}:{ss}</p>
                 <p className="text-xs uppercase tracking-[0.3em] text-[#9A9F9D] mt-2">
@@ -88,8 +96,7 @@ export default function Meditate() {
               </div>
             </div>
           </div>
-
-          <div className="flex gap-2 mt-8">
+          <div className="flex gap-2 mt-7">
             {PRESETS.map(m => (
               <button key={m} onClick={() => setPreset(m)}
                 className={`px-4 py-1.5 rounded-full text-sm transition-colors ${
@@ -99,61 +106,59 @@ export default function Meditate() {
               >{m} min</button>
             ))}
           </div>
-
           <div className="flex gap-3 mt-5">
-            <Button
-              onClick={() => setRunning(r => !r)}
-              className="rounded-full bg-[#59745D] hover:bg-[#4A604D] px-8"
-              data-testid="meditation-toggle-btn"
-            >
-              {running ? <><Pause size={15} className="mr-1" /> Pause</> : <><Play size={15} className="mr-1" /> Start</>}
+            <Button onClick={() => setRunning(r => !r)} className="rounded-full bg-[#59745D] hover:bg-[#4A604D] px-8" data-testid="meditation-toggle-btn">
+              {running ? <><Pause size={15} className="mr-1"/> Pause</> : <><Play size={15} className="mr-1"/> Start</>}
             </Button>
-            <Button
-              variant="outline"
-              onClick={() => { setRemaining(duration); setRunning(false); }}
-              className="rounded-full border-[#6B7270] text-[#6B7270]"
-              data-testid="meditation-reset-btn"
-            >
-              <RotateCcw size={15} className="mr-1" /> Reset
+            <Button variant="outline" onClick={() => { setRemaining(duration); setRunning(false); }} className="rounded-full border-[#6B7270] text-[#6B7270]" data-testid="meditation-reset-btn">
+              <RotateCcw size={15} className="mr-1"/> Reset
             </Button>
           </div>
           <p className="text-sm text-[#6B7270] mt-6 max-w-xs text-center leading-relaxed">
-            Inhale four counts. Hold four. Exhale four. Hold four. Repeat.
+            Inhale four counts. Hold four. Exhale four. Hold four.
           </p>
         </Card>
 
-        {/* Library */}
         <div>
-          <Eyebrow>Guided sessions</Eyebrow>
-          <h2 className="font-serif text-3xl text-[#2D312E] mb-5">When you need a voice</h2>
-          {active && (
-            <div className="aspect-video mb-5 rounded-3xl overflow-hidden border border-sand">
-              <iframe
-                src={`https://www.youtube.com/embed/${active}?autoplay=1&rel=0`}
-                title="Guided meditation" allow="autoplay; encrypted-media" allowFullScreen
-                className="w-full h-full"
-              />
-            </div>
-          )}
-          <div className="space-y-3">
-            {meditations.map(m => (
-              <button
-                key={m.id}
-                onClick={() => setActive(m.youtube_id)}
-                className={`w-full text-left bg-white rounded-2xl border border-sand p-4 flex items-center gap-4 hover:-translate-y-0.5 transition-all ${
-                  active === m.youtube_id ? "ring-2 ring-[#59745D]" : ""
+          <Eyebrow>The library</Eyebrow>
+          <h2 className="font-serif text-3xl text-[#2D312E] mb-1">Listen anywhere</h2>
+          <p className="text-sm text-[#6B7270] mb-5 leading-relaxed">
+            Play any track and keep browsing — a small floating player keeps it with you.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {CATEGORIES.map(c => (
+              <button key={c.key} onClick={() => setTab(c.key)}
+                className={`px-4 py-1.5 rounded-full text-xs uppercase tracking-wider transition-colors ${
+                  tab === c.key ? "bg-[#59745D] text-white" : "bg-[#F4F1EA] text-[#6B7270] hover:bg-sand"
                 }`}
-                data-testid={`meditation-${m.id}`}
-              >
-                <img src={`https://i.ytimg.com/vi/${m.youtube_id}/default.jpg`} alt="" className="w-20 h-14 object-cover rounded-xl"/>
-                <div className="flex-1">
-                  <p className="text-[11px] uppercase tracking-widest text-[#C27A62]">{m.category} · {m.duration}</p>
-                  <p className="font-serif text-lg text-[#2D312E] leading-tight">{m.title}</p>
-                </div>
-              </button>
+                data-testid={`audio-tab-${c.key}`}
+              >{c.label}</button>
             ))}
           </div>
         </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {items.map(item => (
+          <Card key={item.id} className="p-0 overflow-hidden cursor-pointer group" onClick={() => player.play({ youtube_id: item.youtube_id, title: item.title, category: item.category })} data-testid={`audio-${item.id}`}>
+            <div className="aspect-video relative">
+              <img src={`https://i.ytimg.com/vi/${item.youtube_id}/hqdefault.jpg`} alt={item.title} className="w-full h-full object-cover"/>
+              <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                <div className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Play size={20} strokeWidth={1.5} className="ml-0.5 text-[#2D312E]"/>
+                </div>
+              </div>
+            </div>
+            <div className="p-4">
+              <p className="text-[10px] uppercase tracking-widest text-[#C27A62]">{item.category} · {item.duration}</p>
+              <h3 className="font-serif text-lg text-[#2D312E] mt-0.5 leading-tight">{item.title}</h3>
+              {item.description && <p className="text-xs text-[#6B7270] mt-1 line-clamp-2">{item.description}</p>}
+            </div>
+          </Card>
+        ))}
+        {items.length === 0 && (
+          <p className="md:col-span-2 lg:col-span-3 text-center text-[#6B7270] py-10">Nothing yet in this section.</p>
+        )}
       </div>
     </Container>
   );

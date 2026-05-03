@@ -185,6 +185,7 @@ class DayPlan(BaseModel):
     gym_planned: bool = False
     gym_workout_id: Optional[str] = ""
     gym_workout_name: Optional[str] = ""
+    morning_routine: List[ChoreItem] = []
     meals: DayPlanMeals = Field(default_factory=DayPlanMeals)
     supplements: List[Supplement] = []
     house_chores: List[ChoreItem] = []
@@ -220,12 +221,20 @@ class CompanionMemory(BaseModel):
     id: str = Field(default_factory=new_id)
     content: str
     category: str = "general"
+    pinned: bool = False
     created_at: str = Field(default_factory=now_iso)
 
 
 class CompanionMemoryCreate(BaseModel):
     content: str
     category: str = "general"
+    pinned: bool = False
+
+
+class CompanionMemoryUpdate(BaseModel):
+    pinned: Optional[bool] = None
+    content: Optional[str] = None
+    category: Optional[str] = None
 
 
 class CompanionMessage(BaseModel):

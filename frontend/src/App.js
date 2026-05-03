@@ -3,11 +3,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "sonner";
 import Sidebar from "./components/Sidebar";
 import MobileNav from "./components/MobileNav";
+import { PlayerProvider } from "./components/Player";
 import Today from "./pages/Today";
 import Tomorrow from "./pages/Tomorrow";
 import Blueprint from "./pages/Blueprint";
 import Fitness from "./pages/Fitness";
 import Recipes from "./pages/Recipes";
+import Family from "./pages/Family";
 import Companion from "./pages/Companion";
 import Motivation from "./pages/Motivation";
 import Meditate from "./pages/Meditate";
@@ -26,6 +28,7 @@ function Shell() {
           <Route path="/blueprint" element={<Blueprint />} />
           <Route path="/fitness" element={<Fitness />} />
           <Route path="/recipes" element={<Recipes />} />
+          <Route path="/family" element={<Family />} />
           <Route path="/companion" element={<Companion />} />
           <Route path="/motivation" element={<Motivation />} />
           <Route path="/meditate" element={<Meditate />} />
@@ -41,8 +44,10 @@ function Shell() {
 export default function App() {
   return (
     <BrowserRouter>
-      <Shell />
-      <Toaster position="top-center" richColors theme="light" />
+      <PlayerProvider>
+        <Shell />
+        <Toaster position="top-center" richColors theme="light" />
+      </PlayerProvider>
     </BrowserRouter>
   );
 }

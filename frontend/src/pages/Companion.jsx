@@ -84,6 +84,11 @@ export default function Companion() {
     setMemories(memories.filter((m) => m.id !== id));
   };
 
+  const togglePin = async (mem) => {
+    const { data } = await api.patch(`/companion/memories/${mem.id}`, { pinned: !mem.pinned });
+    setMemories(memories.map(m => m.id === mem.id ? { ...m, pinned: data.pinned ?? !mem.pinned } : m));
+  };
+
   const rememberMessage = async (msg) => {
     await api.post("/companion/memories", { content: msg.content, category: "story" });
     const mm = await api.get("/companion/memories");
@@ -316,9 +321,15 @@ export default function Companion() {
                 {memories.map(m => (
                   <div key={m.id} className="flex items-start gap-3 bg-white border border-sand rounded-2xl px-4 py-3" data-testid={`memory-${m.id}`}>
                     <div className="flex-1">
-                      <span className="text-[10px] uppercase tracking-widest text-[#C27A62]">{m.category}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] uppercase tracking-widest text-[#C27A62]">{m.category}</span>
+                        {m.pinned && <Pin size={11} strokeWidth={1.5} className="text-[#59745D] fill-[#59745D]"/>}
+                      </div>
                       <p className="text-sm text-[#2D312E] leading-relaxed mt-1">{m.content}</p>
                     </div>
+                    <button onClick={() => togglePin(m)} className={`shrink-0 ${m.pinned ? "text-[#59745D]" : "text-[#9A9F9D] hover:text-[#59745D]"}`} data-testid={`pin-memory-${m.id}`} title={m.pinned ? "Unpin" : "Pin (never auto-evicted)"}>
+                      <Pin size={14} strokeWidth={1.5} className={m.pinned ? "fill-[#59745D]" : ""}/>
+                    </button>
                     <button onClick={() => removeMemory(m.id)} className="text-[#9A9F9D] hover:text-[#B85C50]"><Trash2 size={14} strokeWidth={1.5}/></button>
                   </div>
                 ))}

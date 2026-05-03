@@ -1,0 +1,49 @@
+{
+  "summary": "Iteration 5 backend regression + new feature suite. Created /app/backend/tests/test_iteration5.py with 16 new tests. Combined run: 66/67 passed (51 prior regression + 15/16 new). Two real bugs found in companion auto-memory pipeline: (1) Jaccard 0.7 dedupe is too strict for AI rewordings — confirmed failure with daughter/Aisha example; (2) TTL prune is gated behind successful JSON parse — early-return on regex miss prevents prune from running.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "/api/companion/chat (background _auto_extract_memories)",
+        "issue": "Jaccard dedupe at threshold 0.7 with naive alphanumeric tokenization fails to dedupe semantically equivalent AI rewordings. Example confirmed: 'User has a daughter named Aisha who is seven years old.' vs 'User has a seven-year-old daughter named Aisha.' → Jaccard = 8/12 = 0.667, below 0.7. Result: 3 net new memories from a near-duplicate user message. Recommend lowering threshold to ~0.5, adding lightweight stemming (years/year), or using semantic similarity (sentence embeddings)."
+      },
+      {
+        "endpoint": "/api/companion/chat (background _auto_extract_memories)",
+        "issue": "TTL prune is unreachable when AI response lacks a JSON array. Lines 112-116 of routes/companion.py: `if not match: return` and `if not isinstance(items, list): return` short-circuit BEFORE the prune block at line 132. When user sends junk like 'x'*200, AI may not return '[...]' → function returns early → cap of 200 is never enforced. Move the TTL prune outside the try-after-AI block so it always runs after a chat. Test was flaky (passed in full run, failed in isolated run on identical synthetic seed)."
+      }
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iteration5.py",
+    "/app/backend/tests/backend_test.py",
+    "/app/backend/tests/test_iteration4.py",
+    "/app/test_reports/pytest/iter5_full_results.xml",
+    "/app/test_reports/pytest/iter5_results.xml"
+  ],
+  "action_items": [
+    "Move TTL prune block in routes/companion.py::_auto_extract_memories outside the regex/JSON early-return guards so prune runs unconditionally on every chat (currently reachable only when AI returns valid JSON array).",
+    "Loosen Jaccard dedupe: drop threshold to 0.5-0.6, OR add basic stemming (strip trailing 's'), OR use semantic similarity. Current 0.7 with raw tokens fails on 'seven years old' vs 'seven-year-old' and 'loves' vs 'enjoys'."
+  ],
+  "critical_code_review_comments": [
+    "routes/companion.py: TTL pruning logic placement is buggy — early returns on regex/JSON parse failures bypass the cap enforcement. Prune must be in a finally/separate path.",
+    "routes/companion.py::_jaccard: tokenization splits on non-alphanum so 'seven-year-old' and 'seven years old' tokenize differently ({seven,year,old} vs {seven,years,old}); Jaccard threshold 0.7 is too tight for natural-language rewordings.",
+    "routes/family.py: PUT/DELETE for memories missing (only POST/GET/DELETE present, no update endpoint). If memories are meant to be editable in UI, this is a gap.",
+    "routes/audio.py: query limit 500 is hard-coded; fine for current 16 items but should paginate if seeded data grows.",
+    "family_models.py: Holiday.todos typed as List[dict] — should use a typed Pydantic sub-model (TodoItem) to match the ChoreItem pattern in models.py for consistency and validation."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iteration5.py (new)"
+  ],
+  "success_rate": {"backend": "98.5% (66/67)", "frontend": "skipped per request"},
+  "test_credentials": "no auth required",
+  "seed_data_creation": "Test inserts up to 206 synthetic auto-memory docs directly into companion_memories collection; cleaned up via fixture teardown.",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "All 51 iter1-4 regression tests pass. Iter5 audio/family CRUD/AI helpers/morning_routine/PATCH memory all pass. The two open issues are localized to routes/companion.py::_auto_extract_memories (TTL early-return + Jaccard threshold). Once main agent fixes them, re-run only the failing tests: pytest /app/backend/tests/test_iteration5.py::TestCompanionMemoryTTL /app/backend/tests/test_iteration5.py::TestJaccardDedupe -v",
+  "rca of the issue": "BUG 1 (Jaccard dedupe): _jaccard() uses regex r'[a-z0-9]+' tokenization with no stemming. For msg1='daughter Aisha seven years old' vs msg2='seven-year-old daughter Aisha', token sets are {daughter,aisha,seven,years,old} and {daughter,aisha,seven,year,old}; intersection=4 (years!=year), union=6, Jaccard=0.667 < 0.7 threshold → NOT deduped. Mitigation: lower threshold to 0.5 OR strip trailing 's' OR use difflib.SequenceMatcher.ratio(). BUG 2 (TTL): in routes/companion.py lines 111-116, regex match failure or non-list parse triggers `return`, which bypasses the count_documents + delete_many TTL prune at lines 131-139. Repro: send chat with 'x'*200; AI replies 'I don't see facts.' (no [...]); function returns early; auto-memory count stays above 200. Mitigation: extract TTL prune into try/finally or run it before/independent of AI extract."
+}
