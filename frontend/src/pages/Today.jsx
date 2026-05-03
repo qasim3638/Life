@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { api } from "../lib/api";
 import { Container, Card, Eyebrow, PageHeader } from "../components/Layout";
 import { Button } from "../components/ui/button";
-import { Sparkles, Flame, HeartPulse, CalendarDays, Quote as QuoteIcon } from "lucide-react";
+import { Sparkles, Flame, HeartPulse, CalendarDays, Quote as QuoteIcon, Trophy, Mail } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 
@@ -36,21 +36,26 @@ export default function Today() {
   const [logs, setLogs] = useState([]);
   const [journal, setJournal] = useState([]);
   const [goals, setGoals] = useState([]);
+  const [streaks, setStreaks] = useState({ workout_streak: 0, journal_streak: 0 });
+  const [letter, setLetter] = useState("");
+  const [letterLoading, setLetterLoading] = useState(false);
 
   const load = async () => {
     try {
-      const [q, e, l, j, g] = await Promise.all([
+      const [q, e, l, j, g, s] = await Promise.all([
         api.get("/quotes"),
         api.get("/events"),
         api.get("/workout-logs"),
         api.get("/journal-entries"),
         api.get("/life-goals"),
+        api.get("/streaks"),
       ]);
       setQuote(q.data[Math.floor(Math.random() * q.data.length)]);
       setEvents(e.data);
       setLogs(l.data);
       setJournal(j.data);
       setGoals(g.data);
+      setStreaks(s.data);
     } catch (err) {
       console.error(err);
     }
@@ -69,6 +74,16 @@ export default function Today() {
     } catch {
       toast.error("AI is resting. Try again shortly.");
     } finally { setLoading(false); }
+  };
+
+  const getLetter = async () => {
+    setLetterLoading(true);
+    try {
+      const { data } = await api.post("/ai/weekly-letter", {});
+      setLetter(data.text);
+    } catch {
+      toast.error("AI is resting. Try again shortly.");
+    } finally { setLetterLoading(false); }
   };
 
   const today = new Date().toISOString().slice(0, 10);
@@ -208,6 +223,53 @@ export default function Today() {
             {quote?.text}
           </p>
           <p className="text-xs text-[#9A9F9D] mt-3 uppercase tracking-widest">— {quote?.author}</p>
+        </Card>
+
+        {/* Streaks */}
+        <Card className="md:col-span-2" data-testid="card-streaks">
+          <div className="flex items-center gap-2 mb-3">
+            <Trophy size={18} strokeWidth={1.5} className="text-[#C27A62]" />
+            <Eyebrow>Streaks</Eyebrow>
+          </div>
+          <div className="grid grid-cols-2 gap-6">
+            <div>
+              <p className="font-serif text-5xl text-[#2D312E]">{streaks.workout_streak}</p>
+              <p className="text-sm text-[#6B7270] mt-1">day{streaks.workout_streak === 1 ? "" : "s"} of movement</p>
+              <p className="text-xs text-[#9A9F9D] mt-0.5">{streaks.workout_total_days} total</p>
+            </div>
+            <div>
+              <p className="font-serif text-5xl text-[#2D312E]">{streaks.journal_streak}</p>
+              <p className="text-sm text-[#6B7270] mt-1">day{streaks.journal_streak === 1 ? "" : "s"} of reflection</p>
+              <p className="text-xs text-[#9A9F9D] mt-0.5">{streaks.journal_total_days} total</p>
+            </div>
+          </div>
+        </Card>
+
+        {/* Weekly letter */}
+        <Card className="md:col-span-3 bg-gradient-to-br from-[#F4F1EA] to-white border-0" data-testid="card-weekly-letter">
+          <div className="flex items-center gap-2 mb-2">
+            <Mail size={18} strokeWidth={1.5} className="text-[#A3897C]" />
+            <Eyebrow>Weekly letter</Eyebrow>
+          </div>
+          {letter ? (
+            <p className="font-serif text-lg md:text-xl text-[#2D312E] mt-3 leading-relaxed whitespace-pre-wrap max-w-3xl">
+              {letter}
+            </p>
+          ) : (
+            <p className="text-[#6B7270] mt-2 max-w-2xl leading-relaxed">
+              A tender letter to your future self — written from the past seven days of your movement, moods, and moments.
+            </p>
+          )}
+          <Button
+            onClick={getLetter}
+            disabled={letterLoading}
+            variant="outline"
+            className="mt-5 rounded-full border-[#A3897C] text-[#A3897C] hover:bg-[#A3897C] hover:text-white"
+            data-testid="weekly-letter-btn"
+          >
+            <Mail size={14} className="mr-1" strokeWidth={1.5} />
+            {letterLoading ? "Writing…" : letter ? "Write another" : "Write this week's letter"}
+          </Button>
         </Card>
       </div>
     </Container>

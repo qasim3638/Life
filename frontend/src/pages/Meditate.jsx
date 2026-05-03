@@ -14,6 +14,26 @@ export default function Meditate() {
   const [active, setActive] = useState(null);
   const intervalRef = useRef(null);
 
+  const playChime = () => {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const tones = [523.25, 659.25, 783.99]; // C-E-G chord (peaceful)
+      tones.forEach((freq, i) => {
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = "sine";
+        o.frequency.value = freq;
+        o.connect(g); g.connect(ctx.destination);
+        const start = ctx.currentTime + i * 0.15;
+        g.gain.setValueAtTime(0, start);
+        g.gain.linearRampToValueAtTime(0.25, start + 0.05);
+        g.gain.exponentialRampToValueAtTime(0.001, start + 2.5);
+        o.start(start);
+        o.stop(start + 2.6);
+      });
+    } catch (e) { /* silent fail */ }
+  };
+
   useEffect(() => {
     (async () => {
       const { data } = await api.get("/meditations");
@@ -25,7 +45,11 @@ export default function Meditate() {
     if (!running) return;
     intervalRef.current = setInterval(() => {
       setRemaining((r) => {
-        if (r <= 1) { setRunning(false); return 0; }
+        if (r <= 1) {
+          setRunning(false);
+          playChime();
+          return 0;
+        }
         return r - 1;
       });
     }, 1000);

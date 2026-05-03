@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import jsPDF from "jspdf";
 import { api } from "../lib/api";
 import { Container, Card, Eyebrow, PageHeader } from "../components/Layout";
 import { Button } from "../components/ui/button";
@@ -6,7 +7,7 @@ import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../components/ui/dialog";
-import { Plus, Trash2, CheckCircle2 } from "lucide-react";
+import { Plus, Trash2, CheckCircle2, Download } from "lucide-react";
 import { toast } from "sonner";
 
 const CATEGORIES = ["Health", "Career", "Family", "Spiritual", "Financial", "Adventure", "Learning", "Legacy"];
@@ -57,6 +58,67 @@ export default function Blueprint() {
     load();
   };
 
+  const exportPDF = () => {
+    const doc = new jsPDF({ unit: "pt", format: "a4" });
+    const margin = 48;
+    const pageW = doc.internal.pageSize.getWidth();
+    let y = margin;
+
+    doc.setFont("times", "normal");
+    doc.setFontSize(10);
+    doc.setTextColor(154, 159, 157);
+    doc.text("LIFE BLUEPRINT", margin, y);
+    y += 30;
+
+    doc.setFontSize(28);
+    doc.setTextColor(45, 49, 46);
+    doc.text("Forty years. One honest arc.", margin, y);
+    y += 24;
+
+    doc.setFontSize(11);
+    doc.setTextColor(107, 114, 112);
+    doc.text(`Exported ${new Date().toLocaleDateString()}`, margin, y);
+    y += 34;
+
+    if (goals.length === 0) {
+      doc.setFontSize(12);
+      doc.setTextColor(107, 114, 112);
+      doc.text("No goals planted yet.", margin, y);
+    }
+
+    // Group by age
+    const byAge = [...goals].sort((a, b) => a.age - b.age);
+    byAge.forEach((g) => {
+      if (y > 760) { doc.addPage(); y = margin; }
+      doc.setFontSize(10);
+      doc.setTextColor(194, 122, 98);
+      doc.text(`AGE ${g.age}  ·  ${g.year}  ·  ${g.category.toUpperCase()}`, margin, y);
+      y += 16;
+      doc.setFontSize(16);
+      doc.setTextColor(45, 49, 46);
+      const title = doc.splitTextToSize(g.title, pageW - margin * 2);
+      doc.text(title, margin, y);
+      y += 20 * title.length;
+      if (g.description) {
+        doc.setFontSize(11);
+        doc.setTextColor(107, 114, 112);
+        const desc = doc.splitTextToSize(g.description, pageW - margin * 2);
+        doc.text(desc, margin, y);
+        y += 14 * desc.length;
+      }
+      doc.setFontSize(9);
+      doc.setTextColor(89, 116, 93);
+      doc.text(`status: ${g.status}`, margin, y);
+      y += 24;
+      doc.setDrawColor(232, 226, 210);
+      doc.line(margin, y, pageW - margin, y);
+      y += 16;
+    });
+
+    doc.save(`life-blueprint-${new Date().toISOString().slice(0, 10)}.pdf`);
+    toast.success("Blueprint exported");
+  };
+
   // Group goals by 5-year decades
   const decades = [];
   for (let age = AGE_NOW; age < 80; age += 5) {
@@ -79,12 +141,21 @@ export default function Blueprint() {
 
       <div className="flex items-center justify-between mb-6">
         <p className="text-sm text-[#6B7270]">{goals.length} goals across your timeline</p>
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button className="rounded-full bg-[#59745D] hover:bg-[#4A604D]" data-testid="add-goal-btn">
-              <Plus size={16} strokeWidth={1.5} className="mr-1" /> Plant a goal
-            </Button>
-          </DialogTrigger>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={exportPDF}
+            className="rounded-full border-[#A3897C] text-[#A3897C] hover:bg-[#A3897C] hover:text-white"
+            data-testid="export-pdf-btn"
+          >
+            <Download size={15} className="mr-1" strokeWidth={1.5}/> Export PDF
+          </Button>
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <Button className="rounded-full bg-[#59745D] hover:bg-[#4A604D]" data-testid="add-goal-btn">
+                <Plus size={16} strokeWidth={1.5} className="mr-1" /> Plant a goal
+              </Button>
+            </DialogTrigger>
           <DialogContent className="rounded-3xl">
             <DialogHeader><DialogTitle className="font-serif text-2xl">Plant a life goal</DialogTitle></DialogHeader>
             <div className="space-y-4 mt-2">
@@ -123,6 +194,7 @@ export default function Blueprint() {
             </div>
           </DialogContent>
         </Dialog>
+        </div>
       </div>
 
       <div className="space-y-10">

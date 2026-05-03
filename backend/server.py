@@ -1,5 +1,5 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, APIRouter, HTTPException
-from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -9,7 +9,7 @@ from pathlib import Path
 from pydantic import BaseModel, Field
 from typing import List, Optional
 import uuid
-from datetime import datetime, timezone, date
+from datetime import datetime, timezone, timedelta
 
 from seed_data import (
     RECIPES_SEED,
@@ -26,7 +26,35 @@ mongo_url = os.environ["MONGO_URL"]
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ["DB_NAME"]]
 
-app = FastAPI(title="Life Blueprint API")
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    # Seed on startup (idempotent)
+    try:
+        if await db.recipes.count_documents({"is_custom": False}) == 0:
+            for r in RECIPES_SEED:
+                doc = Recipe(**r, is_custom=False).model_dump()
+                await db.recipes.insert_one(doc)
+        if await db.quotes.count_documents({}) == 0:
+            for q in QUOTES_SEED:
+                await db.quotes.insert_one({"id": new_id(), **q})
+        if await db.podcasts.count_documents({}) == 0:
+            for p in PODCASTS_SEED:
+                await db.podcasts.insert_one({"id": new_id(), **p})
+        if await db.meditations.count_documents({}) == 0:
+            for m in MEDITATIONS_SEED:
+                await db.meditations.insert_one({"id": new_id(), **m})
+        if await db.affirmations.count_documents({}) == 0:
+            for a in AFFIRMATIONS_SEED:
+                await db.affirmations.insert_one({"id": new_id(), "text": a})
+        logger.info("Seed data ready.")
+    except Exception as e:
+        logger.error(f"Seeding error: {e}")
+    yield
+    client.close()
+
+
+app = FastAPI(title="Life Blueprint API", lifespan=lifespan)
 api_router = APIRouter(prefix="/api")
 
 logger = logging.getLogger(__name__)
@@ -169,31 +197,6 @@ class LifeGoalCreate(BaseModel):
 class AIPrompt(BaseModel):
     prompt: str
     context: Optional[str] = ""
-
-
-# ============ SEED ============
-@app.on_event("startup")
-async def seed_data():
-    try:
-        if await db.recipes.count_documents({"is_custom": False}) == 0:
-            for r in RECIPES_SEED:
-                doc = Recipe(**r, is_custom=False).model_dump()
-                await db.recipes.insert_one(doc)
-        if await db.quotes.count_documents({}) == 0:
-            for q in QUOTES_SEED:
-                await db.quotes.insert_one({"id": new_id(), **q})
-        if await db.podcasts.count_documents({}) == 0:
-            for p in PODCASTS_SEED:
-                await db.podcasts.insert_one({"id": new_id(), **p})
-        if await db.meditations.count_documents({}) == 0:
-            for m in MEDITATIONS_SEED:
-                await db.meditations.insert_one({"id": new_id(), **m})
-        if await db.affirmations.count_documents({}) == 0:
-            for a in AFFIRMATIONS_SEED:
-                await db.affirmations.insert_one({"id": new_id(), "text": a})
-        logger.info("Seed data ready.")
-    except Exception as e:
-        logger.error(f"Seeding error: {e}")
 
 
 # ============ ROOT ============
@@ -478,6 +481,85 @@ async def ai_workout(body: AIPrompt):
         return {"text": "Try: squats, push-ups, rows, planks. 3 rounds of 10 reps.", "error": str(e)}
 
 
+# ============ STREAKS ============
+@api_router.get("/streaks")
+async def streaks():
+    today = datetime.now(timezone.utc).date()
+    # workout streak (consecutive days)
+    logs = await db.workout_logs.find({}, {"_id": 0, "date": 1}).to_list(1000)
+    journal = await db.journal_entries.find({}, {"_id": 0, "date": 1}).to_list(1000)
+
+    def streak(dates: set) -> int:
+        d = today
+        n = 0
+        while d.isoformat() in dates:
+            n += 1
+            d = d - timedelta(days=1)
+        return n
+
+    workout_dates = {log["date"] for log in logs}
+    journal_dates = {j["date"] for j in journal}
+
+    return {
+        "workout_streak": streak(workout_dates),
+        "workout_total_days": len(workout_dates),
+        "journal_streak": streak(journal_dates),
+        "journal_total_days": len(journal_dates),
+    }
+
+
+class WeeklyLetterRequest(BaseModel):
+    note: Optional[str] = ""
+
+
+# ============ AI WEEKLY LETTER ============
+@api_router.post("/ai/weekly-letter")
+async def ai_weekly_letter(body: WeeklyLetterRequest = WeeklyLetterRequest()):
+    today = datetime.now(timezone.utc).date()
+    week_ago = (today - timedelta(days=7)).isoformat()
+
+    logs = await db.workout_logs.find(
+        {"date": {"$gte": week_ago}}, {"_id": 0}
+    ).to_list(100)
+    journal = await db.journal_entries.find(
+        {"date": {"$gte": week_ago}}, {"_id": 0}
+    ).to_list(100)
+    events = await db.events.find(
+        {"date": {"$gte": today.isoformat()}}, {"_id": 0}
+    ).sort("date", 1).to_list(10)
+
+    summary = []
+    if logs:
+        summary.append(f"workouts this week: {len(logs)} ({', '.join(w.get('workout_name', '') for w in logs[:5])})")
+    else:
+        summary.append("no workouts logged this week")
+    if journal:
+        moods = [e.get("mood", 3) for e in journal]
+        avg = sum(moods) / len(moods)
+        summary.append(f"journal entries: {len(journal)}, average mood {avg:.1f}/5")
+        latest_reflection = next((j.get("reflection") for j in journal if j.get("reflection")), "")
+        if latest_reflection:
+            summary.append(f"latest reflection: '{latest_reflection[:200]}'")
+    else:
+        summary.append("no journal entries this week")
+    if events:
+        summary.append(f"upcoming: {events[0].get('title')} on {events[0].get('date')}")
+
+    prompt = (
+        "Write a short, tender 'letter to future me' (140–180 words) from the user's present self "
+        "based on the past 7 days. Address the reader warmly. Acknowledge what they did and felt. "
+        "Offer one gentle observation and one small intention for the coming week. "
+        "No bullet lists. Sign off simply. "
+        f"Data from the past week: {' | '.join(summary)}"
+    )
+    try:
+        text = await _run_ai(AI_SYSTEM_MSG, prompt)
+        return {"text": text, "data": {"workouts": len(logs), "journal_entries": len(journal)}}
+    except Exception as e:
+        logger.error(f"AI weekly letter error: {e}")
+        return {"text": "Dear you — be gentle with yourself this week.", "error": str(e)}
+
+
 # ============ REGISTER ============
 app.include_router(api_router)
 
@@ -490,6 +572,4 @@ app.add_middleware(
 )
 
 
-@app.on_event("shutdown")
-async def shutdown_db_client():
-    client.close()
+# ============ END ============

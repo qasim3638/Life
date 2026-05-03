@@ -365,3 +365,74 @@ class TestAI:
         )
         data = self._check(r)
         assert "error" not in data, f"AI workout returned fallback: {data.get('error')}"
+
+
+# ---------- streaks ----------
+class TestStreaks:
+    def test_streaks_shape_and_types(self, s):
+        r = s.get(f"{API}/streaks")
+        assert r.status_code == 200, r.text
+        data = r.json()
+        for key in ["workout_streak", "workout_total_days", "journal_streak", "journal_total_days"]:
+            assert key in data, f"missing key {key}"
+            assert isinstance(data[key], int), f"{key} not int: {type(data[key])}"
+            assert data[key] >= 0
+
+    def test_streaks_increment_with_today_log(self, s):
+        from datetime import datetime, timezone
+        today = datetime.now(timezone.utc).date().isoformat()
+        # seed workout + log for today
+        w = s.post(
+            f"{API}/workouts",
+            json={"name": "TEST_StreakW", "category": "Cardio", "exercises": []},
+        ).json()
+        log = s.post(
+            f"{API}/workout-logs",
+            json={
+                "workout_id": w["id"],
+                "workout_name": w["name"],
+                "date": today,
+                "duration_min": 20,
+                "notes": "streak test",
+            },
+        )
+        assert log.status_code == 200
+        r = s.get(f"{API}/streaks")
+        assert r.status_code == 200
+        data = r.json()
+        assert data["workout_streak"] >= 1, f"expected >=1 workout streak, got {data}"
+        # cleanup workout (log remains for idempotency check but streak still ok)
+        s.delete(f"{API}/workouts/{w['id']}")
+
+
+# ---------- AI weekly letter ----------
+class TestWeeklyLetter:
+    def test_weekly_letter_empty_body(self, s):
+        r = s.post(f"{API}/ai/weekly-letter", json={}, timeout=120)
+        assert r.status_code == 200, r.text
+        data = r.json()
+        assert "text" in data and isinstance(data["text"], str)
+        assert len(data["text"]) > 100, f"letter too short: {len(data['text'])} chars"
+        assert "error" not in data, f"weekly-letter fallback: {data.get('error')}"
+        assert "data" in data
+        assert isinstance(data["data"].get("workouts"), int)
+        assert isinstance(data["data"].get("journal_entries"), int)
+
+    def test_weekly_letter_with_note(self, s):
+        r = s.post(
+            f"{API}/ai/weekly-letter",
+            json={"note": "focus on rest this week"},
+            timeout=120,
+        )
+        assert r.status_code == 200, r.text
+        data = r.json()
+        assert "text" in data and len(data["text"]) > 100
+        assert "error" not in data, f"weekly-letter fallback: {data.get('error')}"
+
+    def test_weekly_letter_no_body(self, s):
+        # No JSON body at all — should still work due to default WeeklyLetterRequest()
+        r = s.post(f"{API}/ai/weekly-letter", timeout=120)
+        # Accept 200 (default) or 422 if FastAPI requires body
+        assert r.status_code in (200, 422), r.text
+        if r.status_code == 200:
+            assert len(r.json().get("text", "")) > 50

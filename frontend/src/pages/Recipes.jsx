@@ -21,6 +21,12 @@ export default function Recipes() {
   const [aiText, setAiText] = useState("");
   const [aiCtx, setAiCtx] = useState("something high-protein for tonight");
   const [aiLoading, setAiLoading] = useState(false);
+  const [createOpen, setCreateOpen] = useState(false);
+  const [newRecipe, setNewRecipe] = useState({
+    title: "", cuisine: "Pakistani", meal_type: "Dinner",
+    prep_time: 30, servings: 2, calories: 400, protein: 35, carbs: 10, fat: 20,
+    ingredients: "", instructions: "", image: "",
+  });
 
   const load = async () => {
     const { data } = await api.get("/recipes");
@@ -41,6 +47,30 @@ export default function Recipes() {
       setAiText(data.text);
     } catch { toast.error("AI is resting"); }
     finally { setAiLoading(false); }
+  };
+
+  const saveRecipe = async () => {
+    if (!newRecipe.title.trim() || !newRecipe.ingredients.trim()) {
+      return toast.error("Title and ingredients are required");
+    }
+    const payload = {
+      ...newRecipe,
+      ingredients: newRecipe.ingredients.split("\n").map(s => s.trim()).filter(Boolean),
+      instructions: newRecipe.instructions.split("\n").map(s => s.trim()).filter(Boolean),
+      image: newRecipe.image || "https://images.unsplash.com/photo-1659275798977-6eee03f687a2",
+      tags: [],
+    };
+    try {
+      await api.post("/recipes", payload);
+      toast.success("Recipe saved");
+      setCreateOpen(false);
+      setNewRecipe({
+        title: "", cuisine: "Pakistani", meal_type: "Dinner",
+        prep_time: 30, servings: 2, calories: 400, protein: 35, carbs: 10, fat: 20,
+        ingredients: "", instructions: "", image: "",
+      });
+      load();
+    } catch { toast.error("Couldn't save"); }
   };
 
   return (
@@ -72,6 +102,13 @@ export default function Recipes() {
           data-testid="ai-meal-btn"
         >
           <Sparkles size={15} strokeWidth={1.5} className="mr-1" /> Ask AI chef
+        </Button>
+        <Button
+          onClick={() => setCreateOpen(true)}
+          className="rounded-full bg-[#59745D] hover:bg-[#4A604D]"
+          data-testid="add-recipe-btn"
+        >
+          <Plus size={15} strokeWidth={1.5} className="mr-1" /> Add recipe
         </Button>
       </div>
 
@@ -150,6 +187,59 @@ export default function Recipes() {
             {aiLoading ? "Simmering…" : "Suggest a meal"}
           </Button>
           {aiText && <div className="bg-[#F4F1EA] rounded-2xl p-5 whitespace-pre-wrap text-sm text-[#2D312E] leading-relaxed">{aiText}</div>}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={createOpen} onOpenChange={setCreateOpen}>
+        <DialogContent className="rounded-3xl max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader><DialogTitle className="font-serif text-2xl">Save a recipe</DialogTitle></DialogHeader>
+          <div className="space-y-3 mt-2">
+            <Input placeholder="Recipe title" value={newRecipe.title}
+              onChange={(e) => setNewRecipe({ ...newRecipe, title: e.target.value })}
+              data-testid="new-recipe-title"/>
+            <Input placeholder="Image URL (optional)" value={newRecipe.image}
+              onChange={(e) => setNewRecipe({ ...newRecipe, image: e.target.value })}
+              data-testid="new-recipe-image"/>
+            <div className="grid grid-cols-2 gap-3">
+              <Select value={newRecipe.cuisine} onValueChange={(v) => setNewRecipe({ ...newRecipe, cuisine: v })}>
+                <SelectTrigger data-testid="new-recipe-cuisine"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {["Pakistani", "Indian", "Arab", "Mediterranean", "Other"].map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                </SelectContent>
+              </Select>
+              <Select value={newRecipe.meal_type} onValueChange={(v) => setNewRecipe({ ...newRecipe, meal_type: v })}>
+                <SelectTrigger data-testid="new-recipe-meal"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {["Breakfast", "Lunch", "Dinner", "Snack"].map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <Input type="number" placeholder="Prep (min)" value={newRecipe.prep_time}
+                onChange={(e) => setNewRecipe({ ...newRecipe, prep_time: parseInt(e.target.value) })} />
+              <Input type="number" placeholder="Servings" value={newRecipe.servings}
+                onChange={(e) => setNewRecipe({ ...newRecipe, servings: parseInt(e.target.value) })} />
+            </div>
+            <div className="grid grid-cols-4 gap-2">
+              <Input type="number" placeholder="kcal" value={newRecipe.calories}
+                onChange={(e) => setNewRecipe({ ...newRecipe, calories: parseInt(e.target.value) })} />
+              <Input type="number" placeholder="P(g)" value={newRecipe.protein}
+                onChange={(e) => setNewRecipe({ ...newRecipe, protein: parseInt(e.target.value) })} />
+              <Input type="number" placeholder="C(g)" value={newRecipe.carbs}
+                onChange={(e) => setNewRecipe({ ...newRecipe, carbs: parseInt(e.target.value) })} />
+              <Input type="number" placeholder="F(g)" value={newRecipe.fat}
+                onChange={(e) => setNewRecipe({ ...newRecipe, fat: parseInt(e.target.value) })} />
+            </div>
+            <Textarea placeholder="Ingredients (one per line)" rows={5}
+              value={newRecipe.ingredients}
+              onChange={(e) => setNewRecipe({ ...newRecipe, ingredients: e.target.value })}
+              data-testid="new-recipe-ingredients"/>
+            <Textarea placeholder="Method steps (one per line)" rows={4}
+              value={newRecipe.instructions}
+              onChange={(e) => setNewRecipe({ ...newRecipe, instructions: e.target.value })}
+              data-testid="new-recipe-instructions"/>
+            <Button onClick={saveRecipe} className="w-full rounded-full bg-[#59745D]" data-testid="save-new-recipe-btn">Save recipe</Button>
+          </div>
         </DialogContent>
       </Dialog>
     </Container>
