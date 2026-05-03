@@ -37,7 +37,7 @@ export default function Recipes() {
   const [newRecipe, setNewRecipe] = useState({
     title: "", cuisine: "Pakistani", meal_type: "Dinner",
     prep_time: 30, servings: 2, calories: 400, protein: 35, carbs: 10, fat: 20,
-    ingredients: "", instructions: "", image: "",
+    ingredients: "", instructions: "", image: "", thumb: "",
   });
 
   const load = async () => {
@@ -79,7 +79,7 @@ export default function Recipes() {
       setNewRecipe({
         title: "", cuisine: "Pakistani", meal_type: "Dinner",
         prep_time: 30, servings: 2, calories: 400, protein: 35, carbs: 10, fat: 20,
-        ingredients: "", instructions: "", image: "",
+        ingredients: "", instructions: "", image: "", thumb: "",
       });
       load();
     } catch { toast.error("Couldn't save"); }
@@ -97,7 +97,7 @@ export default function Recipes() {
       const { data } = await api.post("/upload/image", form, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      setNewRecipe(r => ({ ...r, image: data.url }));
+      setNewRecipe(r => ({ ...r, image: data.url, thumb: data.thumb_url || "" }));
       toast.success("Image uploaded");
     } catch {
       toast.error("Upload failed");
@@ -153,7 +153,7 @@ export default function Recipes() {
             className="p-0 overflow-hidden cursor-pointer hover:-translate-y-1"
             onClick={() => setSelected(r)}
           >
-            <div className="h-44 bg-cover bg-center relative" style={{ backgroundImage: `url(${toAbsolute(r.image)})` }}>
+            <div className="h-44 bg-cover bg-center relative" style={{ backgroundImage: `url(${toAbsolute(r.thumb || r.image)})` }}>
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
               <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-white/90 text-[10px] uppercase tracking-wider text-[#2D312E]">
                 {r.cuisine}
@@ -235,10 +235,10 @@ export default function Recipes() {
             {/* Image: preview + file upload + URL */}
             <div className="space-y-2">
               {newRecipe.image && (
-                <div className="relative h-36 rounded-2xl bg-cover bg-center border border-sand" style={{ backgroundImage: `url(${toAbsolute(newRecipe.image)})` }} data-testid="new-recipe-image-preview">
+                <div className="relative h-36 rounded-2xl bg-cover bg-center border border-sand" style={{ backgroundImage: `url(${toAbsolute(newRecipe.thumb || newRecipe.image)})` }} data-testid="new-recipe-image-preview">
                   <button
                     type="button"
-                    onClick={() => setNewRecipe({ ...newRecipe, image: "" })}
+                    onClick={() => setNewRecipe({ ...newRecipe, image: "", thumb: "" })}
                     className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 hover:bg-white flex items-center justify-center border border-sand"
                     data-testid="clear-recipe-image-btn"
                   >

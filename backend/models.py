@@ -64,6 +64,7 @@ class Recipe(BaseModel):
     instructions: List[str]
     tags: List[str] = []
     image: Optional[str] = ""
+    thumb: Optional[str] = ""
     is_custom: bool = False
     created_at: str = Field(default_factory=now_iso)
 
@@ -82,6 +83,7 @@ class RecipeCreate(BaseModel):
     instructions: List[str]
     tags: List[str] = []
     image: Optional[str] = ""
+    thumb: Optional[str] = ""
 
 
 # ============ JOURNAL ============

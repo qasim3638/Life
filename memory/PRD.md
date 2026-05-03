@@ -40,6 +40,7 @@ and anything that helps build a routine for staying healthy, happy and fit.
 ## Changelog
 - 2026-02: Sunday Rhythm Review frontend (Review.jsx + nav + Today banner). 102/102 backend tests + frontend E2E pass.
 - 2026-02: Recipe image upload endpoint + file-picker/URL UI. Today.jsx refactored into 5 cards (316 lines, was 461). Companion.jsx refactored into 3 extracted components. 100% backend + frontend tests.
+- 2026-02: Upload endpoint now auto-compresses to WebP — full-size (longest edge ≤ 1600px, q85) + 400×300 thumbnail (q75). Recipe model gained `thumb` field; card grid uses thumbnail, detail modal keeps full. 2400×1600 JPEG (60KB) → 3KB WebP + 300-byte thumb (~20× smaller).
 
 ## Prioritized Backlog
 - **P2** A11y: add `aria-describedby` / DialogDescription to all shadcn Dialogs (non-blocking warning surfaced by testing agent)
