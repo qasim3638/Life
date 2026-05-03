@@ -52,6 +52,28 @@ export default function Motivation() {
   const cats = ["All", ...Array.from(new Set(quotes.map(q => q.category)))];
   const filteredQuotes = activeCat === "All" ? quotes : quotes.filter(q => q.category === activeCat);
 
+  // Quotes rotation — show 6 random ones at a time
+  const QUOTE_BATCH_SIZE = 6;
+  const [quoteSeed, setQuoteSeed] = useState(0);
+  const visibleQuotes = React.useMemo(() => {
+    if (filteredQuotes.length === 0) return [];
+    // Fisher-Yates shuffle, then take first N
+    const arr = [...filteredQuotes];
+    // Use seed to derive pseudorandom order for this batch
+    let s = quoteSeed || 1;
+    for (let i = arr.length - 1; i > 0; i--) {
+      s = (s * 9301 + 49297) % 233280;
+      const j = Math.floor((s / 233280) * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr.slice(0, QUOTE_BATCH_SIZE);
+  }, [filteredQuotes, quoteSeed]);
+
+  // Reshuffle when category changes
+  useEffect(() => {
+    setQuoteSeed(Math.floor(Math.random() * 1e9));
+  }, [activeCat]);
+
   return (
     <Container>
       <PageHeader
@@ -137,11 +159,19 @@ export default function Motivation() {
 
       {/* Quotes */}
       <section data-testid="quotes-section">
-        <div className="flex items-baseline justify-between mb-5">
+        <div className="flex items-baseline justify-between mb-5 gap-4 flex-wrap">
           <div>
             <Eyebrow>Read</Eyebrow>
             <h2 className="font-serif text-3xl text-[#2D312E]">Lines worth memorizing</h2>
           </div>
+          <button
+            onClick={() => setQuoteSeed(Math.floor(Math.random() * 1e9))}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#F4F1EA] hover:bg-sand text-[#59745D] text-sm transition-colors group"
+            data-testid="refresh-quotes-btn"
+          >
+            <Shuffle size={14} strokeWidth={1.5} className="transition-transform group-hover:rotate-180"/>
+            Fresh batch
+          </button>
         </div>
         <div className="flex flex-wrap gap-2 mb-6">
           {cats.map(c => (
@@ -156,13 +186,16 @@ export default function Motivation() {
           ))}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {filteredQuotes.map((q, i) => (
-            <Card key={i} data-testid={`quote-${i}`} className="relative">
+          {visibleQuotes.map((q, i) => (
+            <Card key={`${quoteSeed}-${i}`} data-testid={`quote-${i}`} className="relative animate-in fade-in duration-500">
               <QuoteIcon size={20} strokeWidth={1.5} className="text-[#C27A62] mb-3" />
               <p className="font-serif text-2xl leading-snug text-[#2D312E]">"{q.text}"</p>
               <p className="text-xs text-[#9A9F9D] mt-4 uppercase tracking-widest">— {q.author}</p>
             </Card>
           ))}
+          {visibleQuotes.length === 0 && (
+            <p className="md:col-span-2 text-center text-[#6B7270] py-10">No quotes in this category yet.</p>
+          )}
         </div>
       </section>
     </Container>

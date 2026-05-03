@@ -45,6 +45,9 @@ and anything that helps build a routine for staying healthy, happy and fit.
 - 2026-02: AI macro estimation — `POST /api/ai/recipe-macros` uses Claude Sonnet 4.5 to estimate prep time + calories + protein/carbs/fat per serving from the ingredient list. New "Estimate macros" button in the Add Recipe dialog pre-fills all five numeric fields. Backend + frontend tests 100%.
 - 2026-02: YouTube library curation — `POST/DELETE /api/podcasts` and `/api/meditations` accept any YouTube URL form (watch?v=, youtu.be, /embed/, /shorts/, or raw 11-char ID), extract the ID server-side via regex, and store as `is_custom: true`. Motivation + Meditate pages have an "Add your own" dialog. Seeded items are protected from deletion (404 returned). Resilient UI: `<YouTubeThumb>` auto-detects YouTube's 120×90 broken-video placeholder and swaps in a warm fallback card; every card carries a "Watch on YouTube ↗" escape-hatch link. Fixed 5 dead seeded IDs (Jordan Peterson, Goggins, Eckhart Tolle, Rumi, Walking Meditation) in seed file + live DB.
 - 2026-02: Removed "Made with Emergent" badge from `public/index.html`.
+- 2026-02: Shuffle / "Try another" — per-card shuffle button on every Motivation podcast and Meditate audio card cycles that slot to a random other video from the library.
+- 2026-02: Library expansion — 8→17 podcasts, 6→15 meditations, 15→40 quotes. All YouTube IDs HTTP-verified.
+- 2026-02: "Fresh batch" quote refresh button — displays 6 random quotes at a time; rotates to a new random sextet on click (respects active category filter).
 
 ## Prioritized Backlog
 - **P2** A11y: add `aria-describedby` / DialogDescription to all shadcn Dialogs (non-blocking warning surfaced by testing agent)
