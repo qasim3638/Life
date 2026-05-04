@@ -52,6 +52,13 @@ and anything that helps build a routine for staying healthy, happy and fit.
 - 2026-02: Companion → live weather tool — Open-Meteo integration (no API key). `POST /api/companion/location` resolves city name via geocoding (tolerant of country suffixes). When user asks weather-related questions, current + 3-day forecast is injected into the Claude prompt. New "Your city (for live weather)" field in Companion settings. Companion model gained `location_name`, `latitude`, `longitude` fields.
 - 2026-02: Companion reply depth — loosened prompt so Claude answers factual questions with real substance (200-400 word answers on Stoicism, protein sources over 40, etc.) instead of generic hedging. Still respects brevity for chit-chat.
 - 2026-02: Sanctuary page (`/sanctuary`) — new calming space with 3 tabs: **Sounds** (16 curated long-form ambients — rain, ocean, forest, thunderstorm, fire), **Scenery** (8 cinematic 4K nature films — Norway 12h, BBC Earth, Splendors of Nature), **Stills** (24 Unsplash photos — mountain lakes, forests, dunes). Per-card shuffle, Add-your-own via AddYouTubeDialog, YouTube fallback-safe thumbnails, player embeds inline. Backend `/api/sanctuary/{sounds,scenery,stills}` with seed-if-empty on startup.
+- 2026-02: Companion **maximum tools** pass:
+  - **App-awareness**: when the user asks about themselves/their life (keyword heuristic), companion_context.py builds a compact summary of today's + tomorrow's plan, upcoming 14-day events, last-7-day workouts/journal moods/focus sessions, sobriety streaks, and self-profile, and injects it. Results: companion now gives genuinely personal, specific analysis referring to actual logged data.
+  - **Prayer times**: AlAdhan API (free, no key). Triggered on prayer-intent keywords. Uses saved location.
+  - **World clock**: stdlib `zoneinfo` with 40+ city aliases (Karachi, Dubai, Tokyo, etc.), fallback to IANA substring match.
+  - **Unit conversion**: mass/volume/length + temperature (C/F/K). Hand-written, no API.
+  - **New action types**: `log_workout` (name + duration_min + date + intensity), `log_journal` (mood 1-5 + gratitude + entry + date). Validates, persists, frontend chip renders with Dumbbell/HeartPulse icons.
+- 2026-02: Today hero wallpaper — daily-rotating random nature still from Sanctuary stills (seeded by date so it's consistent for the full day). Replaces static background.
 
 ## Prioritized Backlog
 - **P2** A11y: add `aria-describedby` / DialogDescription to all shadcn Dialogs (non-blocking warning surfaced by testing agent)

@@ -11,8 +11,6 @@ import StreakProtectorCard from "../components/today/StreakProtectorCard";
 import LifeArcCard from "../components/today/LifeArcCard";
 import WeeklyLetterCard from "../components/today/WeeklyLetterCard";
 
-const HERO_IMG = "https://static.prod-images.emergentagent.com/jobs/b8c548de-315f-4118-954b-1d59454f577f/images/252006b3fbe027b3d88a8673d327c4616289615eec678e0bbb491a6b1e1f603e.png";
-
 const AGE_NOW = 40;
 const TARGET_AGE = 80;
 
@@ -31,6 +29,18 @@ export default function Today() {
   const [addictions, setAddictions] = useState([]);
   const [focusToday, setFocusToday] = useState({ today_focus_min: 0 });
   const [weekReview, setWeekReview] = useState(null);
+  const [heroImg, setHeroImg] = useState(null);
+
+  // Pick a daily random nature still as the Today header background
+  useEffect(() => {
+    api.get("/sanctuary/stills").then(({ data }) => {
+      if (!data || data.length === 0) return;
+      const today = new Date();
+      const seed = today.getFullYear() * 1000 + (today.getMonth() + 1) * 40 + today.getDate();
+      const pick = data[seed % data.length];
+      setHeroImg(`https://images.unsplash.com/${pick.id}?auto=format&fit=crop&w=1800&q=65`);
+    }).catch(() => {});
+  }, []);
 
   // Echo of yesterday — auto-loads on mount
   useEffect(() => {
@@ -152,7 +162,7 @@ export default function Today() {
         eyebrow={todayStr}
         title="A quiet, grounded beginning."
         subtitle="The next 40 years are built from days like this one."
-        image={HERO_IMG}
+        image={heroImg}
       />
 
       {echo && (

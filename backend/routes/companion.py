@@ -11,6 +11,12 @@ from models import (
 )
 from ai_helper import run_ai, PERSONA_PROMPTS
 from companion_actions import validate_action, execute_action
+from companion_context import wants_user_context, build_user_context
+from companion_tools import (
+    wants_prayer_times, prayer_times, summarise_prayer,
+    wants_world_time, world_time,
+    detect_and_convert,
+)
 from weather import geocode, forecast, summarise, is_weather_question
 
 router = APIRouter()
@@ -216,13 +222,46 @@ async def companion_chat(req: ChatRequest, background: BackgroundTasks):
         if lat is not None and lon is not None:
             data = await forecast(lat, lon, days=3)
             if data:
-                tools_block = "\n\n=== LIVE DATA ===\n" + summarise(loc or "your location", data)
+                tools_block += "\n\n=== LIVE WEATHER ===\n" + summarise(loc or "your location", data)
         else:
-            tools_block = (
+            tools_block += (
                 "\n\n=== LIVE DATA ===\nThe user has no saved location yet. "
                 "Tell them kindly: they can set their city in Companion settings (gear icon) "
                 "and you'll start including live weather in your answers."
             )
+
+    # Prayer times (uses same saved location)
+    if wants_prayer_times(req.message):
+        lat = companion.get("latitude")
+        lon = companion.get("longitude")
+        loc = companion.get("location_name") or "your location"
+        if lat is not None and lon is not None:
+            ptimes = await prayer_times(lat, lon)
+            if ptimes:
+                tools_block += "\n\n=== LIVE PRAYER TIMES ===\n" + summarise_prayer(ptimes, loc)
+        else:
+            tools_block += (
+                "\n\n=== LIVE PRAYER TIMES ===\nUser has no saved location yet — ask them to "
+                "set their city in Companion settings so prayer times are accurate."
+            )
+
+    # World clock
+    tq = wants_world_time(req.message)
+    if tq:
+        wt = world_time(tq)
+        if wt:
+            tools_block += "\n\n=== WORLD CLOCK ===\n" + wt
+
+    # Unit conversion
+    conv = detect_and_convert(req.message)
+    if conv:
+        tools_block += "\n\n=== UNIT CONVERSION ===\n" + conv
+
+    # App-data context: Companion knows what's going on in the user's life
+    if wants_user_context(req.message):
+        user_ctx = await build_user_context()
+        if user_ctx:
+            tools_block += user_ctx
 
     # Action envelope: today + tomorrow dates so Claude can resolve "tomorrow", "Friday", etc.
     today = datetime.now(timezone.utc)
@@ -241,6 +280,8 @@ async def companion_chat(req: ChatRequest, background: BackgroundTasks):
         '  {"type": "add_event", "date": "YYYY-MM-DD", "title": "<title>", "notes": "<optional>"}\n'
         '  {"type": "add_priority", "date": "YYYY-MM-DD", "text": "<≤120 chars>"}\n'
         '  {"type": "add_chore", "kind": "house"|"work"|"morning", "text": "<≤120 chars>", "date": "YYYY-MM-DD"}\n'
+        '  {"type": "log_workout", "name": "<workout name>", "duration_min": <int>, "date": "YYYY-MM-DD", "notes": "<optional>"}\n'
+        '  {"type": "log_journal", "mood": <1-5 int, optional>, "gratitude": "<optional>", "entry": "<the thought>", "date": "YYYY-MM-DD"}\n'
         "Use 24h hours. If user says 'tomorrow', resolve to the date above. "
         "If the user is NOT asking for an action (chatting, venting, asking a question), "
         "respond with plain prose — NOT the JSON shape."
@@ -312,7 +353,8 @@ def _parse_action_envelope(text: str) -> tuple[str, list]:
             continue
         # Whitelist only allowed keys by type; don't trust extras
         cleaned = {k: v for k, v in raw.items() if k in {
-            "type", "date", "hour", "text", "title", "notes", "kind", "event_type", "recurring"
+            "type", "date", "hour", "text", "title", "notes", "kind", "event_type", "recurring",
+            "name", "duration_min", "intensity", "mood", "gratitude", "entry",
         }}
         cleaned["status"] = "pending"
         cleaned["id"] = new_id()

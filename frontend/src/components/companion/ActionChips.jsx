@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { api } from "../../lib/api";
-import { Check, X, CalendarDays, Clock, Star, ListTodo } from "lucide-react";
+import { Check, X, CalendarDays, Clock, Star, ListTodo, Dumbbell, HeartPulse } from "lucide-react";
 import { toast } from "sonner";
 
 const ICON_BY_TYPE = {
@@ -8,6 +8,8 @@ const ICON_BY_TYPE = {
   add_event: CalendarDays,
   add_priority: Star,
   add_chore: ListTodo,
+  log_workout: Dumbbell,
+  log_journal: HeartPulse,
 };
 
 function humanise(a) {
@@ -20,6 +22,10 @@ function humanise(a) {
       return `Priority "${a.text}" for ${a.date}`;
     case "add_chore":
       return `${a.kind} chore "${a.text}"${a.date ? ` on ${a.date}` : ""}`;
+    case "log_workout":
+      return `Log workout: ${a.name} (${a.duration_min} min)${a.date ? ` — ${a.date}` : ""}`;
+    case "log_journal":
+      return `Journal entry${a.mood ? ` (mood ${a.mood}/5)` : ""}: "${(a.entry || a.gratitude || "").slice(0, 60)}…"`;
     default:
       return a.type;
   }

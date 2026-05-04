@@ -1,5 +1,6 @@
 """Companion action executor — applies proposed actions to the app's data."""
 import re
+import uuid
 from datetime import datetime, timezone
 from db import db
 from models import (
@@ -7,7 +8,7 @@ from models import (
     new_id, now_iso,
 )
 
-ALLOWED_ACTIONS = {"add_time_block", "add_event", "add_priority", "add_chore"}
+ALLOWED_ACTIONS = {"add_time_block", "add_event", "add_priority", "add_chore", "log_workout", "log_journal"}
 
 _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 _HOUR_RE = re.compile(r"^([01]\d|2[0-3]):[0-5]\d$")
@@ -39,6 +40,25 @@ def validate_action(a: dict) -> tuple[bool, str]:
             return False, "kind must be house|work|morning"
         if not (a.get("text") or "").strip():
             return False, "missing text"
+    if t == "log_workout":
+        if not (a.get("name") or "").strip():
+            return False, "missing workout name"
+        try:
+            dur = int(a.get("duration_min", 0))
+            if dur <= 0 or dur > 600:
+                return False, "duration_min must be 1..600"
+        except Exception:
+            return False, "duration_min must be an integer"
+    if t == "log_journal":
+        if not (a.get("entry") or a.get("gratitude") or "").strip():
+            return False, "need entry or gratitude text"
+        if a.get("mood") is not None:
+            try:
+                m = int(a["mood"])
+                if m < 1 or m > 5:
+                    return False, "mood must be 1..5"
+            except Exception:
+                return False, "mood must be integer 1..5"
     return True, ""
 
 
