@@ -194,7 +194,7 @@ async def companion_chat(req: ChatRequest, background: BackgroundTasks):
     user_name = companion.get("user_name", "friend")
 
     memories = await db.companion_memories.find({}, {"_id": 0}).sort("created_at", -1).to_list(50)
-    history = await db.companion_messages.find({}, {"_id": 0}).sort("created_at", -1).to_list(20)
+    history = await db.companion_messages.find({}, {"_id": 0}).sort("created_at", -1).to_list(40)
     history.reverse()
 
     persona_msg = PERSONA_PROMPTS.get(persona, PERSONA_PROMPTS["friend"])
@@ -208,10 +208,14 @@ async def companion_chat(req: ChatRequest, background: BackgroundTasks):
     history_block = ""
     if history:
         lines = []
-        for m in history[-12:]:
-            role = "User" if m["role"] == "user" else "You"
+        for m in history[-24:]:
+            role = "User" if m["role"] == "user" else "Najm"
             lines.append(f"{role}: {m['content']}")
-        history_block = "\n\nRecent conversation:\n" + "\n".join(lines)
+        history_block = (
+            "\n\n=== CONVERSATION SO FAR (verbatim transcript, oldest at top, newest at bottom) ===\n"
+            + "\n".join(lines)
+            + "\n=== END TRANSCRIPT ==="
+        )
 
     # Inject real-world weather if the user seems to be asking about it
     tools_block = ""
@@ -296,7 +300,11 @@ async def companion_chat(req: ChatRequest, background: BackgroundTasks):
         "If the user asks a factual question, answer it directly with specifics. Only say you "
         "don't know when you genuinely don't. Length matches the need — one sentence for chit-chat, "
         "a few paragraphs for a real question. Avoid hedging, avoid generic advice. "
-        "Refer back to the user's memories naturally when relevant. Never use emojis."
+        "TREAT the saved memories and the conversation transcript below as authoritative ground truth. "
+        "If the user asks about something they previously said or that's in their memories, find it "
+        "in the transcript or memories and answer based on it — do NOT claim you don't remember. "
+        "Refer back to past messages naturally; don't recap everything, just use what's relevant. "
+        "Never use emojis."
         f"{memory_block}{history_block}{tools_block}{action_instructions}"
     )
 

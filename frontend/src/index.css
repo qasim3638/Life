@@ -119,6 +119,38 @@
 }
 .fade-up { animation: fade-up 0.5s ease-out both; }
 
+/* sanctuary immersive mode */
+@keyframes sanctuary-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.animate-fade-in { animation: sanctuary-fade-in 0.5s ease-out both; }
+
+@keyframes sanctuary-fade-in-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up { animation: sanctuary-fade-in-up 0.7s ease-out 0.1s both; }
+
+@keyframes sanctuary-drift {
+  0%   { transform: scale(1.06) translate(0, 0); }
+  50%  { transform: scale(1.1)  translate(-1.5%, -1%); }
+  100% { transform: scale(1.06) translate(0, 0); }
+}
+.sanctuary-drift { animation: sanctuary-drift 40s ease-in-out infinite; }
+
+.immersive-btn {
+  width: 2.75rem; height: 2.75rem;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: background-color 200ms ease, transform 200ms ease;
+}
+.immersive-btn:hover { background: rgba(255, 255, 255, 0.28); transform: scale(1.05); }
+
 /* scrollbar */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }

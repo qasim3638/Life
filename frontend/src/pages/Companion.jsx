@@ -72,34 +72,46 @@ export default function Companion() {
 
   const addMemory = async () => {
     if (!newMem.content.trim()) return toast.error("Write something to remember");
-    await api.post("/companion/memories", newMem);
-    setNewMem({ content: "", category: "general" });
-    const mm = await api.get("/companion/memories");
-    setMemories(mm.data);
-    toast.success("Saved to memory");
+    try {
+      await api.post("/companion/memories", newMem);
+      setNewMem({ content: "", category: "general" });
+      const mm = await api.get("/companion/memories");
+      setMemories(mm.data);
+      toast.success("Saved to memory");
+    } catch (e) {
+      toast.error(e?.response?.status === 404 ? "Couldn't reach memory store. Pull to refresh and try again." : "Couldn't save. Try again.");
+    }
   };
 
   const removeMemory = async (id) => {
-    await api.delete(`/companion/memories/${id}`);
-    setMemories(memories.filter((m) => m.id !== id));
+    try {
+      await api.delete(`/companion/memories/${id}`);
+      setMemories(memories.filter((m) => m.id !== id));
+    } catch { toast.error("Couldn't remove. Try again."); }
   };
 
   const togglePin = async (mem) => {
-    const { data } = await api.patch(`/companion/memories/${mem.id}`, { pinned: !mem.pinned });
-    setMemories(memories.map(m => m.id === mem.id ? { ...m, pinned: data.pinned ?? !mem.pinned } : m));
+    try {
+      const { data } = await api.patch(`/companion/memories/${mem.id}`, { pinned: !mem.pinned });
+      setMemories(memories.map(m => m.id === mem.id ? { ...m, pinned: data.pinned ?? !mem.pinned } : m));
+    } catch { toast.error("Couldn't update."); }
   };
 
   const rememberMessage = async (msg) => {
-    await api.post("/companion/memories", { content: msg.content, category: "story" });
-    const mm = await api.get("/companion/memories");
-    setMemories(mm.data);
-    toast.success("Saved as memory");
+    try {
+      await api.post("/companion/memories", { content: msg.content, category: "story" });
+      const mm = await api.get("/companion/memories");
+      setMemories(mm.data);
+      toast.success("Saved as memory");
+    } catch { toast.error("Couldn't save."); }
   };
 
   const clearChat = async () => {
     if (!window.confirm("Clear all messages? Memories will stay.")) return;
-    await api.delete("/companion/messages");
-    setMessages([]);
+    try {
+      await api.delete("/companion/messages");
+      setMessages([]);
+    } catch { toast.error("Couldn't clear."); }
   };
 
   if (!companion) return <Container><p className="text-[#6B7270]">Loading…</p></Container>;
@@ -119,7 +131,14 @@ export default function Companion() {
               </div>
               <div>
                 <p className="font-serif text-2xl text-[#2D312E] leading-none">{companion.name}</p>
-                <p className="text-xs uppercase tracking-widest text-[#C27A62] mt-1">{persona.label} mode</p>
+                <p className="text-xs uppercase tracking-widest text-[#C27A62] mt-1" data-testid="persona-label">
+                  {persona.label} mode
+                  {messages.length > 0 && (
+                    <span className="text-[#9A9F9D] normal-case tracking-normal ml-2" title="Your chat history is saved on this device's database. Najm uses recent messages and saved memories to recall what you've discussed.">
+                      · {messages.length} msg{messages.length === 1 ? "" : "s"} kept
+                    </span>
+                  )}
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-2">

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../lib/api";
-import { Container, Card, Eyebrow, PageHeader } from "../components/Layout";
+import { Container, Card, PageHeader } from "../components/Layout";
 import { YouTubeThumb, WatchOnYouTube } from "../components/YouTubeThumb";
 import AddYouTubeDialog from "../components/AddYouTubeDialog";
-import { Play, Trash2, Shuffle, Waves, TreePine, Image as ImageIcon } from "lucide-react";
+import SanctuaryMode from "../components/sanctuary/SanctuaryMode";
+import { Play, Trash2, Shuffle, Waves, TreePine, Image as ImageIcon, Maximize2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
 const HERO_IMG = "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1600&q=70";
@@ -16,17 +17,27 @@ const TABS = [
   { key: "stills", label: "Stills", icon: ImageIcon, endpoint: "/sanctuary/stills" },
 ];
 
-function ContentCard({ item, onPlay, onShuffle, onDelete, shuffleTid }) {
+function ContentCard({ item, onPlay, onImmersive, onShuffle, onDelete, shuffleTid }) {
   return (
     <Card className="p-0 overflow-hidden relative cursor-pointer group" onClick={() => onPlay(item)} data-testid={`sanctuary-item-${item.id}`}>
-      <button
-        onClick={(e) => { e.stopPropagation(); onShuffle(item.id); }}
-        className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/90 hover:bg-white border border-sand flex items-center justify-center shadow-sm transition-transform hover:rotate-180"
-        title="Try another"
-        data-testid={shuffleTid}
-      >
-        <Shuffle size={14} strokeWidth={1.5} className="text-[#2D312E]"/>
-      </button>
+      <div className="absolute top-3 right-3 z-10 flex gap-2">
+        <button
+          onClick={(e) => { e.stopPropagation(); onImmersive(item); }}
+          className="w-9 h-9 rounded-full bg-white/90 hover:bg-white border border-sand flex items-center justify-center shadow-sm"
+          title="Open in Sanctuary mode"
+          data-testid={`immersive-${item.id}`}
+        >
+          <Maximize2 size={14} strokeWidth={1.5} className="text-[#2D312E]"/>
+        </button>
+        <button
+          onClick={(e) => { e.stopPropagation(); onShuffle(item.id); }}
+          className="w-9 h-9 rounded-full bg-white/90 hover:bg-white border border-sand flex items-center justify-center shadow-sm transition-transform hover:rotate-180"
+          title="Try another"
+          data-testid={shuffleTid}
+        >
+          <Shuffle size={14} strokeWidth={1.5} className="text-[#2D312E]"/>
+        </button>
+      </div>
       <div className="aspect-video relative">
         <YouTubeThumb youtubeId={item.youtube_id} title={item.title} className="absolute inset-0"/>
         <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors flex items-center justify-center">
@@ -64,6 +75,7 @@ export default function Sanctuary() {
   const [stills, setStills] = useState([]);
   const [playing, setPlaying] = useState(null); // full item
   const [shuffled, setShuffled] = useState({});
+  const [immersive, setImmersive] = useState(null); // { kind, item }
 
   const loadAll = async () => {
     const [s, v, p] = await Promise.all([
@@ -83,6 +95,12 @@ export default function Sanctuary() {
   const items = tab === "sounds" ? sounds : tab === "scenery" ? scenery : [];
 
   const play = (item) => setPlaying(item);
+
+  const openImmersive = (item, kind = tab) => setImmersive({ kind, item });
+  const enterStillsImmersive = () => {
+    if (!stills?.length) return toast.message("No stills loaded yet");
+    setImmersive({ kind: "stills", item: stills[0] });
+  };
 
   const shuffle = (slotId) => {
     const slotOrig = items.find(x => x.id === slotId);
@@ -158,6 +176,14 @@ export default function Sanctuary() {
             />
           </div>
           <button
+            onClick={() => openImmersive(playing)}
+            className="absolute top-3 right-14 px-3 h-9 rounded-full bg-white/90 hover:bg-white text-[#2D312E] text-xs font-medium flex items-center gap-1.5"
+            title="Open in Sanctuary mode"
+            data-testid="enter-immersive-from-player"
+          >
+            <Sparkles size={12} strokeWidth={1.5}/> Sanctuary mode
+          </button>
+          <button
             onClick={() => setPlaying(null)}
             className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 hover:bg-white text-[#2D312E] text-sm flex items-center justify-center"
             aria-label="Close player"
@@ -178,6 +204,7 @@ export default function Sanctuary() {
                 key={slot.id}
                 item={{ ...item, id: slot.id }}
                 onPlay={play}
+                onImmersive={openImmersive}
                 onShuffle={shuffle}
                 onDelete={del}
                 shuffleTid={`shuffle-${slot.id}`}
@@ -191,37 +218,61 @@ export default function Sanctuary() {
       )}
 
       {tab === "stills" && (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3" data-testid="stills-grid">
-          {stills.map((s, i) => {
-            const url = `https://images.unsplash.com/${s.id}?auto=format&fit=crop&w=800&q=70`;
-            return (
-              <a
-                key={i}
-                href={`https://images.unsplash.com/${s.id}?auto=format&fit=crop&w=2400&q=80`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block aspect-square rounded-2xl overflow-hidden group relative"
-                data-testid={`still-${i}`}
-              >
-                <img
-                  src={url}
-                  alt={s.title}
-                  loading="lazy"
-                  decoding="async"
-                  width="800"
-                  height="800"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                  <p className="font-serif text-white text-sm leading-tight">{s.title}</p>
-                </div>
-              </a>
-            );
-          })}
-          {stills.length === 0 && (
-            <p className="col-span-full text-center text-[#6B7270] py-10">Loading…</p>
-          )}
-        </div>
+        <>
+          <div className="mb-5 flex items-center justify-between gap-4 flex-wrap">
+            <p className="text-sm text-[#6B7270] max-w-xl">
+              Tap any still to drop into a calm, full-screen view. Use ← → to drift through the gallery.
+            </p>
+            <button
+              onClick={enterStillsImmersive}
+              className="inline-flex items-center gap-2 px-5 h-10 rounded-full bg-[#59745D] hover:bg-[#4a6350] text-white text-sm transition-colors"
+              data-testid="stills-enter-immersive"
+            >
+              <Sparkles size={14} strokeWidth={1.5}/> Enter Sanctuary
+            </button>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3" data-testid="stills-grid">
+            {stills.map((s, i) => {
+              const url = `https://images.unsplash.com/${s.id}?auto=format&fit=crop&w=800&q=70`;
+              return (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => setImmersive({ kind: "stills", item: s })}
+                  className="block aspect-square rounded-2xl overflow-hidden group relative text-left"
+                  data-testid={`still-${i}`}
+                >
+                  <img
+                    src={url}
+                    alt={s.title}
+                    loading="lazy"
+                    decoding="async"
+                    width="800"
+                    height="800"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                    <p className="font-serif text-white text-sm leading-tight">{s.title}</p>
+                  </div>
+                </button>
+              );
+            })}
+            {stills.length === 0 && (
+              <p className="col-span-full text-center text-[#6B7270] py-10">Loading…</p>
+            )}
+          </div>
+        </>
+      )}
+
+      {immersive && (
+        <SanctuaryMode
+          kind={immersive.kind}
+          item={immersive.item}
+          items={immersive.kind === "sounds" ? sounds : immersive.kind === "scenery" ? scenery : null}
+          stills={stills}
+          onChange={(next) => setImmersive(im => ({ ...im, item: next }))}
+          onClose={() => setImmersive(null)}
+        />
       )}
     </Container>
   );
