@@ -59,6 +59,7 @@ and anything that helps build a routine for staying healthy, happy and fit.
   - **Unit conversion**: mass/volume/length + temperature (C/F/K). Hand-written, no API.
   - **New action types**: `log_workout` (name + duration_min + date + intensity), `log_journal` (mood 1-5 + gratitude + entry + date). Validates, persists, frontend chip renders with Dumbbell/HeartPulse icons.
 - 2026-02: Today hero wallpaper — daily-rotating random nature still from Sanctuary stills (seeded by date so it's consistent for the full day). Replaces static background.
+- 2026-02: Proactive Companion alerts on Today — rule-based, zero AI latency. 7 alert types: workout-gap (4+ days), journal-gap (3+ days), prayer-coming (≤30 min), rain-today (≥60% chance), event-tomorrow, Sunday-reflection, plan-drift (no priorities by afternoon). Up to 4 shown, sorted by urgency; dismissible (per-day via localStorage). Colour-toned by theme (practical/nudge/soft/spiritual). Backend `GET /api/companion/alerts`.
 
 ## Prioritized Backlog
 - **P2** A11y: add `aria-describedby` / DialogDescription to all shadcn Dialogs (non-blocking warning surfaced by testing agent)
