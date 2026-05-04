@@ -3,11 +3,12 @@ import { api } from "../lib/api";
 import { Container } from "../components/Layout";
 import { Button } from "../components/ui/button";
 import { Textarea } from "../components/ui/textarea";
-import { Send, Sparkles, Brain, Trash2, Settings, Star } from "lucide-react";
+import { Send, Sparkles, Brain, Trash2, Settings, Star, Search } from "lucide-react";
 import { toast } from "sonner";
 import CompanionSidePanel, { PERSONAS } from "../components/companion/CompanionSidePanel";
 import CompanionSettings from "../components/companion/CompanionSettings";
 import MemoriesDialog from "../components/companion/MemoriesDialog";
+import MemoryLaneDialog from "../components/companion/MemoryLaneDialog";
 import ActionChips from "../components/companion/ActionChips";
 
 export default function Companion() {
@@ -18,6 +19,7 @@ export default function Companion() {
   const [sending, setSending] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [memoryOpen, setMemoryOpen] = useState(false);
+  const [memoryLaneOpen, setMemoryLaneOpen] = useState(false);
   const [newMem, setNewMem] = useState({ content: "", category: "general" });
   const scrollRef = useRef(null);
 
@@ -134,7 +136,7 @@ export default function Companion() {
                 <p className="text-xs uppercase tracking-widest text-[#C27A62] mt-1" data-testid="persona-label">
                   {persona.label} mode
                   {messages.length > 0 && (
-                    <span className="text-[#9A9F9D] normal-case tracking-normal ml-2" title="Your chat history is saved on this device's database. Najm uses recent messages and saved memories to recall what you've discussed.">
+                    <span className="text-[#9A9F9D] normal-case tracking-normal ml-2" title={`Your chat history is saved on this device's database. ${companion.name} uses recent messages and saved memories to recall what you've discussed.`}>
                       · {messages.length} msg{messages.length === 1 ? "" : "s"} kept
                     </span>
                   )}
@@ -142,6 +144,9 @@ export default function Companion() {
               </div>
             </div>
             <div className="flex items-center gap-2">
+              <Button size="sm" variant="ghost" onClick={() => setMemoryLaneOpen(true)} className="rounded-full text-[#6B7270]" data-testid="open-memory-lane-btn" title="Search past chats">
+                <Search size={15} strokeWidth={1.5} className="mr-1"/> <span className="hidden sm:inline">Memory Lane</span>
+              </Button>
               <Button size="sm" variant="ghost" onClick={() => setMemoryOpen(true)} className="rounded-full text-[#6B7270]" data-testid="open-memories-btn">
                 <Brain size={15} strokeWidth={1.5} className="mr-1"/> Memories ({memories.length})
               </Button>
@@ -257,6 +262,12 @@ export default function Companion() {
         onAdd={addMemory}
         onRemove={removeMemory}
         onTogglePin={togglePin}
+      />
+
+      <MemoryLaneDialog
+        open={memoryLaneOpen}
+        onOpenChange={setMemoryLaneOpen}
+        companionName={companion.name}
       />
     </Container>
   );

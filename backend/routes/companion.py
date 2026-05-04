@@ -123,6 +123,32 @@ async def list_messages():
     return await db.companion_messages.find({}, {"_id": 0}).sort("created_at", 1).to_list(2000)
 
 
+@router.get("/companion/messages/search")
+async def search_messages(q: str = "", limit: int = 60):
+    """Memory Lane: case-insensitive substring search over chat transcripts.
+    Returns matched messages with one neighbour before and after for context."""
+    q = (q or "").strip()
+    if not q:
+        return []
+    # Mongo regex (escape special chars)
+    pattern = re.escape(q)
+    all_msgs = await db.companion_messages.find({}, {"_id": 0}).sort("created_at", 1).to_list(5000)
+    results = []
+    rgx = re.compile(pattern, re.IGNORECASE)
+    for i, m in enumerate(all_msgs):
+        if rgx.search(m.get("content", "") or ""):
+            ctx_before = all_msgs[i - 1] if i > 0 else None
+            ctx_after = all_msgs[i + 1] if i + 1 < len(all_msgs) else None
+            results.append({
+                "match": m,
+                "before": ctx_before,
+                "after": ctx_after,
+            })
+            if len(results) >= limit:
+                break
+    return results
+
+
 @router.delete("/companion/messages")
 async def clear_messages():
     await db.companion_messages.delete_many({})
@@ -209,7 +235,7 @@ async def companion_chat(req: ChatRequest, background: BackgroundTasks):
     if history:
         lines = []
         for m in history[-24:]:
-            role = "User" if m["role"] == "user" else "Najm"
+            role = "User" if m["role"] == "user" else name
             lines.append(f"{role}: {m['content']}")
         history_block = (
             "\n\n=== CONVERSATION SO FAR (verbatim transcript, oldest at top, newest at bottom) ===\n"
