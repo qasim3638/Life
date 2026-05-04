@@ -12,7 +12,7 @@ import { api } from "../lib/api";
  * Generic "Add your own YouTube" dialog used by Motivation (kind=podcast) and Meditate (kind=meditation).
  * onAdded is called after a successful POST so the parent can refresh its list.
  */
-export default function AddYouTubeDialog({ kind, categories, onAdded, trigger }) {
+export default function AddYouTubeDialog({ kind, categories, onAdded, trigger, apiPath }) {
   const [open, setOpen] = useState(false);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
@@ -34,12 +34,12 @@ export default function AddYouTubeDialog({ kind, categories, onAdded, trigger })
     if (!form.url_or_id.trim()) return toast.error("Paste a YouTube URL");
     setSaving(true);
     try {
-      const endpoint = kind === "podcast" ? "/podcasts" : "/meditations";
+      const endpoint = apiPath || (kind === "podcast" ? "/podcasts" : "/meditations");
       const payload = kind === "podcast"
         ? { title: form.title, url_or_id: form.url_or_id, host: form.host, category: form.category, duration: form.duration }
         : { title: form.title, url_or_id: form.url_or_id, category: form.category, duration: form.duration, description: form.description };
       await api.post(endpoint, payload);
-      toast.success(kind === "podcast" ? "Added to your library" : "Saved to your meditations");
+      toast.success(kind === "podcast" ? "Added to your library" : "Saved");
       setOpen(false);
       reset();
       onAdded?.();

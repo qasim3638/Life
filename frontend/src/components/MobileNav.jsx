@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { Home, Dumbbell, UtensilsCrossed, Sparkles, Brain, Heart, CalendarDays, Compass, MessageCircle, Sunrise, Users, User as UserIcon, Timer, Shield as ShieldIcon, BookOpen } from "lucide-react";
+import { Home, Dumbbell, UtensilsCrossed, Sparkles, Brain, Heart, CalendarDays, Compass, MessageCircle, Sunrise, Users, User as UserIcon, Timer, Shield as ShieldIcon, BookOpen, TreePine } from "lucide-react";
 
 const items = [
   { to: "/", label: "Today", icon: Home },
@@ -18,6 +18,7 @@ const items = [
   { to: "/self-care", label: "Heart", icon: Heart },
   { to: "/events", label: "Dates", icon: CalendarDays },
   { to: "/review", label: "Week", icon: BookOpen },
+  { to: "/sanctuary", label: "Calm", icon: TreePine },
 ];
 
 export default function MobileNav() {

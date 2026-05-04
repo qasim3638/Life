@@ -21,7 +21,7 @@ from seed_data import (  # noqa: E402
 from routes import (  # noqa: E402
     workouts, recipes, journal, events, life_goals, content,
     day_plans, streaks, ai_endpoints, companion, family, audio, self_profile,
-    focus, sobriety, echo, sunday_review, uploads,
+    focus, sobriety, echo, sunday_review, uploads, sanctuary,
 )
 from audio_seed import (  # noqa: E402
     WISDOM_STORIES_SEED, SLEEP_STORIES_SEED, MEDITATION_MUSIC_SEED,
@@ -53,6 +53,7 @@ async def lifespan(_app: FastAPI):
         if await db.audio_library.count_documents({}) == 0:
             for item in WISDOM_STORIES_SEED + SLEEP_STORIES_SEED + MEDITATION_MUSIC_SEED:
                 await db.audio_library.insert_one({"id": new_id(), **item})
+        await sanctuary.seed_if_empty()
         logger.info("Seed data ready.")
     except Exception as e:
         logger.error(f"Seeding error: {e}")
@@ -90,6 +91,7 @@ api_router.include_router(sobriety.router)
 api_router.include_router(echo.router)
 api_router.include_router(sunday_review.router)
 api_router.include_router(uploads.router)
+api_router.include_router(sanctuary.router)
 
 app.include_router(api_router)
 

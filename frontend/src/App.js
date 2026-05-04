@@ -19,6 +19,7 @@ import Meditate from "./pages/Meditate";
 import SelfCare from "./pages/SelfCare";
 import Events from "./pages/Events";
 import Review from "./pages/Review";
+import Sanctuary from "./pages/Sanctuary";
 import "./App.css";
 
 function Shell() {
@@ -42,6 +43,7 @@ function Shell() {
           <Route path="/self-care" element={<SelfCare />} />
           <Route path="/events" element={<Events />} />
           <Route path="/review" element={<Review />} />
+          <Route path="/sanctuary" element={<Sanctuary />} />
         </Routes>
       </main>
       <MobileNav />
