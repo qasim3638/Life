@@ -3,13 +3,14 @@ import { api } from "../lib/api";
 import { Container } from "../components/Layout";
 import { Button } from "../components/ui/button";
 import { Textarea } from "../components/ui/textarea";
-import { Send, Sparkles, Brain, Trash2, Settings, Star, Search } from "lucide-react";
+import { Send, Sparkles, Brain, Trash2, Settings, Star, Search, Lock } from "lucide-react";
 import { toast } from "sonner";
 import CompanionSidePanel, { PERSONAS } from "../components/companion/CompanionSidePanel";
 import CompanionSettings from "../components/companion/CompanionSettings";
 import MemoriesDialog from "../components/companion/MemoriesDialog";
 import MemoryLaneDialog from "../components/companion/MemoryLaneDialog";
 import ActionChips from "../components/companion/ActionChips";
+import PinGate, { isUnlockedRecently, clearUnlock } from "../components/companion/PinGate";
 
 export default function Companion() {
   const [companion, setCompanion] = useState(null);
@@ -21,29 +22,45 @@ export default function Companion() {
   const [memoryOpen, setMemoryOpen] = useState(false);
   const [memoryLaneOpen, setMemoryLaneOpen] = useState(false);
   const [newMem, setNewMem] = useState({ content: "", category: "general" });
+  const [pinEnabled, setPinEnabled] = useState(null); // null=unknown, true/false
+  const [unlocked, setUnlocked] = useState(false);
   const scrollRef = useRef(null);
 
-  const load = async () => {
-    const [c, m, mm] = await Promise.all([
+  const loadCompanionMeta = async () => {
+    const [c, status] = await Promise.all([
       api.get("/companion"),
+      api.get("/companion/pin/status"),
+    ]);
+    setCompanion(c.data);
+    const enabled = !!status.data?.enabled;
+    setPinEnabled(enabled);
+    if (!enabled || isUnlockedRecently()) {
+      setUnlocked(true);
+    }
+  };
+
+  const loadProtected = async () => {
+    const [m, mm] = await Promise.all([
       api.get("/companion/messages"),
       api.get("/companion/memories"),
     ]);
-    setCompanion(c.data);
     setMessages(m.data);
     setMemories(mm.data);
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => { loadCompanionMeta(); }, []);
+  useEffect(() => {
+    if (unlocked) loadProtected();
+  }, [unlocked]);
 
   // If user arrived via "send to companion" from another page, ensure latest messages
   useEffect(() => {
     if (sessionStorage.getItem("companion_jump") === "1") {
       sessionStorage.removeItem("companion_jump");
-      const t = setTimeout(load, 1200);
+      const t = setTimeout(() => { if (unlocked) loadProtected(); }, 1200);
       return () => clearTimeout(t);
     }
-  }, []);
+  }, [unlocked]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -116,7 +133,24 @@ export default function Companion() {
     } catch { toast.error("Couldn't clear."); }
   };
 
+  const lockNow = () => {
+    clearUnlock();
+    setUnlocked(false);
+    setMessages([]);
+    setMemories([]);
+    toast.success("Locked");
+  };
+
   if (!companion) return <Container><p className="text-[#6B7270]">Loading…</p></Container>;
+
+  // PIN gate: pinEnabled has to be checked, and unlocked false
+  if (pinEnabled && !unlocked) {
+    return (
+      <Container className="!py-8">
+        <PinGate companionName={companion.name} onUnlock={() => setUnlocked(true)}/>
+      </Container>
+    );
+  }
 
   const persona = PERSONAS.find(p => p.key === companion.persona) || PERSONAS[0];
 
@@ -153,6 +187,11 @@ export default function Companion() {
               <Button size="sm" variant="ghost" onClick={() => setSettingsOpen(true)} className="rounded-full text-[#6B7270]" data-testid="open-settings-btn">
                 <Settings size={15} strokeWidth={1.5}/>
               </Button>
+              {pinEnabled && (
+                <Button size="sm" variant="ghost" onClick={lockNow} className="rounded-full text-[#6B7270] hover:text-[#59745D]" data-testid="lock-now-btn" title="Lock this conversation">
+                  <Lock size={15} strokeWidth={1.5}/>
+                </Button>
+              )}
               {messages.length > 0 && (
                 <Button size="sm" variant="ghost" onClick={clearChat} className="rounded-full text-[#9A9F9D] hover:text-[#B85C50]" data-testid="clear-chat-btn">
                   <Trash2 size={14} strokeWidth={1.5}/>
@@ -250,6 +289,8 @@ export default function Companion() {
         companion={companion}
         setCompanion={setCompanion}
         onUpdate={updateCompanion}
+        pinEnabled={pinEnabled}
+        setPinEnabled={setPinEnabled}
       />
 
       <MemoriesDialog

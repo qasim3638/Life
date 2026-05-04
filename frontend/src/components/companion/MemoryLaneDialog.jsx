@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { api } from "../../lib/api";
-import { Search, Quote, X } from "lucide-react";
+import { Search, Quote, X, Brain, BookOpen, MessageCircle } from "lucide-react";
 
 const fmtDate = (iso) => {
   if (!iso) return "";
@@ -10,8 +10,14 @@ const fmtDate = (iso) => {
     " · " + d.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
 };
 
+const fmtJournalDate = (iso) => {
+  if (!iso) return "";
+  const d = new Date(iso);
+  return d.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+};
+
 function highlight(text, q) {
-  if (!q) return text;
+  if (!q || !text) return text;
   const idx = text.toLowerCase().indexOf(q.toLowerCase());
   if (idx < 0) return text;
   return (
@@ -105,7 +111,7 @@ export default function MemoryLaneDialog({ open, onOpenChange, companionName }) 
             <Empty
               icon={<Quote size={28} strokeWidth={1.2}/>}
               title="Start typing"
-              body={`Search across everything you and ${companionName} have ever talked about. Memories that mattered are still here.`}
+              body={`Search across your chats with ${companionName}, your saved memories, and your journal entries — all in one place.`}
             />
           )}
           {q.trim() && touched && !loading && results.length === 0 && (
@@ -115,23 +121,34 @@ export default function MemoryLaneDialog({ open, onOpenChange, companionName }) 
               body={`No moments mention "${q}" yet. Try a shorter or different word.`}
             />
           )}
-          {results.map((hit, i) => (
-            <ResultCard key={i} hit={hit} q={q} companionName={companionName}/>
-          ))}
+          {results.map((hit, i) => {
+            if (hit.kind === "memory") return <MemoryResult key={`m-${i}`} hit={hit} q={q}/>;
+            if (hit.kind === "journal") return <JournalResult key={`j-${i}`} hit={hit} q={q}/>;
+            return <ChatResult key={`c-${i}`} hit={hit} q={q} companionName={companionName}/>;
+          })}
         </div>
       </DialogContent>
     </Dialog>
   );
 }
 
-function ResultCard({ hit, q, companionName }) {
+function KindTag({ icon, label, color }) {
+  return (
+    <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-widest" style={{ color }}>
+      {icon} {label}
+    </span>
+  );
+}
+
+function ChatResult({ hit, q, companionName }) {
   const { match, before, after } = hit;
   const speaker = (m) => m?.role === "user" ? "You" : companionName;
   return (
     <div className="rounded-2xl border border-sand bg-white p-4 hover:shadow-sm transition-shadow" data-testid="memory-lane-result-card">
-      <p className="text-[10px] uppercase tracking-widest text-[#C27A62]">
-        {fmtDate(match.created_at)}
-      </p>
+      <div className="flex items-center justify-between">
+        <KindTag icon={<MessageCircle size={11} strokeWidth={1.5}/>} label="Conversation" color="#C27A62"/>
+        <p className="text-[10px] uppercase tracking-widest text-[#9A9F9D]">{fmtDate(match.created_at)}</p>
+      </div>
       {before && (
         <p className="text-xs text-[#9A9F9D] italic leading-relaxed mt-2">
           <span className="font-medium not-italic">{speaker(before)}:</span> {(before.content || "").slice(0, 140)}{(before.content || "").length > 140 ? "…" : ""}
@@ -147,6 +164,54 @@ function ResultCard({ hit, q, companionName }) {
         <p className="text-xs text-[#9A9F9D] italic leading-relaxed mt-2">
           <span className="font-medium not-italic">{speaker(after)}:</span> {(after.content || "").slice(0, 140)}{(after.content || "").length > 140 ? "…" : ""}
         </p>
+      )}
+    </div>
+  );
+}
+
+function MemoryResult({ hit, q }) {
+  const { match } = hit;
+  return (
+    <div className="rounded-2xl border border-sand bg-white p-4 hover:shadow-sm transition-shadow" data-testid="memory-lane-result-card">
+      <div className="flex items-center justify-between">
+        <KindTag icon={<Brain size={11} strokeWidth={1.5}/>} label={`Memory · ${match.category || "general"}${match.pinned ? " · pinned" : ""}`} color="#59745D"/>
+        <p className="text-[10px] uppercase tracking-widest text-[#9A9F9D]">{fmtDate(match.created_at)}</p>
+      </div>
+      <div className="mt-2 rounded-xl px-3 py-2 bg-[#EDF1ED]">
+        <p className="text-sm text-[#2D312E] leading-relaxed whitespace-pre-wrap">
+          {highlight(match.content || "", q)}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function JournalResult({ hit, q }) {
+  const { match } = hit;
+  const moodLabels = { 1: "rough", 2: "low", 3: "okay", 4: "good", 5: "great" };
+  const hits = match.gratitude_hits || [];
+  return (
+    <div className="rounded-2xl border border-sand bg-white p-4 hover:shadow-sm transition-shadow" data-testid="memory-lane-result-card">
+      <div className="flex items-center justify-between">
+        <KindTag icon={<BookOpen size={11} strokeWidth={1.5}/>} label={`Journal · mood ${moodLabels[match.mood] || match.mood}`} color="#A3897C"/>
+        <p className="text-[10px] uppercase tracking-widest text-[#9A9F9D]">{fmtJournalDate(match.date)}</p>
+      </div>
+      {match.reflection && (
+        <div className="mt-2 rounded-xl px-3 py-2 bg-[#F4F1EA]">
+          <p className="text-sm text-[#2D312E] leading-relaxed whitespace-pre-wrap">
+            {highlight(match.reflection, q)}
+          </p>
+        </div>
+      )}
+      {hits.length > 0 && (
+        <div className="mt-2 px-3 py-2 rounded-xl bg-[#FDFBF7] border border-sand">
+          <p className="text-[10px] uppercase tracking-widest text-[#9A9F9D] mb-1">Gratitude</p>
+          <ul className="space-y-1">
+            {hits.map((g, i) => (
+              <li key={i} className="text-sm text-[#2D312E]">· {highlight(g, q)}</li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );

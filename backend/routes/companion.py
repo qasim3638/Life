@@ -2,6 +2,7 @@
 import json
 import re
 import logging
+import bcrypt
 from datetime import datetime, timezone, timedelta
 from fastapi import APIRouter, BackgroundTasks, HTTPException
 from db import db
@@ -50,9 +51,14 @@ async def get_or_create_companion() -> dict:
     return item
 
 
+def _public_companion(doc: dict) -> dict:
+    """Strip secrets (pin_hash) from any companion doc before returning to client."""
+    return {k: v for k, v in (doc or {}).items() if k != "pin_hash"}
+
+
 @router.get("/companion")
 async def get_companion():
-    return await get_or_create_companion()
+    return _public_companion(await get_or_create_companion())
 
 
 @router.put("/companion")
@@ -61,7 +67,7 @@ async def update_companion(payload: CompanionUpdate):
     update = {k: v for k, v in payload.model_dump().items() if v is not None}
     if update:
         await db.companion.update_one({"id": "default"}, {"$set": update})
-    return await db.companion.find_one({"id": "default"}, {"_id": 0})
+    return _public_companion(await db.companion.find_one({"id": "default"}, {"_id": 0}))
 
 
 @router.post("/companion/location")
@@ -87,12 +93,68 @@ async def set_location(payload: dict):
             "longitude": hit["longitude"],
         }},
     )
-    return await db.companion.find_one({"id": "default"}, {"_id": 0})
+    return _public_companion(await db.companion.find_one({"id": "default"}, {"_id": 0}))
 
 
 @router.get("/companion/memories")
 async def list_memories():
     return await db.companion_memories.find({}, {"_id": 0}).sort("created_at", -1).to_list(500)
+
+
+# ----------------------- PIN protection -----------------------
+def _validate_pin(pin: str) -> str:
+    pin = (pin or "").strip()
+    if not pin.isdigit() or not (4 <= len(pin) <= 8):
+        raise HTTPException(400, "PIN must be 4-8 digits")
+    return pin
+
+
+@router.get("/companion/pin/status")
+async def pin_status():
+    c = await get_or_create_companion()
+    return {"enabled": bool(c.get("pin_hash"))}
+
+
+@router.post("/companion/pin")
+async def set_pin(payload: dict):
+    """Set a new PIN, or change an existing one (current_pin required if one already set)."""
+    new_pin = _validate_pin((payload or {}).get("pin", ""))
+    c = await get_or_create_companion()
+    existing = c.get("pin_hash")
+    if existing:
+        cur = (payload or {}).get("current_pin", "") or ""
+        if not bcrypt.checkpw(cur.encode("utf-8"), existing.encode("utf-8")):
+            raise HTTPException(401, "Current PIN is incorrect")
+    new_hash = bcrypt.hashpw(new_pin.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+    await db.companion.update_one({"id": "default"}, {"$set": {"pin_hash": new_hash}})
+    return {"ok": True, "enabled": True}
+
+
+@router.post("/companion/pin/verify")
+async def verify_pin(payload: dict):
+    pin = (payload or {}).get("pin", "") or ""
+    c = await get_or_create_companion()
+    h = c.get("pin_hash")
+    if not h:
+        return {"ok": True, "enabled": False}
+    ok = bcrypt.checkpw(pin.encode("utf-8"), h.encode("utf-8"))
+    if not ok:
+        raise HTTPException(401, "Incorrect PIN")
+    return {"ok": True, "enabled": True}
+
+
+@router.delete("/companion/pin")
+async def remove_pin(payload: dict):
+    """Remove PIN — requires current_pin."""
+    c = await get_or_create_companion()
+    h = c.get("pin_hash")
+    if not h:
+        return {"ok": True, "enabled": False}
+    cur = (payload or {}).get("current_pin", "") or ""
+    if not bcrypt.checkpw(cur.encode("utf-8"), h.encode("utf-8")):
+        raise HTTPException(401, "Current PIN is incorrect")
+    await db.companion.update_one({"id": "default"}, {"$unset": {"pin_hash": ""}})
+    return {"ok": True, "enabled": False}
 
 
 @router.post("/companion/memories")
@@ -125,28 +187,65 @@ async def list_messages():
 
 @router.get("/companion/messages/search")
 async def search_messages(q: str = "", limit: int = 60):
-    """Memory Lane: case-insensitive substring search over chat transcripts.
-    Returns matched messages with one neighbour before and after for context."""
+    """Unified Memory Lane search across:
+      - chat transcripts (companion_messages, with neighbours for context)
+      - saved memories (companion_memories)
+      - journal entries (journal_entries — reflection text + gratitude list)
+    Each result is tagged with `kind` so the UI can render it appropriately.
+    """
     q = (q or "").strip()
     if not q:
         return []
-    # Mongo regex (escape special chars)
     pattern = re.escape(q)
-    all_msgs = await db.companion_messages.find({}, {"_id": 0}).sort("created_at", 1).to_list(5000)
-    results = []
     rgx = re.compile(pattern, re.IGNORECASE)
+    results: list[dict] = []
+
+    # 1) Chat messages with neighbour context
+    all_msgs = await db.companion_messages.find({}, {"_id": 0}).sort("created_at", 1).to_list(5000)
     for i, m in enumerate(all_msgs):
         if rgx.search(m.get("content", "") or ""):
-            ctx_before = all_msgs[i - 1] if i > 0 else None
-            ctx_after = all_msgs[i + 1] if i + 1 < len(all_msgs) else None
             results.append({
+                "kind": "chat",
                 "match": m,
-                "before": ctx_before,
-                "after": ctx_after,
+                "before": all_msgs[i - 1] if i > 0 else None,
+                "after": all_msgs[i + 1] if i + 1 < len(all_msgs) else None,
+                "ts": m.get("created_at", ""),
             })
-            if len(results) >= limit:
-                break
-    return results
+
+    # 2) Saved memories
+    mems = await db.companion_memories.find({}, {"_id": 0}).sort("created_at", -1).to_list(2000)
+    for mem in mems:
+        if rgx.search(mem.get("content", "") or ""):
+            results.append({
+                "kind": "memory",
+                "match": mem,
+                "ts": mem.get("created_at", ""),
+            })
+
+    # 3) Journal entries (reflection + gratitude items)
+    journal = await db.journal_entries.find({}, {"_id": 0}).sort("date", -1).to_list(2000)
+    for j in journal:
+        reflection = j.get("reflection", "") or ""
+        gratitudes = j.get("gratitude", []) or []
+        gratitude_hits = [g for g in gratitudes if isinstance(g, str) and rgx.search(g)]
+        if rgx.search(reflection) or gratitude_hits:
+            results.append({
+                "kind": "journal",
+                "match": {
+                    "id": j.get("id"),
+                    "date": j.get("date"),
+                    "mood": j.get("mood", 3),
+                    "reflection": reflection,
+                    "gratitude": gratitudes,
+                    "gratitude_hits": gratitude_hits,
+                    "created_at": j.get("created_at", ""),
+                },
+                "ts": j.get("created_at") or j.get("date") or "",
+            })
+
+    # Sort by timestamp descending so newest first across all kinds
+    results.sort(key=lambda r: r.get("ts") or "", reverse=True)
+    return results[:limit]
 
 
 @router.delete("/companion/messages")
