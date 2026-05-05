@@ -137,5 +137,6 @@ Same code. Same notifications. 30 seconds.
 - **No App Store** review or submission
 - Notifications fire **on your phone's clock**, not via a server — they work offline too
 - When you tap, the app fetches **live brief content** from your Emergent backend — so the spoken text always reflects today's plan, not yesterday's
+- **Your branding is baked in** — moss-green "Lb" monogram icon on your home screen, warm-beige splash screen with the Life Blueprint mark fades in for ~1.5s on launch
 
 Welcome to your real Android app.
