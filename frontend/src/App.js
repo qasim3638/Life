@@ -20,6 +20,7 @@ import SelfCare from "./pages/SelfCare";
 import Events from "./pages/Events";
 import Review from "./pages/Review";
 import Sanctuary from "./pages/Sanctuary";
+import VoiceMicButton from "./components/VoiceMicButton";
 import "./App.css";
 
 function Shell() {
@@ -47,6 +48,7 @@ function Shell() {
         </Routes>
       </main>
       <MobileNav />
+      <VoiceMicButton />
     </div>
   );
 }

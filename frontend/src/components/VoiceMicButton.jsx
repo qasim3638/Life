@@ -1,0 +1,318 @@
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import { Mic, MicOff, Loader2, X, Sparkles, Check } from "lucide-react";
+import { api } from "../lib/api";
+import { toast } from "sonner";
+
+/**
+ * Floating "Just talk to Yaar" mic button — present app-wide.
+ *
+ * UX:
+ *  - Single tap → toggle mode (tap again to stop & send)
+ *  - Long-press (≥350ms) → hold-to-record (release to stop & send)
+ *  - States: idle | recording | transcribing | thinking | done
+ *  - Auto-hides while user is typing in chat input on /companion
+ */
+
+const HOLD_THRESHOLD_MS = 350;
+const HIDE_ON_PATHS = []; // could hide on certain paths; empty = always show
+
+function pickMime() {
+  const candidates = [
+    "audio/webm;codecs=opus",
+    "audio/webm",
+    "audio/mp4",
+    "audio/ogg;codecs=opus",
+  ];
+  for (const c of candidates) {
+    if (typeof MediaRecorder !== "undefined" && MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(c)) {
+      return c;
+    }
+  }
+  return "";
+}
+
+export default function VoiceMicButton() {
+  const [phase, setPhase] = useState("idle"); // idle | recording | transcribing | thinking | done
+  const [transcript, setTranscript] = useState("");
+  const [resultLines, setResultLines] = useState([]);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [hidden, setHidden] = useState(false);
+  const [unsupported, setUnsupported] = useState(false);
+
+  const mediaRecorderRef = useRef(null);
+  const chunksRef = useRef([]);
+  const streamRef = useRef(null);
+  const holdTimerRef = useRef(null);
+  const isHoldModeRef = useRef(false);
+  const recordingRef = useRef(false);
+  const startedAtRef = useRef(0);
+
+  // Hide on certain paths if needed
+  useEffect(() => {
+    const check = () => {
+      const path = window.location.pathname;
+      setHidden(HIDE_ON_PATHS.some(p => path.startsWith(p)));
+    };
+    check();
+    window.addEventListener("popstate", check);
+    return () => window.removeEventListener("popstate", check);
+  }, []);
+
+  // Capability check
+  useEffect(() => {
+    const ok = typeof navigator !== "undefined"
+      && navigator.mediaDevices
+      && navigator.mediaDevices.getUserMedia
+      && typeof MediaRecorder !== "undefined";
+    setUnsupported(!ok);
+  }, []);
+
+  const cleanup = useCallback(() => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(t => t.stop());
+      streamRef.current = null;
+    }
+    mediaRecorderRef.current = null;
+    chunksRef.current = [];
+    recordingRef.current = false;
+  }, []);
+
+  // ---- Recording lifecycle ----
+  const startRecording = useCallback(async () => {
+    if (recordingRef.current || phase !== "idle") return;
+    setErrorMsg("");
+    setTranscript("");
+    setResultLines([]);
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      streamRef.current = stream;
+      const mime = pickMime();
+      const rec = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined);
+      mediaRecorderRef.current = rec;
+      chunksRef.current = [];
+      rec.ondataavailable = (e) => {
+        if (e.data && e.data.size > 0) chunksRef.current.push(e.data);
+      };
+      rec.onstop = () => handleStop();
+      rec.start();
+      recordingRef.current = true;
+      startedAtRef.current = Date.now();
+      setPhase("recording");
+    } catch (e) {
+      setErrorMsg(e?.name === "NotAllowedError"
+        ? "Microphone permission denied. Allow it in browser settings."
+        : "Couldn't access microphone.");
+      cleanup();
+      setPhase("idle");
+    }
+  }, [phase, cleanup]);
+
+  const stopRecording = useCallback(() => {
+    const rec = mediaRecorderRef.current;
+    if (!rec || !recordingRef.current) return;
+    try { rec.stop(); } catch {}
+  }, []);
+
+  const handleStop = useCallback(async () => {
+    const elapsed = Date.now() - startedAtRef.current;
+    const blob = new Blob(chunksRef.current, { type: chunksRef.current[0]?.type || "audio/webm" });
+    cleanup();
+
+    if (elapsed < 400 || blob.size < 800) {
+      setPhase("idle");
+      toast.message("Hold a bit longer — too short to transcribe.");
+      return;
+    }
+
+    setPhase("transcribing");
+    try {
+      const ext = (blob.type.includes("mp4") ? "mp4" : blob.type.includes("ogg") ? "ogg" : "webm");
+      const fd = new FormData();
+      fd.append("audio", blob, `voice.${ext}`);
+      const { data } = await api.post("/voice/transcribe", fd, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      const text = (data?.text || "").trim();
+      if (!text) {
+        setErrorMsg("Didn't catch that. Try again, a bit louder.");
+        setPhase("idle");
+        return;
+      }
+      setTranscript(text);
+      setPhase("thinking");
+
+      // Send transcript through companion chat & auto-apply actions
+      const chat = await api.post("/companion/chat", { message: text });
+      const reply = chat?.data?.reply;
+      const actions = reply?.actions || [];
+      const applied = [];
+      for (const a of actions) {
+        if (a.status !== "pending") continue;
+        try {
+          const r = await api.post(`/companion/messages/${reply.id}/actions/${a.id}/apply`);
+          applied.push(r.data?.action?.result || "Done");
+        } catch {}
+      }
+
+      if (applied.length > 0) {
+        setResultLines(applied);
+        toast.success(applied.length === 1 ? applied[0] : `${applied.length} changes applied`);
+      } else if (reply?.content) {
+        setResultLines([reply.content.slice(0, 240)]);
+      } else {
+        setResultLines(["Heard you, but nothing to do."]);
+      }
+      setPhase("done");
+      // Auto-clear after 6s
+      setTimeout(() => {
+        setPhase("idle"); setTranscript(""); setResultLines([]);
+      }, 6000);
+    } catch (e) {
+      setErrorMsg("Couldn't reach Yaar. Try again.");
+      setPhase("idle");
+    }
+  }, [cleanup]);
+
+  // ---- Pointer interactions ----
+  const onPointerDown = (e) => {
+    if (phase !== "idle") return;
+    e.preventDefault();
+    isHoldModeRef.current = false;
+    holdTimerRef.current = setTimeout(() => {
+      isHoldModeRef.current = true;
+      startRecording();
+    }, HOLD_THRESHOLD_MS);
+  };
+
+  const onPointerUp = (e) => {
+    if (holdTimerRef.current) {
+      clearTimeout(holdTimerRef.current);
+      holdTimerRef.current = null;
+    }
+    if (isHoldModeRef.current) {
+      // hold mode: release to stop
+      e.preventDefault();
+      stopRecording();
+      isHoldModeRef.current = false;
+    } else {
+      // tap: toggle
+      if (phase === "idle") startRecording();
+      else if (phase === "recording") stopRecording();
+    }
+  };
+
+  const cancel = () => {
+    if (recordingRef.current) {
+      try { mediaRecorderRef.current?.stop(); } catch {}
+      cleanup();
+    }
+    setPhase("idle"); setTranscript(""); setResultLines([]); setErrorMsg("");
+  };
+
+  if (hidden) return null;
+
+  return (
+    <>
+      {/* Status / result toast (above the button) */}
+      {(phase !== "idle" || resultLines.length > 0 || errorMsg) && (
+        <div
+          className="fixed bottom-24 right-6 z-[90] max-w-sm pointer-events-auto"
+          data-testid="voice-status"
+        >
+          <div className="rounded-2xl bg-white border border-sand shadow-lg px-4 py-3">
+            {phase === "recording" && (
+              <p className="text-sm text-[#2D312E] flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#B85C50] animate-pulse"/>
+                Listening… <span className="text-[#9A9F9D] text-xs ml-1">(release/tap to send)</span>
+              </p>
+            )}
+            {phase === "transcribing" && (
+              <p className="text-sm text-[#2D312E] flex items-center gap-2">
+                <Loader2 size={14} strokeWidth={1.5} className="animate-spin text-[#A3897C]"/>
+                Transcribing…
+              </p>
+            )}
+            {phase === "thinking" && (
+              <>
+                <p className="text-[10px] uppercase tracking-widest text-[#9A9F9D]">You said</p>
+                <p className="text-sm text-[#2D312E] mt-0.5 italic">"{transcript}"</p>
+                <p className="text-xs text-[#6B7270] mt-2 flex items-center gap-2">
+                  <Sparkles size={12} strokeWidth={1.5} className="text-[#59745D]"/> Yaar is acting on it…
+                </p>
+              </>
+            )}
+            {phase === "done" && (
+              <>
+                {transcript && (
+                  <p className="text-xs text-[#9A9F9D] italic mb-1.5">"{transcript}"</p>
+                )}
+                <div className="space-y-0.5" data-testid="voice-result">
+                  {resultLines.map((l, i) => (
+                    <p key={i} className="text-sm text-[#59745D] flex items-start gap-1.5 leading-snug">
+                      <Check size={14} strokeWidth={2} className="mt-0.5 shrink-0"/>
+                      <span>{l}</span>
+                    </p>
+                  ))}
+                </div>
+              </>
+            )}
+            {errorMsg && phase === "idle" && (
+              <p className="text-sm text-[#B85C50]">{errorMsg}</p>
+            )}
+            {(phase === "recording" || phase === "transcribing" || phase === "thinking") && (
+              <button
+                onClick={cancel}
+                className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-white border border-sand shadow-sm flex items-center justify-center text-[#9A9F9D] hover:text-[#B85C50]"
+                title="Cancel"
+                data-testid="voice-cancel"
+              >
+                <X size={12} strokeWidth={1.5}/>
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* The button itself */}
+      <button
+        type="button"
+        onPointerDown={unsupported ? undefined : onPointerDown}
+        onPointerUp={unsupported ? undefined : onPointerUp}
+        onPointerLeave={() => {
+          if (holdTimerRef.current) { clearTimeout(holdTimerRef.current); holdTimerRef.current = null; }
+        }}
+        onContextMenu={(e) => e.preventDefault()}
+        disabled={unsupported || phase === "transcribing" || phase === "thinking"}
+        className={`fixed bottom-6 right-6 z-[91] select-none transition-all duration-300 ${
+          phase === "recording"
+            ? "scale-110"
+            : "hover:scale-105 active:scale-95"
+        } ${unsupported ? "opacity-50 cursor-not-allowed" : ""}`}
+        title={unsupported ? "Mic not supported on this browser" : "Tap or hold to talk to Yaar"}
+        data-testid="voice-mic-button"
+        aria-label="Talk to Yaar"
+      >
+        {/* Pulsing ring when recording */}
+        {phase === "recording" && (
+          <span className="absolute inset-0 rounded-full bg-[#B85C50]/30 animate-ping"/>
+        )}
+        <span className={`relative flex items-center justify-center w-14 h-14 rounded-full shadow-lg ring-1 ring-black/5 transition-colors ${
+          phase === "recording"
+            ? "bg-[#B85C50] text-white"
+            : phase === "transcribing" || phase === "thinking"
+            ? "bg-[#A3897C] text-white"
+            : phase === "done"
+            ? "bg-[#59745D] text-white"
+            : "bg-gradient-to-br from-[#59745D] to-[#4a6350] text-white"
+        }`}>
+          {phase === "recording" && <Mic size={22} strokeWidth={1.5}/>}
+          {(phase === "transcribing" || phase === "thinking") && (
+            <Loader2 size={22} strokeWidth={1.5} className="animate-spin"/>
+          )}
+          {phase === "done" && <Check size={22} strokeWidth={2}/>}
+          {phase === "idle" && (unsupported ? <MicOff size={22} strokeWidth={1.5}/> : <Mic size={22} strokeWidth={1.5}/>)}
+        </span>
+      </button>
+    </>
+  );
+}
