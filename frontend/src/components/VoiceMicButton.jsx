@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { Mic, MicOff, Loader2, X, Sparkles, Check } from "lucide-react";
-import { api } from "../lib/api";
+import { Mic, MicOff, Loader2, X, Sparkles, Check, Volume2, VolumeX } from "lucide-react";
+import { api, API } from "../lib/api";
 import { toast } from "sonner";
 
 /**
@@ -15,6 +15,7 @@ import { toast } from "sonner";
 
 const HOLD_THRESHOLD_MS = 350;
 const HIDE_ON_PATHS = []; // could hide on certain paths; empty = always show
+const TTS_PREF_KEY = "yaar_voice_replies";  // "on" | "off"
 
 function pickMime() {
   const candidates = [
@@ -38,6 +39,10 @@ export default function VoiceMicButton() {
   const [errorMsg, setErrorMsg] = useState("");
   const [hidden, setHidden] = useState(false);
   const [unsupported, setUnsupported] = useState(false);
+  const [ttsOn, setTtsOn] = useState(() => (localStorage.getItem(TTS_PREF_KEY) || "on") === "on");
+  const [speaking, setSpeaking] = useState(false);
+
+  const audioElRef = useRef(null);
 
   const mediaRecorderRef = useRef(null);
   const chunksRef = useRef([]);
@@ -76,6 +81,54 @@ export default function VoiceMicButton() {
     chunksRef.current = [];
     recordingRef.current = false;
   }, []);
+
+  // ---- TTS playback (Yaar speaks back) ----
+  const stopSpeaking = useCallback(() => {
+    if (audioElRef.current) {
+      try { audioElRef.current.pause(); } catch {}
+      try { URL.revokeObjectURL(audioElRef.current.src); } catch {}
+      audioElRef.current = null;
+    }
+    setSpeaking(false);
+  }, []);
+
+  const speak = useCallback(async (text) => {
+    if (!ttsOn) return;
+    const t = (text || "").trim();
+    if (!t) return;
+    stopSpeaking();
+    try {
+      const res = await fetch(`${API}/voice/speak`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: t.slice(0, 800), voice: "coral" }),
+      });
+      if (!res.ok) return;
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      audioElRef.current = audio;
+      audio.onended = () => { stopSpeaking(); };
+      audio.onerror = () => { stopSpeaking(); };
+      setSpeaking(true);
+      try {
+        await audio.play();
+      } catch {
+        // Autoplay blocked — ignore (visual cue still shows)
+        stopSpeaking();
+      }
+    } catch {
+      stopSpeaking();
+    }
+  }, [ttsOn, stopSpeaking]);
+
+  const toggleTts = () => {
+    const next = !ttsOn;
+    setTtsOn(next);
+    localStorage.setItem(TTS_PREF_KEY, next ? "on" : "off");
+    if (!next) stopSpeaking();
+    toast.message(next ? "Yaar will speak back" : "Yaar will stay quiet");
+  };
 
   // ---- Recording lifecycle ----
   const startRecording = useCallback(async () => {
@@ -157,16 +210,24 @@ export default function VoiceMicButton() {
       if (applied.length > 0) {
         setResultLines(applied);
         toast.success(applied.length === 1 ? applied[0] : `${applied.length} changes applied`);
+        // Speak back a concise summary
+        const spokenSummary = applied.length === 1
+          ? `Done. ${applied[0]}`
+          : `Done. ${applied.length} changes — ${applied.slice(0, 4).join(". ")}.`;
+        speak(spokenSummary);
       } else if (reply?.content) {
         setResultLines([reply.content.slice(0, 240)]);
+        speak(reply.content.slice(0, 600));
       } else {
         setResultLines(["Heard you, but nothing to do."]);
+        speak("Heard you, but there was nothing to do.");
       }
       setPhase("done");
-      // Auto-clear after 6s
+      // Auto-clear: longer if Yaar is speaking back
+      const dismissDelay = (ttsOn && (applied.length > 0 || reply?.content)) ? 12000 : 5000;
       setTimeout(() => {
         setPhase("idle"); setTranscript(""); setResultLines([]);
-      }, 6000);
+      }, dismissDelay);
     } catch (e) {
       setErrorMsg("Couldn't reach Yaar. Try again.");
       setPhase("idle");
@@ -312,6 +373,25 @@ export default function VoiceMicButton() {
           {phase === "done" && <Check size={22} strokeWidth={2}/>}
           {phase === "idle" && (unsupported ? <MicOff size={22} strokeWidth={1.5}/> : <Mic size={22} strokeWidth={1.5}/>)}
         </span>
+      </button>
+
+      {/* Mute toggle — sits to the LEFT of the mic. Doubles as "stop speaking". */}
+      <button
+        type="button"
+        onClick={speaking ? stopSpeaking : toggleTts}
+        className={`fixed bottom-7 right-24 z-[91] w-10 h-10 rounded-full shadow ring-1 ring-black/5 flex items-center justify-center transition-all ${
+          ttsOn ? "bg-white text-[#59745D]" : "bg-white text-[#9A9F9D]"
+        } hover:scale-105 active:scale-95`}
+        title={speaking ? "Stop Yaar's voice" : ttsOn ? "Yaar speaks replies — tap to mute" : "Voice replies muted — tap to unmute"}
+        data-testid="voice-tts-toggle"
+        aria-label={ttsOn ? "Mute Yaar's voice" : "Enable Yaar's voice"}
+      >
+        {speaking ? (
+          <span className="relative flex items-center justify-center">
+            <Volume2 size={16} strokeWidth={1.5}/>
+            <span className="absolute -inset-1 rounded-full ring-2 ring-[#59745D]/40 animate-pulse"/>
+          </span>
+        ) : ttsOn ? <Volume2 size={16} strokeWidth={1.5}/> : <VolumeX size={16} strokeWidth={1.5}/>}
       </button>
     </>
   );

@@ -11,7 +11,9 @@ import os
 import logging
 from datetime import datetime
 from fastapi import APIRouter, UploadFile, File, HTTPException
-from emergentintegrations.llm.openai import OpenAISpeechToText
+from fastapi.responses import StreamingResponse
+from pydantic import BaseModel, Field
+from emergentintegrations.llm.openai import OpenAISpeechToText, OpenAITextToSpeech
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -79,3 +81,44 @@ async def transcribe_voice(audio: UploadFile = File(...)):
     except Exception as e:
         logger.exception("Voice transcription failed")
         raise HTTPException(500, f"Couldn't transcribe: {str(e)[:120]}")
+
+
+# --------- Text → Speech ---------
+class SpeakRequest(BaseModel):
+    text: str = Field(..., min_length=1, max_length=4000)
+    voice: str = "coral"   # coral = warm, friendly; sage = wise; nova = energetic
+    speed: float = 1.0
+
+
+# Available voices on tts-1
+ALLOWED_VOICES = {"alloy", "ash", "coral", "echo", "fable", "nova", "onyx", "sage", "shimmer"}
+
+
+@router.post("/voice/speak")
+async def speak(payload: SpeakRequest):
+    """Convert short Yaar reply into MP3 audio. Returned as audio/mpeg stream so the
+    browser can use `new Audio(blobUrl)` for instant playback."""
+    api_key = os.environ.get("EMERGENT_LLM_KEY")
+    if not api_key:
+        raise HTTPException(500, "Voice replies not configured")
+
+    voice = payload.voice if payload.voice in ALLOWED_VOICES else "coral"
+    speed = max(0.5, min(2.0, float(payload.speed or 1.0)))
+
+    try:
+        tts = OpenAITextToSpeech(api_key=api_key)
+        audio_bytes = await tts.generate_speech(
+            text=payload.text.strip()[:4000],
+            model="tts-1",
+            voice=voice,
+            speed=speed,
+            response_format="mp3",
+        )
+        return StreamingResponse(
+            io.BytesIO(audio_bytes),
+            media_type="audio/mpeg",
+            headers={"Content-Disposition": "inline; filename=yaar.mp3"},
+        )
+    except Exception as e:
+        logger.exception("TTS failed")
+        raise HTTPException(500, f"Couldn't synthesize: {str(e)[:120]}")
