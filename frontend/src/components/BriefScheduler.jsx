@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import { api, API } from "../lib/api";
 import { Sparkles, Play, X, Volume2 } from "lucide-react";
 import { loadBriefs, isFiredToday, markFiredToday } from "../lib/briefs";
+import { isNative, syncBriefsToNative, onBriefTap, requestNativePermission } from "../lib/nativeBridge";
 
 /**
  * BriefScheduler — runs invisible every 30s.
@@ -35,6 +36,50 @@ export default function BriefScheduler() {
       window.removeEventListener("pointerdown", onAct);
       window.removeEventListener("keydown", onAct);
     };
+  }, []);
+
+  // ---- NATIVE (Android/iOS via Capacitor) ----
+  // On launch: ask permission once, sync every enabled brief to OS-level local notifications,
+  // and subscribe to taps so a tapped notification opens the corresponding brief.
+  useEffect(() => {
+    if (!isNative()) return;
+    let unsub = () => {};
+    (async () => {
+      try {
+        await requestNativePermission();
+        await syncBriefsToNative(loadBriefs());
+        unsub = onBriefTap(async ({ briefId, kind }) => {
+          // Re-fetch fresh brief text and play it
+          try {
+            const briefs = loadBriefs();
+            const b = briefs.find(x => x.id === briefId) || { kind };
+            const body = b.kind === "custom"
+              ? { kind: "custom", custom_prompt: b.prompt || "" }
+              : { kind: b.kind };
+            const { data } = await api.post("/voice/brief", body);
+            const text = (data?.text || "").trim();
+            if (!text) return;
+            markFiredToday(briefId);
+            setPending({ brief: b, text });
+            if (((localStorage.getItem("yaar_voice_replies") || "on") === "on")) {
+              play(text);
+            }
+          } catch {}
+        });
+      } catch {}
+    })();
+    // Re-sync whenever the brief list changes in another tab/dialog
+    const onStorage = (e) => {
+      if (e.key === "yaar_brief_schedule_v1") {
+        syncBriefsToNative(loadBriefs());
+      }
+    };
+    window.addEventListener("storage", onStorage);
+    return () => {
+      unsub?.();
+      window.removeEventListener("storage", onStorage);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const stop = useCallback(() => {

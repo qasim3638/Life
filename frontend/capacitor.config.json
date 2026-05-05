@@ -1,0 +1,19 @@
+{
+  "appId": "com.qasim.lifeblueprint",
+  "appName": "Life Blueprint",
+  "webDir": "build",
+  "server": {
+    "url": "https://mindful-40.preview.emergentagent.com",
+    "cleartext": false,
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": false
+  },
+  "plugins": {
+    "LocalNotifications": {
+      "smallIcon": "ic_stat_icon_config_sample",
+      "iconColor": "#59745D"
+    }
+  }
+}

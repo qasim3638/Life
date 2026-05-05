@@ -6,6 +6,7 @@ import { Switch } from "../ui/switch";
 import { Sun, CloudSun, Moon, Plus, Trash2, Volume2, Bell } from "lucide-react";
 import { toast } from "sonner";
 import { loadBriefs, saveBriefs, newCustomBrief } from "../../lib/briefs";
+import { syncBriefsToNative, requestNativePermission, isNative } from "../../lib/nativeBridge";
 import { api, API } from "../../lib/api";
 
 const KIND_META = {
@@ -27,20 +28,34 @@ export default function BriefSettingsDialog({ open, onOpenChange }) {
   const update = (id, patch) => {
     const next = briefs.map(b => b.id === id ? { ...b, ...patch } : b);
     setBriefs(next); saveBriefs(next);
+    syncBriefsToNative(next);
   };
 
   const remove = (id) => {
     if (!window.confirm("Remove this brief?")) return;
     const next = briefs.filter(b => b.id !== id);
     setBriefs(next); saveBriefs(next);
+    syncBriefsToNative(next);
   };
 
   const addCustom = () => {
     const next = [...briefs, newCustomBrief()];
     setBriefs(next); saveBriefs(next);
+    syncBriefsToNative(next);
   };
 
   const askPerm = async () => {
+    if (isNative()) {
+      const r = await requestNativePermission();
+      if (r === "granted") {
+        toast.success("Notifications enabled on your phone");
+        setNotifPerm("granted");
+        syncBriefsToNative(loadBriefs());
+      } else {
+        toast.error("Allow Life Blueprint to send notifications in phone Settings");
+      }
+      return;
+    }
     if (typeof Notification === "undefined") return;
     try {
       const r = await Notification.requestPermission();
@@ -90,15 +105,19 @@ export default function BriefSettingsDialog({ open, onOpenChange }) {
           <div className="rounded-2xl border border-sand bg-[#FDFBF7] px-4 py-3 flex items-center gap-3">
             <Bell size={16} strokeWidth={1.5} className="text-[#59745D]"/>
             <div className="flex-1">
-              <p className="text-sm text-[#2D312E] font-medium">Browser notifications</p>
+              <p className="text-sm text-[#2D312E] font-medium">
+                {isNative() ? "Phone notifications" : "Browser notifications"}
+              </p>
               <p className="text-xs text-[#6B7270]">
-                {notifPerm === "granted" && "Enabled — Yaar will ping you when the app is closed."}
-                {notifPerm === "denied" && "Blocked. Allow them in your browser site settings."}
-                {notifPerm === "default" && "Off — turn on so Yaar can reach you when you're not on the app."}
-                {notifPerm === "unsupported" && "Not supported on this browser."}
+                {isNative() && notifPerm !== "granted" && "Off — turn on so Yaar reaches you when the app is closed."}
+                {isNative() && notifPerm === "granted" && "Enabled — Yaar will ping you on your lock screen at brief time."}
+                {!isNative() && notifPerm === "granted" && "Enabled — Yaar will ping you when the app is closed."}
+                {!isNative() && notifPerm === "denied" && "Blocked. Allow them in your browser site settings."}
+                {!isNative() && notifPerm === "default" && "Off — turn on so Yaar can reach you when you're not on the app."}
+                {!isNative() && notifPerm === "unsupported" && "Not supported on this browser."}
               </p>
             </div>
-            {notifPerm === "default" && (
+            {(notifPerm === "default" || (isNative() && notifPerm !== "granted")) && (
               <Button size="sm" className="rounded-full bg-[#59745D] hover:bg-[#4a6350]" onClick={askPerm} data-testid="brief-notif-enable">
                 Enable
               </Button>
