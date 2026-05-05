@@ -3,7 +3,6 @@
   "appName": "Life Blueprint",
   "webDir": "build",
   "server": {
-    "url": "https://mindful-40.preview.emergentagent.com",
     "cleartext": false,
     "androidScheme": "https"
   },
