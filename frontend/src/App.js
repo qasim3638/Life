@@ -21,6 +21,7 @@ import Events from "./pages/Events";
 import Review from "./pages/Review";
 import Sanctuary from "./pages/Sanctuary";
 import VoiceMicButton from "./components/VoiceMicButton";
+import BriefScheduler from "./components/BriefScheduler";
 import "./App.css";
 
 function Shell() {
@@ -49,6 +50,7 @@ function Shell() {
       </main>
       <MobileNav />
       <VoiceMicButton />
+      <BriefScheduler />
     </div>
   );
 }

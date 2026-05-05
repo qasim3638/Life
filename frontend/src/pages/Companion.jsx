@@ -3,12 +3,13 @@ import { api } from "../lib/api";
 import { Container } from "../components/Layout";
 import { Button } from "../components/ui/button";
 import { Textarea } from "../components/ui/textarea";
-import { Send, Sparkles, Brain, Trash2, Settings, Star, Search, Lock } from "lucide-react";
+import { Send, Sparkles, Brain, Trash2, Settings, Star, Search, Lock, Bell } from "lucide-react";
 import { toast } from "sonner";
 import CompanionSidePanel, { PERSONAS } from "../components/companion/CompanionSidePanel";
 import CompanionSettings from "../components/companion/CompanionSettings";
 import MemoriesDialog from "../components/companion/MemoriesDialog";
 import MemoryLaneDialog from "../components/companion/MemoryLaneDialog";
+import BriefSettingsDialog from "../components/companion/BriefSettingsDialog";
 import ActionChips from "../components/companion/ActionChips";
 import PinGate, { isUnlockedRecently, clearUnlock } from "../components/companion/PinGate";
 
@@ -21,6 +22,7 @@ export default function Companion() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [memoryOpen, setMemoryOpen] = useState(false);
   const [memoryLaneOpen, setMemoryLaneOpen] = useState(false);
+  const [briefsOpen, setBriefsOpen] = useState(false);
   const [newMem, setNewMem] = useState({ content: "", category: "general" });
   const [pinEnabled, setPinEnabled] = useState(null); // null=unknown, true/false
   const [unlocked, setUnlocked] = useState(false);
@@ -181,6 +183,9 @@ export default function Companion() {
               <Button size="sm" variant="ghost" onClick={() => setMemoryLaneOpen(true)} className="rounded-full text-[#6B7270]" data-testid="open-memory-lane-btn" title="Search past chats">
                 <Search size={15} strokeWidth={1.5} className="mr-1"/> <span className="hidden sm:inline">Memory Lane</span>
               </Button>
+              <Button size="sm" variant="ghost" onClick={() => setBriefsOpen(true)} className="rounded-full text-[#6B7270]" data-testid="open-briefs-btn" title="Voice briefs schedule">
+                <Bell size={15} strokeWidth={1.5} className="mr-1"/> <span className="hidden sm:inline">Briefs</span>
+              </Button>
               <Button size="sm" variant="ghost" onClick={() => setMemoryOpen(true)} className="rounded-full text-[#6B7270]" data-testid="open-memories-btn">
                 <Brain size={15} strokeWidth={1.5} className="mr-1"/> Memories ({memories.length})
               </Button>
@@ -309,6 +314,11 @@ export default function Companion() {
         open={memoryLaneOpen}
         onOpenChange={setMemoryLaneOpen}
         companionName={companion.name}
+      />
+
+      <BriefSettingsDialog
+        open={briefsOpen}
+        onOpenChange={setBriefsOpen}
       />
     </Container>
   );

@@ -122,3 +122,36 @@ async def speak(payload: SpeakRequest):
     except Exception as e:
         logger.exception("TTS failed")
         raise HTTPException(500, f"Couldn't synthesize: {str(e)[:120]}")
+
+
+# --------- Proactive briefs ---------
+class BriefRequest(BaseModel):
+    kind: str = Field(..., pattern=r"^(morning|midday|evening|custom)$")
+    custom_prompt: str | None = None  # only used when kind == "custom"
+
+
+@router.post("/voice/brief")
+async def make_brief(payload: BriefRequest):
+    """Return the spoken text for a proactive brief. Frontend then optionally hits
+    /voice/speak to get audio. Deterministic for morning/midday/evening; AI-driven
+    when kind=custom (uses the existing companion chat pipeline)."""
+    from voice_briefs import generate_brief
+
+    if payload.kind in ("morning", "midday", "evening"):
+        text = await generate_brief(payload.kind)
+        if not text:
+            raise HTTPException(500, "Couldn't build the brief")
+        return {"text": text, "kind": payload.kind}
+
+    # custom — delegate to companion chat for a richer, contextual response
+    prompt = (payload.custom_prompt or "").strip()
+    if not prompt:
+        raise HTTPException(400, "custom briefs need a custom_prompt")
+    # Call the same chat pipeline with no DB-write side-effects: just a generation
+    from routes.companion import chat as companion_chat
+    from models import ChatRequest as _CR
+    from fastapi import BackgroundTasks
+    bg = BackgroundTasks()
+    res = await companion_chat(_CR(message=f"[Brief request] {prompt}"), bg)
+    text = (res.get("reply", {}) or {}).get("content") or ""
+    return {"text": text, "kind": "custom"}
