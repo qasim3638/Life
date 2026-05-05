@@ -1,13 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { api } from "../../lib/api";
 import { Card, Eyebrow } from "../Layout";
-import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
 import {
-  Star, CheckCircle2, Circle, Plus, Sun, Dumbbell, Home, Briefcase,
+  Star, CheckCircle2, Circle, Plus,
+  Sun, Dumbbell, Home, Briefcase,
   ArrowRight, X,
 } from "lucide-react";
 import { toast } from "sonner";
+import AskYaarInline from "./AskYaarInline";
 
 const todayISO = () => {
   const d = new Date();
@@ -256,6 +257,13 @@ export default function TodayPlanCard() {
           <span className="text-sm text-[#2D312E]">Gym today{plan.gym_workout_name ? ` — ${plan.gym_workout_name}` : ""}</span>
         </div>
       )}
+
+      <AskYaarInline
+        testid="ask-yaar-today"
+        placeholder="Ask Yaar to add, tick, plan anything…"
+        hint={`e.g. "Add pick up dry cleaning to house chores" · "Mark priority 2 done" · "Set lunch to grilled chicken" · "I'm feeling a 4 today"`}
+        onApplied={load}
+      />
 
       {saving && (
         <p className="text-[10px] text-[#9A9F9D] mt-3" data-testid="today-plan-saving">Saving…</p>

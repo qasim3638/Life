@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { api } from "../../lib/api";
-import { Check, X, CalendarDays, Clock, Star, ListTodo, Dumbbell, HeartPulse } from "lucide-react";
+import {
+  Check, X, CalendarDays, Clock, Star, ListTodo, Dumbbell, HeartPulse,
+  CheckCircle2, UtensilsCrossed, Pill, Sparkles, Smile, Target, BookHeart,
+} from "lucide-react";
 import { toast } from "sonner";
 
 const ICON_BY_TYPE = {
@@ -10,7 +13,17 @@ const ICON_BY_TYPE = {
   add_chore: ListTodo,
   log_workout: Dumbbell,
   log_journal: HeartPulse,
+  tick_priority: CheckCircle2,
+  tick_chore: CheckCircle2,
+  set_meal: UtensilsCrossed,
+  add_supplement: Pill,
+  add_gratitude: Sparkles,
+  log_mood: Smile,
+  add_life_goal: Target,
+  add_family_memory: BookHeart,
 };
+
+const MOOD_LABEL = { 1: "rough", 2: "low", 3: "okay", 4: "good", 5: "great" };
 
 function humanise(a) {
   switch (a.type) {
@@ -26,6 +39,22 @@ function humanise(a) {
       return `Log workout: ${a.name} (${a.duration_min} min)${a.date ? ` — ${a.date}` : ""}`;
     case "log_journal":
       return `Journal entry${a.mood ? ` (mood ${a.mood}/5)` : ""}: "${(a.entry || a.gratitude || "").slice(0, 60)}…"`;
+    case "tick_priority":
+      return `Mark priority ${a.index !== undefined ? `#${a.index + 1}` : `"${a.text}"`} done (${a.date})`;
+    case "tick_chore":
+      return `Tick off ${a.kind} chore "${a.text}"${a.date ? ` — ${a.date}` : ""}`;
+    case "set_meal":
+      return `${a.slot.charAt(0).toUpperCase() + a.slot.slice(1)} on ${a.date}: ${a.text}`;
+    case "add_supplement":
+      return `Add supplement "${a.name}" to ${a.date}`;
+    case "add_gratitude":
+      return `Gratitude: "${a.text}" (${a.date})`;
+    case "log_mood":
+      return `Mood ${a.mood}/5 — ${MOOD_LABEL[a.mood] || ""} (${a.date})`;
+    case "add_life_goal":
+      return `Blueprint goal for ${a.year} (age ${a.age}): "${a.title}"`;
+    case "add_family_memory":
+      return `Family memory: "${a.title}" (${a.date})`;
     default:
       return a.type;
   }

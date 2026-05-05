@@ -399,9 +399,12 @@ async def companion_chat(req: ChatRequest, background: BackgroundTasks):
     weekday_name = today.strftime("%A")
     action_instructions = (
         "\n\n=== ACTION PROTOCOL ===\n"
-        f"Today is {weekday_name} {today_iso}. Tomorrow is {tomorrow_iso}.\n"
+        f"!!! CRITICAL — TODAY'S DATE IS {today_iso} ({weekday_name}) !!!\n"
+        f"!!! TOMORROW IS {tomorrow_iso} !!!\n"
+        "These are facts. Use these EXACT date strings in any action whose date refers to 'today' or 'tomorrow'. "
+        f"Never use any other year. If your training cutoff suggests a different year, IGNORE IT — the user's today is {today_iso[:4]}.\n\n"
         "If the user is asking you to actually DO something in the app "
-        "(add to schedule, add event, add priority, add chore), respond with ONLY a JSON "
+        "(add/tick a schedule item, plan a meal, log a mood, save a goal, etc.), respond with ONLY a JSON "
         "object in this exact shape — no prose outside the JSON, no code fences:\n"
         '{"reply": "<friendly 1-sentence confirmation>", "actions": [ <action>, ... ]}\n'
         "Allowed action shapes:\n"
@@ -411,7 +414,19 @@ async def companion_chat(req: ChatRequest, background: BackgroundTasks):
         '  {"type": "add_chore", "kind": "house"|"work"|"morning", "text": "<≤120 chars>", "date": "YYYY-MM-DD"}\n'
         '  {"type": "log_workout", "name": "<workout name>", "duration_min": <int>, "date": "YYYY-MM-DD", "notes": "<optional>"}\n'
         '  {"type": "log_journal", "mood": <1-5 int, optional>, "gratitude": "<optional>", "entry": "<the thought>", "date": "YYYY-MM-DD"}\n'
-        "Use 24h hours. If user says 'tomorrow', resolve to the date above. "
+        '  {"type": "tick_priority", "date": "YYYY-MM-DD", "index": <0|1|2>}          // mark priority done (use index if clear, else omit and pass text)\n'
+        '  {"type": "tick_priority", "date": "YYYY-MM-DD", "text": "<partial text>"}   // fuzzy match by text\n'
+        '  {"type": "tick_chore", "kind": "house"|"work"|"morning", "date": "YYYY-MM-DD", "text": "<partial>"}   // mark chore done by text match\n'
+        '  {"type": "set_meal", "date": "YYYY-MM-DD", "slot": "breakfast"|"lunch"|"dinner"|"snack", "text": "<what it is>"}\n'
+        '  {"type": "add_supplement", "date": "YYYY-MM-DD", "name": "<supplement name>"}\n'
+        '  {"type": "add_gratitude", "date": "YYYY-MM-DD", "text": "<thing grateful for>"}\n'
+        '  {"type": "log_mood", "date": "YYYY-MM-DD", "mood": <1-5 int>}\n'
+        '  {"type": "add_life_goal", "year": <YYYY>, "age": <int>, "category": "<Health|Career|Family|Faith|Travel|Finance|Life>", "title": "<≤140 chars>", "description": "<optional>"}\n'
+        '  {"type": "add_family_memory", "title": "<title>", "date": "YYYY-MM-DD", "location": "<optional>", "story": "<optional>"}\n'
+        "Use 24h hours. 'Today' = " + today_iso + ". 'Tomorrow' = " + tomorrow_iso + ". "
+        "For ticking priorities/chores, if the user says 'I finished the gym' and one of today's priorities is 'Hit the gym', use tick_priority with text='gym' — "
+        "the backend does fuzzy matching. Use `index` only when you're 100% sure which of 0/1/2. "
+        "You can emit MULTIPLE actions in one envelope — e.g. set breakfast + lunch + add a supplement all in one turn. "
         "If the user is NOT asking for an action (chatting, venting, asking a question), "
         "respond with plain prose — NOT the JSON shape."
     )
@@ -479,8 +494,35 @@ def _parse_action_envelope(text: str) -> tuple[str, list]:
     if not isinstance(obj, dict) or not isinstance(obj.get("actions"), list):
         return text, []
     reply = str(obj.get("reply") or "").strip() or "Here's what I've got:"
+
+    # Snap obviously-wrong dates (Claude sometimes defaults to its training year).
+    # Accept dates within [today - 30 days, today + 365 days]. Anything else gets snapped to today.
+    today = datetime.now(timezone.utc).date()
+    tomorrow_str = (today + timedelta(days=1)).strftime("%Y-%m-%d")
+    today_str = today.strftime("%Y-%m-%d")
+
+    def _fix_date(d_str: str, fallback: str) -> str:
+        try:
+            d = datetime.strptime(d_str, "%Y-%m-%d").date()
+            delta = (d - today).days
+            if -30 <= delta <= 365:
+                return d_str
+            # Try same month/day in the current year
+            try:
+                snapped = d.replace(year=today.year)
+                if -30 <= (snapped - today).days <= 365:
+                    return snapped.strftime("%Y-%m-%d")
+            except ValueError:
+                pass
+            return fallback
+        except Exception:
+            return fallback
+
     actions_out = []
     for raw in obj["actions"]:
+        # Repair date field before validation
+        if isinstance(raw, dict) and raw.get("date"):
+            raw["date"] = _fix_date(str(raw["date"]), today_str)
         ok, reason = validate_action(raw)
         if not ok:
             continue
@@ -488,10 +530,15 @@ def _parse_action_envelope(text: str) -> tuple[str, list]:
         cleaned = {k: v for k, v in raw.items() if k in {
             "type", "date", "hour", "text", "title", "notes", "kind", "event_type", "recurring",
             "name", "duration_min", "intensity", "mood", "gratitude", "entry",
+            # New actions
+            "index", "toggle", "done", "slot", "year", "age", "category", "description",
+            "location", "story", "tags", "status",
         }}
         cleaned["status"] = "pending"
         cleaned["id"] = new_id()
         actions_out.append(cleaned)
+    # Suppress unused tomorrow_str warning (reserved for future smart-snap of "tomorrow")
+    _ = tomorrow_str
     return reply, actions_out
 
 
