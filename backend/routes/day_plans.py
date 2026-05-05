@@ -11,6 +11,11 @@ async def get_day_plan(date: str):
     item = await db.day_plans.find_one({"date": date}, {"_id": 0})
     if not item:
         return DayPlan(date=date).model_dump()
+    # Backfill priority_status for older docs
+    if not item.get("priority_status"):
+        item["priority_status"] = [{"done": False, "completed_at": None} for _ in range(3)]
+    elif len(item["priority_status"]) < 3:
+        item["priority_status"] = (item["priority_status"] + [{"done": False, "completed_at": None}] * 3)[:3]
     return item
 
 

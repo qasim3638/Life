@@ -11,6 +11,7 @@ import StreakProtectorCard from "../components/today/StreakProtectorCard";
 import LifeArcCard from "../components/today/LifeArcCard";
 import WeeklyLetterCard from "../components/today/WeeklyLetterCard";
 import CompanionAlerts from "../components/today/CompanionAlerts";
+import TodayPlanCard from "../components/today/TodayPlanCard";
 
 const AGE_NOW = 40;
 const TARGET_AGE = 80;
@@ -197,6 +198,8 @@ export default function Today() {
       <CompanionAlerts />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <TodayPlanCard />
+
         <ProtectedCard addictions={addictions} focusToday={focusToday} />
 
         <DailyBriefCard brief={brief} loading={briefLoading} onGenerate={getBrief} />

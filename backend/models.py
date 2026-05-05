@@ -174,6 +174,11 @@ class TimeBlock(BaseModel):
     text: str = ""
 
 
+class PriorityStatus(BaseModel):
+    done: bool = False
+    completed_at: Optional[str] = None
+
+
 class DayPlanMeals(BaseModel):
     breakfast: MealSlot = Field(default_factory=MealSlot)
     lunch: MealSlot = Field(default_factory=MealSlot)
@@ -184,6 +189,7 @@ class DayPlanMeals(BaseModel):
 class DayPlan(BaseModel):
     date: str
     priorities: List[str] = ["", "", ""]
+    priority_status: List[PriorityStatus] = Field(default_factory=lambda: [PriorityStatus(), PriorityStatus(), PriorityStatus()])
     gym_planned: bool = False
     gym_workout_id: Optional[str] = ""
     gym_workout_name: Optional[str] = ""
