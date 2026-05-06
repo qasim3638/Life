@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "sonner";
+import AuthGate from "./components/AuthGate";
 import Sidebar from "./components/Sidebar";
 import MobileNav from "./components/MobileNav";
 import { PlayerProvider } from "./components/Player";
@@ -57,11 +58,13 @@ function Shell() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <PlayerProvider>
-        <Shell />
-        <Toaster position="top-center" richColors theme="light" />
-      </PlayerProvider>
-    </BrowserRouter>
+    <AuthGate>
+      <BrowserRouter>
+        <PlayerProvider>
+          <Shell />
+          <Toaster position="top-center" richColors theme="light" />
+        </PlayerProvider>
+      </BrowserRouter>
+    </AuthGate>
   );
 }

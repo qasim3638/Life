@@ -22,8 +22,9 @@ from routes import (  # noqa: E402
     workouts, recipes, journal, events, life_goals, content,
     day_plans, streaks, ai_endpoints, companion, family, audio, self_profile,
     focus, sobriety, echo, sunday_review, uploads, sanctuary, companion_alerts,
-    voice,
+    voice, auth,
 )
+from auth_utils import decode_token, seed_auth_user  # noqa: E402
 from audio_seed import (  # noqa: E402
     WISDOM_STORIES_SEED, SLEEP_STORIES_SEED, MEDITATION_MUSIC_SEED,
 )
@@ -55,6 +56,7 @@ async def lifespan(_app: FastAPI):
             for item in WISDOM_STORIES_SEED + SLEEP_STORIES_SEED + MEDITATION_MUSIC_SEED:
                 await db.audio_library.insert_one({"id": new_id(), **item})
         await sanctuary.seed_if_empty()
+        await seed_auth_user()
         logger.info("Seed data ready.")
     except Exception as e:
         logger.error(f"Seeding error: {e}")
@@ -95,8 +97,34 @@ api_router.include_router(uploads.router)
 api_router.include_router(sanctuary.router)
 api_router.include_router(companion_alerts.router)
 api_router.include_router(voice.router)
+api_router.include_router(auth.router)
 
 app.include_router(api_router)
+
+
+# ---- Auth middleware ----
+# Require Bearer token on every /api/* route except auth endpoints and static
+# uploads. Kicks in only if AUTH_EMAIL + AUTH_PASSWORD env vars are set
+# (so the dev/preview environment without those vars stays wide-open).
+@app.middleware("http")
+async def auth_middleware(request, call_next):
+    if not (os.environ.get("AUTH_EMAIL") and os.environ.get("AUTH_PASSWORD")):
+        return await call_next(request)
+    path = request.url.path
+    if (
+        not path.startswith("/api/")
+        or path == "/api/"
+        or path.startswith("/api/auth/")
+        or path.startswith("/api/uploads/")
+        or request.method == "OPTIONS"
+    ):
+        return await call_next(request)
+    auth_h = request.headers.get("Authorization", "")
+    token = auth_h[7:] if auth_h.startswith("Bearer ") else None
+    if not token or not decode_token(token):
+        from fastapi.responses import JSONResponse
+        return JSONResponse(status_code=401, content={"detail": "Not authenticated"})
+    return await call_next(request)
 
 # Serve uploaded files at /api/uploads/*
 UPLOAD_DIR = ROOT_DIR / "uploads"
