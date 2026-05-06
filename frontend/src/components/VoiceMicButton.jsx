@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Mic, MicOff, Loader2, X, Sparkles, Check, Volume2, VolumeX } from "lucide-react";
 import { api, API } from "../lib/api";
 import { toast } from "sonner";
+import useShakeToTalk from "../lib/useShakeToTalk";
 
 /**
  * Floating "Just talk to Yaar" mic button — present app-wide.
@@ -70,6 +71,24 @@ export default function VoiceMicButton() {
       && navigator.mediaDevices.getUserMedia
       && typeof MediaRecorder !== "undefined";
     setUnsupported(!ok);
+  }, []);
+
+  // Shake-to-talk — listens on devicemotion, dispatches life:wake
+  useShakeToTalk();
+
+  // Hi Yaar wake word + shake → auto-start recording
+  useEffect(() => {
+    const onWake = () => {
+      // Only start if we're idle and the mic isn't busy
+      if (recordingRef.current) return;
+      // Small toast so the user has feedback
+      toast.message("Yaar is listening…");
+      // defer to next tick so Porcupine can fully release the mic stream
+      setTimeout(() => { startRecording(); }, 150);
+    };
+    window.addEventListener("life:wake", onWake);
+    return () => window.removeEventListener("life:wake", onWake);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const cleanup = useCallback(() => {
@@ -228,9 +247,11 @@ export default function VoiceMicButton() {
       setTimeout(() => {
         setPhase("idle"); setTranscript(""); setResultLines([]);
       }, dismissDelay);
+      resume();
     } catch (e) {
       setErrorMsg("Couldn't reach Yaar. Try again.");
       setPhase("idle");
+      resume();
     }
   }, [cleanup]);
 

@@ -26,6 +26,12 @@ Android APK (Capacitor WebView) ──► loads ──► Vercel (React frontend
 - Capacitor Android wrapper, custom moss-green "Lb" icon + cream splash
 - Cloud deploy: Railway backend + MongoDB Atlas + Vercel frontend (Feb 2026)
 - **JWT auth / lock screen** (Feb 2026) — `/api/auth/login`, `/api/auth/me`, bearer-token middleware on all `/api/*` routes (except `/api/`, `/api/auth/*`, `/api/uploads/*`). 30-day tokens. 5-fail 15-min brute force lockout. AuthGate component wraps full app. Middleware is env-gated — no `AUTH_EMAIL`/`AUTH_PASSWORD` means auth disabled (dev mode).
+- **Hands-free Phase A** (Feb 2026)
+  - "Hi Yaar" wake word (Picovoice Porcupine web SDK) — `HiYaarListener` runs in WebView while app is open, detects wake word via WASM, auto-starts VoiceMicButton recording
+  - Shake-to-talk (DeviceMotion API, ~2.2g threshold, 2.5s cooldown) — `useShakeToTalk` hook
+  - `WakeSettings` dialog (gear icon near mic) — paste Picovoice AccessKey, toggle features
+  - Cross-component events: `life:wake` (fire to start recording), `life:resume-wake` (fire when recording done), `life:wake-settings` (fire when user toggles)
+  - User setup: `/app/memory/HI_YAAR_SETUP.md` — sign up + train + download .ppn + place in `/frontend/public/models/`
 
 ## Active blockers
 - None code-wise — awaiting user to:

@@ -2,6 +2,8 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "sonner";
 import AuthGate from "./components/AuthGate";
+import HiYaarListener from "./components/HiYaarListener";
+import WakeSettings from "./components/WakeSettings";
 import Sidebar from "./components/Sidebar";
 import MobileNav from "./components/MobileNav";
 import { PlayerProvider } from "./components/Player";
@@ -51,7 +53,9 @@ function Shell() {
       </main>
       <MobileNav />
       <VoiceMicButton />
+      <WakeSettings />
       <BriefScheduler />
+      <HiYaarListener />
     </div>
   );
 }
