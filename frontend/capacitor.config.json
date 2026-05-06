@@ -3,6 +3,7 @@
   "appName": "Life Blueprint",
   "webDir": "build",
   "server": {
+    "url": "https://life-5m18.vercel.app",
     "cleartext": false,
     "androidScheme": "https"
   },
