@@ -36,9 +36,9 @@ Android APK (Capacitor WebView) ──► loads ──► Vercel (React frontend
 ## Roadmap (priority order)
 
 ### P1 — Hands-free Yaar (user requested, next session)
-- **Level 3**: Custom "Hey Yaar" wake word using Picovoice Porcupine + Android foreground service (2-3 sessions)
+- **Level 3**: Custom "Hey Yaar" wake word using Picovoice Porcupine + Android foreground service (2-3 sessions) — primary priority
 - **Level 1**: Shake-to-talk gesture (quick add once Level 3 voice pipeline exists)
-- **Level 2**: Google Assistant App Actions ("Hey Google, ask Yaar...")
+- ~~Level 2 Google Assistant~~ — **SKIPPED per user decision**
 
 ### P2 — Hygiene
 - Rotate MongoDB Atlas password (was exposed in chat — user to do)
