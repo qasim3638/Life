@@ -3,8 +3,8 @@
  * Accessible from the voice mic cluster. Stores settings in localStorage;
  * HiYaarListener + useShakeToTalk both react via the `life:wake-settings` event.
  */
-import React, { useState } from "react";
-import { Settings as SettingsIcon, X, ExternalLink } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Settings as SettingsIcon, X, ExternalLink, ShieldCheck } from "lucide-react";
 import {
   getWakeEnabled, setWakeEnabled,
   getPicovoiceKey, setPicovoiceKey,
@@ -12,6 +12,8 @@ import {
 import {
   getShakeEnabled, setShakeEnabled, requestShakePermissionIfNeeded,
 } from "../lib/useShakeToTalk";
+import EnrollVoiceprint from "./EnrollVoiceprint";
+import { api } from "../lib/api";
 import { toast } from "sonner";
 
 export default function WakeSettings() {
@@ -19,6 +21,23 @@ export default function WakeSettings() {
   const [wake, setWake] = useState(getWakeEnabled());
   const [shake, setShake] = useState(getShakeEnabled());
   const [key, setKey] = useState(getPicovoiceKey());
+  const [enrollOpen, setEnrollOpen] = useState(false);
+  const [voiceprintEnrolled, setVoiceprintEnrolled] = useState(false);
+
+  // Check enrollment status whenever the dialog opens
+  useEffect(() => {
+    if (!open) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const { data } = await api.get("/speaker/status");
+        if (!cancelled) setVoiceprintEnrolled(!!data?.enrolled);
+      } catch {
+        if (!cancelled) setVoiceprintEnrolled(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [open]);
 
   const notify = () => window.dispatchEvent(new Event("life:wake-settings"));
 
@@ -138,8 +157,54 @@ export default function WakeSettings() {
                 Get free AccessKey <ExternalLink size={11}/>
               </a>
               <p className="text-[11px] text-[#9A9F9D] mt-3 leading-relaxed">
-                Also drop <code className="bg-[#F4F1EA] px-1 rounded">hi_yaar.ppn</code> and <code className="bg-[#F4F1EA] px-1 rounded">porcupine_params.pv</code> in <code className="bg-[#F4F1EA] px-1 rounded">/public/models/</code> then redeploy.
+                Also drop <code className="bg-[#F4F1EA] px-1 rounded">hi_yaar.ppn</code>, <code className="bg-[#F4F1EA] px-1 rounded">porcupine_params.pv</code>, and <code className="bg-[#F4F1EA] px-1 rounded">eagle_params.pv</code> in <code className="bg-[#F4F1EA] px-1 rounded">/public/models/</code> then redeploy.
               </p>
+            </div>
+
+            {/* Voiceprint */}
+            <div className="rounded-2xl bg-white border border-sand p-4 mb-4">
+              <div className="flex items-center justify-between mb-2">
+                <div>
+                  <p className="font-medium text-[#2D312E] flex items-center gap-2">
+                    Voiceprint
+                    {voiceprintEnrolled && <ShieldCheck size={14} className="text-[#59745D]"/>}
+                  </p>
+                  <p className="text-xs text-[#6B7270]">
+                    {voiceprintEnrolled
+                      ? "Only your voice triggers Yaar"
+                      : "Lock 'Hi Yaar' to your voice only"}
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    if (!key.trim()) {
+                      toast.error("Save your AccessKey first.");
+                      return;
+                    }
+                    setEnrollOpen(true);
+                  }}
+                  className="px-3 py-1.5 rounded-xl bg-[#59745D] text-white text-xs"
+                  data-testid="enroll-open-btn"
+                >
+                  {voiceprintEnrolled ? "Re-enroll" : "Enroll"}
+                </button>
+              </div>
+              {voiceprintEnrolled && (
+                <button
+                  onClick={async () => {
+                    try {
+                      await api.delete("/speaker/profile");
+                      setVoiceprintEnrolled(false);
+                      toast.message("Voiceprint cleared");
+                    } catch {
+                      toast.error("Couldn't clear");
+                    }
+                  }}
+                  className="text-[11px] text-[#C27A62] mt-1 hover:underline"
+                >
+                  Clear voiceprint
+                </button>
+              )}
             </div>
 
             {/* Shake to talk */}
@@ -165,6 +230,12 @@ export default function WakeSettings() {
             </p>
           </div>
         </div>
+      )}
+      {enrollOpen && (
+        <EnrollVoiceprint
+          onClose={() => setEnrollOpen(false)}
+          onEnrolled={() => setVoiceprintEnrolled(true)}
+        />
       )}
     </>
   );

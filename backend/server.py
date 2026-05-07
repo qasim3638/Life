@@ -22,7 +22,7 @@ from routes import (  # noqa: E402
     workouts, recipes, journal, events, life_goals, content,
     day_plans, streaks, ai_endpoints, companion, family, audio, self_profile,
     focus, sobriety, echo, sunday_review, uploads, sanctuary, companion_alerts,
-    voice, auth,
+    voice, auth, speaker,
 )
 from auth_utils import decode_token, seed_auth_user  # noqa: E402
 from audio_seed import (  # noqa: E402
@@ -98,6 +98,7 @@ api_router.include_router(sanctuary.router)
 api_router.include_router(companion_alerts.router)
 api_router.include_router(voice.router)
 api_router.include_router(auth.router)
+api_router.include_router(speaker.router)
 
 app.include_router(api_router)
 

@@ -68,7 +68,14 @@ def _bearer(request: Request) -> Optional[str]:
 
 
 async def require_auth(request: Request) -> str:
-    """FastAPI dependency — raises 401 if token invalid, returns email."""
+    """FastAPI dependency — raises 401 if token invalid, returns email.
+
+    If AUTH_EMAIL/AUTH_PASSWORD env vars aren't set (dev/preview), auth is
+    treated as disabled and we return "anonymous" without any check. This
+    matches the middleware in server.py.
+    """
+    if not (os.environ.get("AUTH_EMAIL") and os.environ.get("AUTH_PASSWORD")):
+        return "anonymous"
     token = _bearer(request)
     if not token:
         raise HTTPException(status_code=401, detail="Not authenticated")

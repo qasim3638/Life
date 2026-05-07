@@ -1,28 +1,24 @@
 /**
- * HiYaarListener — Phase A web-based wake word detection.
+ * HiYaarListener — Phase A web-based wake word + voiceprint verification.
  *
- * Runs Picovoice Porcupine in a web worker inside the Capacitor WebView while
- * the app is in the foreground. When "Hi Yaar" is detected:
- *   1. Releases the mic (unsubscribes from WebVoiceProcessor)
- *   2. Dispatches a global `life:wake` event
- *   3. VoiceMicButton listens for that event and auto-starts recording
- *   4. When recording finishes, VoiceMicButton dispatches `life:resume-wake`
- *      and this component re-subscribes
+ * Flow (when both wake + voiceprint enrolled):
+ *   1. Porcupine listens for "Hi Yaar"
+ *   2. Wake fires → unsubscribe Porcupine, subscribe Eagle (verifier)
+ *   3. Eagle reads ~1.5s of audio, averages similarity score
+ *   4. If score >= threshold → dispatch `life:wake` (mic opens for chat)
+ *   5. If score < threshold → silently re-subscribe Porcupine (impostor ignored)
+ *   6. After VoiceMicButton recording done → `life:resume-wake` → re-subscribe Porcupine
  *
- * Phase B (native always-on background service) — see PRD.md.
- *
- * Config:
- *   - window localStorage key `life_wake_enabled` ("on" / "off") — master toggle
- *   - window localStorage key `life_picovoice_key` — user's AccessKey
- *   - public/models/hi_yaar.ppn  — custom wake word (user downloads from console)
- *   - public/models/porcupine_params.pv — english base model
+ * Without an enrolled voiceprint, step 2-5 are skipped — wake fires immediately.
  */
 import { useEffect, useRef, useState } from "react";
 import { PorcupineWorker } from "@picovoice/porcupine-web";
+import { Eagle } from "@picovoice/eagle-web";
 import { WebVoiceProcessor } from "@picovoice/web-voice-processor";
+import { api } from "../lib/api";
 
-const WAKE_PREF_KEY = "life_wake_enabled";   // "on" | "off"
-const KEY_STORAGE = "life_picovoice_key";    // AccessKey (single-user app)
+const WAKE_PREF_KEY = "life_wake_enabled";
+const KEY_STORAGE = "life_picovoice_key";
 
 export const getWakeEnabled = () =>
   (localStorage.getItem(WAKE_PREF_KEY) || "off") === "on";
@@ -31,12 +27,19 @@ export const setWakeEnabled = (on) =>
 export const getPicovoiceKey = () => localStorage.getItem(KEY_STORAGE) || "";
 export const setPicovoiceKey = (k) => localStorage.setItem(KEY_STORAGE, k || "");
 
+const VERIFY_FRAMES = 50;          // ~1.6s at 32-frame/s typical
+const DEFAULT_THRESHOLD = 0.6;
+
 export default function HiYaarListener() {
   const porcupineRef = useRef(null);
-  const subscribedRef = useRef(false);
-  const [, setTick] = useState(0);   // force re-render when enabled flips
+  const eagleRef = useRef(null);
+  const eagleScoresRef = useRef([]);
+  const eagleThresholdRef = useRef(DEFAULT_THRESHOLD);
+  const subscribedPorcupineRef = useRef(false);
+  const subscribedEagleRef = useRef(false);
+  const verifyingRef = useRef(false);
+  const [, setTick] = useState(0);
 
-  // React to settings toggles from other components
   useEffect(() => {
     const onStorage = (e) => {
       if (e.key === WAKE_PREF_KEY || e.key === KEY_STORAGE) setTick((t) => t + 1);
@@ -55,80 +58,159 @@ export default function HiYaarListener() {
     const accessKey = getPicovoiceKey();
     let cancelled = false;
 
-    const stop = async () => {
+    const fireWake = () => {
+      window.dispatchEvent(new CustomEvent("life:wake", { detail: { label: "Hi Yaar" } }));
+    };
+
+    const verifySpeaker = async (eagle) => {
+      verifyingRef.current = true;
+      eagleScoresRef.current = [];
+      // Subscribe Eagle to mic
       try {
-        if (subscribedRef.current && porcupineRef.current) {
+        await WebVoiceProcessor.subscribe(eagle);
+        subscribedEagleRef.current = true;
+      } catch {
+        verifyingRef.current = false;
+        return false;
+      }
+      // Wait for enough frames
+      await new Promise((r) => setTimeout(r, 1700));
+      // Unsubscribe
+      try {
+        await WebVoiceProcessor.unsubscribe(eagle);
+        subscribedEagleRef.current = false;
+      } catch {}
+      verifyingRef.current = false;
+
+      const scores = eagleScoresRef.current;
+      if (scores.length < 8) return false;
+      const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
+      return avg >= eagleThresholdRef.current;
+    };
+
+    const stopAll = async () => {
+      try {
+        if (subscribedPorcupineRef.current && porcupineRef.current) {
           await WebVoiceProcessor.unsubscribe(porcupineRef.current);
-          subscribedRef.current = false;
+          subscribedPorcupineRef.current = false;
+        }
+        if (subscribedEagleRef.current && eagleRef.current) {
+          await WebVoiceProcessor.unsubscribe(eagleRef.current);
+          subscribedEagleRef.current = false;
         }
         if (porcupineRef.current) {
           await porcupineRef.current.terminate();
           porcupineRef.current = null;
         }
-      } catch (_) { /* silent */ }
+        if (eagleRef.current) {
+          await eagleRef.current.release?.();
+          eagleRef.current = null;
+        }
+      } catch {}
     };
 
     const start = async () => {
       if (!enabled || !accessKey) return;
-      if (!("mediaDevices" in navigator) || !navigator.mediaDevices?.getUserMedia) return;
+      if (!navigator.mediaDevices?.getUserMedia) return;
+
+      // Try to load voiceprint (optional)
+      let eagle = null;
+      try {
+        const { data } = await api.get("/speaker/profile");
+        if (data?.profile_base64) {
+          eagleThresholdRef.current = data.threshold || DEFAULT_THRESHOLD;
+          // Decode base64 → Uint8Array
+          const bin = atob(data.profile_base64);
+          const bytes = new Uint8Array(bin.length);
+          for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+          try {
+            const profile = { bytes };
+            eagle = await Eagle.create(
+              accessKey,
+              { publicPath: "/models/eagle_params.pv", forceWrite: true },
+              profile,
+              (scores) => {
+                if (Array.isArray(scores) && scores.length > 0) {
+                  eagleScoresRef.current.push(scores[0]);
+                }
+              },
+            );
+            eagleRef.current = eagle;
+          } catch (eagleErr) {
+            console.warn("Eagle init failed, falling back to no voiceprint:", eagleErr?.message);
+          }
+        }
+      } catch {
+        // 404 = not enrolled — fine, just skip Eagle
+      }
+
       try {
         const keyword = {
-          publicPath: `${process.env.PUBLIC_URL || ""}/models/hi_yaar.ppn`,
+          publicPath: "/models/hi_yaar.ppn",
           label: "Hi Yaar",
           forceWrite: true,
         };
         const model = {
-          publicPath: `${process.env.PUBLIC_URL || ""}/models/porcupine_params.pv`,
+          publicPath: "/models/porcupine_params.pv",
           forceWrite: true,
         };
         const worker = await PorcupineWorker.create(
           accessKey,
           keyword,
-          (detection) => {
-            // Fire a global event — VoiceMicButton will take over
-            window.dispatchEvent(
-              new CustomEvent("life:wake", { detail: { label: detection?.label || "Hi Yaar" } }),
-            );
-            // Pause ourselves so the mic is free for recording
-            (async () => {
-              try {
-                if (subscribedRef.current && porcupineRef.current) {
-                  await WebVoiceProcessor.unsubscribe(porcupineRef.current);
-                  subscribedRef.current = false;
-                }
-              } catch (_) {}
-            })();
+          async () => {
+            // Verify before opening mic for chat
+            if (verifyingRef.current) return;
+            // Pause Porcupine first to free mic
+            try {
+              if (subscribedPorcupineRef.current && porcupineRef.current) {
+                await WebVoiceProcessor.unsubscribe(porcupineRef.current);
+                subscribedPorcupineRef.current = false;
+              }
+            } catch {}
+
+            if (eagleRef.current) {
+              const ok = await verifySpeaker(eagleRef.current);
+              if (ok) {
+                fireWake();
+              } else {
+                // Imposter — silently resume Porcupine
+                try {
+                  await WebVoiceProcessor.subscribe(porcupineRef.current);
+                  subscribedPorcupineRef.current = true;
+                } catch {}
+              }
+            } else {
+              fireWake();
+            }
           },
           model,
         );
         if (cancelled) { await worker.terminate(); return; }
         porcupineRef.current = worker;
         await WebVoiceProcessor.subscribe(worker);
-        subscribedRef.current = true;
+        subscribedPorcupineRef.current = true;
       } catch (err) {
-        // Don't crash the app — just log. User can retry via settings toggle.
         console.warn("HiYaar wake word init failed:", err?.message || err);
       }
     };
 
     start();
 
-    // Allow VoiceMicButton to re-enable us after it stops recording
     const onResume = async () => {
       if (!getWakeEnabled() || !getPicovoiceKey()) return;
-      if (subscribedRef.current) return;
+      if (subscribedPorcupineRef.current) return;
       if (!porcupineRef.current) { await start(); return; }
       try {
         await WebVoiceProcessor.subscribe(porcupineRef.current);
-        subscribedRef.current = true;
-      } catch (_) {}
+        subscribedPorcupineRef.current = true;
+      } catch {}
     };
     window.addEventListener("life:resume-wake", onResume);
 
     return () => {
       cancelled = true;
       window.removeEventListener("life:resume-wake", onResume);
-      stop();
+      stopAll();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getWakeEnabled(), getPicovoiceKey()]);
