@@ -46,6 +46,21 @@ Android APK (Capacitor WebView) ──► loads ──► Vercel (React frontend
 - **Level 1**: Shake-to-talk gesture (quick add once Level 3 voice pipeline exists)
 - ~~Level 2 Google Assistant~~ — **SKIPPED per user decision**
 
+### P1 — Yaar Whisper Mode (lives inside Phase B service)
+Discreet reminders: never blasts aloud first. Yaar gently summons → waits for consent → then speaks.
+- Default ALL reminders: discreet (chime + optional soft name)
+- Repeats until user responds OR max-attempts hit, then quietly drops to notification badge
+- Defaults: soft chime / "Qasim" / 30s gap / 5 attempts / fallback = badge
+- All four configurable in Settings:
+  - Summon style: chime-only / chime+name / name-only
+  - Summon name: free text (Qasim / Bhai / Jaan / custom)
+  - Gap between attempts: 10s / 20s / 30s / 1m / 2m / 5m
+  - Max attempts: 1-10 then fallback (silent / badge / vibration only)
+- Per-reminder override flag when creating reminder
+- Once user responds (any wake-trigger), Yaar speaks full reminder + follow-ups (mark done / snooze / move)
+- Mode toggles (Home/Out/Quiet/Sleep): **rejected by user** — per-reminder enough
+- Why Phase B: needs always-on foreground service to chime even when app closed/locked + recognize wake response
+
 ### P2 — Hygiene
 - Rotate MongoDB Atlas password (was exposed in chat — user to do)
 - `DialogDescription` a11y prop on all shadcn Dialogs
