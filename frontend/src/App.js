@@ -21,10 +21,12 @@ import Motivation from "./pages/Motivation";
 import Meditate from "./pages/Meditate";
 import SelfCare from "./pages/SelfCare";
 import Events from "./pages/Events";
+import Reminders from "./pages/Reminders";
 import Review from "./pages/Review";
 import Sanctuary from "./pages/Sanctuary";
 import VoiceMicButton from "./components/VoiceMicButton";
 import BriefScheduler from "./components/BriefScheduler";
+import WhisperEngine from "./components/WhisperEngine";
 import "./App.css";
 
 function Shell() {
@@ -47,6 +49,7 @@ function Shell() {
           <Route path="/meditate" element={<Meditate />} />
           <Route path="/self-care" element={<SelfCare />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/reminders" element={<Reminders />} />
           <Route path="/review" element={<Review />} />
           <Route path="/sanctuary" element={<Sanctuary />} />
         </Routes>
@@ -56,6 +59,7 @@ function Shell() {
       <WakeSettings />
       <BriefScheduler />
       <HiYaarListener />
+      <WhisperEngine />
     </div>
   );
 }

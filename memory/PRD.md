@@ -25,13 +25,10 @@ Android APK (Capacitor WebView) ──► loads ──► Vercel (React frontend
 - Sanctuary immersive player
 - Capacitor Android wrapper, custom moss-green "Lb" icon + cream splash
 - Cloud deploy: Railway backend + MongoDB Atlas + Vercel frontend (Feb 2026)
-- **JWT auth / lock screen** (Feb 2026) — `/api/auth/login`, `/api/auth/me`, bearer-token middleware on all `/api/*` routes (except `/api/`, `/api/auth/*`, `/api/uploads/*`). 30-day tokens. 5-fail 15-min brute force lockout. AuthGate component wraps full app. Middleware is env-gated — no `AUTH_EMAIL`/`AUTH_PASSWORD` means auth disabled (dev mode).
-- **Hands-free Phase A** (Feb 2026)
-  - "Hi Yaar" wake word (Picovoice Porcupine web SDK) — `HiYaarListener` runs in WebView while app is open, detects wake word via WASM, auto-starts VoiceMicButton recording
-  - Shake-to-talk (DeviceMotion API, ~2.2g threshold, 2.5s cooldown) — `useShakeToTalk` hook
-  - `WakeSettings` dialog (gear icon near mic) — paste Picovoice AccessKey, toggle features
-  - Cross-component events: `life:wake` (fire to start recording), `life:resume-wake` (fire when recording done), `life:wake-settings` (fire when user toggles)
-  - User setup: `/app/memory/HI_YAAR_SETUP.md` — sign up + train + download .ppn + place in `/frontend/public/models/`
+- **JWT auth / lock screen** (Feb 2026) — `/api/auth/login`, `/api/auth/me`, bearer-token middleware. AuthGate wraps full app. Env-gated.
+- **Hands-free Phase A** (Feb 2026) — "Hi Yaar" wake word + Shake-to-talk + Eagle voiceprint. WakeSettings dialog. Foreground only.
+- **Yaar Whisper Mode** (Feb 2026) — `/reminders` page, backend `/api/reminders/*`, WhisperEngine polls + summons gently with chime + name. Configurable summon style/name/gap/max/fallback. Per-reminder overrides. Acknowledged via tap or wake word.
+- **Phase B native scaffold** (Feb 2026) — `HandsFreeService.kt` foreground service, `HandsFreePlugin.kt` Capacitor plugin, AndroidManifest + Gradle deps for Picovoice Android SDKs. JS bridge `handsFreeBridge.js` auto-copies models from web to filesDir. Always-on toggle in Settings. **Code committed but UNTESTED — needs user Android Studio rebuild + iteration**.
 
 ## Active blockers
 - None code-wise — awaiting user to:

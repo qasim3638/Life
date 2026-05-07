@@ -7,6 +7,7 @@
     "@capacitor/android": "^6",
     "@capacitor/cli": "^6",
     "@capacitor/core": "^6",
+    "@capacitor/filesystem": "^8.1.2",
     "@capacitor/local-notifications": "^6",
     "@capacitor/splash-screen": "^6",
     "@hookform/resolvers": "^5.0.1",

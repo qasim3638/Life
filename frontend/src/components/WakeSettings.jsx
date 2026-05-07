@@ -14,7 +14,12 @@ import {
 } from "../lib/useShakeToTalk";
 import EnrollVoiceprint from "./EnrollVoiceprint";
 import { api } from "../lib/api";
+import { isNative, startHandsFree, stopHandsFree, onHandsFreeWake } from "../lib/handsFreeBridge";
 import { toast } from "sonner";
+
+const ALWAYS_ON_KEY = "life_handsfree_always_on";
+export const getAlwaysOn = () => (localStorage.getItem(ALWAYS_ON_KEY) || "off") === "on";
+export const setAlwaysOn = (on) => localStorage.setItem(ALWAYS_ON_KEY, on ? "on" : "off");
 
 export default function WakeSettings() {
   const [open, setOpen] = useState(false);
@@ -23,6 +28,8 @@ export default function WakeSettings() {
   const [key, setKey] = useState(getPicovoiceKey());
   const [enrollOpen, setEnrollOpen] = useState(false);
   const [voiceprintEnrolled, setVoiceprintEnrolled] = useState(false);
+  const [alwaysOn, setAlwaysOnState] = useState(getAlwaysOn());
+  const native = isNative();
 
   // Check enrollment status whenever the dialog opens
   useEffect(() => {
@@ -38,6 +45,48 @@ export default function WakeSettings() {
     })();
     return () => { cancelled = true; };
   }, [open]);
+
+  // Wire native foreground-service wake events → existing life:wake event.
+  useEffect(() => {
+    if (!native) return;
+    const off = onHandsFreeWake(() => {
+      window.dispatchEvent(new CustomEvent("life:wake", { detail: { label: "Hi Yaar (native)" } }));
+    });
+    return off;
+  }, [native]);
+
+  const toggleAlwaysOn = async () => {
+    if (!native) {
+      toast.error("Always-on works only inside the installed app.");
+      return;
+    }
+    const next = !alwaysOn;
+    if (next) {
+      if (!key.trim()) { toast.error("Save your AccessKey first."); return; }
+      let profileBase64 = null;
+      let threshold = 0.6;
+      try {
+        const { data } = await api.get("/speaker/profile");
+        if (data?.profile_base64) {
+          profileBase64 = data.profile_base64;
+          threshold = data.threshold || 0.6;
+        }
+      } catch {}
+      const res = await startHandsFree({ accessKey: key.trim(), profileBase64, threshold });
+      if (!res.started) {
+        toast.error(`Couldn't start: ${res.reason || "unknown"}`);
+        return;
+      }
+      setAlwaysOn(true);
+      setAlwaysOnState(true);
+      toast.message("Always-on listening activated");
+    } else {
+      await stopHandsFree();
+      setAlwaysOn(false);
+      setAlwaysOnState(false);
+      toast.message("Always-on stopped");
+    }
+  };
 
   const notify = () => window.dispatchEvent(new Event("life:wake-settings"));
 
@@ -221,6 +270,26 @@ export default function WakeSettings() {
                   aria-label="Toggle shake"
                 >
                   <span className={`absolute top-0.5 w-6 h-6 rounded-full bg-white shadow transition-transform ${shake ? "translate-x-[22px]" : "translate-x-0.5"}`}/>
+                </button>
+              </div>
+            </div>
+
+            {/* Always-on (Phase B native) */}
+            <div className="rounded-2xl bg-white border border-sand p-4 mb-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium text-[#2D312E]">Always-on listening</p>
+                  <p className="text-xs text-[#6B7270]">Yaar listens with screen off (uses ~3% battery/day)</p>
+                  {!native && <p className="text-[10px] text-[#C27A62] mt-1">Only works in installed Android app</p>}
+                </div>
+                <button
+                  onClick={toggleAlwaysOn}
+                  disabled={!native}
+                  className={`w-12 h-7 rounded-full transition-colors relative ${alwaysOn ? "bg-[#59745D]" : "bg-[#E5DED3]"} disabled:opacity-40`}
+                  data-testid="alwayson-toggle"
+                  aria-label="Toggle always-on"
+                >
+                  <span className={`absolute top-0.5 w-6 h-6 rounded-full bg-white shadow transition-transform ${alwaysOn ? "translate-x-[22px]" : "translate-x-0.5"}`}/>
                 </button>
               </div>
             </div>

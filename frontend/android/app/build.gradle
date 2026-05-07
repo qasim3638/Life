@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     namespace "com.qasim.lifeblueprint"
@@ -36,6 +37,15 @@ dependencies {
     implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
     implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
     implementation project(':capacitor-android')
+
+    // --- Phase B: native always-on hands-free ---
+    // Picovoice wake word + speaker recognition Android SDKs
+    implementation 'ai.picovoice:porcupine-android:3.0.5'
+    implementation 'ai.picovoice:eagle-android:1.0.2'
+    implementation 'ai.picovoice:android-voice-processor:1.0.3'
+    // Kotlin stdlib (Capacitor brings androidx already)
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.10"
+
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
