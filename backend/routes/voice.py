@@ -86,25 +86,72 @@ async def transcribe_voice(audio: UploadFile = File(...)):
 # --------- Text → Speech ---------
 class SpeakRequest(BaseModel):
     text: str = Field(..., min_length=1, max_length=4000)
-    voice: str = "coral"   # coral = warm, friendly; sage = wise; nova = energetic
+    voice: str = "coral"   # OpenAI voice OR ElevenLabs voice_id (auto-detected by length)
     speed: float = 1.0
+    provider: str = "auto"  # "openai" | "elevenlabs" | "auto" (use user setting)
 
 
 # Available voices on tts-1
 ALLOWED_VOICES = {"alloy", "ash", "coral", "echo", "fable", "nova", "onyx", "sage", "shimmer"}
 
 
+async def _speak_elevenlabs(text: str, voice_id: str) -> bytes:
+    """Generate via ElevenLabs. Raises HTTPException on failure."""
+    api_key = os.environ.get("ELEVENLABS_API_KEY")
+    if not api_key:
+        raise HTTPException(500, "ElevenLabs not configured")
+    try:
+        from elevenlabs import ElevenLabs, VoiceSettings
+        client = ElevenLabs(api_key=api_key)
+        settings = VoiceSettings(
+            stability=0.55, similarity_boost=0.75, style=0.3, use_speaker_boost=True,
+        )
+        audio = client.text_to_speech.convert(
+            text=text[:4000],
+            voice_id=voice_id,
+            model_id="eleven_multilingual_v2",
+            voice_settings=settings,
+            output_format="mp3_44100_128",
+        )
+        return b"".join(audio)
+    except Exception as e:
+        logger.exception("ElevenLabs TTS failed")
+        raise HTTPException(500, f"ElevenLabs error: {str(e)[:120]}")
+
+
+async def _get_voice_pref() -> dict:
+    """Load user voice preference from DB."""
+    from db import db
+    doc = await db.voice_pref.find_one({"_id": "primary"}, {"_id": 0})
+    return doc or {"provider": "openai", "voice": "coral"}
+
+
 @router.post("/voice/speak")
 async def speak(payload: SpeakRequest):
-    """Convert short Yaar reply into MP3 audio. Returned as audio/mpeg stream so the
-    browser can use `new Audio(blobUrl)` for instant playback."""
+    """Convert short Yaar reply into MP3 audio. Routes to OpenAI or ElevenLabs
+    based on payload.provider OR the user's saved voice preference."""
+    # Resolve provider + voice
+    provider = payload.provider
+    voice = payload.voice
+    if provider == "auto":
+        pref = await _get_voice_pref()
+        provider = pref.get("provider", "openai")
+        voice = pref.get("voice", voice) or voice
+
+    if provider == "elevenlabs":
+        audio_bytes = await _speak_elevenlabs(payload.text.strip(), voice)
+        return StreamingResponse(
+            io.BytesIO(audio_bytes),
+            media_type="audio/mpeg",
+            headers={"Content-Disposition": "inline; filename=yaar.mp3"},
+        )
+
+    # OpenAI fallback
     api_key = os.environ.get("EMERGENT_LLM_KEY")
     if not api_key:
         raise HTTPException(500, "Voice replies not configured")
-
-    voice = payload.voice if payload.voice in ALLOWED_VOICES else "coral"
+    voice = voice if voice in ALLOWED_VOICES else "coral"
     speed = max(0.5, min(2.0, float(payload.speed or 1.0)))
-
     try:
         tts = OpenAITextToSpeech(api_key=api_key)
         audio_bytes = await tts.generate_speech(
@@ -122,6 +169,29 @@ async def speak(payload: SpeakRequest):
     except Exception as e:
         logger.exception("TTS failed")
         raise HTTPException(500, f"Couldn't synthesize: {str(e)[:120]}")
+
+
+# --------- Voice preference (provider + voice id) ---------
+class VoicePref(BaseModel):
+    provider: str = Field(default="openai", pattern=r"^(openai|elevenlabs)$")
+    voice: str = "coral"
+
+
+@router.get("/voice/preference", response_model=VoicePref)
+async def get_voice_pref() -> VoicePref:
+    pref = await _get_voice_pref()
+    return VoicePref(**pref)
+
+
+@router.put("/voice/preference", response_model=VoicePref)
+async def set_voice_pref(body: VoicePref) -> VoicePref:
+    from db import db
+    await db.voice_pref.update_one(
+        {"_id": "primary"},
+        {"$set": body.model_dump()},
+        upsert=True,
+    )
+    return body
 
 
 # --------- Proactive briefs ---------
