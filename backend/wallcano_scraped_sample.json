@@ -1,0 +1,172 @@
+[
+  {
+    "supplier": "Wallcano",
+    "sku": "POL60120A3",
+    "name": "ALLURE GREY POLISHED 60X120 CM",
+    "size": null,
+    "finish": "POLISHED",
+    "material": "Porcelain",
+    "tiles_per_box": 2,
+    "sqm_per_box": 1.44,
+    "stock_sqm": 498.24,
+    "stock_status": "In Stock",
+    "cost_per_sqm": 14.99,
+    "selling_price_per_sqm": 28.48,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732433657_0.jpg"
+    ]
+  },
+  {
+    "supplier": "Wallcano",
+    "sku": "FEA3045A1",
+    "name": "HARD ROCK BLACK & WHITE MATT 30X45 CM",
+    "size": null,
+    "finish": "FEATURE TILES",
+    "material": "Porcelain",
+    "tiles_per_box": 5,
+    "sqm_per_box": 0.675,
+    "stock_sqm": 115.295,
+    "stock_status": "In Stock",
+    "cost_per_sqm": 12.99,
+    "selling_price_per_sqm": 24.68,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732433176_0.jpg"
+    ]
+  },
+  {
+    "supplier": "Wallcano",
+    "sku": "FEA3045A2",
+    "name": "HARD ROCK WHITE MATT 30X45 CM",
+    "size": null,
+    "finish": "FEATURE TILES",
+    "material": "Porcelain",
+    "tiles_per_box": 5,
+    "sqm_per_box": 0.675,
+    "stock_sqm": 95.43,
+    "stock_status": "In Stock",
+    "cost_per_sqm": 12.99,
+    "selling_price_per_sqm": 24.68,
+    "images": [
+      "https://www.wallcanotiles.com/products/1766128307_0.jpeg"
+    ]
+  },
+  {
+    "supplier": "Wallcano",
+    "sku": "FEA3045A4",
+    "name": "MOONSTONE COTTA (009) MATT 30X45 CM",
+    "size": null,
+    "finish": "FEATURE TILES",
+    "material": "Porcelain",
+    "tiles_per_box": 5,
+    "sqm_per_box": 0.675,
+    "stock_sqm": 18.76,
+    "stock_status": "Low Stock",
+    "cost_per_sqm": 12.99,
+    "selling_price_per_sqm": 24.68,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732433056_0.jpg"
+    ]
+  },
+  {
+    "supplier": "Wallcano",
+    "sku": "FEA3045A3",
+    "name": "MOONSTONE GRIS (007) MATT 30X45 CM",
+    "size": null,
+    "finish": "FEATURE TILES",
+    "material": "Porcelain",
+    "tiles_per_box": 5,
+    "sqm_per_box": 0.675,
+    "stock_sqm": 422.145,
+    "stock_status": "In Stock",
+    "cost_per_sqm": 12.99,
+    "selling_price_per_sqm": 24.68,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732432928_0.jpg"
+    ]
+  },
+  {
+    "supplier": "Wallcano",
+    "sku": "FEA3045A5",
+    "name": "MOONSTONE GREY (030) MATT 30X45 CM",
+    "size": null,
+    "finish": "FEATURE TILES",
+    "material": "Porcelain",
+    "tiles_per_box": 5,
+    "sqm_per_box": 0.675,
+    "stock_sqm": 92.06,
+    "stock_status": "In Stock",
+    "cost_per_sqm": 12.99,
+    "selling_price_per_sqm": 24.68,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732432845_0.jpg"
+    ]
+  },
+  {
+    "supplier": "Wallcano",
+    "sku": "FEA3045A6",
+    "name": "MOONSTONE WHITE (023) MATT 30X45 CM",
+    "size": null,
+    "finish": "FEATURE TILES",
+    "material": "Porcelain",
+    "tiles_per_box": 5,
+    "sqm_per_box": 0.675,
+    "stock_sqm": 28.75,
+    "stock_status": "In Stock",
+    "cost_per_sqm": 12.99,
+    "selling_price_per_sqm": 24.68,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732432771_0.jpg"
+    ]
+  },
+  {
+    "supplier": "Wallcano",
+    "sku": "FEA3060A1",
+    "name": "BRICKSTONE GREY (006) MATT 30X60 CM",
+    "size": null,
+    "finish": "FEATURE TILES",
+    "material": "Porcelain",
+    "tiles_per_box": 5,
+    "sqm_per_box": 0.9,
+    "stock_sqm": 226.845,
+    "stock_status": "In Stock",
+    "cost_per_sqm": 13.49,
+    "selling_price_per_sqm": 25.63,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732432698_0.jpg"
+    ]
+  },
+  {
+    "supplier": "Wallcano",
+    "sku": "FEA3060A2",
+    "name": "BRICKSTONE NATURAL (029) MATT 30X60 CM",
+    "size": null,
+    "finish": "FEATURE TILES",
+    "material": "Porcelain",
+    "tiles_per_box": 5,
+    "sqm_per_box": 0.9,
+    "stock_sqm": 176.265,
+    "stock_status": "In Stock",
+    "cost_per_sqm": 13.49,
+    "selling_price_per_sqm": 25.63,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732432636_0.jpg"
+    ]
+  },
+  {
+    "supplier": "Wallcano",
+    "sku": "FEA3060A3",
+    "name": "JAISALMER BEIGE (004) MATT 30X60 CM",
+    "size": null,
+    "finish": "FEATURE TILES",
+    "material": "Porcelain",
+    "tiles_per_box": 5,
+    "sqm_per_box": 0.9,
+    "stock_sqm": 358.16,
+    "stock_status": "In Stock",
+    "cost_per_sqm": 13.49,
+    "selling_price_per_sqm": 25.63,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732432551_0.jpg"
+    ]
+  }
+]

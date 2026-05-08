@@ -1,0 +1,39 @@
+{
+  "summary": "Verified the new '🛒 New order' Telegram alert pipeline end-to-end. Built a 13-test pytest suite covering (a) auth gating on the new POST /api/notifications/telegram/test-new-order, (b) all four validation error paths (disabled / event toggle off / missing bot_token / missing chat_ids), (c) happy path returning {ok, result, preview_text} with correct shape including '🛒' + 'New order' + 'TEST', (d) in-memory dedupe behaviour (2nd call within window returns result.skipped='dedupe_window'), (e) regression on existing /telegram/test endpoint, (f) defaults still set new_order=True in both TelegramEventToggles and services.telegram_notify._default_config, and (g) presence of fire_and_forget('new_order', ..., dedupe_key='new-order:{order_id}') wire-up in all 3 source paths (server.py checkout.session.completed, server.py payment_intent.succeeded wallet-express, routes/shop.py poll-path post send_shop_order_confirmation). All 13/13 tests PASSED. Original telegram config snapshotted on entry and restored on teardown so preview env is undisturbed.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "services/telegram_notify.py", "issue": "DEDUPE_WINDOW_S is 60*60 (1 hour), not 30s as mentioned in the review request notes. The behaviour is still correct (tests confirm second call within window is suppressed) — just a docstring/spec drift to be aware of."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_telegram_new_order_alert.py",
+    "/app/test_reports/pytest/telegram_new_order.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "All 3 fire_and_forget wire-ups use the SAME dedupe_key 'new-order:{order_id}' which is correct — whichever path (webhook checkout-session, webhook payment-intent, or polling status) lands first sends the alert and the others are silently dropped by the 1h dedupe window. No double-fire risk. ",
+    "The /test-new-order endpoint correctly uses a DIFFERENT dedupe key prefix ('new-order-test:') so test pings cannot suppress real-order pings — verified by code inspection.",
+    "Each fire_and_forget block is correctly wrapped in try/except with logging.warning on failure, so a Telegram outage will not break Stripe webhooks or the order confirmation flow.",
+    "Trade badge (' · TRADE') is conditionally appended when order.trade_metadata is present in all 3 paths — consistent.",
+    "Total formatting uses f'£{float(...):.2f}' uniformly across all 3 paths — consistent.",
+    "Wallet Express path appends ' · Wallet Express' to the customer line for source disambiguation — nice touch.",
+    "Note: server.py is 9600 lines — recommend splitting into modular files (file-size code review rule >700 lines). Not blocking this feature.",
+    "DEDUPE_WINDOW_S = 1 hour is generous; if Stripe retries a webhook >1h later (rare but possible), the alert COULD fire twice. Consider persisting dedupe in Mongo if duplicates ever appear."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_telegram_new_order_alert.py (created)"
+  ],
+  "success_rate": {"backend": "100%", "frontend": "n/a (skipped per request)"},
+  "test_credentials": "admin@test.com / admin123 (super_admin) — login via POST /api/auth/login confirmed working",
+  "seed_data_creation": "None. Telegram config was temporarily mutated for tests but the autouse fixture snapshots-and-restores the original config on teardown.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Re-running pytest tests/test_telegram_new_order_alert.py is fully repeatable — fixture restores config and uses a fake bot_token (1234567890:AA-fake...) so no real Telegram traffic is generated. The dedupe is in-process so a backend restart between runs gives a clean ledger. If a future change moves notification config to a different collection or env-driven, update _save_config helper.",
+  "rca of the issue": "N/A — feature wire-up was VERIFIED present and working. All 4 validation gates trip with correct status/detail. Happy path confirmed reaches notify_event (preview_text returned, result is dict with sent/errors/skipped). Dedupe correctly suppresses 2nd call within window."
+}

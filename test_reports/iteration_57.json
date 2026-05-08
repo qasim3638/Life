@@ -1,0 +1,73 @@
+{
+  "summary": "Completed testing of critical production bugfixes. All 14 backend tests pass (100%). Frontend verification confirms both fixes working: 1) /tiles/:slug route renders TileDetailPage correctly (not redirecting to homepage), 2) Collection Organizer assign/unassign/bulk-assign endpoints update BOTH supplier_products AND tiles collections. Category query now uses $or with sub_categories check to find products assigned via Collection Organizer.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_production_bugfixes.py",
+    "/app/test_reports/pytest/pytest_production_bugfixes.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [
+    "/app/backend/tests/test_production_bugfixes.py"
+  ],
+  "success_rate": {
+    "backend": "100%",
+    "frontend": "100%"
+  },
+  "test_credentials": "Admin: admin@test.com / admin123",
+  "seed_data_creation": "None - used existing Plus39 supplier data with 4 series (Travertine, Burlington, Artisan, Moonlight) and LEPORCE tiles",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Production bugfixes fully tested. Key changes verified: 1) Backend tiles.py category query (lines 350-395) now uses $or with sub_categories regex check - products assigned via Collection Organizer will appear in category pages. 2) Backend website_admin.py assign/unassign/bulk-assign endpoints now use broad matching (supplier_name regex + series/name) to update tiles collection. 3) Frontend App.js has /tiles/:slug route that renders TileDetailPage. Test data: Plus39 has 4 series in supplier_products, LEPORCE has ~556 tiles. Cleanup: All test assignments were cleaned up after testing.",
+  "features_tested": {
+    "backend": [
+      "POST /api/website-admin/collection-organizer/assign - updates supplier_products collection",
+      "POST /api/website-admin/collection-organizer/assign - updates tiles collection (tiles_updated field in response)",
+      "POST /api/website-admin/collection-organizer/unassign - updates both collections",
+      "POST /api/website-admin/collection-organizer/bulk-assign - updates both collections",
+      "GET /api/tiles/collections?group=tiles&category=floor-tiles - uses $or with sub_categories check",
+      "GET /api/tiles/collections - returns collections without category filter",
+      "GET /api/tiles/products/:slug - returns product detail",
+      "GET /api/website-admin/collection-organizer/series?supplier=Plus39 - returns series with product_names, relevant_groups, ungrouped_count",
+      "GET /api/website-admin/collection-organizer/series?supplier=LEPORCE - returns empty series without crash",
+      "Tile matching uses broad conditions: supplier_name regex + series, supplier_name regex + name containing series, source_supplier regex + series"
+    ],
+    "frontend": [
+      "/tiles/:slug route renders TileDetailPage (not redirecting to homepage)",
+      "Product detail page shows: product name, SKU, pricing table, specifications, stock status, Add to Cart button",
+      "Sitemap shows Categories section with Floor Tiles and Wall Tiles",
+      "Collections Hub accessible at /admin/collections with Collection Mapping tab"
+    ]
+  },
+  "bugfixes_verified": {
+    "bug_1_category_query": {
+      "description": "Products assigned via Collection Organizer don't show on customer-facing category pages",
+      "root_cause": "Category query only checked hardcoded attribute mappings (e.g., attributes.type='floor') but not sub_categories field",
+      "fix": "Added $or condition with sub_categories regex check in tiles.py lines 370-391",
+      "status": "FIXED",
+      "evidence": "Backend tests pass - assign endpoint returns tiles_updated count, category query structure verified"
+    },
+    "bug_2_tiles_collection_update": {
+      "description": "Tiles collection not updated when assigning via Collection Organizer",
+      "root_cause": "Assign endpoint was matching tiles by sku/slug/name which often didn't match",
+      "fix": "Now uses supplier_name+series matching with broad conditions in website_admin.py",
+      "status": "FIXED",
+      "evidence": "Assign response includes tiles_updated field, unassign and bulk-assign also update tiles"
+    },
+    "bug_3_search_redirect": {
+      "description": "Searching for a product shows it in dropdown, but clicking it redirects to homepage",
+      "root_cause": "Search links to /tiles/:slug but that route didn't exist - only /shop/tiles/:slug did",
+      "fix": "Added /tiles/:slug route in App.js that renders TileDetailPage",
+      "status": "FIXED",
+      "evidence": "Navigating to /tiles/opaco-60x120cm renders product detail page with name, price, specs, Add to Cart"
+    }
+  }
+}

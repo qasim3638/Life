@@ -1,0 +1,72 @@
+{
+  "summary": "Tested Next Day Delivery feature. All 8 features working correctly: Backend API returns 5 suppliers (Canopy, LEPORCE, Splendour, Ultra Tile, Verona), Admin UI shows Next Day Delivery section below Delivery Estimate with toggle, supplier checklist with search and Select All, 'Next Day' badge appears next to selected suppliers, settings persist after save/reload, Customer page shows green 'Next Day Delivery Available' with countdown for selected suppliers, gray 'Delivery Information' without countdown for non-selected suppliers.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "features_tested": {
+    "GET /api/website-admin/suppliers-list returns supplier names": {
+      "status": "PASS",
+      "details": "Returns 5 suppliers: Canopy, LEPORCE, Splendour, Ultra Tile, Verona"
+    },
+    "Admin: Next Day Delivery section exists below Delivery Estimate": {
+      "status": "PASS",
+      "details": "Section with Clock icon, collapsible, shows 'Enable Next Day Delivery' toggle"
+    },
+    "Admin: Toggle reveals supplier checklist with search and Select All": {
+      "status": "PASS",
+      "details": "When enabled, shows search input (data-testid='supplier-search-input'), Select All button (data-testid='toggle-all-suppliers'), and supplier checklist (data-testid='supplier-checklist')"
+    },
+    "Admin: Checking supplier shows 'Next Day' badge": {
+      "status": "PASS",
+      "details": "Green 'Next Day' badge appears next to checked supplier names"
+    },
+    "Admin: Saving settings persists to backend": {
+      "status": "PASS",
+      "details": "POST /api/website-admin/collection-detail-settings saves nextDayDelivery config, toast shows 'Settings saved successfully!'"
+    },
+    "Admin: Reloading page retains saved settings": {
+      "status": "PASS",
+      "details": "After reload, toggle remains enabled and selected suppliers remain checked"
+    },
+    "Customer: Non-next-day supplier shows 'Delivery Information' (gray)": {
+      "status": "PASS",
+      "details": "Gray background, gray truck icon, 'Delivery Information' text, NO countdown timer"
+    },
+    "Customer: Next-day supplier shows 'Next Day Delivery Available' (green)": {
+      "status": "PASS",
+      "details": "Green gradient background, green truck icon, 'Next Day Delivery Available' text, countdown timer showing hours:minutes:seconds"
+    }
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_next_day_delivery.py",
+    "/app/test_reports/pytest/pytest_next_day_delivery.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [
+    "/app/backend/tests/test_next_day_delivery.py"
+  ],
+  "success_rate": {
+    "backend": "100% (8/8 tests passed)",
+    "frontend": "100% (all 8 features working)"
+  },
+  "test_credentials": {
+    "admin_email": "admin@test.com",
+    "admin_password": "admin123",
+    "preview_url": "https://feature-verification-7.preview.emergentagent.com"
+  },
+  "seed_data_creation": "No seed data needed - used existing suppliers from tiles collection",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Next Day Delivery feature is fully implemented. Admin can enable/disable globally via Collections > Detail Page tab > Next Day Delivery section. Supplier checklist shows all suppliers from GET /api/website-admin/suppliers-list. Settings saved to /api/website-admin/collection-detail-settings. Customer page at /shop/collection/{name} reads pageSettings.nextDayDelivery and compares selectedProduct.supplier against suppliers array to determine which delivery UI to show. Currently Canopy is enabled for next day delivery.",
+  "mocked_apis": {
+    "has_mocked_apis": false,
+    "mocked_apis_list": []
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "summary": "Iter 164 - verified BANK HOLIDAY banner cleanup primitives: (1) new POST /api/admin/marketing-studio/delete-hero-slide-by-text, (2) ?aggressive=true on cleanup-orphan-hero-slides, (3) _orphan_slides_cleanup_kickstart background task on boot, plus the red 'Delete slide by text' button in Marketing Studio header. 9/9 new pytest + 38/38+1 regression + live boot-kickstart test all pass.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "startup log", "issue": "logger.info('[orphan-slides] auto-cleaned %d ...') does not appear in /var/log/supervisor/backend.{out,err}.log even when the kickstart runs and deletes slides. Same pattern affects existing [gsc] and [visualizer] startup log lines, so this is a pre-existing logging-configuration issue (uvicorn installs logging handlers before server.py's logging.basicConfig() runs). Functionality is not affected - cleanup verifiably works. Purely an observability nit."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_marketing_studio_iter164.py",
+    "/app/backend/tests/test_iter164_boot_kickstart.py",
+    "/app/test_reports/pytest/iter164_regression.xml"
+  ],
+  "action_items": [
+    "Optional: fix the startup logging so [orphan-slides] / [gsc] / [visualizer] INFO lines are captured in supervisor logs - gives operators audit trail of what was cleaned on each deploy. One-liner: move logging.basicConfig() to before uvicorn imports, or use uvicorn's log_config to enable the server-module logger. No user-facing regression."
+  ],
+  "critical_code_review_comments": [
+    "routes/marketing_studio.py line 538: delete_one({'image': slide['image'], 'title': slide.get('title','')}) in cleanup_orphan_hero_slides relies on (image,title) being unique. If two legacy slides share the same image+title the loop deletes only one per iteration; the next slide will be hit on the next call. Minor - switching to delete by id if present would be more surgical.",
+    "server.py _orphan_slides_cleanup_kickstart reuses the same (image,title) deletion heuristic; same minor non-uniqueness concern.",
+    "delete_hero_slide_by_text scans title/badge/subtitle only - if an admin named their slide generically but put the BANK HOLIDAY text in an alt_text or link_url, it won't be caught. In practice this is fine; flagging for future extension.",
+    "server.py still has the self-assignment typo from iter 163: update['scheduled_start'] = update['scheduled_start'] = now_iso around line 561 of routes/marketing_studio.py (not in the iter 164 diff - carried over)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_marketing_studio_iter164.py (new)",
+    "/app/backend/tests/test_iter164_boot_kickstart.py (new)"
+  ],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "admin@test.com / admin123 (from /app/memory/test_credentials.md)",
+  "seed_data_creation": "Each test inserts its own hero_slides and marketing_assets docs with PYTEST-/ITER164-prefixed identifiers and cleans them up in a finally block. No persistent data created.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "New test files: /app/backend/tests/test_marketing_studio_iter164.py (9 test cases, runs against live backend) and /app/backend/tests/test_iter164_boot_kickstart.py (standalone script - does 'sudo supervisorctl restart backend' so don't run during critical testing; sleeps 32s for kickstart). Frontend buttons live in /admin/marketing-studio header with testids marketing-studio-delete-slide-by-text-btn (red) and marketing-studio-cleanup-orphans-btn (amber). window.prompt default is pre-filled with 'BANK HOLIDAY'.",
+  "detailed_verification": {
+    "pytest_iter164_new_tests": "9 passed in 7.60s - TestDeleteHeroSlideByText (auth required, <3 char rejection, empty rejection, case-insensitive title match, badge match, no-match empty response) + TestCleanupOrphansAggressive (default mode still works, aggressive accepted, aggressive removes published-asset image match Strategy-3)",
+    "pytest_regression_suite": "38 passed, 1 skipped in 23.65s - matches expectation (test_marketing_studio_hero_slides + _schedule + _unpublish + 5 visualizer files)",
+    "boot_kickstart_test": "Injected untagged slide with image matching a deleted marketing_asset. Ran `sudo supervisorctl restart backend`, slept 32s, confirmed DB count == 0. Kickstart works. (Note: log line absent from supervisor logs - see minor issue above.)",
+    "frontend_buttons_present": "Both buttons visible in header. Delete-by-text button has red border class, orphan button has amber border class.",
+    "frontend_prompt_prefill": "window.prompt dialog fires with default_value='BANK HOLIDAY' - verified via page.on('dialog') listener.",
+    "frontend_cancel_flow": "Cancelling the prompt does nothing (no API call fired, no toast) - expected behaviour.",
+    "aggressive_strategy_3_proof": "test_aggressive_removes_image_match_even_if_published explicitly proves the new Strategy-3 behaviour: marketing_asset with deleted=False AND published_to='promo_banner' is protected from non-aggressive cleanup but removed under aggressive mode."
+  }
+}

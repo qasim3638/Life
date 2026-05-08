@@ -1,0 +1,33 @@
+{
+  "summary": "Backend pytest coverage added for the new daily auto-generator on AI City Landing Pages. 14/14 tests pass (auth gating, GET envelope, PUT partial-update + 6 out-of-range 422 cases, run-now happy path with idempotent last_run_date, full drain_email_sent lifecycle via direct Mongo sandbox, and scheduler job registration). All changes to DB / settings doc are reverted on teardown.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_city_pages_autogen.py",
+    "/app/test_reports/pytest/city_pages_autogen.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "services/city_pages_autogen.py: when queue is empty AND drain_email_sent is already True, the function returns {ran:true, queue_empty:true} but does NOT update last_run_date. This means the hourly probe will re-enter the empty branch every hour (cheap, but the last_run_date gate stops being meaningful for empty days). Consider also setting last_run_date in the 'queue empty + already sent' branch for consistency.",
+    "services/city_pages_autogen.py:166: daily_count is silently clamped to 1..25 inside the tick even though the AutogenSettings pydantic model already enforces 1..25 via Field(ge=1, le=25). Defensive but redundant; either drop the clamp or document it as a fallback for legacy rows.",
+    "routes/city_landing_pages.py:471 AutogenSettings: all three fields are Optional with default=None to support partial PATCH-style PUTs. This works but is non-standard REST (PUT usually = full replace). Consider renaming to PATCH or adding a docstring note in the OpenAPI description.",
+    "scheduler.py:1040 CronTrigger(minute=25) — hourly probe is correct, but if hour_utc is changed to current UTC hour AFTER minute 25, the new value won't fire until next hour. Acceptable (matches ticket design) but worth noting in the admin UI tooltip."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_city_pages_autogen.py (new)"
+  ],
+  "success_rate": {"backend": "100% (14/14)", "frontend": "skipped (backend-only request)"},
+  "test_credentials": "admin@test.com / admin123 (from /app/memory/test_credentials.md)",
+  "seed_data_creation": "None permanent. Drain test temporarily flips all pending → generated with `_test_drain_marker=true`, then reverts on finally{}. Settings doc snapshotted + replaced on teardown.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "test_city_pages_autogen.py is self-contained and idempotent — safe to re-run. The drain test does NOT spend an LLM call when running on an empty queue (the early return covers both paths). The single run-now test clamps daily_count to 1 to keep the LLM cost minimal (~10s). If you want to add edge cases later: (a) verify drain_email_sent flag flip happens BEFORE generation when force=True on a pending queue; (b) verify settings.last_run_message string format. Both endpoints are wired through Depends(get_current_user) + _is_admin() so 401 responses come back as 403 once a valid non-admin token is supplied — auth gating tests assert in (401, 403) to be tolerant.",
+  "rca of the issue": "N/A — no bugs found. All seven feature-test items in the review request pass."
+}

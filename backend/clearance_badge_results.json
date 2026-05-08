@@ -1,0 +1,2548 @@
+{
+  "clearance_products": [
+    {
+      "url": "https://www.splendourtiles.co.uk/neutra-cream-relieve-tile-250x600",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "100610",
+      "name": "Neutra Cream Relieve Tile 250x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/helena-beige-marble-effect-tile-450x450",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "1008030",
+      "name": "Helena Beige Marble Effect Tile 450x450"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/burlington-taupe-stone-effect-tiles-200x600",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "101775",
+      "name": "Burlington Taupe Stone Effect Tiles 200x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/kuni-white-stone-effect-tile-200x1200",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "201120",
+      "name": "Kuni White Stone Effect Tile 200x1200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/prismatics-gloss-150x150-prg23-rice-cream-wall-tiles",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "2PRG23",
+      "name": "Prismatics Rice Gloss"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/burlington-grey-floor-stone-effect-tiles-472x472",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "300465",
+      "name": "Burlington Grey Floor Stone Effect Tiles 472x472"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/armony-bone-decor-stone-effect-tiles-300x600",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "400730",
+      "name": "Armony Bone Decor Stone Effect Tiles 300x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/sunset-taupe-wall-stone-effect-tile-200x600",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "400775",
+      "name": "Sunset Taupe Wall Stone Effect Tile 200x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/sunset-ivory-relieve-stone-effect-tile-200x600",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "400790",
+      "name": "Sunset Ivory Relieve Stone Effect Tile 200x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/sunset-taupe-relieve-stone-effect-tile-200x600",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "400800",
+      "name": "Sunset Taupe Relieve Stone Effect Tile 200x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/sunset-smoke-floor-stone-effect-tile-472x472",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "400820",
+      "name": "Sunset Smoke Floor Stone Effect Tile 472x472"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/crossover-mosaic-white-tile-300x600",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "400945",
+      "name": "Crossover Mosaic White Tile 300x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/infinity-grey-frame-stone-effect-tile-300x600",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "401745",
+      "name": "Infinity Grey Frame Stone Effect Tile 300x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/infinity-graphite-frame-stone-effect-tile-300x600",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "401750",
+      "name": "Infinity Graphite Frame Stone Effect Tile 300x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/burlington-taupe-decor-stone-effect-tiles-200x600",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "402180",
+      "name": "Burlington Taupe Decor Stone Effect Tiles 200x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/burlington-taupe-floor-stone-effect-tiles-472x472",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "402185",
+      "name": "Burlington Taupe Floor Stone Effect Tiles 472x472"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/country-stone-150x75",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "43CTRYSTO",
+      "name": "Country Stone Grey Metro Tiles150x75"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/liso-craquele-blanco-150x150",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "43LISCRBLA1544",
+      "name": "Liso Craquele Blanco 150x150"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/liso-craquele-verde-mar-green-metro-tiles-75x150",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "43LISCRVMAR",
+      "name": "Liso Craquele Verde Mar Green Metro Tiles 75x150"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/metro-limon-gloss-100x200",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "800233",
+      "name": "Metro Limon Gloss 100x200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/pixel-white-brick-matt-23x48",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "800294",
+      "name": "Pixel White Brick Matt 23x48"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/belvedere-ivory-marble-effect-tiles-300x600",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "800652",
+      "name": "Belvedere Ivory Marble Effect Tiles 300x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/materia-white-76x76x20",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "801545",
+      "name": "Materia White Stone Effect 760x760x20mm Slabs"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/astra-grey-matt-stone-effect-tiles-1200x600",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "802130",
+      "name": "Astra Grey Matt Stone Effect Tiles 1200x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/astra-ivory-matt-stone-effect-tiles-1200x600",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "802131",
+      "name": "Astra Ivory Matt Stone Effect Tiles 1200x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/poole-azul-matt-patterned-floor-tiles-450x450",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "802273",
+      "name": "Poole Azul Matt Patterned Floor Tiles 450x450"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/poole-white-matt-patterned-floor-tiles-450x450",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "802298",
+      "name": "Poole White Matt Patterned Floor Tiles 450x450"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/monocolour-aire-blue-flat-matt-metro-200x100",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "802657",
+      "name": "Monocolour Aire Blue Flat Matt Metro 200x100"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/monocolour-aire-blue-flat-gloss-metro-200x100",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "802663",
+      "name": "Monocolour Aire Blue Flat Gloss Metro 200x100"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/sahara-crema-stone-effect-tiles32x62-5",
+      "is_clearance": true,
+      "has_badge": true,
+      "error": null,
+      "sku": "GASAHARACREMA3262",
+      "name": "Sahara Crema Stone Effect Tiles32x62.5"
+    }
+  ],
+  "non_clearance_products": [
+    {
+      "url": "https://www.splendourtiles.co.uk/opal-white-tile-75x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "200345",
+      "name": "Opal White Tile 75x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/opal-grey-tile-75x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "200350",
+      "name": "Opal Grey Tile 75x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/opal-sky-light-blue-tile-75x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "200360",
+      "name": "Opal Sky Light Blue Tile 75x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/opal-marine-dark-blue-tile-75x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "200365",
+      "name": "Opal Marine Dark Blue Tile 75x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/opal-turquoise-light-green-tile-75x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "200370",
+      "name": "Opal Turquoise Light Green Tile 75x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/opal-emerald-dark-green-tile-75x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "200375",
+      "name": "Opal Emerald Dark Green Tile 75x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/opal-ivory-tile-75x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "200380",
+      "name": "Opal Ivory Tile 75x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/kuni-almond-stone-effect-tile-200x1200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "201140",
+      "name": "Kuni Almond Stone Effect Tile 200x1200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/mystone-grey-stone-effect-tile-300x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "201365",
+      "name": "Mystone Grey Stone Effect Tile 300x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/prismatics-white-gloss-200x200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "2PRG1200X200",
+      "name": "Prismatics White Gloss 200x200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/muralla-grey-brick-stone-effect-wall-tile-75x280",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "400860",
+      "name": "Muralla Grey Brick Stone Effect Wall Tile 75x280"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/northbay-bone-tile-316x608",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "401510",
+      "name": "Northbay Bone Tile 316x608"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/melrose-himalaya-white-stone-effect-tiles-300x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "401570",
+      "name": "Melrose Himalaya White Stone Effect Tiles 300x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/melrose-himalaya-grey-stone-effect-tiles-300x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "401575",
+      "name": "Melrose Himalaya Grey Stone Effect Tiles 300x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/melrose-himalaya-beige-stone-effect-tiles-300x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "401580",
+      "name": "Melrose Himalaya Beige Stone Effect Tiles 300x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/melrose-himalaya-white-decor-stone-effect-tiles-300x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "401585",
+      "name": "Melrose Himalaya White Decor Stone Effect Tiles 300x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/melrose-himalaya-grey-decor-stone-effect-tiles-300x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "401590",
+      "name": "Melrose Himalaya Grey Decor Stone Effect Tiles 300x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/melrose-himalaya-beige-decor-stone-effect-tiles-300x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "401595",
+      "name": "Melrose Himalaya Beige Decor Stone Effect Tiles 300x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/melrose-himalaya-white-floor-stone-effect-tiles-450x450",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "401600",
+      "name": "Melrose Himalaya White Floor Stone Effect Tiles 450x450"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/melrose-himalaya-grey-floor-stone-effect-tiles-450x450",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "401605",
+      "name": "Melrose Himalaya Grey Floor Stone Effect Tiles 450x450"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/melrose-himalaya-beige-floor-stone-effect-tiles-450x450",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "401610",
+      "name": "Melrose Himalaya Beige Floor Stone Effect Tiles 450x450"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/azuma-agrm-silver-grey-600x600-concrete-effect-tiles",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "401640",
+      "name": "Azuma AGRM Silver Grey 600x600 Concrete Effect Tiles"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/infinity-grey-glazed-stone-effect-tile-600x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "401765",
+      "name": "Infinity Grey Glazed Stone Effect Tile 600x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/metro-whitechapel-white-gloss-200x100-tiles",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "403095",
+      "name": "Metro White Tile 100x200 Gloss"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/metro-victoria-cream-gloss-200x100-tiles",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "403105",
+      "name": "Metro Cream Tile 100x200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/liso-blanco-white-brillo-metro-tiles-150x75",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "48LISBLAB60",
+      "name": "Liso Blanco White Brillo Metro Tiles 150x75"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/liso-blanco-mate-150x75",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "48LISBLAM60",
+      "name": "Liso Blanco Mate 150x75"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/rhian-30x10-tiles-sage-gloss-tiles-11949",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "63LUCSAGEB34",
+      "name": "Lucia Sage Brillo 10x30"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/metro-chalk-farm-white-matt-200x100-tiles",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800220",
+      "name": "Metro Matt White 100x200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/metro-sage-gloss-100x200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800222",
+      "name": "Metro Sage Gloss 100x200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/metro-kentish-town-grey-gloss-200x100-tiles",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800223",
+      "name": "Metro Dark Grey Gloss 100x200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/metro-marble-arch-grey-gloss-200x100-tiles",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800224",
+      "name": "Metro Light Grey Gloss 100x200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/metro-teal-gloss-100x200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800225",
+      "name": "Metro Teal Gloss 100x200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/metro-st-pauls-plum-gloss-200x100-tiles",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800226",
+      "name": "Metro Plum Gloss 100x200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/metro-perla-gloss-100x200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800227",
+      "name": "Metro Perla Gloss 100x200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/metro-green-park-green-gloss-200x100-tiles",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800229",
+      "name": "Metro Verde Botella Gloss 100x200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/metro-bond-street-blue-gloss-200x100-tiles",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800230",
+      "name": "Metro Marina Gloss 100x200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/metro-rosa-gloss-100x200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800231",
+      "name": "Metro Rosa Gloss 100x200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/liso-white-gloss-metro-tiles-100x200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800236",
+      "name": "Liso White Gloss Metro Tiles 100x200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/liso-white-flat-matt-metro-tiles-200x100",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800237",
+      "name": "Liso White Flat Matt Metro Tiles 200x100"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/liso-marino-blue-gloss-metro-tiles-100x200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800240",
+      "name": "Liso Marino Blue Gloss Metro Tiles 100x200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/liso-azul-blue-gloss-metro-tiles-100x200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800241",
+      "name": "Liso Azul Blue Gloss Metro Tiles 100x200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/liso-light-grey-gloss-metro-tiles-100x200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800242",
+      "name": "Liso Light Grey Gloss Metro Tiles 100x200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/liso-sage-green-gloss-metro-tiles-100x200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800243",
+      "name": "Liso Sage Green Gloss Metro Tiles 100x200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/liso-bone-cream-gloss-metro-tiles-100x200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800244",
+      "name": "Liso Bone Cream Gloss Metro Tiles 100x200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/liso-black-gloss-metro-tiles-100x200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800245",
+      "name": "Liso Black Gloss Metro Tiles 100x200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/metro-manor-house-blue-gloss-200x100-tiles",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800246",
+      "name": "Metro Cobalto 100x200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/pixel-white-square-gloss-25x25",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800280",
+      "name": "Pixel White Square Gloss 25x25"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/pixel-pool-blend-241-25x25",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800282",
+      "name": "Pixel Pool Blend 241 25x25"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/pixel-white-square-gloss-50x50",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800283",
+      "name": "Pixel White Square Gloss 50x50"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/pixel-white-hexagon-matt-50x50",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800284",
+      "name": "Pixel White Hexagon Matt 50x50"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/pixel-white-hexagon-gloss-50x50",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800285",
+      "name": "Pixel White Hexagon Gloss 50x50"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/pixel-black-hexagon-50x50-matt",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800286",
+      "name": "Pixel Black Hexagon 50x50 Matt"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/pixel-white-herringbone-matt-22x73",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800288",
+      "name": "Pixel White Herringbone Matt 22x73"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/pixel-white-herringbone-gloss-22x73",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800289",
+      "name": "Pixel White Herringbone Gloss 22x73"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/pixel-white-hexagon-matt-23x23",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800290",
+      "name": "Pixel White Hexagon Matt 23x23"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/pixel-white-hexagon-gloss-23x23-mosaic-tiles",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800291",
+      "name": "Pixel White Hexagon Gloss 23x23"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/pixel-black-hexagon-matt-23x23",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800292",
+      "name": "Pixel Black Hexagon Matt 23x23"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/pixel-sea-blend-25x25",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800296",
+      "name": "Pixel Sea Blend 25x25"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/pixel-chequer-hexagon-white-black-matt-23x23",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800330",
+      "name": "Pixel Chequer Hexagon White & Black Matt 23x23"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/pixel-ocean-blend-243-25x25",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800331",
+      "name": "Pixel Ocean Blend 243 25x25"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/palatina-gold-gloss-60x30-marble-effect-tiles",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800336",
+      "name": "Palatina Gold Gloss 60x30 Marble Effect Tiles"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/palatina-gold-matt-30x60-marble-effect-tiles",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800337",
+      "name": "Palatina Gold Matt 30x60 Marble Effect Tiles"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/palatina-gold-gloss-60x60-marble-effect-tiles",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800338",
+      "name": "Palatina Gold Gloss 60x60 Marble Effect Tiles"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/palatina-gold-matt-60x60-marble-effect-tile",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800339",
+      "name": "Palatina Gold Matt 60x60 Marble Effect Tile"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/metro-petal-pink-100x200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800385",
+      "name": "Metro Petal Pink 100x200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/liso-perla-grey-gloss-metro-tiles-100x200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800390",
+      "name": "Liso Perla Grey Gloss Metro Tiles 100x200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/liso-verde-green-gloss-metro-tiles-100x200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800393",
+      "name": "Liso Verde Green Gloss Metro Tiles 100x200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/belvedere-marengo-marble-effect-tiles-300x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800651",
+      "name": "Belvedere Marengo Marble Effect Tiles 300x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/detroit-ivory-295x72",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800678",
+      "name": "Detroit Ivory 295x72"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/detroit-grey-295x72",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800679",
+      "name": "Detroit Grey 295x72"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/detroit-dark-grey-295x72",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800680",
+      "name": "Detroit Dark Grey 295x72"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/detroit-carbon-295x72",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800681",
+      "name": "Detroit Carbon 295x72"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/detroit-terracotta-295x72",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800682",
+      "name": "Detroit Terracotta 295x72"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/detroit-rose-295x72",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800683",
+      "name": "Detroit Rose 295x72"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/detroit-blue-295x72",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800684",
+      "name": "Detroit Blue 295x72"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/detroit-green-295x72",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800685",
+      "name": "Detroit Green 295x72"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/ledgestone-sheera-split-face-150x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800697",
+      "name": "Ledgestone Sheera Split Face 150x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/ledgestone-black-slate-split-face-150x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800698",
+      "name": "Ledgestone Black Slate Split Face 150x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/ledgestone-ice-white-split-face-150x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800699",
+      "name": "Ledgestone Ice White Split Face 150x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/ledgestone-olive-split-face-150x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800700",
+      "name": "Ledgestone Olive Split Face 150x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/ledgestone-copper-split-face-150x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "800701",
+      "name": "Ledgestone Copper Split Face 150x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/merlot-grey-900x600-20mm-slabs",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801478",
+      "name": "Merlot Grey Slate Effect 900x600x20mm Slabs"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/austral-ivory-stone-effect-600x900x20mm-slabs",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801482",
+      "name": "Austral Ivory Stone Effect 600x900x20mm Slabs"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/austral-grey-stone-effect-600x900x20mm-slabs",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801483",
+      "name": "Austral Grey Stone Effect 600x900x20mm Slabs"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/austral-pearl-stone-effect-600x900x20mm-slabs",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801484",
+      "name": "Austral Pearl Stone Effect 600x900x20mm Slabs"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/metallique-blanco-lapato-30x60",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801516",
+      "name": "Metallique Blanco Lapato 30x60"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/metallique-pearl-lapato-30x60",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801517",
+      "name": "Metallique Pearl Lapato 30x60"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/metallique-cobre-lapato-30x60",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801518",
+      "name": "Metallique Cobre Lapato 30x60"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/metallique-iron-lapato-30x60",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801519",
+      "name": "Metallique Iron Lapato 30x60"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/metallique-blanco-lapato-60x60",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801520",
+      "name": "Metallique Blanco Lapato 60x60"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/metallique-pearl-lapato-60x60",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801521",
+      "name": "Metallique Pearl Lapato 60x60"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/metallique-cobre-lapato-60x60",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801522",
+      "name": "Metallique Cobre Lapato 60x60"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/metallique-iron-lapato-60x60",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801523",
+      "name": "Metallique Iron Lapato 60x60"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/materia-perla-76x76x20",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801544",
+      "name": "Materia Perla Stone Effect 760x760x20mm Slabs"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/open-stone-effect-grigio-80x80-9mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801547",
+      "name": "Open Stone Effect Grigio 80x80 9mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/open-stone-effect-antracite-80x80-9mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801548",
+      "name": "Open Stone Effect Antracite 80x80 9mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/open-stone-effect-bianco-80x80-9mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801549",
+      "name": "Open Stone Effect Bianco 80x80 9mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/open-grigio-800x800-20mm-slabs",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801550",
+      "name": "Open Grigio Concrete Effect 800x800x20mm Slabs"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/open-antracite-800x800-20mm-slabs",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801551",
+      "name": "Open Antracite Concrete Effect 800x800x20mm Slabs"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/open-bianco-800x800-20mm-slabs",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801552",
+      "name": "Open Bianco Concrete Effect 800x800x20mm Slabs"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/civic-cenere-wood-effect-tile-15x90",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801651",
+      "name": "Civic Cenere Wood Effect Tile 15x90"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/civic-white-wood-effect-tile15x90",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801652",
+      "name": "Civic White Wood Effect Tile15x90"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/civic-brown-wood-effect-tile-15x90",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801653",
+      "name": "Civic Brown Wood Effect Tile 15x90"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/civic-roble-wood-effect-tile-15x90",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801654",
+      "name": "Civic Roble Wood Effect Tile 15x90"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/maximum-calacatta-gold-white-semi-polished-marble-effect-tile-1200x1200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801703",
+      "name": "Maximum Calacatta Gold White Semi Polished Marble Effect Tile 1200x1200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/makrana-breccia-grey-polished-marble-effect-tile-300x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801768",
+      "name": "Makrana Breccia Grey Polished Marble Effect Tile 300x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/makrana-breccia-grey-polished-marble-effect-tile-600x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801769",
+      "name": "Makrana Breccia Grey Polished Marble Effect Tile 600x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/makrana-breccia-grey-polished-marble-effect-tile-600x1200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801770",
+      "name": "Makrana Breccia Grey Polished Marble Effect Tile 600x1200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/makrana-breccia-blanco-polished-marble-effect-tile-300x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801771",
+      "name": "Makrana Breccia Blanco Polished Marble Effect Tile 300x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/makrana-breccia-blanco-polished-marble-effect-tile-600x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801772",
+      "name": "Makrana Breccia Blanco Polished Marble Effect Tile 600x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/makrana-breccia-blanco-polished-marble-effect-tile-600x1200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801773",
+      "name": "Makrana Breccia Blanco Polished Marble Effect Tile 600x1200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/makrana-california-polished-marble-effect-tile-300x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801774",
+      "name": "Makrana California Polished Marble Effect Tile 300x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/makrana-california-polished-marble-effect-tile-600x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801775",
+      "name": "Makrana California Polished Marble Effect Tile 600x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/makrana-california-polished-marble-effect-tile-600x1200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801776",
+      "name": "Makrana California Polished Marble Effect Tile 600x1200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/makrana-vanilla-onyx-polished-marble-effect-tile-300x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801777",
+      "name": "Makrana Vanilla Onyx Polished Marble Effect Tile 300x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/makrana-vanilla-onyx-polished-marble-effect-tile-600x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801778",
+      "name": "Makrana Vanilla Onyx Polished Marble Effect Tile 600x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/makrana-vanilla-onyx-polished-marble-effect-tile-600x1200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801779",
+      "name": "Makrana Vanilla Onyx Polished Marble Effect Tile 600x1200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/harbour-stone-1200x600-grey-20mm-slabs",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801784",
+      "name": "Harbour Stone Grey Stone Effect 1200x600x20mm Slabs"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/manhattan-grey-stone-effect-tiles-120x60",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801868",
+      "name": "Manhattan Grey Stone Effect Tiles 120X60"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/manhattan-silver-stone-effect-tiles-120x60",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801869",
+      "name": "Manhattan Silver Stone Effect Tiles 120X60"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/manhattan-bone-stone-effect-tiles-120x60",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801870",
+      "name": "Manhattan Bone Stone Effect Tiles 120X60"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/manhattan-white-stone-effect-tiles-120x60",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801871",
+      "name": "Manhattan White Stone Effect Tiles 120X60"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/genova-black-polished-marble-effect-600x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801896",
+      "name": "Genova Black Polished Marble Effect 600x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/genova-black-matt-marble-effect-600x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801897",
+      "name": "Genova Black Matt Marble Effect 600x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/genova-black-polished-marble-effect-600x1200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801899",
+      "name": "Genova Black Polished Marble Effect 600x1200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/marshall-gold-vein-polished-marble-effect-tiles-1200x1200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "801927",
+      "name": "Marshall Gold Vein Polished Marble Effect Tiles 1200x1200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/new-pietra-moda-grey-rectified-stone-effect-tiles-30x60",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802050",
+      "name": "New Pietra Moda Grey Rectified Stone Effect Tiles 30X60"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/astra-pearl-matt-stone-effect-tiles-1200x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802129",
+      "name": "Astra Pearl Matt Stone Effect Tiles 1200x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/astra-pearl-matt-stone-effect-tiles-1200x1200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802132",
+      "name": "Astra Pearl Matt Stone Effect Tiles 1200x1200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/astra-grey-matt-stone-effect-tiles-1200x1200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802133",
+      "name": "Astra Grey Matt Stone Effect Tiles 1200x1200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/astra-ivory-matt-stone-effect-tiles-1200x1200",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802134",
+      "name": "Astra Ivory Matt Stone Effect Tiles 1200x1200"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/zebra-black-and-white-patterned-matt-striped-223x223-tiles",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802152",
+      "name": "Zebra Black and White Patterned Matt Striped 223x223 Tiles"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/grand-wood-natural-cold-brown-wood-effect-tiles-198x1198",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802230",
+      "name": "Grand Wood Natural Cold Brown Wood Effect Tiles 198x1198"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/grand-wood-natural-cream-wood-effect-tiles-198x1198",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802231",
+      "name": "Grand Wood Natural Cream Wood Effect Tiles 198x1198"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/grand-wood-prime-grey-wood-effect-tiles-198x1198",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802232",
+      "name": "Grand Wood Prime Grey Wood Effect Tiles 198x1198"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/grand-wood-rustic-chocolate-wood-effect-tiles-198x1198",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802233",
+      "name": "Grand Wood Rustic Chocolate Wood Effect Tiles 198x1198"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/kalahari-black-marble-effect-120x60",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802242",
+      "name": "Kalahari Black Marble Effect 120x60"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/bowness-sumum-pearl-stone-effect-995x995",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802247",
+      "name": "Bowness Sumum Pearl Stone Effect 995x995"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/bowness-sumum-beige-stone-effect-995x995",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802248",
+      "name": "Bowness Sumum Beige Stone Effect 995x995"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/bowness-feroe-grey-stone-effect-995x995",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802249",
+      "name": "Bowness Feroe Grey Stone Effect 995x995"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/bowness-feroe-tobacco-stone-effect-995x995",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802250",
+      "name": "Bowness Feroe Tobacco Stone Effect 995x995"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/coralina-blanco-90x90",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802251",
+      "name": "Coralina Blanco Travertine Effect Tiles 90x90"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/coralina-perla-90x90",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802252",
+      "name": "Coralina Perla Travertine Effect Tiles 90x90"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/coralina-beige-90x90",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802253",
+      "name": "Coralina Beige Travertine Effect Tiles 90x90"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/alaska-mate-white-matt-tiles-1200x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802262",
+      "name": "Alaska Mate White Matt Tiles 1200x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/bowness-purity-white-marble-effect-995x995",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802264",
+      "name": "Bowness Purity White Marble Effect 995x995"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/timeless-glossy-white-ceramic-wall-tiles-400x250",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802288",
+      "name": "Timeless Glossy White Ceramic Wall Tiles 400x250"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/marmo-thassos-white-marble-effect-wall-and-floor-tiles-1197x597",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802349",
+      "name": "Marmo Thassos White Marble Effect Wall and Floor Tiles 1197x597"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/marmo-morocco-black-marble-effect-wall-and-floor-tiles-1197x597",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802350",
+      "name": "Marmo Morocco Black Marble Effect Wall and Floor Tiles 1197x597"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/auric-light-grey-marble-effect-wall-and-floor-tiles-1197x597",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802351",
+      "name": "Auric Light Grey Marble Effect Wall and Floor Tiles 1197x597"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/ceppo-nuovo-grey-terrazzo-effect-wall-and-floor-tiles-1197x597",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802352",
+      "name": "Ceppo Nuovo Grey Terrazzo Effect Wall and Floor Tiles 1197x597"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/bello-derby-matt-grey-patterned-floor-tiles-45x45",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802359",
+      "name": "Bello Derby Matt Grey Patterned Floor Tiles 45x45"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/bello-brighton-matt-grey-patterned-floor-tiles-45x45",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802361",
+      "name": "Bello Brighton Matt Grey Patterned Floor Tiles 45x45"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/cielo-polvere-pink-matt-plain-tiles-1198x598",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802405",
+      "name": "Cielo Polvere Pink Matt Plain Tiles 1198x598"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/cielo-beige-matt-plain-tiles-1198x598",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802406",
+      "name": "Cielo Beige Matt Plain Tiles 1198x598"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/cielo-verde-green-matt-plain-tiles-1198x598",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802407",
+      "name": "Cielo Verde Green Matt Plain Tiles 1198x598"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/cielo-polvere-pink-matt-plain-tiles-598x598",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802408",
+      "name": "Cielo Polvere Pink Matt Plain Tiles 598x598"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/cielo-beige-matt-plain-tiles-598x598",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802409",
+      "name": "Cielo Beige Matt Plain Tiles 598x598"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/cielo-verde-green-matt-plain-tiles-598x598",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802410",
+      "name": "Cielo Verde Green Matt Plain Tiles 598x598"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/cielo-nero-black-matt-plain-tiles-598x598",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802411",
+      "name": "Cielo Nero Black Matt Plain Tiles 598x598"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/cielo-super-bianco-white-matt-plain-tiles-598x598",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802412",
+      "name": "Cielo Super Bianco White Matt Plain Tiles 598x598"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/granby-beige-matt-stone-effect-wall-and-floor-tiles-597x597",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802447",
+      "name": "Granby Beige Matt Stone Effect Wall And Floor Tiles 597x597"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/granby-dark-grey-matt-stone-effect-wall-and-floor-tiles-597x597",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802448",
+      "name": "Granby Dark Grey Matt Stone Effect Wall And Floor Tiles 597x597"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/granby-light-grey-matt-stone-effect-wall-and-floor-tiles-597x597",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802449",
+      "name": "Granby Light Grey Matt Stone Effect Wall And Floor Tiles 597x597"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/granby-grey-matt-stone-effect-wall-and-floor-tiles-597x597",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802450",
+      "name": "Granby Grey Matt Stone Effect Wall And Floor Tiles 597x597"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/clemence-white-20x10",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802451",
+      "name": "Clemence White 20x10"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/clemence-forest-20x10",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802452",
+      "name": "Clemence Forest 20x10"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/clemence-jean-20x1",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802453",
+      "name": "Clemence Jean 20x10"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/clemence-orchid-20x10",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802454",
+      "name": "Clemence Orchid 20x10"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/tosca-beige-matt-brick-effect-tiles-62x235x9mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802455",
+      "name": "Tosca Beige Matt Brick Effect Tiles 62x235x9mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/opal-pink-gloss-wall-tile-75x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802528",
+      "name": "Opal Pink Gloss Wall Tile 75x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/monocolour-alga-green-flat-matt-metro-200x100",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802658",
+      "name": "Monocolour Alga Green Flat Matt Metro 200x100"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/monocolour-hueso-cream-flat-matt-metro-200x100",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802659",
+      "name": "Monocolour Hueso Cream Flat Matt Metro 200x100"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/monocolour-plata-grey-flat-matt-metro-200x100",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802660",
+      "name": "Monocolour Plata Grey Flat Matt Metro 200x100"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/monocolour-roca-beige-flat-matt-metro-200x100",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802661",
+      "name": "Monocolour Roca Beige Flat Matt Metro 200x100"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/monocolour-rosa-pink-flat-matt-metro-200x100",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802662",
+      "name": "Monocolour Rosa Pink Flat Matt Metro 200x100"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/monocolour-alga-green-flat-gloss-metro-200x100",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802664",
+      "name": "Monocolour Alga Green Flat Gloss Metro 200x100"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/monocolour-hueso-cream-flat-gloss-metro-200x100",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802665",
+      "name": "Monocolour Hueso Cream Flat Gloss Metro 200x100"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/monocolour-roca-beige-flat-gloss-metro-200x100",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802667",
+      "name": "Monocolour Roca Beige Flat Gloss Metro 200x100"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/monocolour-rosa-pink-flat-gloss-metro-200x100",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802668",
+      "name": "Monocolour Rosa Pink Flat Gloss Metro 200x100"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/monocolour-alga-green-flat-matt-square-150x150",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802670",
+      "name": "Monocolour Alga Green Flat Matt Square 150x150"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/monocolour-hueso-cream-flat-matt-square-150x150",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802671",
+      "name": "Monocolour Hueso Cream Flat Matt Square 150x150"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/monocolour-plata-grey-flat-matt-square-150x150",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802672",
+      "name": "Monocolour Plata Grey Flat Matt Square 150x150"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/monocolour-roca-beige-flat-matt-square-150x150",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802673",
+      "name": "Monocolour Roca Beige Flat Matt Square 150x150"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/monocolour-rosa-pink-flat-matt-square-150x150",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802674",
+      "name": "Monocolour Rosa Pink Flat Matt Square 150x150"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/monocolour-alga-green-flat-gloss-square-150x150",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802676",
+      "name": "Monocolour Alga Green Flat Gloss Square 150x150"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/monocolour-hueso-cream-flat-gloss-square-150x150",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802677",
+      "name": "Monocolour Hueso Cream Flat Gloss Square 150x150"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/monocolour-plata-grey-flat-gloss-square-150x150",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802678",
+      "name": "Monocolour Plata Grey Flat Gloss Square 150x150"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/monocolour-roca-beige-flat-gloss-square-150x150",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802679",
+      "name": "Monocolour Roca Beige Flat Gloss Square 150x150"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/monocolour-rosa-pink-flat-gloss-square-150x150",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802680",
+      "name": "Monocolour Rosa Pink Flat Gloss Square 150x150"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/agora-light-grey-gloss-marble-effect-wall-tile-600x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802827",
+      "name": "Agora Light Grey Gloss Marble Effect Wall Tile 600x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/agora-light-grey-gloss-marble-effect-decor-wall-tile-600x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802828",
+      "name": "Agora Light Grey Gloss Marble Effect Decor Wall Tile 600x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/imperial-warm-white-gloss-marble-effect-wall-tile-600x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802829",
+      "name": "Imperial Warm White Gloss Marble Effect Wall Tile 600x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/imperial-warm-white-gloss-marble-effect-decor-wall-tile-600x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802830",
+      "name": "Imperial Warm White Gloss marble Effect Decor Wall Tile 600x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/riva-white-gloss-marble-effect-wall-tile-600x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802831",
+      "name": "Riva White Gloss Marble Effect Wall Tile 600x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/riva-white-gloss-marble-effect-decor-wall-tile-600x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802832",
+      "name": "Riva White Gloss Marble Effect Decor Wall Tile 600x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/agora-light-grey-matt-marble-effect-wall-tile-600x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802833",
+      "name": "Agora Light Grey Matt Marble Effect Wall Tile 600x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/agora-light-grey-matt-marble-effect-decor-wall-tile-600x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802834",
+      "name": "Agora Light Grey Matt Marble Effect Decor Wall Tile 600x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/imperial-warm-white-matt-marble-effect-wall-tile-600x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802835",
+      "name": "Imperial Warm White Matt Marble Effect Wall Tile 600x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/imperial-warm-white-matt-marble-effect-decor-wall-tile-600x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802836",
+      "name": "Imperial Warm White Matt marble Effect Decor Wall Tile 600x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/riva-white-matt-marble-effect-wall-tile-600x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802837",
+      "name": "Riva White Matt Marble Effect Wall Tile 600x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/riva-white-matt-marble-effect-decor-wall-tile-600x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802838",
+      "name": "Riva White Matt Marble Effect Decor Wall Tile 600x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/signature-naza-mate-white-60x120",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802839",
+      "name": "Signature Naza Mate White 60X120"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/signature-murano-mate-gris-60x120",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802840",
+      "name": "Signature Murano Mate Gris 60X120"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/signature-murano-mate-blanco-60x120",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802841",
+      "name": "Signature Murano Mate Blanco 60X120"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/signature-murano-mate-marfil-60x120",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802842",
+      "name": "Signature Murano Mate Marfil 60X120"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/signature-murano-mate-perla-60x120",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802843",
+      "name": "Signature Murano Mate Perla 60X120"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/alaska-white-gloss-tiles-1200x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802864",
+      "name": "Alaska White Gloss Tiles 1200x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/fresno-gris-wood-effect-wall-and-floor-tiles-570x190",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802873",
+      "name": "Fresno Gris Wood Effect Wall and Floor tiles 570x190"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/rodeno-mix-matt-slate-effect-wall-and-floor-tiles-570x190",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802874",
+      "name": "Rodeno Mix Matt Slate Effect Wall and Floor Tiles 570x190"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/bricks-navy-gloss-ceramic-metro-wall-tiles-300x100x8mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802875",
+      "name": "Bricks Navy Gloss Ceramic Metro Wall Tiles 300x100x8mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/provence-mix-beige-matt-brick-effect-tiles-62x235x9mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "802962",
+      "name": "Provence Mix Beige Matt Brick Effect Tiles 62x235x9mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/tosca-teja-red-matt-brick-effect-tiles-62x235x9mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803079",
+      "name": "Tosca Teja Red Matt Brick Effect Tiles 62x235x9mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/tosca-vison-mink-grey-matt-brick-effect-tiles-62x235x9mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803080",
+      "name": "Tosca Vison Mink Grey Matt Brick Effect Tiles 62x235x9mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/artan-grey-matt-stone-effect-wall-tiles-550x330x8-8mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803081",
+      "name": "Artan Grey Matt Stone Effect Wall Tiles 550x330x8.8mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/artan-cream-matt-stone-effect-wall-tiles-550x330x8-8mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803082",
+      "name": "Artan Cream Matt Stone Effect Wall Tiles 550x330x8.8mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/artan-grey-decor-matt-stone-effect-wall-tiles-550x330x8-8mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803083",
+      "name": "Artan Grey Decor Matt Stone Effect Wall Tiles 550x330x8.8mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/artan-cream-decor-matt-stone-effect-wall-tiles-550x330x8-8mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803084",
+      "name": "Artan Cream Decor Matt Stone Effect Wall Tiles 550x330x8.8mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/forest-dark-beige-matt-wood-effect-tiles-750x200x8-2mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803085",
+      "name": "Forest Dark Beige Matt Wood Effect Tiles 750x200x8.2mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/forest-light-beige-matt-wood-effect-tiles-750x200x8-2mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803086",
+      "name": "Forest Light Beige Matt Wood Effect Tiles 750x200x8.2mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/forest-grey-matt-wood-effect-tiles-750x200x8-2mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803087",
+      "name": "Forest Grey Matt Wood Effect Tiles 750x200x8.2mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/sumum-beige-outdoor-595x1200x20mm-slabs",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803103",
+      "name": "Sumum Beige Outdoor 595x1200x20mm Slabs"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/sumum-pearl-outdoor-595x1200x20mm-slabs",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803104",
+      "name": "Sumum Pearl Outdoor 595x1200x20mm Slabs"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/sumum-grey-outdoor-595x1200x20mm-slabs",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803105",
+      "name": "Sumum Grey Outdoor 595x1200x20mm Slabs"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/carmo-stone-black-matt-tiles-600x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803107",
+      "name": "Carmo Stone Black Matt Tiles 600x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/carmo-stone-grey-matt-tiles-600x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803108",
+      "name": "Carmo Stone Grey Matt Tiles 600x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/carmo-stone-ivory-matt-tiles-600x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803109",
+      "name": "Carmo Stone Ivory Matt Tiles 600x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/carmo-stone-black-matt-tiles-600x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803110",
+      "name": "Carmo Stone Black Matt Tiles 600x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/carmo-stone-grey-matt-tiles-600x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803111",
+      "name": "Carmo Stone Grey Matt Tiles 600x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/carmo-stone-ivory-matt-tiles-600x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803112",
+      "name": "Carmo Stone Ivory Matt Tiles 600x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/carmo-stone-black-matt-tiles-1200x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803113",
+      "name": "Carmo Stone Black Matt Tiles 1200x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/carmo-stone-grey-matt-tiles-1200x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803114",
+      "name": "Carmo Stone Grey Matt Tiles 1200x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/carmo-stone-ivory-matt-tiles-1200x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803115",
+      "name": "Carmo Stone Ivory Matt Tiles 1200x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/tapa-light-bone-rectified-matt-stone-effect-tile-600x300x7mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803120",
+      "name": "Tapa Light Bone Rectified Matt Stone Effect Tile 600x300x7mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/tapa-grey-rectified-matt-stone-effect-tile-600x300x7mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803121",
+      "name": "Tapa Grey Rectified Matt Stone Effect Tile 600x300x7mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/tapa-blanco-rectified-matt-stone-effect-tile-600x300x7mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803122",
+      "name": "Tapa Blanco Rectified Matt Stone Effect Tile 600x300x7mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/tapa-light-bone-rectified-matt-stone-effect-tile-600x600x7mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803123",
+      "name": "Tapa Light Bone Rectified Matt Stone Effect Tile 600x600x7mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/tapa-grey-rectified-matt-stone-effect-tile-600x600x7mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803124",
+      "name": "Tapa Grey Rectified Matt Stone Effect Tile 600x600x7mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/tapa-blanco-rectified-matt-stone-effect-tile-600x600x7mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803125",
+      "name": "Tapa Blanco Rectified Matt Stone Effect Tile 600x600x7mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/tapa-light-bone-rectified-matt-stone-effect-tile-1200x600x7mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803126",
+      "name": "Tapa Light Bone Rectified Matt Stone Effect Tile 1200x600x7mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/tapa-grey-rectified-matt-stone-effect-tile-1200x600x7mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803127",
+      "name": "Tapa Grey Rectified Matt Stone Effect Tile 1200x600x7mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/tapa-blanco-rectified-matt-stone-effect-tile-1200x600x7mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803128",
+      "name": "Tapa Blanco Rectified Matt Stone Effect Tile 1200x600x7mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/new-pietra-beige-rectified-matt-stone-effect-tile-600x300x7mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803129",
+      "name": "New Pietra Beige Rectified Matt Stone Effect Tile 600x300x7mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/new-pietra-grey-rectified-matt-stone-effect-tile-600x300x7mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803130",
+      "name": "New Pietra Grey Rectified Matt Stone Effect Tile 600x300x7mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/new-pietra-white-rectified-matt-stone-effect-tile-600x300x7mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803131",
+      "name": "New Pietra White Rectified Matt Stone Effect Tile 600x300x7mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/new-pietra-beige-rectified-matt-stone-effect-tile-600x600x7mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803132",
+      "name": "New Pietra Beige Rectified Matt Stone Effect Tile 600x600x7mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/new-pietra-grey-rectified-matt-stone-effect-tile-600x600x7mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803133",
+      "name": "New Pietra Grey Rectified Matt Stone Effect Tile 600x600x7mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/new-pietra-white-rectified-matt-stone-effect-tile-600x600x7mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803134",
+      "name": "New Pietra White Rectified Matt Stone Effect Tile 600x600x7mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/new-pietra-beige-rectified-matt-stone-effect-tile-1200x600x7mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803135",
+      "name": "New Pietra Beige Rectified Matt Stone Effect Tile 1200x600x7mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/new-pietra-grey-rectified-matt-stone-effect-tile-1200x600x7mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803136",
+      "name": "New Pietra Grey Rectified Matt Stone Effect Tile 1200x600x7mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/new-pietra-white-rectified-matt-stone-effect-tile-1200x600x7mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803137",
+      "name": "New Pietra White Rectified Matt Stone Effect Tile 1200x600x7mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/new-pietra-beige-rectified-stone-effect-slab-1200x600x20mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803138",
+      "name": "New Pietra Beige Rectified Stone Effect Slab 1200x600x20mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/new-pietra-grey-rectified-stone-effect-slab-1200x600x20mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803139",
+      "name": "New Pietra Grey Rectified Stone Effect Slab 1200x600x20mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/new-pietra-white-rectified-stone-effect-slab-1200x600x20mm",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803140",
+      "name": "New Pietra White Rectified Stone Effect Slab 1200x600x20mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/tempo-cotton-stone-effect-tiles-1200x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803192",
+      "name": "Tempo Cotton Stone Effect Tiles 1200x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/tempo-nature-stone-effect-tiles-1200x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803193",
+      "name": "Tempo Nature Stone Effect Tiles 1200x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/eternity-ivory-stone-effect-tiles-600x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803194",
+      "name": "Eternity Ivory Stone Effect Tiles 600x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/eternity-greige-stone-effect-tiles-600x300",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803195",
+      "name": "Eternity Greige Stone Effect Tiles 600x300"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/invisible-marble-grey-polished-rectified-wall-and-floor-tiles-30x60",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803261",
+      "name": "Invisible Marble Grey Polished Rectified Wall and Floor Tiles 30x60"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/invisible-marble-grey-polished-rectified-wall-and-floor-tiles-60x120",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803262",
+      "name": "Invisible Marble Grey Polished Rectified Wall and Floor Tiles 60x120"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/sahara-beige-matt-rectified-wall-and-floor-tiles-30x60",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803283",
+      "name": "Sahara Beige Matt Rectified Wall and Floor Tiles 30x60"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/sahara-beige-matt-rectified-wall-and-floor-tiles-60x60",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803284",
+      "name": "Sahara Beige Matt Rectified Wall and Floor Tiles 60x60"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/sahara-beige-matt-rectified-wall-and-floor-tiles-60x120",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803285",
+      "name": "Sahara Beige Matt Rectified Wall and Floor Tiles 60x120"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/sahara-beige-satin-rectified-wall-and-floor-tiles-30x60",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803286",
+      "name": "Sahara Beige Satin Rectified Wall and Floor Tiles 30x60"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/sahara-beige-satin-rectified-wall-and-floor-tiles-60x60",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803287",
+      "name": "Sahara Beige Satin Rectified Wall and Floor Tiles 60x60"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/sahara-beige-satin-rectified-wall-and-floor-tiles-60x120",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803288",
+      "name": "Sahara Beige Satin Rectified Wall and Floor Tiles 60x120"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/mare-white-matt-wall-and-floor-tiles-60x60",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "803386",
+      "name": "Mare White Matt Wall and Floor Tiles 60x60"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/aleutian-tiles-mountain-white-gloss-60x30-tiles",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "ECOALASKA6030B6",
+      "name": "Alaska Brillo 60x30"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/aleutian-tiles-mountain-white-matt-60x30-tiles",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "ECOALASKA6030M6",
+      "name": "Alaska Mate 60x30"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/alaska-brillo-60x60",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "ECOALASKA6060B",
+      "name": "Alaska Brillo 60x60"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/aleutian-tiles-mountain-white-matt-60x60-tiles",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "ECOALASKA6060M",
+      "name": "Alaska Mate 60x60"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/aleutian-tiles-mountain-white-gloss-75x75-tiles",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "ECOALASKA7575B",
+      "name": "Alaska Brillo 75x75"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/cipriani-beige-rlv-mix-stone-effect-303x613-tiles",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "ECOCIPBEIRLV303613",
+      "name": "Cipriani Beige Rlv Mix Stone Effect 303x613 Tiles"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/aquarelle-300x100-tiles-mint-tiles",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "FABVERTGRN30X10",
+      "name": "Vermont Tea Green 30x10"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/aragon-flame-brown-quarry-flat-15x15",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "GREARAFLAME15",
+      "name": "Aragon Flame Brown Quarry Flat 15x15"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/aragon-flame-brown-quarry-r-e-15x15",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "GREARAFLAMERE",
+      "name": "Aragon Flame Brown Quarry R.E 15x15"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/aragon-flame-brown-quarry-r-e-x-15x15",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "GREARAFLAMEREX22",
+      "name": "Aragon Flame Brown Quarry R.E.X 15x15"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/aragon-red-quarry-r.e.x-15x15",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "GREARAREDREX",
+      "name": "Aragon Red Quarry R.E.X 15x15"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/brixton-smoke-50x25-tiles",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "IVOLANIRO2550",
+      "name": "Langdale Iron"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/kashmir-hueso-pulido-leviglass-marble-effect-tiles-300x600",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "PMMBKASHUE3060",
+      "name": "Kashmir Hueso Pulido/Leviglass Marble Effect Tiles 300x600"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/alda-anthracite-60x40",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "YTALDANT",
+      "name": "Alda Anthracite 60x40"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/alda-grey-wall-and-floor-tiles-60x40",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "YTALDGRY",
+      "name": "Alda Grey Wall and Floor Tiles 60x40"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/alda-white-slate-effect-60x40",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "YTALDWHT",
+      "name": "Alda White Slate Effect 60x40"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/bricks-light-grey-gloss-30x10",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "YTBBRLGG3010",
+      "name": "Bricks Light Grey Gloss Ceramic Metro Wall Tiles 300x100x7mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/bricks-light-grey-matt-30x10",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "YTBBRLGM3010",
+      "name": "Bricks Light Grey Matt Ceramic Metro Wall Tiles 300x100x7mm"
+    },
+    {
+      "url": "https://www.splendourtiles.co.uk/bricks-white-matt-30x10",
+      "is_clearance": false,
+      "has_badge": false,
+      "error": null,
+      "sku": "YTBBRWHM3010",
+      "name": "Bricks White Matt Ceramic Metro Wall Tiles 300x100x7mm"
+    }
+  ],
+  "errors": [],
+  "total_checked": 317,
+  "clearance_count": 30,
+  "non_clearance_count": 287,
+  "error_count": 0,
+  "checked_at": "2026-02-19T22:02:14.474363+00:00"
+}

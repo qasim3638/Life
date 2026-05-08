@@ -1,0 +1,36 @@
+{
+  "summary": "Tested GBP OAuth scaffold + Ads-Savings backend (8/8 pytest pass) and 4 frontend pages: /admin/ads-savings, /admin/gbp, /admin/website-sales-dashboard, /admin/seo. All review criteria met. Hero £/month figure (£13.34), 4 stat cards, top earning keywords table all render. GBP connect CTA + disclaimer + data-testid='gbp-connect-btn' present. SEO Command Centre tiles 'seo-tool-tile-gbp' and 'seo-tool-tile-ads-savings' both present and navigate to the correct routes. Sales Dashboard ⓘ tooltip icons visually confirmed next to Total Sales / Net Profit / Orders / Avg Order Value plus all 5 Profit Breakdown rows (screenshot evidence).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "/admin/gbp (and admin shell in general)", "issues": ["After page mount the admin shell fires 32+ XHRs returning 404 (noisy console). Not blocking, but indicates dead/stale endpoint calls from one of the global admin widgets — worth tracing in network tab."]},
+      {"screen": "AdminDashboard render", "issues": ["React warning: 'Each child in a list should have a unique key prop' fires on every admin route — pre-existing, unrelated to this scope but should be cleaned up."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_gbp_and_ads_savings.py",
+    "/app/test_reports/pytest/gbp_ads_savings.xml"
+  ],
+  "action_items": [
+    "OPTIONAL: Verify the actual data-testid prefix on the Sales-Dashboard MetricInfoTooltip buttons. My selector '[data-testid^=\"metric-info-\"]' returned 0 elements even though the ⓘ icons are visually rendered (confirmed in screenshot for all 9 required labels). Either the testids use a different prefix (e.g. 'metric-tooltip-' or 'info-tooltip-') or are missing. Recommend standardising to 'metric-info-{key}' so playwright hover tests can target them deterministically.",
+    "Trace the source of the 32 background 404s on /admin/gbp page load — likely a stale admin widget polling a removed endpoint."
+  ],
+  "critical_code_review_comments": [
+    "ads_savings.py: heuristic CPC model is hard-coded in the route file (UK_CITIES, TRANSACTIONAL_STEMS, INFORMATIONAL_STEMS). For maintainability move these to a config module or a small JSON cache so they can be updated without redeploys (already flagged in the docstring as 'updated quarterly').",
+    "ads_savings.py: high_value_keywords threshold of £50 is a magic number — surface as a query param or settings constant.",
+    "gbp_auth.py: callback returns 303 RedirectResponse with frontend origin built from multiple env-var fallbacks. Good defensive coding; just ensure GBP_FRONTEND_ORIGIN is documented in deployment notes alongside GOOGLE_CLIENT_ID/SECRET.",
+    "ads_savings overview returns connected=False/configured=is_configured() when GSC returns 401, but uses the 401 path silently — consider also catching 403 the same way; currently a 403 from gsc_service would bubble up as a 500 to the UI."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_gbp_and_ads_savings.py (NEW — 8 pytest tests, all green)"
+  ],
+  "success_rate": {"backend": "100% (8/8)", "frontend": "100% on the explicit review checklist; 1 minor data-testid naming question for the dashboard tooltips"},
+  "test_credentials": "admin@test.com / admin123 (super_admin) — works via POST /api/auth/login → JWT in 'token' field stored in localStorage as 'token'.",
+  "seed_data_creation": "None.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend pytest file at /app/backend/tests/test_gbp_and_ads_savings.py covers: GBP status (401 unauth + 200 authed with connected:false/configured:true), GBP connect (returns Google authorization_url), GBP locations (graceful <500), Ads-savings overview (auth gating + full schema validation + 295 keyword rows). Login flow on this preview env requires waiting for POST /api/auth/login response then a brief settle (~3s) before localStorage 'token' is populated and route guards release. Use wait_until='domcontentloaded' (NOT 'networkidle') for /admin/* navigations — admin shell fires lots of background XHRs that never settle.",
+  "rca of the issue": "No bugs to RCA — all explicit review checklist items verified passing. Backend numbers from live env: keywords_ranked=295, total_clicks=7, estimated_window_value_gbp=12.45, estimated_monthly_value_gbp=13.34, estimated_annual_value_gbp=160.08. Top row example: 'tile station tonbridge' clicks=2, position=1.0, est_cpc=£2.00, est_value=£4.00. Frontend hero '£13.34 / month' matches backend exactly."
+}

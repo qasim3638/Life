@@ -1,0 +1,35 @@
+{
+  "summary": "Verified the new multi-image picker on the Tile Visualizer end-to-end. Backend pytest (test_visualizer_multi_image.py + test_visualizer_admin_rooms.py + test_visualizer_v3_polish.py + test_visualizer_room_editor.py) ran 25 passed + 1 skipped — exactly matches the stated baseline. Direct API checks against POST /api/visualizer/sessions confirm: tile.images is returned as a list of 10 URLs, image_index 0/1/999 reflect correctly in the response (999 clamped to 9), and GET /api/visualizer/sessions/{id} persists tile_images, tile_image_index, and tile_image == tile_images[idx]. Coming Soon regression: unauthenticated visitor on /visualizer AND /visualizer?preview=1 both correctly show the 'Tile Visualizer — coming soon' page with the waitlist form (no admin token in localStorage). Homepage customer-facing nav has NO 'Visualize' link (verified link list). Frontend admin flow: logged in as admin@test.com / admin123, /admin/visualizer renders the 'Preview as customer' button (data-testid 'visualizer-admin-preview-btn') visible. /visualizer?preview=1 with the admin token in localStorage renders the real visualizer (10 sample-room cards, tile-search input, tile-picker). Searched 'Onyx', clicked the 'Scottish Onyx Polished 60x120cm' tile card which displays a '+2' badge bottom-right indicating extra images. The 'Texture image · 3 available' card (data-testid 'visualizer-tile-image-strip') appeared with 3 button thumbnails (data-testid visualizer-tile-image-0/1/2). thumb-0 was highlighted by default (yellow ring + check icon). Clicked thumb-1 — it became highlighted, thumb-0 deselected, the counter updated to 'Image 2 of 3', and the auto-render useEffect fired exactly the expected sequence: POST /api/visualizer/sessions {image_index:1,tile_id:...,sample_room_id:...,surface_kind:'floor'} → POST /sessions/{id}/render {style:'fast'} → POST /sessions/{id}/quote. The 'Showing Scottish Onyx Polished 60x120cm on Modern Kitchen Floor' caption matched throughout. Photoreal render NOT triggered (per instruction to avoid fal.ai cost).",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "POST /api/visualizer/sessions", "issue": "Response body's tile.image stays as the canonical first image even when image_index>0 — only session.tile_image (returned by GET /sessions/{id}) reflects the chosen index. Pytest test_session_returns_full_image_gallery only checks idx=0 so it passes; not a regression but minor inconsistency between live response and persisted doc. The frontend uses tile_images[imageIdx] anyway so the render is correct."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_visualizer_multi_image.py",
+    "/app/test_reports/pytest/visualizer_multi_image.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "TileVisualizerPage.jsx auto-render useEffect correctly lists [imageIdx, tile?.id, room?.id, surfaceKind] as deps — clicking a thumb triggers a fresh session POST + fast render. No infinite-loop risk because imageIdx only changes from user input (or the reset effect when tile.id changes).",
+    "imageIdx reset effect (when tile.id changes) is essential to prevent stale index when switching from a 10-image tile to a single-image tile — verified: single-image tiles correctly hide the strip card (length<2 guard).",
+    "TilePicker passes the full normalised images array up to the page on selection — no accidental truncation to first image. Backend _normalise_tile_images dedupes (verified by 10 unique URLs in a single product).",
+    "Backend clamp logic (max(0, min(idx, len-1))) handles both negative and out-of-range — pytest covers 9999 case.",
+    "Minor UX nit (not a bug): the +N badge on the picker card renders only on hover-state contrast — readable on the white tile card backgrounds I tested. No accessibility concerns observed.",
+    "Pre-existing console warning unrelated to this iteration: 'Each child in a list should have a unique key prop. Check the render method of AdminDashboard' — flagged in earlier iterations, not introduced by this change."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (25 pass, 1 skip — matches expected baseline)", "frontend": "100% (multi-image picker, Coming Soon regression, homepage-nav regression all verified)"},
+  "test_credentials": "admin@test.com / admin123 (from /app/memory/test_credentials.md)",
+  "seed_data_creation": "None — used existing 'Scottish Onyx Polished 60x120cm' product (10 images in DB) for backend probes and the same tile (3 displayed in picker after admin-side filtering) for the UI walk-through.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Multi-image picker is fully shipped and verified. Backend image_index clamping works, session doc persists tile_image/tile_image_index/tile_images, and the frontend strip card + thumb buttons + auto-render are wired correctly. Coming Soon page still gates unauthenticated visitors (including ?preview=1). The earlier May 3 fix (no 'Visualize' link in customer nav) still holds. Photoreal render path was intentionally NOT exercised to avoid fal.ai charges — main agent can self-test that separately if desired. The minor backend inconsistency (response body's tile.image staying as canonical primary while session doc respects the chosen index) is harmless given the frontend reads tile_images[imageIdx] for its overlay caption.",
+  "rca of the issue": "N/A — feature works as specified."
+}

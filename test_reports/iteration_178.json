@@ -1,0 +1,60 @@
+{
+  "summary": "iter178 retest of half+full pallet pricing. Backend persistence fix VERIFIED — PUT /api/products/{id} now round-trips m2_per_pallet, m2_per_half_pallet, half_pallet_price, pallet_price, pallet_enabled. Half-Pallet snap-down fix VERIFIED — clicking pallet-tier-half while qty=32 correctly snaps DOWN to 16 m², £27.50/m², total £440.00. ALL 36 backend tests pass (30 unit + 6 live, including the previously-failing test_update_product_persists_pallet_fields). REGRESSION FOUND: m²-minus button no longer enforces the pallet-tier floor. While Full Pallet is selected, clicking minus drops qty 32→31→30→29 even though 'Minimum order: 32 m²' notice still renders. Likely side-effect of useEffect snap-to-min change (no longer clamps via Math.max on qty changes — only on tier change).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "Storefront PDP: m²-minus button while Full/Half Pallet tier selected",
+        "issue": "REGRESSION vs iter177. Minus button decrements below the pallet-tier minimum. With Full Pallet active and qty=32, three minus clicks took qty to 29 (should hold at 32). The min-notice text 'Minimum order: 32 m². You can add more, but not less.' still renders, but the floor is not enforced. iter177 explicitly verified 'Minus button while Full selected → qty held at 32 (floor enforced)'. The iter178 snap-down fix likely replaced Math.max(qty, tierMin) with setQty(tierMin) inside the tier-change useEffect, removing the implicit floor clamp on every qty change.",
+        "affected_selectors": ["input[type=number] preceding minus button (no data-testid)", "[data-testid=pallet-tier-min-notice]"]
+      }
+    ],
+    "design_issues": [
+      {
+        "screen": "PDP qty stepper",
+        "issues": ["Plus / minus buttons next to the qty input have no data-testid (only generic className). Add data-testid='qty-minus' and 'qty-plus' for stable tests."]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_pallet_pricing.py",
+    "/app/backend/tests/test_pallet_tile_serializer.py",
+    "/app/backend/tests/test_pallet_pricing_live.py",
+    "/app/test_reports/pytest/iter178_pallet.xml"
+  ],
+  "action_items": [
+    "FIX (HIGH): Re-add pallet-floor enforcement on the minus / qty-input handlers in /app/frontend/src/pages/shop/CollectionDetailPage.js. The tier-change useEffect now sets qty to exact tier min (correct for snap-down), but qty mutations (minus button, manual edit) must still clamp to >= tierMin when Half/Full Pallet is selected. Recommended: wrap the minus handler with Math.max(newQty, currentTierMin) and reject manual entries below the floor (or snap them up).",
+    "ENHANCEMENT: Add data-testid='qty-minus', 'qty-plus' to the qty stepper buttons for stable test selectors."
+  ],
+  "critical_code_review_comments": [
+    "iter178 snap-down fix is technically correct for the chip-click case but inadvertently removed the implicit floor enforcement that iter177 was relying on (Math.max-on-every-render). Floor logic should live in the qty-mutation handlers, not in a useEffect side-effect on tier change. Currently only tier-change updates the floor; raw qty mutations bypass it.",
+    "Pallet-tier floor invariant is duplicated/unclear: 'Minimum order: 32 m²' notice text claims a hard floor, but only the chip-click path enforces it. Need a single getTierMin() and a setQty wrapper that always clamps."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (36/36 — 30 unit + 6 live, persistence fix verified)", "frontend": "85% (snap-down fix works; min-floor-on-minus regression)"},
+  "test_credentials": "admin@test.com / admin123 — confirmed via /api/auth/login",
+  "seed_data_creation": "None. Used pre-seeded Alabaster Polished 60x60cm tile (m2_per_pallet=32, m2_per_half_pallet=16, half_pallet_price=27.5, pallet_price=26.09, room_lot_price=28.99). test_update_product_persists_pallet_fields PUT-then-GET cycle restores original values on success.",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Both originally-reported issues are now resolved: (1) PUT pallet field persistence — verified via test_update_product_persists_pallet_fields (PASS). server.py:530-534 ProductUpdate now lists m2_per_pallet, m2_per_half_pallet, half_pallet_price, pallet_price_per_m2, half_pallet_price_per_m2. server.py:3945-3946 sync_fields covers all 6 pallet keys. (2) Half-Pallet chip click while qty=32 snaps DOWN to 16 — verified visually (screenshot shows qty=16, £27.50/m², total £440.00). NEW REGRESSION discovered: m²-minus button bypasses the pallet floor under Full/Half tier — main agent needs to re-add a clamp inside the minus handler / setQty wrapper. After the fix, retest by clicking Full Pallet then minus 3× — qty must stay at 32. Other regression items (per-m² preserves higher qty, Add-to-Cart writes pallet_tier='full_pallet') are confirmed PASS in this iteration.",
+  "verified_endpoints": [
+    "GET /api/tiles/products → 200, returns m2_per_pallet/m2_per_half_pallet/half_pallet_price/pallet_price on every product (Alabaster 60x60cm: 32/16/27.5/26.09)",
+    "GET /api/admin/pallet-settings → 200 with admin token (correct shape); 401/403 anonymous",
+    "PUT /api/products/{id} with full pallet payload → 200; subsequent GET returns m2_per_pallet=40, m2_per_half_pallet=20, half_pallet_price=25.99, pallet_price=24.99 unchanged (FIXED)"
+  ],
+  "verified_ui": [
+    "/shop/collection/TestSeries → 60x60cm → pallet-tier-selector with 3 chips (testids: pallet-tier-m2, pallet-tier-half, pallet-tier-full)",
+    "Full Pallet click → qty=32, £26.09/m², min-notice '32 m²'",
+    "Half Pallet click while qty=32 → qty SNAPS DOWN to 16, £27.50/m², total £440.00 (iter178 fix verified)",
+    "Per m² click after Full Pallet → qty preserved at 32 (no down-reset)",
+    "Add to Cart from Full Pallet → toast 'Added 32m² (Full Pallet) to cart'; localStorage tilestation_cart contains pallet_tier='full_pallet', priceType='full_pallet', quantity=32, price=26.09"
+  ],
+  "regression_found": [
+    "m²-minus while Full Pallet tier active: qty 32→31→30→29 (pallet floor not enforced). iter177 had this passing."
+  ],
+  "rca_of_the_issue": "iter178 changed the pricingTier-change useEffect in /app/frontend/src/pages/shop/CollectionDetailPage.js from setQty(Math.max(currentQty, tierMin)) to setQty(tierMin) so that Half-Pallet chip-click correctly snaps a qty=32 user down to 16. Side-effect: the previous implementation also acted as an implicit floor clamp every render — when minus brought qty below tierMin, the effect would re-clamp it back up. The new version only runs on tier change, so once tier is locked in, the minus button handler can freely decrement past the floor. Fix: keep the snap-to-exact-min behaviour on tier change, but also clamp inside the minus button handler (e.g. setQty(q => Math.max(q-1, getTierMin(pricingTier)))) and reject/snap manual qty input below tierMin."
+}

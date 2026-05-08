@@ -1,0 +1,1542 @@
+[
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Brushed Brass Aluminium Tile Trim",
+    "size": "8mm",
+    "stock": 70,
+    "price": 19.99,
+    "length": "2.5m",
+    "code": "6087",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Brushed Brass Aluminium Tile Trim",
+    "size": "10mm",
+    "stock": 22,
+    "price": 19.99,
+    "length": "2.5m",
+    "code": "6098",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Brushed Brass Aluminium Tile Trim",
+    "size": "12mm",
+    "stock": 0,
+    "price": 19.99,
+    "length": "2.5m",
+    "code": "6109",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Polished Brass Aluminium Tile Trim",
+    "size": "8mm",
+    "stock": 18,
+    "price": 19.99,
+    "length": "2.5m",
+    "code": "6088",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Polished Brass Aluminium Tile Trim",
+    "size": "10mm",
+    "stock": 11,
+    "price": 19.99,
+    "length": "2.5m",
+    "code": "6099",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Polished Brass Aluminium Tile Trim",
+    "size": "12mm",
+    "stock": 4,
+    "price": 19.99,
+    "length": "2.5m",
+    "code": "6110",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Black Brushed Aluminium Tile Trim",
+    "size": "8mm",
+    "stock": 19,
+    "price": 19.99,
+    "length": "2.5m",
+    "code": "3798",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Black Brushed Aluminium Tile Trim",
+    "size": "10mm",
+    "stock": 22,
+    "price": 19.99,
+    "length": "2.5m",
+    "code": "3799",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Black Brushed Aluminium Tile Trim",
+    "size": "12mm",
+    "stock": 0,
+    "price": 19.99,
+    "length": "2.5m",
+    "code": "3800",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Brushed Chrome Aluminium Tile Trim",
+    "size": "8mm",
+    "stock": 20,
+    "price": 19.99,
+    "length": "2.5m",
+    "code": "4508",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Brushed Chrome Aluminium Tile Trim",
+    "size": "10mm",
+    "stock": 19,
+    "price": 19.99,
+    "length": "2.5m",
+    "code": "4510",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Brushed Chrome Aluminium Tile Trim",
+    "size": "12mm",
+    "stock": 98,
+    "price": 19.99,
+    "length": "2.5m",
+    "code": "4512",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Gloss Black Aluminium Tile Trim",
+    "size": "8mm",
+    "stock": 18,
+    "price": 19.99,
+    "length": "2.5m",
+    "code": "6086",
+    "cost": null
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Gloss Black Aluminium Tile Trim",
+    "size": "10mm",
+    "stock": 23,
+    "price": 19.99,
+    "length": "2.5m",
+    "code": "6097",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Gloss Black Aluminium Tile Trim",
+    "size": "12mm",
+    "stock": 2,
+    "price": 19.99,
+    "length": "2.5m",
+    "code": "6108",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Matt Black Aluminium Tile Trim",
+    "size": "8mm",
+    "stock": 0,
+    "price": 19.99,
+    "length": "2.5m",
+    "code": "6085",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Matt Black Aluminium Tile Trim",
+    "size": "10mm",
+    "stock": 0,
+    "price": 19.99,
+    "length": "2.5m",
+    "code": "6096",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Matt Black Aluminium Tile Trim",
+    "size": "12mm",
+    "stock": 0,
+    "price": 19.99,
+    "length": "2.5m",
+    "code": "6107",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Stainless Steel Trim Aluminium Tile Trim",
+    "size": "8mm",
+    "stock": 14,
+    "price": 19.99,
+    "length": "2.5m",
+    "code": "4448",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Stainless Steel Trim Aluminium Tile Trim",
+    "size": "10mm",
+    "stock": 8,
+    "price": 19.99,
+    "length": "2.5m",
+    "code": "4450",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Stainless Steel Trim Aluminium Tile Trim",
+    "size": "12mm",
+    "stock": 24,
+    "price": 19.99,
+    "length": "2.5m",
+    "code": "4452",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Polished Copper Aluminium Tile Trim",
+    "size": "8mm",
+    "stock": 8,
+    "price": 24.99,
+    "length": "2.5m",
+    "code": "6090",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Polished Copper Aluminium Tile Trim",
+    "size": "10mm",
+    "stock": 29,
+    "price": 24.99,
+    "length": "2.5m",
+    "code": "6101",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Polished Copper Aluminium Tile Trim",
+    "size": "12mm",
+    "stock": 18,
+    "price": 24.99,
+    "length": "2.5m",
+    "code": "6112",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Brushed Copper Aluminium Tile Trim",
+    "size": "8mm",
+    "stock": 0,
+    "price": 24.99,
+    "length": "2.5m",
+    "code": "6089",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Brushed Copper Aluminium Tile Trim",
+    "size": "10mm",
+    "stock": 1,
+    "price": 24.99,
+    "length": "2.5m",
+    "code": "6100",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Brushed Copper Aluminium Tile Trim",
+    "size": "12mm",
+    "stock": 20,
+    "price": 24.99,
+    "length": "2.5m",
+    "code": "6111",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Chrome Polished Aluminium Tile Trim",
+    "size": "8mm",
+    "stock": 29,
+    "price": 14.99,
+    "length": "2.5m",
+    "code": "4551",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Chrome Polished Aluminium Tile Trim",
+    "size": "10mm",
+    "stock": 0,
+    "price": 14.99,
+    "length": "2.5m",
+    "code": "4552",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Chrome Polished Aluminium Tile Trim",
+    "size": "12mm",
+    "stock": 40,
+    "price": 14.99,
+    "length": "2.5m",
+    "code": "4553",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Limestone Matt Aluminium Tile Trim",
+    "size": "8mm",
+    "stock": 18,
+    "price": 24.99,
+    "length": "2.5m",
+    "code": "6082",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Limestone Matt Aluminium Tile Trim",
+    "size": "10mm",
+    "stock": 0,
+    "price": 24.99,
+    "length": "2.5m",
+    "code": "6093",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Limestone Matt Aluminium Tile Trim",
+    "size": "12mm",
+    "stock": 0,
+    "price": 24.99,
+    "length": "2.5m",
+    "code": "6104",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Basalt Grey Matt Aluminium Tile Trim",
+    "size": "8mm",
+    "stock": 0,
+    "price": 24.99,
+    "length": "2.5m",
+    "code": "6080",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Basalt Grey Matt Aluminium Tile Trim",
+    "size": "10mm",
+    "stock": 0,
+    "price": 24.99,
+    "length": "2.5m",
+    "code": "6091",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Basalt Grey Matt Aluminium Tile Trim",
+    "size": "12mm",
+    "stock": 10,
+    "price": 24.99,
+    "length": "2.5m",
+    "code": "6102",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Granite Grey Matt Aluminium Tile Trim",
+    "size": "8mm",
+    "stock": 0,
+    "price": 24.99,
+    "length": "2.5m",
+    "code": "6081",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Granite Grey Matt Aluminium Tile Trim",
+    "size": "10mm",
+    "stock": 0,
+    "price": 24.99,
+    "length": "2.5m",
+    "code": "6092",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Granite Grey Matt Aluminium Tile Trim",
+    "size": "12mm",
+    "stock": 23,
+    "price": 24.99,
+    "length": "2.5m",
+    "code": "6103",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Sandstone Matt Aluminium Tile Trim",
+    "size": "8mm",
+    "stock": 0,
+    "price": 24.99,
+    "length": "2.5m",
+    "code": "6083",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Sandstone Matt Aluminium Tile Trim",
+    "size": "10mm",
+    "stock": 0,
+    "price": 24.99,
+    "length": "2.5m",
+    "code": "6105",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Sandstone Matt Aluminium Tile Trim",
+    "size": "12mm",
+    "stock": 0,
+    "price": 24.99,
+    "length": "2.5m",
+    "code": "6094",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trim Line",
+    "product": "Straight Edge Polished White Trims",
+    "size": "8mm",
+    "stock": 0,
+    "price": 19.99,
+    "length": "2.5m",
+    "code": null,
+    "cost": null
+  },
+  {
+    "supplier": "Trim Line",
+    "product": "Straight Edge Polished white Trim",
+    "size": "10mm",
+    "stock": 16,
+    "price": 19.99,
+    "length": "2.5m",
+    "code": "4516",
+    "cost": 2.0
+  },
+  {
+    "supplier": "Trim Line",
+    "product": "Straight Edge Polished white Trim",
+    "size": "12mm",
+    "stock": 0,
+    "price": 19.99,
+    "length": "2.5m",
+    "code": null,
+    "cost": 2.0
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Brushed Stainless Steel Aluminium Tile Trim",
+    "size": "8mm",
+    "stock": 8,
+    "price": 19.99,
+    "length": "2.4m",
+    "code": "ELS429",
+    "cost": 4.52
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Brushed Stainless Steel Aluminium Tile Trim",
+    "size": "10mm",
+    "stock": 0,
+    "price": 19.99,
+    "length": "2.4m",
+    "code": "ELS430",
+    "cost": 4.52
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Brushed Stainless Steel Aluminium Tile Trim",
+    "size": "12mm",
+    "stock": 0,
+    "price": 19.99,
+    "length": "2.4m",
+    "code": "ELS431",
+    "cost": 4.52
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Boutique Range Bright Copper Metal Trim",
+    "size": "10mm",
+    "stock": 0,
+    "price": 39.99,
+    "length": "2.4m",
+    "code": "BRC917",
+    "cost": 11.0
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Boutique Range Bright Copper Metal Trim",
+    "size": "12mm",
+    "stock": 0,
+    "price": 39.99,
+    "length": "2.4m",
+    "code": "BRC918",
+    "cost": 11.0
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Boutique Range Brushed Copper Metal Trim",
+    "size": "10mm",
+    "stock": 0,
+    "price": 39.99,
+    "length": "2.4m",
+    "code": "BRBC919",
+    "cost": 11.0
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Boutique Range Brushed Copper Metal Trim",
+    "size": "12mm",
+    "stock": 0,
+    "price": 39.99,
+    "length": "2.4m",
+    "code": "BRBC920",
+    "cost": 11.0
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Boutique Range Bright Gold Metal Trim",
+    "size": "10mm",
+    "stock": 0,
+    "price": 39.99,
+    "length": "2.4m",
+    "code": "BRG921",
+    "cost": 11.0
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Boutique Range Bright Gold Metal Trim",
+    "size": "12mm",
+    "stock": 0,
+    "price": 39.99,
+    "length": "2.4m",
+    "code": "BRG922",
+    "cost": 11.0
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Boutique Range Brushed Gold Metal Trim",
+    "size": "10mm",
+    "stock": 0,
+    "price": 39.99,
+    "length": "2.4m",
+    "code": "BRBG923",
+    "cost": 11.0
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Boutique Range Brushed Gold Metal Trim",
+    "size": "12mm",
+    "stock": 0,
+    "price": 39.99,
+    "length": "2.4m",
+    "code": "BRBG924",
+    "cost": 11.0
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Boutique Range Bright Silver Metal Trim",
+    "size": "10mm",
+    "stock": 0,
+    "price": 39.99,
+    "length": "2.4m",
+    "code": "BRBG929",
+    "cost": 11.0
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Boutique Range Bright Silver Metal Trim",
+    "size": "12mm",
+    "stock": 0,
+    "price": 39.99,
+    "length": "2.4m",
+    "code": "BRBG925",
+    "cost": 11.0
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Boutique Range Brushed Silver Metal Trim",
+    "size": "10mm",
+    "stock": 0,
+    "price": 39.99,
+    "length": "2.4m",
+    "code": "BRBS913",
+    "cost": 11.0
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Boutique Range Brushed Silver Metal Trim",
+    "size": "12mm",
+    "stock": 0,
+    "price": 39.99,
+    "length": "2.4m",
+    "code": "BRBS914",
+    "cost": 11.0
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Boutique Range Embosed Silver Metal Trim",
+    "size": "10mm",
+    "stock": 0,
+    "price": 39.99,
+    "length": "2.4m",
+    "code": "BRES915",
+    "cost": 10.5
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Boutique Range Embosed Silver Metal Trim",
+    "size": "12mm",
+    "stock": 0,
+    "price": 39.99,
+    "length": "2.4m",
+    "code": "BRES916",
+    "cost": 10.5
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge White Marble Metel Aluminium Tile Trim",
+    "size": "10mm",
+    "stock": 0,
+    "price": 19.99,
+    "length": "2.4m",
+    "code": "MPJT10",
+    "cost": 4.0
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Black Nickel Aluminium Tile Trim",
+    "size": "8mm",
+    "stock": 0,
+    "price": 39.99,
+    "length": "2.4m",
+    "code": "BNL830",
+    "cost": 8.5
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Black Nickel Aluminium Tile Trim",
+    "size": "10mm",
+    "stock": 6,
+    "price": 39.99,
+    "length": "2.4m",
+    "code": "BNL833",
+    "cost": 9.0
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Black Nickel Aluminium Tile Trim",
+    "size": "12mm",
+    "stock": 0,
+    "price": 39.99,
+    "length": "2.4m",
+    "code": "BNL834",
+    "cost": 9.5
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge White PVC Tile Trim",
+    "size": "8mm",
+    "stock": 0,
+    "price": 5.99,
+    "length": "2.4m",
+    "code": "FTE472",
+    "cost": 1.25
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge White PVC Tile Trim",
+    "size": "10mm",
+    "stock": 1,
+    "price": 5.99,
+    "length": "2.4m",
+    "code": "FTE560",
+    "cost": 1.45
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge White PVC Tile Trim",
+    "size": "12mm",
+    "stock": 5,
+    "price": 5.99,
+    "length": "2.4m",
+    "code": "FTE114",
+    "cost": 1.55
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Black PVC Tile Trim",
+    "size": "6mm",
+    "stock": 0,
+    "price": 5.99,
+    "length": "2.4m",
+    "code": "FTE499",
+    "cost": 1.0
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Black PVC Tile Trim",
+    "size": "8mm",
+    "stock": 7,
+    "price": 5.99,
+    "length": "2.4m",
+    "code": "FTE475",
+    "cost": 1.25
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Black PVC Tile Trim",
+    "size": "10mm",
+    "stock": 4,
+    "price": 5.99,
+    "length": "2.4m",
+    "code": "FTE701",
+    "cost": 1.45
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Black PVC Tile Trim",
+    "size": "12mm",
+    "stock": 18,
+    "price": 5.99,
+    "length": "2.4m",
+    "code": "FTE708",
+    "cost": 1.7
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Grey PVC Tile Trim",
+    "size": "8mm",
+    "stock": 14,
+    "price": 5.99,
+    "length": "2.4m",
+    "code": "fte341",
+    "cost": 1.25
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Grey PVC Tile Trim",
+    "size": "10mm",
+    "stock": 1,
+    "price": 5.99,
+    "length": "2.4m",
+    "code": "fte343",
+    "cost": 1.45
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Straight Edge Grey PVC Tile Trim",
+    "size": "12mm",
+    "stock": 2,
+    "price": 5.99,
+    "length": "2.4m",
+    "code": "fte344",
+    "cost": 1.7
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Round Edge White PVC Tile Tile Trim",
+    "size": "7mm",
+    "stock": 0,
+    "price": 5.99,
+    "length": "2.4m",
+    "code": "ETE001",
+    "cost": 0.8
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Round Edge White PVC Tile Tile Trim",
+    "size": "9.5mm",
+    "stock": 0,
+    "price": 5.99,
+    "length": "2.4m",
+    "code": "ETE003",
+    "cost": 0.9
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Round Edge White PVC Tile Tile Trim",
+    "size": "12mm",
+    "stock": 0,
+    "price": 5.99,
+    "length": "2.4m",
+    "code": "ETE010",
+    "cost": 1.0
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Smooth white L Shaped tile Trim",
+    "size": "8mm",
+    "stock": 2,
+    "price": 19.99,
+    "length": "2.4m",
+    "code": "WHT-538",
+    "cost": 4.52
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Smooth white L Shaped tile Trim",
+    "size": "10mm",
+    "stock": 7,
+    "price": 19.99,
+    "length": "2.4m",
+    "code": "WHT-663",
+    "cost": 4.52
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Smooth white L Shaped tile Trim",
+    "size": "12mm",
+    "stock": 10,
+    "price": 19.99,
+    "length": "2.4m",
+    "code": "WHT-665",
+    "cost": 4.52
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Brushed Nickel L Shaped Brass Trim",
+    "size": "10mm",
+    "stock": 12,
+    "price": 39.99,
+    "length": "2.4m",
+    "code": "VRBN404",
+    "cost": 9.0
+  },
+  {
+    "supplier": "Tile Rite",
+    "product": "Bright Silver L Shaped Trim",
+    "size": "12.5mm",
+    "stock": 39,
+    "price": 39.99,
+    "length": "2.4m",
+    "code": "BRS938",
+    "cost": 9.0
+  },
+  {
+    "supplier": "Trimline",
+    "product": "Straight Edge Chrome Aluminium Trim",
+    "size": "22mm",
+    "stock": 8,
+    "price": 39.99,
+    "length": "2.5m",
+    "code": "4507",
+    "cost": 9.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "Ultra Clear Silicone",
+    "size": "310ml",
+    "stock": 17,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 6.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "Ultra White Silicone",
+    "size": "310 ml",
+    "stock": 8,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 6.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "Ultra Jasmine Silicone",
+    "size": "310ml",
+    "stock": 23,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 6.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "Ultra Limestone Silicone",
+    "size": "310ml",
+    "stock": 23,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 6.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "Ultra Cream Silicone",
+    "size": "310ml",
+    "stock": 0,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 6.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "Ultra Taupe Silicone",
+    "size": "310ml",
+    "stock": 6,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 6.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "Ultra Silver Grey Silicone",
+    "size": "310ml",
+    "stock": 17,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 6.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "Ultra Mid Grey Sillicone",
+    "size": "310ml",
+    "stock": 12,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 6.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "Ultra Grey Silicone",
+    "size": "310ml",
+    "stock": 18,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 6.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "Ultra Charcoal Silicone",
+    "size": "310ml",
+    "stock": 11,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 6.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "Ultra Black Silicone",
+    "size": "310ml",
+    "stock": 9,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 6.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "Ultra Ivory Silicone",
+    "size": "310ml",
+    "stock": 7,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 6.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "Ultra Dark Grey Silicone",
+    "size": "310ml",
+    "stock": 10,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 6.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "Ultra Grip & Grap Adhesive Tube",
+    "size": null,
+    "stock": 7,
+    "price": 19.99,
+    "length": null,
+    "code": null,
+    "cost": 6.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrout Flexible Charcoal",
+    "size": "3Kg",
+    "stock": 6,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 4.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrout Flexible Vintage White",
+    "size": "3Kg",
+    "stock": 3,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 4.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrout Flexible Jasmine",
+    "size": "3Kg",
+    "stock": 7,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 4.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrout Flexible Limestone",
+    "size": "3Kg",
+    "stock": 8,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 4.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrout Flexible Mocha",
+    "size": "3Kg",
+    "stock": 8,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 4.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrout Flexible Ivory",
+    "size": "3Kg",
+    "stock": 5,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 4.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrout Flexible Silver Grey",
+    "size": "3Kg",
+    "stock": 6,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 4.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrout Flexible Mid Grey",
+    "size": "3Kg",
+    "stock": 5,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 4.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrout Flexible Grey",
+    "size": "3Kg",
+    "stock": 5,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 4.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrout Flexible Taupe",
+    "size": "3Kg",
+    "stock": 7,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 4.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "Pro Grout Flexible Almond",
+    "size": "3Kg",
+    "stock": 3,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 4.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrout Flexible Brilliant White",
+    "size": "3Kg",
+    "stock": 9,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 4.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrout Flexible Dark Grey",
+    "size": "3Kg",
+    "stock": 6,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 4.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrout Flexible Black",
+    "size": "3Kg",
+    "stock": 2,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 4.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrout Flexible Limestone",
+    "size": "10Kg",
+    "stock": 5,
+    "price": 24.99,
+    "length": null,
+    "code": null,
+    "cost": 8.5
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrout Flexible Jasmine",
+    "size": "10Kg",
+    "stock": 4,
+    "price": 24.99,
+    "length": null,
+    "code": null,
+    "cost": 8.5
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrout Flexible Silver Grey",
+    "size": "10Kg",
+    "stock": 4,
+    "price": 24.99,
+    "length": null,
+    "code": null,
+    "cost": 8.5
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrout Flexible Mid Grey",
+    "size": "10Kg",
+    "stock": 5,
+    "price": 24.99,
+    "length": null,
+    "code": null,
+    "cost": 8.5
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrout Flexible Grey",
+    "size": "10Kg",
+    "stock": 6,
+    "price": 24.99,
+    "length": null,
+    "code": null,
+    "cost": 8.5
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrout Flexible Charcoal",
+    "size": "10Kg",
+    "stock": 6,
+    "price": 24.99,
+    "length": null,
+    "code": null,
+    "cost": 8.5
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrout Flexible White",
+    "size": "10Kg",
+    "stock": 3,
+    "price": 24.99,
+    "length": null,
+    "code": null,
+    "cost": 8.5
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrout Epoxy Charcoal",
+    "size": "3Kg",
+    "stock": 3,
+    "price": 59.99,
+    "length": null,
+    "code": null,
+    "cost": 24.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrout Epoxy Grey",
+    "size": "3Kg",
+    "stock": 3,
+    "price": 59.99,
+    "length": null,
+    "code": null,
+    "cost": 24.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrout Epoxy Silver Grey",
+    "size": "3Kg",
+    "stock": 8,
+    "price": 59.99,
+    "length": null,
+    "code": null,
+    "cost": 24.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrout Epoxy Jasmine",
+    "size": "3Kg",
+    "stock": 2,
+    "price": 59.99,
+    "length": null,
+    "code": null,
+    "cost": 24.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrout Epoxy White",
+    "size": "3Kg",
+    "stock": 4,
+    "price": 59.99,
+    "length": null,
+    "code": null,
+    "cost": 24.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProPave Primer External Tiling Slurry",
+    "size": "17kg",
+    "stock": 3,
+    "price": 34.99,
+    "length": null,
+    "code": null,
+    "cost": 15.5
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProPave Grout Natural Cashmere",
+    "size": "15Kg",
+    "stock": 4,
+    "price": 59.99,
+    "length": null,
+    "code": null,
+    "cost": 28.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProPave Grout Cosmic Black",
+    "size": "15Kg",
+    "stock": 3,
+    "price": 59.99,
+    "length": null,
+    "code": null,
+    "cost": 28.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProPave Grout Storm Grey",
+    "size": "15Kg",
+    "stock": 4,
+    "price": 59.99,
+    "length": null,
+    "code": null,
+    "cost": 28.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProPave Grout Pebble Grey",
+    "size": "15Kg",
+    "stock": 6,
+    "price": 59.99,
+    "length": null,
+    "code": null,
+    "cost": 28.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProSuper Grip Acrylic Wall Tile Adhesive",
+    "size": "15Kg",
+    "stock": 0,
+    "price": 24.99,
+    "length": null,
+    "code": null,
+    "cost": 9.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProAqua Shield Tanking Kit",
+    "size": "9Kg",
+    "stock": 2,
+    "price": 69.99,
+    "length": null,
+    "code": null,
+    "cost": 32.5
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProPrimer Advanced Polymer",
+    "size": "1L",
+    "stock": 11,
+    "price": 15.99,
+    "length": null,
+    "code": null,
+    "cost": 5.5
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProPrimer Advanced Polymer",
+    "size": "5L",
+    "stock": 2,
+    "price": 27.99,
+    "length": null,
+    "code": null,
+    "cost": 13.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProClean Porcelain Tile & Stone Cleaner",
+    "size": "1L",
+    "stock": 4,
+    "price": 24.99,
+    "length": null,
+    "code": null,
+    "cost": 6.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProClean Grout Aid",
+    "size": "1L",
+    "stock": 5,
+    "price": 24.99,
+    "length": null,
+    "code": null,
+    "cost": 7.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProClean Tile & Grout Sealer",
+    "size": "1L",
+    "stock": 14,
+    "price": 24.99,
+    "length": null,
+    "code": null,
+    "cost": 6.5
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProClean Easy Clean Tile Protector",
+    "size": "1L",
+    "stock": 4,
+    "price": 24.99,
+    "length": null,
+    "code": null,
+    "cost": 7.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProClean Resin Off",
+    "size": "1L",
+    "stock": 5,
+    "price": 24.99,
+    "length": null,
+    "code": null,
+    "cost": 7.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProClean Grout Haze Remover",
+    "size": "1L",
+    "stock": 4,
+    "price": 24.99,
+    "length": null,
+    "code": null,
+    "cost": 7.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProLevel Fibre Reinforced Flexible Leveller",
+    "size": "20Kg",
+    "stock": 51,
+    "price": 19.99,
+    "length": null,
+    "code": null,
+    "cost": 9.5
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProFlex SP Rapid/Flexible Adhesive S1 Grey (Blue Bag)",
+    "size": "20Kg",
+    "stock": 19,
+    "price": 22.99,
+    "length": null,
+    "code": null,
+    "cost": 9.5
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProFlex SP Rapid/Flexible Adhesive S1 White (Blue Bag)",
+    "size": "20Kg",
+    "stock": 0,
+    "price": 24.99,
+    "length": null,
+    "code": null,
+    "cost": 10.5
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProEco Gel Thixotropic Flexible S1White",
+    "size": "20Kg",
+    "stock": 0,
+    "price": 27.99,
+    "length": null,
+    "code": null,
+    "cost": 12.99
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrip FX Fibre Reinforced semi/Rapid S1 White (Light Blue Bag)",
+    "size": "20Kg",
+    "stock": 0,
+    "price": 24.99,
+    "length": null,
+    "code": null,
+    "cost": 10.7
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProGrip FX Fibre Reinforced semi/Rapid S1 Grey (Light Blue Bag)",
+    "size": "20Kg",
+    "stock": 0,
+    "price": 22.99,
+    "length": null,
+    "code": null,
+    "cost": 9.5
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProSS Flexible Standard Set C2 Grey (Red Bag)",
+    "size": "20Kg",
+    "stock": 30,
+    "price": 13.99,
+    "length": null,
+    "code": null,
+    "cost": 6.95
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProSS Flexible Standard Set C2 White (Red Bag)",
+    "size": "20Kg",
+    "stock": 55,
+    "price": 14.99,
+    "length": null,
+    "code": null,
+    "cost": 8.01
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProRapid RS Flexible Rapid Set C2 Grey (Yellow Bag)",
+    "size": "20Kg",
+    "stock": 40,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 7.5
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProRapid RS Flexible Rapid Set C2 White (Yellow Bag)",
+    "size": "20Kg",
+    "stock": 43,
+    "price": 19.99,
+    "length": null,
+    "code": null,
+    "cost": 9.25
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProFlex Spes Standard Set Flexible S1 Grey (Pink Bag)",
+    "size": "20Kg",
+    "stock": 37,
+    "price": 17.99,
+    "length": null,
+    "code": null,
+    "cost": 8.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProFlex Spes Standard Set Flexible S1 White (Pink Bag)",
+    "size": "20Kg",
+    "stock": 58,
+    "price": 19.99,
+    "length": null,
+    "code": null,
+    "cost": 9.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProFlex S2 Fibre Reinforced Adhesiv Grey (Green Bag)",
+    "size": "20Kg",
+    "stock": 28,
+    "price": 28.99,
+    "length": null,
+    "code": null,
+    "cost": 16.0
+  },
+  {
+    "supplier": "Ultra Tile",
+    "product": "ProFlex S2 Fibre Reinforced Adhesiv White (Green Bag)",
+    "size": "20Kg",
+    "stock": 11,
+    "price": 32.99,
+    "length": null,
+    "code": null,
+    "cost": 18.5
+  }
+]

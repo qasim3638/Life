@@ -1,0 +1,634 @@
+[
+  {
+    "sku": "POL60120A3",
+    "old_name": "ALLURE GREY POLISHED 60X120 CM",
+    "new_name": "Allure Grey 60x120 Polished",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "FEA3045A1",
+    "old_name": "HARD ROCK BLACK & WHITE MATT 30X45 CM",
+    "new_name": "Hard Rock Black & White 30x45 Feature",
+    "cost_price": 9.99,
+    "list_price": 22.99,
+    "status": "updated"
+  },
+  {
+    "sku": "FEA3045A2",
+    "old_name": "HARD ROCK WHITE MATT 30X45 CM",
+    "new_name": "Hard Rock White 30x45 Feature",
+    "cost_price": 9.99,
+    "list_price": 22.99,
+    "status": "updated"
+  },
+  {
+    "sku": "FEA3045A4",
+    "old_name": "MOONSTONE COTTA (009) MATT 30X45 CM",
+    "new_name": "Moonstone Cotta (009) 30x45 Feature",
+    "cost_price": 9.99,
+    "list_price": 22.99,
+    "status": "updated"
+  },
+  {
+    "sku": "FEA3045A3",
+    "old_name": "MOONSTONE GRIS (007) MATT 30X45 CM",
+    "new_name": "Moonstone Gris (007) 30x45 Feature",
+    "cost_price": 9.99,
+    "list_price": 22.99,
+    "status": "updated"
+  },
+  {
+    "sku": "FEA3045A5",
+    "old_name": "MOONSTONE GREY (030) MATT 30X45 CM",
+    "new_name": "Moonstone Grey (030) 30x45 Feature",
+    "cost_price": 9.99,
+    "list_price": 22.99,
+    "status": "updated"
+  },
+  {
+    "sku": "FEA3045A6",
+    "old_name": "MOONSTONE WHITE (023) MATT 30X45 CM",
+    "new_name": "Moonstone White (023) 30x45 Feature",
+    "cost_price": 9.99,
+    "list_price": 22.99,
+    "status": "updated"
+  },
+  {
+    "sku": "FEA3060A1",
+    "old_name": "BRICKSTONE GREY (006) MATT 30X60 CM",
+    "new_name": "Brickstone Grey (006) 30x60 Feature",
+    "cost_price": 10.49,
+    "list_price": 23.99,
+    "status": "updated"
+  },
+  {
+    "sku": "FEA3060A2",
+    "old_name": "BRICKSTONE NATURAL (029) MATT 30X60 CM",
+    "new_name": "Brickstone Natural (029) 30x60 Feature",
+    "cost_price": 10.49,
+    "list_price": 23.99,
+    "status": "updated"
+  },
+  {
+    "sku": "FEA3060A3",
+    "old_name": "JAISALMER BEIGE (004) MATT 30X60 CM",
+    "new_name": "Jaisalmer Beige (004) 30x60 Feature",
+    "cost_price": 10.49,
+    "list_price": 23.99,
+    "status": "updated"
+  },
+  {
+    "sku": "FEA3060A4",
+    "old_name": "STONEAGE DARK GREY (027) MATT 30X60 CM",
+    "new_name": "Stoneage Dark Grey (027) 30x60 Feature",
+    "cost_price": 10.49,
+    "list_price": 23.99,
+    "status": "updated"
+  },
+  {
+    "sku": "FEA3060A5",
+    "old_name": "STONEAGE LIGHT GREY DROP (007) MATT 30X60 CM",
+    "new_name": "Stoneage Light Grey Drop (007) 30x60 Feature",
+    "cost_price": 10.49,
+    "list_price": 23.99,
+    "status": "updated"
+  },
+  {
+    "sku": "HG60120A4",
+    "old_name": "BLACK THUNDER HIGH-GLOSS 60X120 CM",
+    "new_name": "Black Thunder 60x120 High Gloss",
+    "cost_price": 0.0,
+    "list_price": null,
+    "status": "no_price"
+  },
+  {
+    "sku": "HG60120A3",
+    "old_name": "MAGIC GOLD HIGH-GLOSS 60X120 CM",
+    "new_name": "Magic Gold 60x120 High Gloss",
+    "cost_price": 0.0,
+    "list_price": null,
+    "status": "no_price"
+  },
+  {
+    "sku": "HG60120A5",
+    "old_name": "ONYX BLUE HIGH-GLOSS 60X120 CM",
+    "new_name": "Onyx Blue 60x120 High Gloss",
+    "cost_price": 0.0,
+    "list_price": null,
+    "status": "no_price"
+  },
+  {
+    "sku": "MAT3060A1",
+    "old_name": "ETERNAL SATVARIO MATT 30X60 CM",
+    "new_name": "Eternal Satvario 30x60 Matt",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "CRV6060A2",
+    "old_name": "DAPPLED GREY CARVING MATT 60X60 CM",
+    "new_name": "Dappled Grey Carving 60x60 Matt",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "MAT6060A1",
+    "old_name": "ETERNAL SATUARIO MATT 60X60 CM",
+    "new_name": "Eternal Satuario 60x60 Matt",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "MAT6060A3",
+    "old_name": "RUBY ONYX SKY MATT 60X60 CM",
+    "new_name": "Ruby Onyx Sky 60x60 Matt",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "MAT6060A2",
+    "old_name": "SPANISH PUNCH MATT 60X60 CM",
+    "new_name": "Spanish Punch 60x60 Matt",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "MAT6060A4",
+    "old_name": "SPELNDOR GOLD MATT 60X60 CM",
+    "new_name": "Spelndor Gold 60x60 Matt",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "CRV6060A1",
+    "old_name": "VEINS GREY CARVING MATT 60X60 CM",
+    "new_name": "Veins Grey Carving 60x60 Matt",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "CRV60120A1",
+    "old_name": "DAPPLED GREY CARVING MATT 60X120 CM",
+    "new_name": "Dappled Grey Carving 60x120 Matt",
+    "cost_price": 12.99,
+    "list_price": 29.99,
+    "status": "updated"
+  },
+  {
+    "sku": "CRV60120A2",
+    "old_name": "GOLDEN VEINS CARVING MATT 60X120 CM",
+    "new_name": "Golden Veins Carving 60x120 Matt",
+    "cost_price": 12.99,
+    "list_price": 29.99,
+    "status": "updated"
+  },
+  {
+    "sku": "MAT60120A7",
+    "old_name": "ONYX WHITE MATT 60X120 CM",
+    "new_name": "Onyx White 60x120 Matt",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "MAT60120A4",
+    "old_name": "RUBY ONYX PINK MATT 60X120 CM",
+    "new_name": "Ruby Onyx Pink 60x120 Matt",
+    "cost_price": 12.49,
+    "list_price": 27.99,
+    "status": "updated"
+  },
+  {
+    "sku": "MAT60120A5",
+    "old_name": "RUBY ONYX SKY MATT 60X120 CM",
+    "new_name": "Ruby Onyx Sky 60x120 Matt",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "MAT60120A1",
+    "old_name": "SPANISH PUNCH MATT 60X120 CM",
+    "new_name": "Spanish Punch 60x120 Matt",
+    "cost_price": 12.49,
+    "list_price": 27.99,
+    "status": "updated"
+  },
+  {
+    "sku": "MAT60120A12",
+    "old_name": "SPLENDOR GOLD MATT 60X120 CM",
+    "new_name": "Splendor Gold 60x120 Matt",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "CRV60120A7",
+    "old_name": "VEINS GREY CARVING MATT 60X120 CM",
+    "new_name": "Veins Grey Carving 60x120 Matt",
+    "cost_price": 12.99,
+    "list_price": 29.99,
+    "status": "updated"
+  },
+  {
+    "sku": "CRV8080A1",
+    "old_name": "DAPPLED GREY CARVING MATT 80X80 CM",
+    "new_name": "Dappled Grey Carving 80x80 Matt",
+    "cost_price": 12.49,
+    "list_price": 27.99,
+    "status": "updated"
+  },
+  {
+    "sku": "CAR80120A1",
+    "old_name": "ASTONISHED GREY CARVING MATT 80X120 CM",
+    "new_name": "Astonished Grey Carving 80x120 Matt",
+    "cost_price": 14.99,
+    "list_price": 33.99,
+    "status": "updated"
+  },
+  {
+    "sku": "MAT80120A2",
+    "old_name": "CONCRETE BIANCO MATT 80X120 CM",
+    "new_name": "Concrete Bianco 80x120",
+    "cost_price": 0.0,
+    "list_price": null,
+    "status": "no_price"
+  },
+  {
+    "sku": "MAT80120A1",
+    "old_name": "ELEGANT STATUARIO ENDLESS MATT 80X120 CM",
+    "new_name": "Elegant Statuario Endless 80x120",
+    "cost_price": 0.0,
+    "list_price": null,
+    "status": "no_price"
+  },
+  {
+    "sku": "POL6060A3",
+    "old_name": "ALLURE GREY POLISHED 60X60 CM",
+    "new_name": "Allure Grey 60x60 Polished",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL6060A2",
+    "old_name": "ETERNAL SATVARIO POLISHED 60X60 CM",
+    "new_name": "Eternal Satvario 60x60 Polished",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL6060A4",
+    "old_name": "ONDULATO GREY POLISHED 60X60 CM",
+    "new_name": "Ondulato Grey 60x60 Polished",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL6060A11",
+    "old_name": "ONYX WHITE POLISHED 60X60 CM",
+    "new_name": "Onyx White 60x60 Polished",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL6060A8",
+    "old_name": "RUBY ONYX SKY POLISHED 60X60 CM",
+    "new_name": "Ruby Onyx Sky 60x60 Polished",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL6060A5",
+    "old_name": "SPECTRA BIANCO ENDLESS 60X60 CM",
+    "new_name": "Spectra Bianco 60x60 Polished",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL6060A7",
+    "old_name": "SPECTRA BROWN ENDLESS 60X60 CM",
+    "new_name": "Spectra Brown 60x60 Polished",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL6060A6",
+    "old_name": "SPECTRA GRISS ENDLESS POLISHED 60X60 CM",
+    "new_name": "Spectra Griss Endless 60x60 Polished",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL6060A10",
+    "old_name": "SPLENDOR GOLD POLISHED 60X60 CM",
+    "new_name": "Splendor Gold 60x60 Polished",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL3060A1",
+    "old_name": "ETERNAL SATVARIO POLISHED 30X60 CM",
+    "new_name": "Eternal Satvario 30x60 Polished",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL3060A6",
+    "old_name": "ONYX WHITE POLISHED 30X60 CM",
+    "new_name": "Onyx White 30x60 Polished",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL3060A3",
+    "old_name": "SPECTRA BIANCO ENDLESS POLISHED 30X60 CM",
+    "new_name": "Spectra Bianco Endless 30x60 Polished",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL3060A4",
+    "old_name": "SPECTRA BROWN ENDLESS POLISHED 30X60 CM",
+    "new_name": "Spectra Brown Endless 30x60 Polished",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL3060A5",
+    "old_name": "SPECTRA GRISS ENDLESS POLISHED 30X60 CM",
+    "new_name": "Spectra Griss Endless 30x60 Polished",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL60120A9",
+    "old_name": "ETERANAL SATVARIO POLISHED 60X120 CM",
+    "new_name": "Eteranal Satvario 60x120 Polished",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL60120A16",
+    "old_name": "ONYX WHITE POLISHED 60X120 CM",
+    "new_name": "Onyx White 60x120 Polished",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL60120A6",
+    "old_name": "PACIFIC AQUA POLISHED 60X120 CM",
+    "new_name": "Pacific Aqua 60x120 Polished",
+    "cost_price": 12.49,
+    "list_price": 27.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL60120A7",
+    "old_name": "RUBY ONYX PINK POLISHED 60X120 CM",
+    "new_name": "Ruby Onyx Pink 60x120 Polished",
+    "cost_price": 12.49,
+    "list_price": 27.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL60120A4",
+    "old_name": "RUBY ONYX SKY POLISHED 60X120 CM",
+    "new_name": "Ruby Onyx Sky 60x120 Polished",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL60120A5",
+    "old_name": "SPLENDOR GOLD POLISHED 60X120 CM",
+    "new_name": "Splendor Gold 60x120 Polished",
+    "cost_price": 11.99,
+    "list_price": 26.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL60120A8",
+    "old_name": "SPLENDOR GREEN POLISHED 60X120 CM",
+    "new_name": "Splendor Green 60x120 Polished",
+    "cost_price": 12.49,
+    "list_price": 27.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL80120A1",
+    "old_name": "ELEGANT STATUARIO ENDLESS POLISHED 80X120 CM",
+    "new_name": "Elegant Statuario Endless 80x120 Polished",
+    "cost_price": 13.99,
+    "list_price": 31.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL80120A5",
+    "old_name": "EMERALD GREY ENDLESS POLISHED 80X120 CM",
+    "new_name": "Emerald Grey Endless 80x120 Polished",
+    "cost_price": 13.99,
+    "list_price": 31.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL80120A4",
+    "old_name": "IMPERIAL BEIGE POLISHED 80X120 CM",
+    "new_name": "Imperial Beige 80x120 Polished",
+    "cost_price": 13.99,
+    "list_price": 31.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL80120A2",
+    "old_name": "ONYX PEARL POLISHED 80X120 CM",
+    "new_name": "Onyx Pearl 80x120 Polished",
+    "cost_price": 13.99,
+    "list_price": 31.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL80120A3",
+    "old_name": "ONYX WHITE POLISHED 80X120 CM",
+    "new_name": "Onyx White 80x120 Polished",
+    "cost_price": 13.99,
+    "list_price": 31.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL8080A2",
+    "old_name": "ALLURE GREY POLISHED 80X80 CM",
+    "new_name": "Allure Grey 80x80 Polished",
+    "cost_price": 12.49,
+    "list_price": 27.99,
+    "status": "updated"
+  },
+  {
+    "sku": "POL8080A1",
+    "old_name": "REAL SATVARIO POLISHED 80X80 CM",
+    "new_name": "Real Satvario 80x80 Polished",
+    "cost_price": 12.49,
+    "list_price": 27.99,
+    "status": "updated"
+  },
+  {
+    "sku": "HG60120A1",
+    "old_name": "CLASSIC BLUE HIGH-GLOSS 60X120 CM",
+    "new_name": "Classic Blue 60x120 High Gloss",
+    "cost_price": 0.0,
+    "list_price": null,
+    "status": "no_price"
+  },
+  {
+    "sku": "FEA3060A6",
+    "old_name": "KANDLA GREY MATT 30X60 CM",
+    "new_name": "Kandla Grey 30x60 Matt",
+    "cost_price": 0.0,
+    "list_price": null,
+    "status": "no_price"
+  },
+  {
+    "sku": "FEA3060A7",
+    "old_name": "SANDSTONE NATURAL MATT 30X60 CM",
+    "new_name": "Sandstone Natural 30x60 Matt",
+    "cost_price": 0.0,
+    "list_price": null,
+    "status": "no_price"
+  },
+  {
+    "sku": "FEA3060A8",
+    "old_name": "SPLITFACE PINK MATT 30X60 CM",
+    "new_name": "Splitface Pink 30x60 Matt",
+    "cost_price": 0.0,
+    "list_price": null,
+    "status": "no_price"
+  },
+  {
+    "sku": "FEA3060A9",
+    "old_name": "SPLITFACE MINT MATT 30X60 CM",
+    "new_name": "Splitface Mint 30x60 Matt",
+    "cost_price": 0.0,
+    "list_price": null,
+    "status": "no_price"
+  },
+  {
+    "sku": "3bb9137f-ad4a-4c64-9",
+    "old_name": "Black Magic 60x120cm",
+    "new_name": "Black Magic 60x120 Polished",
+    "cost_price": null,
+    "list_price": null,
+    "status": "no_price"
+  },
+  {
+    "sku": "298b4ebf-c7db-4d33-b",
+    "old_name": "Blue Stone 60x120cm",
+    "new_name": "Blue Stone 60x120 Polished",
+    "cost_price": null,
+    "list_price": null,
+    "status": "no_price"
+  },
+  {
+    "sku": "ecce4d15-2ee9-4c48-b",
+    "old_name": "Electric Black 60x120cm",
+    "new_name": "Electric Black 60x120 Polished",
+    "cost_price": null,
+    "list_price": null,
+    "status": "no_price"
+  },
+  {
+    "sku": "0a98edb0-f333-471e-8",
+    "old_name": "Sky Onyx 60x120cm",
+    "new_name": "Sky Onyx 60x120 Polished",
+    "cost_price": null,
+    "list_price": null,
+    "status": "no_price"
+  },
+  {
+    "sku": "9cad9531-30e7-450f-b",
+    "old_name": "Onyx White 60x120",
+    "new_name": "Onyx White 60X120 60x120 Polished",
+    "cost_price": null,
+    "list_price": null,
+    "status": "no_price"
+  },
+  {
+    "sku": "3e0ebb4c-74a4-42ac-8",
+    "old_name": "Eternal Satvario 30x60",
+    "new_name": "Eternal Satvario 30X60 30x60 Polished",
+    "cost_price": null,
+    "list_price": null,
+    "status": "no_price"
+  },
+  {
+    "sku": "ea491b08-ece8-4ec9-a",
+    "old_name": "Oro Green 60x120cm",
+    "new_name": "Oro Green 60x120 Polished",
+    "cost_price": null,
+    "list_price": null,
+    "status": "no_price"
+  },
+  {
+    "sku": "cf2302de-69fb-4236-8",
+    "old_name": "Oro Gold 60x120cm",
+    "new_name": "Oro Gold 60x120 Polished",
+    "cost_price": null,
+    "list_price": null,
+    "status": "no_price"
+  },
+  {
+    "sku": "f9ab47bf-9f36-4dfe-a",
+    "old_name": "Peacock Blue 60x120cm",
+    "new_name": "Peacock Blue 60x120 Glass",
+    "cost_price": null,
+    "list_price": null,
+    "status": "no_price"
+  },
+  {
+    "sku": "f1b51812-b017-4563-b",
+    "old_name": "Lava Gold 60x120cm",
+    "new_name": "Lava Gold 60x120 Glass",
+    "cost_price": null,
+    "list_price": null,
+    "status": "no_price"
+  },
+  {
+    "sku": "05e414c2-1eff-4ae2-8",
+    "old_name": "Brooklyn Bone 60x120",
+    "new_name": "Brooklyn Bone 60X120 60x120 Matt",
+    "cost_price": null,
+    "list_price": null,
+    "status": "no_price"
+  },
+  {
+    "sku": "98a8bdfd-aae2-48ea-a",
+    "old_name": "Atlantic Aqua 60x120cm",
+    "new_name": "Atlantic Aqua 60x120 Polished",
+    "cost_price": null,
+    "list_price": null,
+    "status": "no_price"
+  }
+]

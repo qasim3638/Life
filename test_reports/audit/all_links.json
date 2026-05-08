@@ -1,0 +1,845 @@
+{
+  "links": [
+    {
+      "type": "a",
+      "idx": 0,
+      "text": "Persistence Test Item",
+      "href": "/test",
+      "visible": true,
+      "section": "header"
+    },
+    {
+      "type": "a",
+      "idx": 1,
+      "text": "",
+      "href": "/shop",
+      "visible": true,
+      "section": "header"
+    },
+    {
+      "type": "a",
+      "idx": 2,
+      "text": "Contact",
+      "href": "/shop/contact",
+      "visible": true,
+      "section": "header"
+    },
+    {
+      "type": "a",
+      "idx": 3,
+      "text": "Sign In",
+      "href": "/shop/tile-login",
+      "visible": true,
+      "section": "header"
+    },
+    {
+      "type": "a",
+      "idx": 4,
+      "text": "Samples",
+      "href": "/shop/tile-samples",
+      "visible": true,
+      "section": "header"
+    },
+    {
+      "type": "a",
+      "idx": 5,
+      "text": "Wishlist",
+      "href": "/shop/tile-wishlist",
+      "visible": true,
+      "section": "header"
+    },
+    {
+      "type": "a",
+      "idx": 6,
+      "text": "Basket",
+      "href": "/shop/tile-cart",
+      "visible": true,
+      "section": "header"
+    },
+    {
+      "type": "a",
+      "idx": 7,
+      "text": "Tile Station\nTRADE",
+      "href": "/shop/trade/login",
+      "visible": true,
+      "section": "header"
+    },
+    {
+      "type": "a",
+      "idx": 8,
+      "text": "TEST LINK",
+      "href": "/test",
+      "visible": true,
+      "section": "nav"
+    },
+    {
+      "type": "a",
+      "idx": 9,
+      "text": "TEST LINK",
+      "href": "/test",
+      "visible": true,
+      "section": "nav"
+    },
+    {
+      "type": "a",
+      "idx": 10,
+      "text": "TEST LINK",
+      "href": "/test",
+      "visible": true,
+      "section": "nav"
+    },
+    {
+      "type": "a",
+      "idx": 11,
+      "text": "Flooring\nShop now",
+      "href": "/tiles?category=flooring",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 12,
+      "text": "Wall Tiles\nShop now",
+      "href": "/tiles?category=wall-tiles",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 13,
+      "text": "Floor Tiles\nShop now",
+      "href": "/tiles?category=floor-tiles",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 14,
+      "text": "Wall & Floor\nShop now",
+      "href": "/tiles?category=wall-and-floor",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 15,
+      "text": "Wall & Floor Tiles\nShop now",
+      "href": "/tiles?category=wall-floor-tiles",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 16,
+      "text": "Bathroom Tiles\nShop now",
+      "href": "/tiles?category=bathroom-tiles",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 17,
+      "text": "Kitchen Tiles\nShop now",
+      "href": "/tiles?category=kitchen-tiles",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 18,
+      "text": "Outdoor Tiles\nShop now",
+      "href": "/tiles?category=outdoor-tiles",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 19,
+      "text": "View All",
+      "href": "/tiles",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 20,
+      "text": "Order a Sample\n\n\u00a31.50/m\u00b2\n\n100x100mm",
+      "href": "/tiles/order-a-sample",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 21,
+      "text": "Bluestone Grey 60x60\n\n\u00a329.99/m\u00b2\n\n60x60cm",
+      "href": "/tiles/bluestone-grey-60x60",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 22,
+      "text": "Bluestone White 30x60\n\n\u00a324.99/m\u00b2\n\n30x60cm",
+      "href": "/tiles/bluestone-white-30x60",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 23,
+      "text": "Bluestone Beige 60x60\n\n\u00a329.99/m\u00b2\n\n60x60cm",
+      "href": "/tiles/bluestone-beige-60x60",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 24,
+      "text": "Bluestone Grey 60x60 Polished\n\n\u00a334.99/m\u00b2\n\n60x60cm",
+      "href": "/tiles/bluestone-grey-60x60-polished",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 25,
+      "text": "Laminate Premium Oak 60x60\n\n\u00a30.00/m\u00b2\n\n60x60",
+      "href": "/tiles/laminate-premium-oak-60x60",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 26,
+      "text": "Premium Polished Porcelain 60x60\n\n\u00a30.00/m\u00b2\n\n60x60",
+      "href": "/tiles/premium-polished-porcelain-60x60",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 27,
+      "text": "Ingot Verde Green Crystal Metro Tiles 30x60cm\n\n\u00a351.99/m\u00b2\n\n30x60cm",
+      "href": "/tiles/ingot-verde-green-crystal-metro-tiles-30x60cm",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 28,
+      "text": "Wood Effect\nShop now",
+      "href": "/tiles?style=wood-effect",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 29,
+      "text": "Marble Effect\nShop now",
+      "href": "/tiles?style=marble-effect",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 30,
+      "text": "Stone Effect\nShop now",
+      "href": "/tiles?style=stone-effect",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 31,
+      "text": "Patterned\nShop now",
+      "href": "/tiles?style=patterned",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 32,
+      "text": "Design Your Dream Room\n\nTap into your creativity with help from our online visua",
+      "href": "/shop/visualiser",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 33,
+      "text": "Free Samples\n\nAdd up to 3 free samples delivered to your door free of charge.",
+      "href": "/shop/sample-service",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 34,
+      "text": "Our Showrooms\n\nChat with our specialists at our Tonbridge, Gravesend & Chingford",
+      "href": "/shop/stores",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 35,
+      "text": "Free Delivery\n\nFree delivery for orders over \u00a3300, or collect from store.",
+      "href": "/shop/delivery",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 36,
+      "text": "Loved By Customers\n\nRated 4.9 stars from thousands of happy customers.",
+      "href": "/shop/reviews",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 37,
+      "text": "TEST_CTA_SECONDARY",
+      "href": "/test-secondary",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 38,
+      "text": "Open Trade Account",
+      "href": "/shop/trade/register",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 39,
+      "text": "Already have an account? Sign In",
+      "href": "/shop/login",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 40,
+      "text": "50%\n\nExclusive: Bathroom Catalogue\n\n50% off all bathroom products \u2014 Trade exclus",
+      "href": "/shop/bathroom",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 41,
+      "text": "Tile Calculator\n\nCalculate how many tiles you need",
+      "href": "/shop/calculator",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 42,
+      "text": "Trade Account\n\nExclusive discounts & credit back",
+      "href": "/shop/trade/register",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 43,
+      "text": "Create Account\n\nTrack orders & save favourites",
+      "href": "/shop/register",
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "a",
+      "idx": 44,
+      "text": "All Tiles",
+      "href": "/tiles",
+      "visible": true,
+      "section": "footer"
+    },
+    {
+      "type": "a",
+      "idx": 45,
+      "text": "Wall Tiles",
+      "href": "/tiles?type=wall",
+      "visible": true,
+      "section": "footer"
+    },
+    {
+      "type": "a",
+      "idx": 46,
+      "text": "Floor Tiles",
+      "href": "/tiles?type=floor",
+      "visible": true,
+      "section": "footer"
+    },
+    {
+      "type": "a",
+      "idx": 47,
+      "text": "Store Locations",
+      "href": "/shop/stores",
+      "visible": true,
+      "section": "footer"
+    },
+    {
+      "type": "a",
+      "idx": 48,
+      "text": "Trade Accounts",
+      "href": "/shop/trade/register",
+      "visible": true,
+      "section": "footer"
+    },
+    {
+      "type": "a",
+      "idx": 49,
+      "text": "Delivery Information",
+      "href": "/shop/delivery",
+      "visible": true,
+      "section": "footer"
+    },
+    {
+      "type": "a",
+      "idx": 50,
+      "text": "Returns & Refunds",
+      "href": "/shop/returns",
+      "visible": true,
+      "section": "footer"
+    },
+    {
+      "type": "a",
+      "idx": 51,
+      "text": "FAQs",
+      "href": "/shop/faq",
+      "visible": true,
+      "section": "footer"
+    },
+    {
+      "type": "a",
+      "idx": 52,
+      "text": "Contact Us",
+      "href": "/shop/contact",
+      "visible": true,
+      "section": "footer"
+    },
+    {
+      "type": "a",
+      "idx": 53,
+      "text": "Track Order",
+      "href": "/shop/track",
+      "visible": true,
+      "section": "footer"
+    },
+    {
+      "type": "a",
+      "idx": 54,
+      "text": "Privacy Policy",
+      "href": "/shop/privacy",
+      "visible": true,
+      "section": "footer"
+    },
+    {
+      "type": "a",
+      "idx": 55,
+      "text": "Terms & Conditions",
+      "href": "/shop/terms",
+      "visible": true,
+      "section": "footer"
+    },
+    {
+      "type": "button",
+      "idx": 0,
+      "text": "Menu",
+      "href": null,
+      "hasHandler": true,
+      "visible": false,
+      "section": "header"
+    },
+    {
+      "type": "button",
+      "idx": 1,
+      "text": "Go to slide 1",
+      "href": null,
+      "hasHandler": true,
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "button",
+      "idx": 2,
+      "text": "Go to slide 2",
+      "href": null,
+      "hasHandler": true,
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "button",
+      "idx": 3,
+      "text": "Go to slide 3",
+      "href": null,
+      "hasHandler": true,
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "button",
+      "idx": 4,
+      "text": "Previous slide",
+      "href": null,
+      "hasHandler": true,
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "button",
+      "idx": 5,
+      "text": "Next slide",
+      "href": null,
+      "hasHandler": true,
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "button",
+      "idx": 6,
+      "text": "",
+      "href": null,
+      "hasHandler": false,
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "button",
+      "idx": 7,
+      "text": "",
+      "href": null,
+      "hasHandler": false,
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "button",
+      "idx": 8,
+      "text": "",
+      "href": null,
+      "hasHandler": false,
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "button",
+      "idx": 9,
+      "text": "",
+      "href": null,
+      "hasHandler": false,
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "button",
+      "idx": 10,
+      "text": "",
+      "href": null,
+      "hasHandler": false,
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "button",
+      "idx": 11,
+      "text": "",
+      "href": null,
+      "hasHandler": false,
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "button",
+      "idx": 12,
+      "text": "",
+      "href": null,
+      "hasHandler": false,
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "button",
+      "idx": 13,
+      "text": "",
+      "href": null,
+      "hasHandler": false,
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "button",
+      "idx": 14,
+      "text": "Watch Tour",
+      "href": null,
+      "hasHandler": true,
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "button",
+      "idx": 15,
+      "text": "",
+      "href": null,
+      "hasHandler": true,
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "button",
+      "idx": 16,
+      "text": "",
+      "href": null,
+      "hasHandler": true,
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "button",
+      "idx": 17,
+      "text": "TEST_Tonbridge",
+      "href": null,
+      "hasHandler": true,
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "button",
+      "idx": 18,
+      "text": "TEST_Gravesend",
+      "href": null,
+      "hasHandler": true,
+      "visible": true,
+      "section": "body"
+    },
+    {
+      "type": "button",
+      "idx": 19,
+      "text": "",
+      "href": null,
+      "hasHandler": true,
+      "visible": true,
+      "section": "body"
+    }
+  ],
+  "unique_hrefs": {
+    "/test": [
+      "Persistence Test Item",
+      "TEST LINK",
+      "TEST LINK",
+      "TEST LINK"
+    ],
+    "/shop": [
+      ""
+    ],
+    "/shop/contact": [
+      "Contact",
+      "Contact Us"
+    ],
+    "/shop/tile-login": [
+      "Sign In"
+    ],
+    "/shop/tile-samples": [
+      "Samples"
+    ],
+    "/shop/tile-wishlist": [
+      "Wishlist"
+    ],
+    "/shop/tile-cart": [
+      "Basket"
+    ],
+    "/shop/trade/login": [
+      "Tile Station\nTRADE"
+    ],
+    "/tiles?category=flooring": [
+      "Flooring\nShop now"
+    ],
+    "/tiles?category=wall-tiles": [
+      "Wall Tiles\nShop now"
+    ],
+    "/tiles?category=floor-tiles": [
+      "Floor Tiles\nShop now"
+    ],
+    "/tiles?category=wall-and-floor": [
+      "Wall & Floor\nShop now"
+    ],
+    "/tiles?category=wall-floor-tiles": [
+      "Wall & Floor Tiles\nShop now"
+    ],
+    "/tiles?category=bathroom-tiles": [
+      "Bathroom Tiles\nShop now"
+    ],
+    "/tiles?category=kitchen-tiles": [
+      "Kitchen Tiles\nShop now"
+    ],
+    "/tiles?category=outdoor-tiles": [
+      "Outdoor Tiles\nShop now"
+    ],
+    "/tiles": [
+      "View All",
+      "All Tiles"
+    ],
+    "/tiles/order-a-sample": [
+      "Order a Sample\n\n\u00a31.50/m\u00b2\n\n100x100mm"
+    ],
+    "/tiles/bluestone-grey-60x60": [
+      "Bluestone Grey 60x60\n\n\u00a329.99/m\u00b2\n\n60x60cm"
+    ],
+    "/tiles/bluestone-white-30x60": [
+      "Bluestone White 30x60\n\n\u00a324.99/m\u00b2\n\n30x60cm"
+    ],
+    "/tiles/bluestone-beige-60x60": [
+      "Bluestone Beige 60x60\n\n\u00a329.99/m\u00b2\n\n60x60cm"
+    ],
+    "/tiles/bluestone-grey-60x60-polished": [
+      "Bluestone Grey 60x60 Polished\n\n\u00a334.99/m\u00b2\n\n60x60cm"
+    ],
+    "/tiles/laminate-premium-oak-60x60": [
+      "Laminate Premium Oak 60x60\n\n\u00a30.00/m\u00b2\n\n60x60"
+    ],
+    "/tiles/premium-polished-porcelain-60x60": [
+      "Premium Polished Porcelain 60x60\n\n\u00a30.00/m\u00b2\n\n60x60"
+    ],
+    "/tiles/ingot-verde-green-crystal-metro-tiles-30x60cm": [
+      "Ingot Verde Green Crystal Metro Tiles 30x60cm\n\n\u00a351.99/m\u00b2\n\n30x60cm"
+    ],
+    "/tiles?style=wood-effect": [
+      "Wood Effect\nShop now"
+    ],
+    "/tiles?style=marble-effect": [
+      "Marble Effect\nShop now"
+    ],
+    "/tiles?style=stone-effect": [
+      "Stone Effect\nShop now"
+    ],
+    "/tiles?style=patterned": [
+      "Patterned\nShop now"
+    ],
+    "/shop/visualiser": [
+      "Design Your Dream Room\n\nTap into your creativity with help from our online visua"
+    ],
+    "/shop/sample-service": [
+      "Free Samples\n\nAdd up to 3 free samples delivered to your door free of charge."
+    ],
+    "/shop/stores": [
+      "Our Showrooms\n\nChat with our specialists at our Tonbridge, Gravesend & Chingford",
+      "Store Locations"
+    ],
+    "/shop/delivery": [
+      "Free Delivery\n\nFree delivery for orders over \u00a3300, or collect from store.",
+      "Delivery Information"
+    ],
+    "/shop/reviews": [
+      "Loved By Customers\n\nRated 4.9 stars from thousands of happy customers."
+    ],
+    "/test-secondary": [
+      "TEST_CTA_SECONDARY"
+    ],
+    "/shop/trade/register": [
+      "Open Trade Account",
+      "Trade Account\n\nExclusive discounts & credit back",
+      "Trade Accounts"
+    ],
+    "/shop/login": [
+      "Already have an account? Sign In"
+    ],
+    "/shop/bathroom": [
+      "50%\n\nExclusive: Bathroom Catalogue\n\n50% off all bathroom products \u2014 Trade exclus"
+    ],
+    "/shop/calculator": [
+      "Tile Calculator\n\nCalculate how many tiles you need"
+    ],
+    "/shop/register": [
+      "Create Account\n\nTrack orders & save favourites"
+    ],
+    "/tiles?type=wall": [
+      "Wall Tiles"
+    ],
+    "/tiles?type=floor": [
+      "Floor Tiles"
+    ],
+    "/shop/returns": [
+      "Returns & Refunds"
+    ],
+    "/shop/faq": [
+      "FAQs"
+    ],
+    "/shop/track": [
+      "Track Order"
+    ],
+    "/shop/privacy": [
+      "Privacy Policy"
+    ],
+    "/shop/terms": [
+      "Terms & Conditions"
+    ]
+  },
+  "unknown_internal": [
+    {
+      "href": "/test",
+      "labels": [
+        "Persistence Test Item",
+        "TEST LINK",
+        "TEST LINK"
+      ]
+    },
+    {
+      "href": "/shop/visualiser",
+      "labels": [
+        "Design Your Dream Room\n\nTap into your creativity with help from our online visua"
+      ]
+    },
+    {
+      "href": "/shop/delivery",
+      "labels": [
+        "Free Delivery\n\nFree delivery for orders over \u00a3300, or collect from store.",
+        "Delivery Information"
+      ]
+    },
+    {
+      "href": "/shop/reviews",
+      "labels": [
+        "Loved By Customers\n\nRated 4.9 stars from thousands of happy customers."
+      ]
+    },
+    {
+      "href": "/test-secondary",
+      "labels": [
+        "TEST_CTA_SECONDARY"
+      ]
+    },
+    {
+      "href": "/shop/returns",
+      "labels": [
+        "Returns & Refunds"
+      ]
+    },
+    {
+      "href": "/shop/faq",
+      "labels": [
+        "FAQs"
+      ]
+    },
+    {
+      "href": "/shop/privacy",
+      "labels": [
+        "Privacy Policy"
+      ]
+    },
+    {
+      "href": "/shop/terms",
+      "labels": [
+        "Terms & Conditions"
+      ]
+    }
+  ],
+  "external": [],
+  "suspicious": []
+}

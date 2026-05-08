@@ -1,0 +1,42 @@
+{
+  "summary": "iter179 final retest of Half + Full Pallet pricing after iter178 m²-minus floor regression fix. ALL PASS. Both stepper variants (simple qty-minus + dual sqm-minus/box-minus) now enforce the pallet-tier minimum on minus-button click and on direct numeric input. Verified via Playwright on the simple-stepper path (Alabaster 60x60cm where sqm_per_box is null). 30/30 unit tests pass (test_pallet_pricing.py + test_pallet_tile_serializer.py).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_pallet_pricing.py",
+    "/app/backend/tests/test_pallet_tile_serializer.py",
+    "/app/test_reports/pytest/iter179_pallet.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Code is clean: pallet-floor enforcement is now duplicated across three handlers (qty-minus, qty-input onChange, sqm-minus, sqm-input onChange, box-minus). Recommend extracting into a single useMemo/useCallback `getTierMin()` + `clampQty()` helper to keep one source of truth. Not blocking.",
+    "server.py is 9949 lines — over the 700-line guideline. Continue migrating to modular routers/."
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "100% (30/30 unit tests)",
+    "frontend": "100% (5/5 critical assertions)"
+  },
+  "test_credentials": "admin@test.com / admin123 (super_admin) — confirmed via /api/auth/login",
+  "seed_data_creation": "None. Used pre-seeded Alabaster Polished 60x60cm tile (m2_per_pallet=32, m2_per_half_pallet=16, half_pallet_price=27.5, pallet_price=26.09, room_lot_price=28.99). Tile renders the SIMPLE stepper variant (qty-minus testid) because sqm_per_box is null on this fixture.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "iter179 confirms iter178 regression is fixed. The simple stepper at CollectionDetailPage.js:3007-3050 now clamps qty to tierMin in both the minus-button onClick (line 3014-3019) and the input onChange (line 3030-3035). Dual stepper at line 2912-3005 already had the clamp from iter177. Both backend persistence and storefront PDP are healthy. No further action needed on this feature.",
+  "verified_ui": [
+    "Collection page → 60x60cm size click → pallet-tier-selector with 3 chips visible (testids: pallet-tier-m2 £28.99/m², pallet-tier-half £27.50/m² · min 16 m², pallet-tier-full £26.09/m² · min 32 m²)",
+    "Click pallet-tier-full → qty=32, £26.09/m², min-notice 'Minimum order: 32 m². You can add more, but not less.'",
+    "Stepper variant rendered: SIMPLE (qty-minus testid present, sqm-minus absent) — confirms Alabaster 60x60cm uses the simple path because sqm_per_box is null",
+    "3x click [data-testid=qty-minus] while Full Pallet active → qty stayed at 32 / 32 / 32 (REGRESSION FIXED ✓)",
+    "Click pallet-tier-half while qty=32 → snaps DOWN to 16 (iter178 fix preserved ✓)",
+    "3x click [data-testid=qty-minus] while Half Pallet active → qty stayed at 16 / 16 / 16 (REGRESSION FIXED ✓)",
+    "Re-click pallet-tier-full → qty=32, £26.09/m² and total £834.88 visible"
+  ],
+  "rca_of_the_issue": "iter178 introduced a regression where the simple non-surface qty stepper (rendered when sqm_per_box is null — the Alabaster 60x60cm fixture path) had no pallet-tier floor enforcement on its minus button. Fix at /app/frontend/src/pages/shop/CollectionDetailPage.js:3014-3019 (minus button) + 3030-3035 (input onChange) computes minQty as palletInfo.fullM2 / halfM2 / 1 based on pricingTier and wraps setQuantity in Math.max(minQty, ...). Dual stepper path (line 2916-2924 + 2934-2942) already had the same clamp from iter177. iter179 verified both Full Pallet (qty=32 floor) and Half Pallet (qty=16 floor) hold against 3 consecutive minus clicks."
+}

@@ -1,0 +1,78 @@
+{
+  "summary": "Trade User Pricing System - All features verified working. Trade users see ex-VAT prices with 5% trade discount across the entire shop (collection listing, product detail, volume pricing table). Non-trade users see standard inc-VAT prices without 'ex. VAT' labels.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "features_tested": {
+    "Trade User Login": {
+      "POST /api/shop/auth/login with trade credentials": "PASS - Returns is_trade=true and trade_discount=5",
+      "localStorage tile_shop_customer set correctly": "PASS - Contains is_trade=true",
+      "trade-auth-change event dispatched": "PASS - useTradeUser hook refreshes"
+    },
+    "Collection Listing Page (/tiles)": {
+      "Trade user sees ex-VAT prices": "PASS - Opaco: £18.36/m² ex. VAT",
+      "'ex. VAT' label visible next to prices": "PASS - Light gray text span",
+      "Non-trade user sees inc-VAT prices": "PASS - Opaco: £23.19/m²",
+      "No 'ex. VAT' label for non-trade": "PASS"
+    },
+    "Product Detail Page (/shop/collection/Opaco)": {
+      "Trade user sees ex-VAT main price": "PASS - £24.16/m² ex. VAT",
+      "Volume pricing table shows ex-VAT prices": "PASS - All tiers have 'ex. VAT' label",
+      "Trade Customer box HIDDEN for trade user": "PASS",
+      "Non-trade user sees inc-VAT prices": "PASS - £28.99/m²",
+      "Trade Customer box VISIBLE for non-trade": "PASS"
+    },
+    "Tier Pricing API": {
+      "GET /api/tiles/products/{slug}/tier-pricing": "PASS - Returns standard prices",
+      "GET /api/tiles/products/{slug}/tier-pricing?is_trade=true": "PASS - Returns trade-adjusted prices with trade_tiers",
+      "Trade discount calculation (5% default)": "PASS - Prices correctly reduced by 5%"
+    },
+    "Price Calculation Verification": {
+      "Trade price formula": "PASS - price * 0.95 / 1.20 (5% discount then ex-VAT)",
+      "Opaco trade price": "PASS - £23.19 * 0.95 / 1.20 = £18.36",
+      "Testseries trade price": "PASS - £27.19 * 0.95 / 1.20 = £21.53"
+    }
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_trade_pricing.py",
+    "/app/test_reports/pytest/pytest_trade_pricing.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [
+    "/app/backend/tests/test_trade_pricing.py"
+  ],
+  "success_rate": {
+    "backend": "100% (8/8 tests passed)",
+    "frontend": "100% (all UI features working)"
+  },
+  "test_credentials": {
+    "trade_email": "trade@test.com",
+    "trade_password": "Trade123!"
+  },
+  "seed_data_creation": "Trade user already exists in database with is_trade=true and trade_discount=5",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Trade pricing system is fully implemented. The useTradeUser hook in /app/frontend/src/hooks/useTradeUser.js reads from localStorage 'tile_shop_customer' and provides isTrade, tradeDiscount, and getTradePrice() function. The getTradePrice() function applies 5% trade discount then divides by 1.20 for ex-VAT display. The backend tier-pricing API accepts ?is_trade=true parameter and returns trade_tiers with pre-calculated trade prices. The 'ex. VAT' label appears as a small light gray text span (text-[10px] text-gray-400) next to prices.",
+  "mocked_apis": {
+    "has_mocked_apis": false,
+    "mocked_apis_list": []
+  },
+  "feature_verification": {
+    "Trade login via /shop/trade/login": "VERIFIED",
+    "localStorage has is_trade=true after login": "VERIFIED",
+    "Collection listing shows ex-VAT trade prices": "VERIFIED",
+    "Product detail shows ex-VAT prices in volume table": "VERIFIED",
+    "Product detail main price shows ex-VAT": "VERIFIED",
+    "Trade Customer box hidden when logged in": "VERIFIED",
+    "Non-trade users see inc-VAT prices": "VERIFIED",
+    "No 'ex. VAT' label for non-trade users": "VERIFIED",
+    "Backend login returns is_trade and trade_discount": "VERIFIED"
+  }
+}

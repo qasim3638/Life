@@ -1,0 +1,43 @@
+{
+  "summary": "Stealth-Keyword Weekly Digest — backend + frontend verified end-to-end on live preview. Backend pytest: 14/14 unit + 9/9 live HTTP = 23/23 green (auth/RBAC on GET/PUT/POST, settings shape, enabled toggle round-trip, recipients whitelist+cap at 10, raw-string body returns 422, empty PUT returns current settings, send-now with empty recipients returns {ok:false, reason:'no_recipients'}). Frontend UI: digest-strip renders below the Performance card, all 4 data-testids present, checkbox toggle flips enabled True→False→True with visible state change, recipients input 'TEST_a@b.com, TEST_c@d.com, garbage, no_at_sign' → client-side split/filter produced exactly 'TEST_a@b.com, TEST_c@d.com' with toast '2 recipient(s) saved', Send-now button fires POST after window.confirm. No blocking issues.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {"flow": "Send-now with empty recipients (no_recipients path)", "issue": "No visible toast after Send-now click when recipients list is empty and ADMIN_EMAIL env isn't set — endpoint correctly returns {ok:false, reason:'no_recipients'} but UI appears silent. Either the sonner toast auto-dismissed before our 6s probe (possible) or the frontend handler doesn't surface the no_recipients reason to the admin. Worth a quick check in sendDigestNow() that res.data.ok===false branch surfaces a distinct toast like 'No recipients configured'.", "affected_selectors": ["stealth-digest-send-now"]}
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_stealth_seo_digest.py",
+    "/app/backend/tests/test_stealth_seo_digest_live.py",
+    "/app/test_reports/pytest/iter167_stealth_digest_unit.xml",
+    "/app/test_reports/pytest/iter167_stealth_digest_live.xml"
+  ],
+  "action_items": [
+    "(Optional, minor) In StealthPerformanceCard.jsx sendDigestNow handler, branch on res.data.ok===false to show an informative toast when reason==='no_recipients' (currently no toast appears in that path)."
+  ],
+  "critical_code_review_comments": [
+    "stealth_seo_digest.py _build_digest calls get_performance(days=7) then get_performance(days=14) with force_refresh=True on both — bypasses the 1-hour cache twice every digest run. Acceptable given weekly cadence but worth noting for cost if cron ever goes daily.",
+    "stealth_seo_digest.py update_settings accepts recipients as a raw string and splits client-side (good DX) but the route-level DigestSettingsPatch model declares recipients: Optional[list[str]] which means raw-string calls return 422 BEFORE hitting update_settings — so the string-splitting code inside update_settings (line 70) is dead via the HTTP path and only exercised by unit tests. Either relax the Pydantic type to Union[list[str], str] or drop the dead branch in update_settings. Not a bug — just dead code.",
+    "send_digest_now stamps last_sent_at + history row even when send_email_notification returns falsy (last_sent_ok:false). That's by design for audit but could mean a failed Resend call still triggers the 6-day throttle in run_weekly_digest_if_due. Consider gating the throttle on last_sent_ok=true so a transient Resend failure doesn't silence the next week's digest.",
+    "routes/stealth_seo.py imports 'services.stealth_seo_digest' lazily inside every route handler (3 places). Minor overhead but also complicates static analysis; move to module top.",
+    "stealth_seo_digest.py _resolve_recipients falls back to ADMIN_EMAIL env but never returns both — if recipients list is set AND ADMIN_EMAIL is set, the env value is dropped. That's the documented behaviour but worth a one-line comment for future readers."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_stealth_seo_digest_live.py (NEW — 9 live HTTP tests)"
+  ],
+  "success_rate": {
+    "backend": "100% (14/14 unit + 9/9 live = 23/23)",
+    "frontend": "100% (all 4 data-testids, toggle, recipients whitelist, send-now all functional; minor toast-on-no-recipients omission noted)"
+  },
+  "test_credentials": "admin@test.com / admin123 (super_admin)",
+  "seed_data_creation": "Live tests set+reset recipients via PUT /digest/settings; final state left with empty recipients (UI test cleared them) and enabled=true (toggle test restored). No real emails sent — send-now call against empty recipients returned no_recipients as designed.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Live API tests at /app/backend/tests/test_stealth_seo_digest_live.py run in ~4s and cover RBAC + CRUD + whitelist + send-now no_recipients path. Unit tests at /app/backend/tests/test_stealth_seo_digest.py cover delta math, HTML render, cron guardrails (disabled/throttled/no_signal/has_signal). UI selectors used: stealth-perf-open-btn → stealth-perf-card → stealth-digest-strip → stealth-digest-{enabled,recipients-input,save-recipients,send-now,last-sent}. To avoid networkidle hang on /admin/seo (heavy SEO dashboard polls GSC), use wait_until='domcontentloaded' and a 4s wait_for_timeout. Preview DB state after this run: digest enabled=true, recipients=[], last_sent_at=null (so last-sent line not rendered).",
+  "rca of the issue": "N/A — no bugs. Only minor UX polish item: send-now with empty recipients silently returns no_recipients without a visible user-facing toast. Fix: in sendDigestNow() add `if (res.data?.ok === false && res.data?.reason === 'no_recipients') toast.error('No recipients configured — add emails or set ADMIN_EMAIL');`."
+}

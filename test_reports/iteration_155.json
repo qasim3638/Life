@@ -1,0 +1,45 @@
+{
+  "summary": "Tested 4 newly shipped features: public /status, promo-banner schedule, marketing-studio lifestyle endpoint validation, and bulletproof shield on 4 public endpoints. Backend: 12/12 new pytest cases pass + 11/11 existing resilience tests still pass. Frontend: /status renders perfectly with green 'All systems operational' banner, status-overall-label, status-trade-block, and 8 data-testid'd service rows. Marketing Studio admin renders schedule-toggle/card/start/end/save and lifestyle-card/toggle/search/room/variants/generate-btn. CRITICAL BUG FOUND: lifestyle tile-search → generate flow is broken because /api/tiles/search response has no `id` field; tile cards render with data-testid='marketing-lifestyle-tile-undefined' and clicking Generate would send tile_id=undefined.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "/api/tiles/search", "issue": "Response objects expose only {name, slug, image, price, collection} — no `id` field. Marketing Studio lifestyle UI relies on `id` to wire selected tile into POST /api/admin/marketing-studio/lifestyle. Either add `id` to search response or have the frontend use `slug` and have lifestyle endpoint accept slug as a fallback."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "MarketingStudio.jsx (lifestyle tile results)", "issue": "data-testid renders as 'marketing-lifestyle-tile-undefined' for every result because t.id and t._id are both undefined on /api/tiles/search response. Also produces React 'unique key prop' console warning on the .map(). Use t.slug as the React key + testid, OR have the backend search return id.", "selector": "[data-testid^='marketing-lifestyle-tile-']", "priority": "MEDIUM"}
+    ],
+    "integration_issues": [
+      {"flow": "Marketing Studio → Lifestyle generator", "issue": "Picking a tile from the search results and clicking Generate would POST tile_id=undefined to /api/admin/marketing-studio/lifestyle, returning 422. The full lifestyle flow is therefore broken end-to-end via the search UI. Workaround: paste a real tile.id manually (not exposed in any UI). Fix: include `id` in /api/tiles/search response OR change lifestyle endpoint to accept `tile_slug` and update frontend.", "affected_selectors": ["[data-testid='marketing-lifestyle-generate-btn']", "[data-testid^='marketing-lifestyle-tile-']"]}
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_status_marketing_features.py",
+    "/app/test_reports/pytest/status_marketing.xml"
+  ],
+  "action_items": [
+    "Add `id` field to /api/tiles/search response objects (preferred) OR change MarketingStudio lifestyle UI to use t.slug + extend POST /lifestyle to accept tile_slug as alternative to tile_id",
+    "Use a stable React key (t.slug) on the lifestyle tile results .map() to silence the 'unique key prop' console warning",
+    "(Optional) Mention in lifestyle endpoint validation that lifestyle requires the tile to have a valid image — already covered by 422 'Tile has no image to use as reference', but worth surfacing in the admin UI when picked"
+  ],
+  "critical_code_review_comments": [
+    "marketing_studio.py PromoBannerUpdate uses req.dict() (Pydantic v2 deprecated; should be model_dump(exclude_unset=True)). Currently relies on `is not None` filtering which works.",
+    "public_status.py: response_ms is `last.get('elapsed_ms')` which may be None when health monitor stored under a different key — verified live data does include elapsed_ms, so OK.",
+    "public_status.py PUBLIC_LABELS map of 8 services is hard-coded. If health monitor adds/removes endpoints, this list will drift. Consider deriving from a single source of truth.",
+    "MarketingStudio.jsx ~line 634: tile result key/testid uses (t.id || t._id) but /api/tiles/search returns neither — see CRITICAL BUG above. This breaks lifestyle generation entirely from the UI.",
+    "_promo_active_now() correctly handles ISO datetimes with Z and timezone offsets; window logic is sound (manual_on OR in_window).",
+    "Bulletproof shield on the 4 public endpoints all return 200 healthy; verified via parametrised tests."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_status_marketing_features.py (new — 12 tests)"
+  ],
+  "success_rate": {"backend": "100% (12/12 new + 11/11 existing resilience)", "frontend": "85% (UI present, but lifestyle search→generate integration broken)"},
+  "test_credentials": "admin@test.com / admin123 (super_admin)",
+  "seed_data_creation": "None. Promo-banner state is restored after each schedule test via fixture teardown — promo-banner returns to its original (enabled=false) state.",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend is solid. The lifestyle UI fix is small: either (a) include `id` in /api/tiles/search response, or (b) change MarketingStudio.jsx to use t.slug AND extend lifestyle endpoint to accept tile_slug. After the fix, retest the full search→pick→generate flow but DO NOT click Generate (it costs ~$0.04). Just verify the POST request body would have tile_id (or tile_slug) populated by inspecting the request via page.expect_request(...). Status page testing complete; promo-banner schedule flow complete and verified end-to-end (future window → enabled:false; active window → enabled:true).",
+  "rca of the issue": "RCA: /api/tiles/search returns a slim public projection {name, slug, image, price, collection} without the document `id`. Marketing Studio lifestyle UI was developed against the assumption it would receive `id`; lines reading t.id || t._id resolve to undefined. Reproduction: login as admin → /admin/marketing-studio → click 'Lifestyle photo from a tile' toggle → search 'onyx' → 8 tile cards render but each has data-testid 'marketing-lifestyle-tile-undefined' and lifestyleTilePicked.id is undefined when one is clicked. Mitigation: smallest fix is to include `id` in the search response (1-line backend change) OR have the frontend store `slug` and have the lifestyle endpoint accept tile_slug as a lookup key."
+}

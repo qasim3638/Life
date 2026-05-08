@@ -1,0 +1,89 @@
+{
+  "summary": "Collections Page Settings Admin Feature - All features verified working. Admin can manage hero banners and quick links for all 6 product groups (tiles, flooring, materials, tools, accessories, underfloor-heating). Settings persist correctly in MongoDB and are served via public API.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "/api/website-admin/collections-page-settings", "issue": "GET endpoint does not require auth (design choice, not a bug)"}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "features_tested": {
+    "Admin Page /admin/collections-page-settings": {
+      "Page loads correctly": "PASS",
+      "Product group selector shows all 6 groups": "PASS",
+      "Group buttons have data-testid attributes": "PASS",
+      "Tiles group shows Room Quick Links tab": "PASS",
+      "Tiles group shows Popular Filters tab": "PASS",
+      "Materials group shows Category Quick Links tab": "PASS",
+      "Materials group hides Popular Filters tab": "PASS",
+      "Flooring group shows correct hero slides": "PASS",
+      "Save Changes button works": "PASS",
+      "Settings persist after save": "PASS",
+      "Green dot indicator shows saved groups": "PASS"
+    },
+    "Backend API": {
+      "GET /api/website-admin/public/collections-page-settings": "PASS - Returns settings without auth",
+      "GET /api/website-admin/collections-page-settings": "PASS - Returns settings with auth",
+      "POST /api/website-admin/collections-page-settings": "PASS - Saves settings correctly",
+      "Tiles settings stored at top-level (backward compatible)": "PASS",
+      "Other groups stored under settings.groups[groupId]": "PASS"
+    },
+    "Shop Frontend": {
+      "/tiles (default tiles group)": "PASS - Shows 'SHOP BY ROOM' label, Bathroom Tiles hero",
+      "/tiles?group=materials": "PASS - Shows 'SHOP BY CATEGORY' label, Adhesives & Grout hero",
+      "/tiles?group=flooring": "PASS - Shows 'SHOP BY TYPE' label, Vinyl Flooring hero",
+      "Room/Category quick links display correctly": "PASS",
+      "Hero slides from admin settings displayed": "PASS"
+    },
+    "Hero Label Mapping": {
+      "tiles": "PASS - 'Shop by Room'",
+      "flooring": "PASS - 'Shop by Type'",
+      "materials": "PASS - 'Shop by Category'",
+      "tools": "PASS - 'Shop by Category'",
+      "accessories": "PASS - 'Shop by Category'",
+      "underfloor-heating": "PASS - 'Shop by Type'"
+    }
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_collections_page_settings.py",
+    "/app/test_reports/pytest/pytest_collections_page_settings.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [
+    "/app/backend/tests/test_collections_page_settings.py"
+  ],
+  "success_rate": {
+    "backend": "100% (11/11 tests passed)",
+    "frontend": "100% (all UI features working)"
+  },
+  "test_credentials": {
+    "admin_email": "qasim@tilestation.co.uk",
+    "admin_password": "Tilestation_9614"
+  },
+  "seed_data_creation": "Test saved settings for tiles, materials, and flooring groups via API tests",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Collections Page Settings feature is fully implemented and working. Admin can manage hero banners per product group at /admin/collections-page-settings. Settings are stored in MongoDB website_settings collection with _id='collections_page_settings'. Tiles settings are at top-level (backward compatible), other groups under settings.groups[groupId]. The public API endpoint is GET /api/website-admin/public/collections-page-settings. The shop frontend at /tiles reads these settings and displays group-specific heroes based on ?group= query param.",
+  "mocked_apis": {
+    "has_mocked_apis": false,
+    "mocked_apis_list": []
+  },
+  "feature_verification": {
+    "Admin page loads with product group selector": "VERIFIED",
+    "All 6 product groups selectable": "VERIFIED",
+    "Tiles shows Room Quick Links + Popular Filters tabs": "VERIFIED",
+    "Materials shows Category Quick Links tab (no Popular Filters)": "VERIFIED",
+    "Flooring shows correct defaults": "VERIFIED",
+    "Save Changes persists to API": "VERIFIED",
+    "Public API returns saved settings": "VERIFIED",
+    "Shop frontend /tiles shows tiles hero": "VERIFIED",
+    "Shop frontend /tiles?group=materials shows materials hero": "VERIFIED",
+    "Shop frontend /tiles?group=flooring shows flooring hero": "VERIFIED",
+    "Hero label changes dynamically per group": "VERIFIED"
+  }
+}

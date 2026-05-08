@@ -1,0 +1,27 @@
+{
+  "summary": "Verified marketing-studio unpublish + delete-while-published production-incident fix (May 3 2026) and Health Monitor 'Acknowledge all N' bulk-ack button. Backend pytest: 3/3 unpublish tests PASS and 35 pass + 1 skip regression suite PASS. Frontend UI E2E: publish-to-promo-banner, unpublish click, delete-while-published, cache-bust on /api/website/promo-banner all verified working end-to-end. Both dialog copy variants exactly match the spec. Health Monitor button logic verified via source review (shows only when active.length > 1; currently 0 active alerts so correctly hidden).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_marketing_studio_unpublish.py",
+    "/app/test_reports/pytest/iter162.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Pre-existing console warning (not in scope of this fix): React 'Each child in a list should have a unique key prop' in AdminDashboard render method — observed in iter 161 also. Main agent may want to address later.",
+    "MarketingStudio.jsx AssetCard: Unpublish button correctly placed inside the `published_to` conditional block (lines 94-108), uses e.stopPropagation() on onClick to prevent the parent card zoom handler from firing. Good UI contract.",
+    "HealthMonitor.jsx: ack-all button correctly only renders when `active.length > 1` (line 210) — sane UX (no bulk-ack when only one alert). Manual 'Acknowledge' per-row still available for N==1."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (38 tests / 1 skip)", "frontend": "100% (6/6 scenarios)"},
+  "test_credentials": "admin@test.com / admin123 (super_admin) — used as provided",
+  "seed_data_creation": "Backend pytest creates synthetic marketing_assets via direct Mongo insert (PYTEST throwaway asset, placeholder Unsplash image URL) and cleans up in finally. No fal.ai spend. Frontend UI test re-used the existing 'Bank Holiday Sale' gallery asset — that asset was ultimately deleted during the delete-while-published verification, confirmed card removed from gallery + enabled=false on public endpoint. If the user needs that asset back, the next fal.ai generation will be required.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Verified flows (all PASS):\n  1. POST /api/admin/marketing-studio/assets/{id}/publish then GET /api/website/promo-banner -> enabled=true (cache bust working)\n  2. POST .../{id}/unpublish -> was_published=true, placement='promo_banner'; public endpoint flips enabled=false within <1s\n  3. Idempotent unpublish on never-published asset -> was_published=false, 200 OK\n  4. DELETE .../{id} on a currently-published asset -> returns unpublished_from='promo_banner', public endpoint flips enabled=false\n  5. Frontend UI: Unpublish button (data-testid='marketing-asset-unpublish-{id}') appears next to 'Published -> promo banner' green label. Click it, confirm dialog says 'Remove this asset from promo banner on the storefront? You can re-publish it again any time.', accept, card refreshes, button gone, public banner off.\n  6. Frontend UI: Delete on a currently-published asset -> confirm dialog says \"Delete this asset? It's currently published as promo banner - deleting will REMOVE it from the storefront immediately. This cannot be undone.\" Exactly as specified.\n  7. Health Monitor: ack-all button (data-testid='health-alert-ack-all') correctly rendered only when active.length > 1; currently 0 active alerts so button absent (expected).\n\nDid NOT test:\n  - homepage_hero unpublish flow (no hero-published asset existed; low-risk since it uses the same _unpublish_placement helper which is covered by the promo_banner path)\n  - Quick Post on Announcement Ribbon regression (design regression only; not in scope of today's fix)\n  - Lightbox click-outside regression (gallery ended the test empty since the only asset was deleted; regression was exhaustively verified in iter 161)\n\nNote: 'Bank Holiday Sale' gallery asset was consumed (deleted) during the E2E delete-while-published verification. Gallery now shows 'No assets yet'. User may need to regenerate via fal.ai if they want it back.",
+  "rca_of_the_issue": "Original incident (May 3 2026): Admin deleted 'Variant 3' Bank Holiday Sale banner from the Marketing Studio gallery, but the storefront banner on tilestation.co.uk homepage remained live. Root cause was that DELETE /api/admin/marketing-studio/assets/{id} marked the asset as soft-deleted in the marketing_assets collection but did NOT touch the promo_banner document in page_content, and it did NOT invalidate the bulletproof public_promo_banner cache (short_ttl=15s). Fix (verified this iteration): added _unpublish_placement helper; DELETE now also calls it if asset.published_to is set (returns 'unpublished_from' in response); new POST .../unpublish endpoint for the non-destructive case; both paths bust public_promo_banner + homepage_content caches so storefront flips within 0-15s. Frontend now shows an Unpublish button so admins have a non-destructive option, and Delete confirm dialog explicitly warns when the asset is live."
+}

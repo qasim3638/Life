@@ -1,0 +1,84 @@
+{
+  "summary": "Verified storefront health check system and protected UI components. ALL 9 backend tests passed. All critical UI elements (Trade Login Box, Trade Login Banner, Volume Pricing Table, Header Trade Tab) are visible and functioning correctly for anonymous visitors.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_storefront_health.py"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "VERIFIED: TradeLoginBox (data-testid='trade-customer-box') visible on /shop/collection/Ridgeway for anonymous visitors",
+    "VERIFIED: TradeLoginBox (data-testid='trade-customer-box') visible on /shop/collection/Bluestone for anonymous visitors",
+    "VERIFIED: TradeLoginBanner (data-testid='trade-login-banner') visible on /shop/tiles/bluestone-grey-60x60-polished for non-trade users",
+    "VERIFIED: VolumePricingTable (data-testid='volume-pricing-table') visible on collection pages with tier pricing active",
+    "VERIFIED: £ symbol renders correctly in Volume Pricing table (not as \\u00A3 Unicode escape)",
+    "VERIFIED: Header Trade Tab (data-testid='trade-tab') visible on all tested pages",
+    "VERIFIED: GET /api/storefront-health/check returns 200 with all checks passing",
+    "VERIFIED: GET /api/tiles/products/bluestone-grey-60x60-polished/tier-pricing returns disabled=true for tier_pricing_disabled products",
+    "VERIFIED: Protected components in TradeLoginPrompt.jsx and VolumePricingTable.jsx have proper visibility rules documented"
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "100% (9/9 tests passed)",
+    "frontend": "100% (all critical UI elements verified)"
+  },
+  "test_credentials": "No login needed - tested as anonymous visitor",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Storefront health check system is fully operational. Protected UI components (TradeLoginBox, TradeLoginBanner, VolumePricingTable) are correctly visible for anonymous/non-trade visitors. The £ symbol renders correctly in the Volume Pricing table. Backend regression tests in /app/backend/tests/test_storefront_health.py can be run with: cd /app && BACKEND_URL=http://localhost:8001 python -m pytest backend/tests/test_storefront_health.py -v",
+  "verified_features": {
+    "trade_login_box_collection_pages": {
+      "status": "PASS",
+      "pages_tested": ["/shop/collection/Ridgeway", "/shop/collection/Bluestone"],
+      "data_testid": "trade-customer-box",
+      "visibility": "Visible for anonymous visitors (localStorage cleared)"
+    },
+    "trade_login_banner_product_pages": {
+      "status": "PASS",
+      "pages_tested": ["/shop/tiles/bluestone-grey-60x60-polished"],
+      "data_testid": "trade-login-banner",
+      "visibility": "Visible for non-trade users"
+    },
+    "volume_pricing_table": {
+      "status": "PASS",
+      "pages_tested": ["/shop/collection/Bluestone", "/shop/collection/Ridgeway"],
+      "data_testid": "volume-pricing-table",
+      "pound_symbol": "Renders correctly as £ (not \\u00A3)"
+    },
+    "header_trade_tab": {
+      "status": "PASS",
+      "data_testid": "trade-tab",
+      "visibility": "Visible on all tested pages"
+    },
+    "storefront_health_api": {
+      "status": "PASS",
+      "endpoint": "GET /api/storefront-health/check",
+      "response": "200 OK with overall_status: healthy"
+    },
+    "tier_pricing_disabled_api": {
+      "status": "PASS",
+      "endpoint": "GET /api/tiles/products/bluestone-grey-60x60-polished/tier-pricing",
+      "response": "Returns disabled=true for products with tier_pricing_disabled flag"
+    }
+  },
+  "test_execution_summary": {
+    "backend_tests": {
+      "total": 9,
+      "passed": 9,
+      "failed": 0
+    },
+    "frontend_tests": {
+      "pages_tested": 3,
+      "ui_elements_verified": 6,
+      "all_passed": true
+    }
+  }
+}

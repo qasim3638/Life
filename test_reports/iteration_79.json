@@ -1,0 +1,110 @@
+{
+  "summary": "Full regression testing of 4 critical fixes completed. All backend tests passed (11/12, 1 skipped due to auth). Frontend collections page verified working correctly with tier pricing display, sale badges, and color swatches.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_four_fixes_regression.py",
+    "/app/test_reports/pytest/pytest_four_fixes_regression.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [
+    "/app/backend/tests/test_four_fixes_regression.py"
+  ],
+  "success_rate": {
+    "backend": "92% (11/12 tests passed, 1 skipped)",
+    "frontend": "100% - Collections page and sale page verified"
+  },
+  "test_credentials": "Admin: test@admin.com / testpass123",
+  "seed_data_creation": "None - used existing data",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "All 4 fixes verified as working correctly. See detailed verification below.",
+  "features_verified": {
+    "FIX_1_TIER_PRICING_ON_COLLECTION_CARDS": {
+      "status": "VERIFIED",
+      "details": [
+        "GET /api/tiles/collections returns tier_pricing_disabled flag for each collection",
+        "When tier_pricing_disabled=true, prices_from equals min_price (no tier discount applied)",
+        "When tier_pricing_disabled=false, prices_from is less than min_price (tier discount applied)",
+        "Frontend TileCollectionsPage.js correctly displays min_price for tier-disabled collections",
+        "Code verified at tiles.py lines 678-686: tier_pricing_disabled products add base price to best_prices, others add discounted price"
+      ]
+    },
+    "FIX_2_DISCOUNT_PERCENTAGE": {
+      "status": "VERIFIED",
+      "details": [
+        "PUT /api/supplier-sync/products/sale-pricing with was_markup_percent=25 stores discount_percentage=25 exactly",
+        "Tested with 25%, 15%, 30% - all stored exactly as entered",
+        "When sale_active=false, was_price, discount_percentage, sale_savings are all cleared to null",
+        "Code verified at supplier_sync.py lines 5458-5459: when was_markup_percent is provided, discount_percentage is set to that exact value",
+        "Migration sync_discount_percentage_v1 syncs existing products (server.py lines 8574-8601)"
+      ]
+    },
+    "FIX_3_SPEC_BUTTONS": {
+      "status": "VERIFIED",
+      "details": [
+        "GET /api/specifications/types/by-group returns groups with nested specifications arrays",
+        "Response structure: [{name: 'Physical Properties', specifications: [{name: 'Material'}, {name: 'Edge'}, ...]}, ...]",
+        "BulkCategoryEditorSections.jsx correctly parses nested structure (lines 248-259)",
+        "Groups: Physical Properties (4 specs), Appearance (2 specs), Safety (1 spec), Usage (1 spec)",
+        "Spec pre-population uses spec_${field} without underscore-to-dash conversion (SupplierProducts.js line 3580)"
+      ]
+    },
+    "FIX_4_PRODUCT_GROUP_ROUTING": {
+      "status": "VERIFIED",
+      "details": [
+        "Publish endpoint uses sp.get('product_group') from supplier_products first (supplier_sync.py line 2576)",
+        "Falls back to product_group parameter, then defaults to 'tiles' only if neither is set",
+        "Migration fix_product_group_routing_v1 syncs product_group from supplier_products to tiles (server.py lines 8603-8650)",
+        "Collections can be filtered by group parameter: /api/tiles/collections?group=materials"
+      ]
+    },
+    "REGRESSION_SALE_PRICING": {
+      "status": "VERIFIED",
+      "details": [
+        "sale_active=false correctly clears was_price, discount_percentage, sale_savings to null",
+        "Tested via API: all fields cleared when sale disabled"
+      ]
+    },
+    "REGRESSION_PUBLISH_FLOW": {
+      "status": "VERIFIED",
+      "details": [
+        "tile_doc includes: tier_pricing_disabled, has_custom_tier_pricing, tier_discounts, sale_active, was_price, discount_percentage",
+        "Code verified at supplier_sync.py lines 2578-2589"
+      ]
+    },
+    "REGRESSION_EXISTING_TILE_PRICING": {
+      "status": "VERIFIED",
+      "details": [
+        "Standard tiles (tier_pricing_disabled=false) have prices_from < min_price",
+        "Default tier discounts [5,10,15,20] applied correctly (20% max discount)"
+      ]
+    }
+  },
+  "api_tests_performed": {
+    "GET /api/tiles/collections": "Returns tier_pricing_disabled, prices_from, min_price correctly",
+    "GET /api/tiles/collections?sale=true": "Returns 2 sale collections with is_sale=true",
+    "PUT /api/supplier-sync/products/sale-pricing": "Stores exact discount_percentage from was_markup_percent",
+    "GET /api/specifications/types/by-group": "Returns 5 groups with nested specifications arrays"
+  },
+  "frontend_tests_performed": {
+    "collections_page": "Loads correctly with 391 collections, 556 products",
+    "sale_page": "Shows 2 collections with 20% OFF badges",
+    "collection_cards": "Display prices, color swatches, labels (CLEARANCE, BEST SELLER)"
+  },
+  "code_review_verification": {
+    "tiles.py_tier_pricing_logic": "Lines 678-686 correctly handle tier_pricing_disabled flag",
+    "supplier_sync.py_discount_percentage": "Lines 5458-5459 store exact user-entered percentage",
+    "supplier_sync.py_product_group": "Line 2576 uses sp.get('product_group') first",
+    "BulkCategoryEditorSections.jsx": "Lines 248-259 correctly parse nested spec structure",
+    "SupplierProducts.js": "Line 3580 uses spec_${field} without dash conversion"
+  }
+}

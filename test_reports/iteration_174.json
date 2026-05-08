@@ -1,0 +1,63 @@
+{
+  "summary": "Iter 174 combo (Lifetime Savings + Web Push + Bot Cleanup). Backend 39/39 unit tests pass + 15/15 live-URL API tests pass (test_iter174_live_api.py). Frontend /admin/seo renders lifetime-savings-card (£6,460 net, refresh + breakdown toggle both work) and web-push-admin-collapsed → Open reveals composer (title/body/url/send) + stats + history. PushOptIn banner correctly absent on /admin/* (count=0) and wired in App.js:398 for storefront routes. Overall PASS.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "/api/admin/push/history", "issue": "Returns {count, rows} (not a bare list or {history:[]}). Docs in review-request implied 'rows of past broadcasts' — naming mismatch only, payload is valid."},
+      {"endpoint": "/api/push/subscribe", "issue": "Body schema expects {subscription: {...}} wrapper rather than the raw subscription dict shown in review-request other_misc_info. Works correctly; just a doc discrepancy."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "/admin/seo", "issues": ["lifetime-savings-card is positioned BELOW seo-dashboard-summary (LSC y=960 vs dashboard y=457). Review-request described LSC as 'at top'. Because SeoDashboardSummary (iter173) already owns the top slot, this is acceptable. No action needed unless product disagrees."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iter174_live_api.py",
+    "/app/backend/tests/test_lifetime_savings.py",
+    "/app/backend/tests/test_web_push.py",
+    "/app/backend/tests/test_bot_detection.py",
+    "/app/test_reports/pytest/iter174_combo.xml",
+    "/app/test_reports/pytest/iter174_live.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "services/lifetime_savings.py composer returns valid 6-row breakdown + all 6 totals keys. Fine.",
+    "services/web_push.py pywebpush wrapper correctly flags expired (410/404) subs and stores state in web_push_subscriptions. Fine.",
+    "routes/web_push.py enforces admin on /api/admin/push/*, public on /api/push/*. Validation via pydantic (title 1-120, body 1-240) correctly returns 422 on invalid input.",
+    "routes/stealth_seo.py:297 lifetime-savings endpoint correctly 401/403s anon and 200s admin. No _id leaks.",
+    "routes/analytics.py _looks_like_bot and _is_valid_tilestation_url: 22/22 unit tests PASS (Python-Requests, curl, wget, GPTBot, ClaudeBot, Perplexity, Bytespider, headless Chrome correctly flagged; Chrome/Safari/Firefox/Edge correctly passed; example.com URLs and unrelated domains rejected; tilestation.co.uk, relative paths, railway prod, emergent preview accepted).",
+    "POST /api/website/cleanup-bot-traffic: admin-gated, dry_run=true returns count without deleting, dry_run=false deletes. Verified live.",
+    "PushOptIn.jsx uses a 25-second pre-show delay + /admin route skip + localStorage 30-day cooldown + Notification.permission checks — hence count=0 on storefront at 5s wait is expected behavior, not a bug. Wiring confirmed at App.js:15 (import) and App.js:398 (<PushOptIn/>).",
+    "Pre-existing console errors on /admin (unrelated to this iteration): 'Each child in a list should have a unique key prop' in AdminDashboard, 'body stream already read' in fetchProducts on storefront. Flagged in iter173; still present.",
+    "frontend/public/service-worker.js push + notificationclick listeners present.",
+    ".github/workflows/backend-pytest.yml workflow present."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iter174_live_api.py (new — 15 live API assertions)"
+  ],
+  "success_rate": {"backend": "100% (54/54: 39 unit + 15 live)", "frontend": "100%"},
+  "test_credentials": "admin@test.com / admin123 — valid, used for admin endpoints and UI login",
+  "seed_data_creation": "None. Broadcast test created one audit-log row in push_history (visible as count=1, rows=[...]). Fake subscription endpoint 'https://fcm.googleapis.com/fcm/send/iter174-test-endpoint' inserted then flagged inactive by unsubscribe test — no live FCM traffic sent.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "All three features verified end-to-end on live preview URL. Key data-testids: lifetime-savings-card, lifetime-savings-net, lifetime-savings-toggle, lifetime-savings-refresh, seo-dashboard-summary, web-push-admin-collapsed, web-push-admin-open, web-push-admin-card, push-stat-active, push-stat-total, push-stat-status, push-broadcast-title, push-broadcast-body, push-broadcast-url, push-broadcast-send, push-history-list. Breakdown toggle expands to a real table (rows found in DOM). Bot cleanup and push broadcast are idempotent on dev DB. The subscribe request body must be {subscription: {...}} (not raw). Push history response is {count:int, rows:[...]}.",
+  "live_api_evidence": {
+    "lifetime_savings_anon": 403,
+    "lifetime_savings_admin": 200,
+    "lifetime_savings_totals_keys_present": true,
+    "lifetime_savings_breakdown_rows": 6,
+    "push_config_public": 200,
+    "push_subscribe_idempotent": true,
+    "push_unsubscribe": 200,
+    "admin_push_stats": 200,
+    "admin_push_broadcast_ok_empty_targets": true,
+    "admin_push_broadcast_validation_422": true,
+    "admin_push_history": 200,
+    "cleanup_bot_traffic_dry_run": 200,
+    "cleanup_bot_traffic_actual": 200,
+    "cleanup_bot_traffic_anon": 403
+  }
+}

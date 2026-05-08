@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites><testsuite name="epos_credit" tests="5" failures="0" errors="0"><testcase name="create_invoice_with_redemption" classname="epos_credit"/><testcase name="outstanding_calc_with_credit" classname="epos_credit"/><testcase name="balance_after_redeem_and_earn" classname="epos_credit"/><testcase name="credit_transactions_logged" classname="epos_credit"/><testcase name="over_redemption_returns_400" classname="epos_credit"/></testsuite></testsuites>

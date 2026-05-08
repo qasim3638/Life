@@ -1,0 +1,33 @@
+{
+  "summary": "Cart trade-pricing & VAT-label regression — all 7 frontend scenarios PASSED on the live preview at /shop/tile-cart. The new canonical retail_price_inc_vat + cartPricing.js helpers correctly re-derive the displayed price live whenever trade auth flips, with no double-VAT bugs and consistent VAT labels in both states.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "TileCartContext.loadCartFromStorage filters items by hasValidPrice (price > 0). Trade carts persisted with retail_price_inc_vat are fine because price is also stored, but if a future migration ever drops `price` while keeping retail_price_inc_vat, the validator will silently wipe the cart. Consider relaxing the filter to accept `(price > 0 || retail_price_inc_vat > 0)`.",
+    "cartPricing.getRetailIncVat treats item.isTrade strictly truthy — if a future code path stores `isTrade: 'true'` (string) it'll still work, but if it stores `is_trade` (snake_case) the helper will mis-infer and treat the trade ex-VAT figure as retail inc-VAT, under-charging. Worth a defensive `item.isTrade || item.is_trade` if the snake_case naming bleeds in.",
+    "TileCartPage.totalIncVat uses `Math.round((totalExVat + vatAmount) * 100) / 100`. Since vatAmount is itself already rounded, this can drift by 1p vs `totalExVat * 1.20` for some rounding edge cases. Verified in tests: 159.16 + 31.83 = 190.99 (ex × 1.20 = 190.992 → 190.99) — fine here, but worth a comment that the displayed inc-VAT figure is the sum of the two displayed-rounded rows by design (matches receipt).",
+    "creditBackRates POST /api/shop/cart/credit-back-rates returns 400 for unknown slugs (visible in console during seeded-cart tests). Not a regression and the UI silently falls back to defaultCreditBackRate, but the endpoint should probably 200 with an empty rates map for unknown slugs rather than 400.",
+    "The 'Saved vs retail' percentage (TileCartPage line 778) divides by (subtotal + savedVsRetail). For a single-line single-discount cart this is fine, but the math becomes misleading when delivery is included or when items have mixed trade_discount values — consider clarifying the copy as '% off product retail (ex. delivery)'."
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "n/a (frontend-only request)",
+    "frontend": "100% (7/7: pre-login retail view, trade re-pricing on login, VAT-label consistency, trade logout reverts, click-and-collect zeros delivery, dynamic delivery fee £79.99, legacy isTrade item infer + no double-discount, page reload preserves state, multi-item per-line trade_discount math, saved-vs-retail accuracy)",
+    "math_verified": "Pre-login: £100 + £79.99 = £179.99 (Including VAT). Trade login (5%): line £79.17 ex.VAT, subtotal £79.17, total ex.VAT £159.16, VAT (20%) £31.83, total inc.VAT £190.99 (ex × 1.20 = 190.992 ✓). Multi-item (10% + 20%): (100×0.90/1.20)×2 + (50×0.80/1.20)×1 = 150.00 + 33.33 = £183.33 subtotal, total inc.VAT £315.98 (= 263.32 × 1.20)."
+  },
+  "test_credentials": "Trade customer simulated via localStorage shortcut: tile_shop_token='t', tile_shop_customer={email,is_trade:true,trade_discount:5,business_name}. admin@test.com / admin123 not exercised this round (no admin-side checks needed — checkout-settings already returns default_fee=79.99).",
+  "seed_data_creation": "Only localStorage seeds (tilestation_cart) — nothing persisted server-side.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Reusable Playwright recipe at /shop/tile-cart: (1) seed `tilestation_cart` in localStorage with [{id,slug,display_name,price,retail_price_inc_vat,priceType:'room_lot',quantity,sqm_per_box,tiles_per_box,pricing_unit,is_surface_product}], (2) goto /shop/tile-cart, (3) flip trade auth via `localStorage.setItem('tile_shop_token','t'); localStorage.setItem('tile_shop_customer',JSON.stringify({...,is_trade:true,trade_discount:N})); window.dispatchEvent(new Event('trade-auth-change'));` — no reload needed, useTradeUser hook re-renders live. Key data-testids: cart-subtotal, total-regular (logged-out), total-ex-vat, vat-amount, total-inc-vat, saved-vs-retail-amount, delivery-option, collection-option, free-delivery-progress-wrap, free-sample-nudge, cart-save-banner. Legacy fallback path covered by item.isTrade=true + missing retail_price_inc_vat — getRetailIncVat in /app/frontend/src/utils/cartPricing.js correctly back-computes inc-VAT retail from trade-ex-VAT price.",
+  "rca of the issue": "Original bugs RCA: cart only persisted item.price as a single field, so when a guest added a £100 retail-inc-VAT item and later signed in as trade, the cart kept showing 100.00 but Order Summary started labeling it 'ex. VAT' and added 20% on top → £120 effective — overcharging. Fix: persist a canonical retail_price_inc_vat at addToCart time and DERIVE the displayed price live via getEffectivePrice(item, isTrade, td). Verified end-to-end: log in/out toggles re-render the cart with correct math in both directions, including legacy items where retail_price_inc_vat is missing (inferred from item.price + item.isTrade + trade_discount). Bonus fix verified: delivery row now reads £{defaultDeliveryFee} (admin-config £79.99) instead of hardcoded £49.99."
+}

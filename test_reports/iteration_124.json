@@ -1,0 +1,84 @@
+{
+  "summary": "Pass-2 storefront link audit on https://feature-verification-7.preview.emergentagent.com/. Verified all 51 unique hrefs surfaced from desktop homepage + 51 from mobile hamburger. Confirmed pass-1 fixes are deployed: 5 redirect routes (/shop/privacy|terms|faq|returns|delivery -> /shop/info/<slug>) all return 200 with correct H1. Top ribbon, yellow primary nav, footer body promo, footer Quick Links/Customer Service no longer carry placeholder strings (Persistence Test Item / TEST LINK / TEST_CTA_SECONDARY / TEST_DESCRIPTION all absent from rendered DOM). Yellow nav now exposes real categories (NEW COLLECTIONS, ALL TILES, FLOORING, BATHROOM, UNDERFLOOR HEATING, MATERIALS, TOOLS, ACCESSORIES) which all resolve to non-empty pages. HOWEVER the user's specific concern -- WRONG-DESTINATION links where the URL query filters to the wrong content -- DID surface real P0 bugs: the /tiles collection page hard-codes its hero/H1 to 'Bathroom Tiles' regardless of query, and ?style= / ?type= are ENTIRELY IGNORED (every variant shows the full 112 collections / 530 products). Plus /shop/register renders 'PERSIST_TEST_2e067de1' as its H1 -- a placeholder leak the pass-1 cleanup missed.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "/shop/register page", "issue": "H1 of Customer Register page is the literal string 'PERSIST_TEST_2e067de1' (test placeholder leaked into prod content). Footer 'Create Account' / homepage 'Create Account' / mobile menu 'Create Account' all land on this page so the placeholder is highly visible at launch.", "selector": "main h1", "priority": "P0"},
+      {"component": "TileCollectionsPage (/tiles)", "issue": "Page hero/H1 always renders 'Bathroom Tiles' regardless of query string. So clicking 'Outdoor Tiles', 'Kitchen Tiles', 'Wall Tiles', 'Floor Tiles', 'Wall & Floor', 'Marble Effect', 'Wood Effect', 'Stone Effect', 'Patterned', or 'NEW COLLECTIONS' lands on a page whose visible title contradicts the link label.", "selector": "h1 (on /tiles?*)", "priority": "P0"},
+      {"component": "TileCollectionsPage style filter", "issue": "?style=marble-effect | wood-effect | stone-effect | patterned are completely IGNORED -- every variant returns the full catalogue (112 collections / 530 products), identical to /tiles with no params. So the 4 'Shop by Style' tiles on the homepage and the corresponding mobile tiles all wrong-destination to an unfiltered tile list.", "selector": "a[href*='/tiles?style=']", "priority": "P0"},
+      {"component": "TileCollectionsPage type filter", "issue": "?type=wall and ?type=floor are also IGNORED -- both return the full 112/530 catalogue. Footer 'Wall Tiles' (/tiles?type=wall) and 'Floor Tiles' (/tiles?type=floor) therefore both land on the same unfiltered tile list. Same for `/tiles?new=true` (NEW COLLECTIONS yellow-nav item) -- ignored, full catalogue shown.", "selector": "a[href*='/tiles?type='], a[href*='/tiles?new=']", "priority": "P0"},
+      {"component": "TileCollectionsPage category filter", "issue": "?category= IS partially honoured (counts differ: outdoor-tiles=9 colls/24 prods, bathroom-tiles=2/6, kitchen-tiles=8/163, flooring etc.) -- so the product list IS filtered, but the H1 / hero subtitle / 'SHOP BY ROOM' eyebrow still show 'Bathroom Tiles / Create your dream sanctuary' regardless. Visually the 'Outdoor Tiles' link looks like it dumped the user on the bathroom landing page.", "selector": "h1 + .hero-subtitle on /tiles?category=*", "priority": "P0"},
+      {"component": "Top utility ribbon - Klarna link", "issue": "Anchor 'Pay in 3 ways with Klarna' has href='/shop/tiles' which resolves to the generic Bathroom Tiles collection page. The label promises Klarna payment information but the destination is unrelated to Klarna. Either remove the link or point it to an info page about Klarna / payment options.", "selector": "a[href='/shop/tiles']", "priority": "P1"},
+      {"component": "Top utility ribbon - Stores link", "issue": "Anchor 'Free collection from all stores' (and the 'Our Showrooms' promo) goes to /shop/stores which silently redirects to /shop/contact (Contact Us page). Acceptable as a stop-gap because Contact does list stores, but the URL/label promises a stores listing -- either build a /shop/stores page or relabel the link to 'Contact Us'.", "selector": "a[href='/shop/stores']", "priority": "P2"}
+    ],
+    "integration_issues": [
+      {"flow": "Homepage category/style/type tile -> filtered tile listing", "issue": "TileCollectionsPage at /tiles renders with a hard-coded 'Bathroom Tiles' hero (H1 + subtitle 'Create your dream sanctuary') and ignores ?style=, ?type=, ?new= query params entirely. ?category= filters the product set but does not change the hero. End result: the 8 category tiles + 4 style tiles + 2 footer Quick Links + NEW COLLECTIONS + ALL TILES all appear to land on the same 'Bathroom Tiles' page, which is exactly the wrong-destination scenario the user briefed us to find.", "affected_selectors": ["a[href='/tiles?category=outdoor-tiles']","a[href='/tiles?category=kitchen-tiles']","a[href='/tiles?category=wall-tiles']","a[href='/tiles?category=floor-tiles']","a[href='/tiles?category=wall-and-floor']","a[href='/tiles?category=wall-floor-tiles']","a[href='/tiles?category=flooring']","a[href='/tiles?category=bathroom-tiles']","a[href='/tiles?style=wood-effect']","a[href='/tiles?style=marble-effect']","a[href='/tiles?style=stone-effect']","a[href='/tiles?style=patterned']","a[href='/tiles?type=wall']","a[href='/tiles?type=floor']","a[href='/tiles?new=true']","a[href='/tiles']"]}
+    ],
+    "design_issues": []
+  },
+  "verified_working": {
+    "redirects_pass2": [
+      "/shop/privacy -> /shop/info/privacy   H1='Privacy Policy' OK",
+      "/shop/terms -> /shop/info/terms       H1='Terms & Conditions' OK",
+      "/shop/faq -> /shop/info/faq           H1='Frequently Asked Questions' OK",
+      "/shop/returns -> /shop/info/returns   H1='Returns & Refunds' OK",
+      "/shop/delivery -> /shop/info/delivery H1='Delivery Information' OK"
+    ],
+    "placeholder_cleanup": [
+      "Top ribbon: 'Persistence Test Item' NOT present (4 ribbon items now: Klarna / samples / collection / £300 delivery)",
+      "Yellow nav: 'TEST LINK' NOT present (8 real category items now: NEW COLLECTIONS, ALL TILES, FLOORING, BATHROOM, UNDERFLOOR HEATING, MATERIALS, TOOLS, ACCESSORIES)",
+      "Homepage body: 'TEST_CTA_SECONDARY' / 'TEST_DESCRIPTION' / '/test-secondary' all NOT present"
+    ],
+    "yellow_nav_destinations": [
+      "FLOORING -> /tiles?group=flooring -> 'Vinyl Flooring' OK",
+      "BATHROOM -> /shop/bathroom -> 'Bath Station' OK",
+      "UNDERFLOOR HEATING -> /tiles?group=underfloor-heating -> 'Electric Heating Mats' OK",
+      "MATERIALS -> /tiles?group=materials -> 'Adhesives & Grout' OK",
+      "TOOLS -> /tiles?group=tools -> 'Cutting Tools' OK",
+      "ACCESSORIES -> /tiles?group=accessories -> 'Trims & Profiles' OK"
+    ],
+    "header_footer_promo": [
+      "Logo /shop -> homepage OK",
+      "Contact -> /shop/contact 'Contact Us' OK",
+      "Sign In -> /shop/tile-login OK",
+      "Samples -> /shop/tile-samples OK",
+      "Wishlist -> /shop/tile-wishlist OK",
+      "Basket -> /shop/tile-cart OK",
+      "TRADE button -> /shop/trade/login 'Trade Account' OK",
+      "Free Delivery body promo -> /shop/info/delivery OK",
+      "Open Trade Account -> /shop/trade/register OK",
+      "Tile Calculator -> /shop/calculator OK",
+      "Track Order -> /shop/track 'Track Your Order' OK",
+      "50% Bathroom Catalogue -> /shop/bathroom 'Bath Station' OK",
+      "Sample-service top ribbon -> /shop/sample-service 'Our Sample Service' OK"
+    ],
+    "mobile": "Hamburger (data-testid=mobile-menu-btn) opens at 414px, exposes the same 51 unique hrefs as desktop. Same wrong-destination profile (see ui_bugs)."
+  },
+  "test_report_links": [
+    "/app/test_reports/audit/pass2_links.json",
+    "/app/test_reports/audit/pass2_results.json"
+  ],
+  "action_items": [
+    "P0: /shop/register page H1 is 'PERSIST_TEST_2e067de1' -- replace with 'Create Account' (or whatever the real heading should be). Search the customer register component for the placeholder string and the seed data that wrote it.",
+    "P0: TileCollectionsPage hero H1 is hard-coded to 'Bathroom Tiles' regardless of ?category / ?style / ?type / ?new -- read the relevant query param and update the H1, subtitle, eyebrow ('SHOP BY ROOM'), and hero image accordingly. e.g. ?category=outdoor-tiles -> 'Outdoor Tiles', ?style=marble-effect -> 'Marble Effect Tiles'.",
+    "P0: ?style= query is ignored by TileCollectionsPage -- wire up the filter so that /tiles?style=marble-effect actually filters to marble-effect collections. Currently every style variant returns the full 530-product catalogue.",
+    "P0: ?type= query is ignored -- /tiles?type=wall and /tiles?type=floor both show full catalogue. Wire up the filter (footer Quick Links 'Wall Tiles' / 'Floor Tiles' depend on it).",
+    "P0: ?new=true query is ignored (NEW COLLECTIONS yellow-nav item). Either filter to recently added collections or change the link target to a real /tiles?group=new equivalent.",
+    "P1: Top ribbon 'Pay in 3 ways with Klarna' links to /shop/tiles which is just the bathroom tiles collection. Either remove the link or point it to a Klarna / payment-options info page (e.g. add /shop/info/klarna).",
+    "P2: /shop/stores currently redirects to /shop/contact -- functional but the label promises a stores listing. Build a stores page or relabel/remove the link."
+  ],
+  "critical_code_review_comments": [
+    "TileCollectionsPage appears to read URL query params for product list filtering on /tiles?category= but ignores ?style= / ?type= / ?new= -- the filter contract is inconsistent. Recommend a single useSearchParams hook that drives BOTH the hero (h1/subtitle/image) AND the product query, with one branch per param.",
+    "Hero H1 hard-coded to 'Bathroom Tiles / Create your dream sanctuary' is a launch blocker because every category/style/type tile on the homepage looks like it routes to the same bathroom landing. From a SEO/UX standpoint each variant should be its own indexable hero.",
+    "App.js still uses catch-all <Route path='*' element={<Navigate to='/' replace/>}/> at line ~872 -- this is what allowed pass-1 broken links to silently land users on home; replace with a real NotFound for future link audits.",
+    "Customer Register page H1 = 'PERSIST_TEST_2e067de1' indicates a CMS-driven heading whose placeholder seed value never got overwritten. Audit other CMS-driven page headings (info pages, sample-service, trade register, etc.) for similar PERSIST_TEST_/TEST_/PLACEHOLDER strings before launch."
+  ],
+  "updated_files": [],
+  "success_rate": {"frontend": "85% of links resolve and content matches label; ~16 hrefs (8 category tiles + 4 style tiles + 2 footer type tiles + NEW COLLECTIONS + ALL TILES) wrong-destination to the same Bathroom Tiles hero, plus 1 Klarna ribbon mismatch and 1 PERSIST_TEST H1 leak"},
+  "test_credentials": "N/A -- public storefront audit only",
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Pass-1 audit (iteration_123) caught hrefs pointing to non-existent routes; main agent fixed those 10 items via 5 redirect routes + placeholder content cleanup, all confirmed working in pass-2. Pass-2 then specifically hunted for WRONG-DESTINATION (label != content) bugs and surfaced two new categories: (a) /tiles collection page hardcodes 'Bathroom Tiles' hero and silently ignores ?style=/?type=/?new= filter params, so 14+ homepage tiles route to the same visually-bathroom page; (b) /shop/register has 'PERSIST_TEST_2e067de1' as its H1. After main agent fixes these, re-run /app/test_reports/audit/pass2_links.json against an updated playwright check that asserts each /tiles?... destination's H1 contains a substring of the link label.",
+  "rca of the issue": "Two wrong-destination root causes identified in pass-2: (1) TileCollectionsPage component renders a static hero block ('Bathroom Tiles / Create your dream sanctuary' + bathroom hero image) without consulting useSearchParams. The product-list portion of the page DOES read ?category= (counts vary across categories) but ignores ?style= / ?type= / ?new=, so those four filter dimensions appear identical to a user. Reproduction: visit /tiles?style=marble-effect -> H1 says 'Bathroom Tiles', product grid shows 530 products (same as /tiles). Mitigation: parse useSearchParams in TileCollectionsPage; build a hero config keyed by category/style/type/new; apply the missing filter in the products query. (2) /shop/register page uses CMS-stored heading whose seeded test value 'PERSIST_TEST_2e067de1' was never replaced. Mitigation: search admin DB / content-collection for any document field starting with 'PERSIST_TEST_' or 'TEST_' and reset to real copy."
+}

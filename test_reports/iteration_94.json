@@ -1,0 +1,73 @@
+{
+  "summary": "Tested Collection Manager custom description feature. All tests PASSED: Backend APIs (GET/PUT custom_description) work correctly, Frontend UI (textarea, Save, Clear buttons, Desc badge) works correctly, persistence verified across page refresh.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_collection_description.py",
+    "/app/test_reports/pytest/pytest_collection_description.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "CollectionCard component (lines 638-894) correctly implements description editor with data-testid attributes for testing",
+    "handleUpdateSettings function (lines 171-190) properly sends PUT request with custom_description",
+    "Backend PUT endpoint (lines 2291-2320) correctly handles custom_description field with upsert",
+    "Backend GET endpoint (lines 2154-2285) correctly returns custom_description from collection_settings"
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_collection_description.py"
+  ],
+  "success_rate": {
+    "backend": "100% - All 4 tests passed",
+    "frontend": "100% - All UI tests passed"
+  },
+  "test_credentials": "Admin login: admin@test.com / admin123",
+  "seed_data_creation": "None - used existing Monaco Polished collection",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Collection Manager custom description feature VERIFIED: 1) Show details link expands to reveal Custom Description textarea, 2) Typing enables Save button, 3) Save sends PUT to /api/website-admin/collections/{series_name}, 4) Description persists after page refresh, 5) Clear button clears description, 6) Purple 'Desc' badge appears on cards with custom descriptions, 7) Green confirmation text 'Description saved and live on storefront' shows after save.",
+  "test_results": {
+    "1_collection_manager_loads": {
+      "status": "PASS",
+      "details": "Collection Manager page loads with 445 collection cards in Grid view"
+    },
+    "2_show_details_expands": {
+      "status": "PASS",
+      "details": "Clicking 'Show details' reveals Custom Description textarea, Save button, and Price Range"
+    },
+    "3_typing_enables_save": {
+      "status": "PASS",
+      "details": "Typing in textarea enables Save button (disabled when no changes)"
+    },
+    "4_save_sends_put_request": {
+      "status": "PASS",
+      "details": "Clicking Save sends PUT to /api/website-admin/collections/{series_name} with custom_description"
+    },
+    "5_description_persists": {
+      "status": "PASS",
+      "details": "Description persists after page refresh - verified via UI and backend API"
+    },
+    "6_clear_button_works": {
+      "status": "PASS",
+      "details": "Clear button appears when description exists and clears the description"
+    },
+    "7_desc_badge_shows": {
+      "status": "PASS",
+      "details": "Purple 'Desc' badge appears on collection cards with saved custom descriptions"
+    },
+    "8_backend_get_returns_custom_description": {
+      "status": "PASS",
+      "details": "GET /api/website-admin/collections returns custom_description field for each collection"
+    },
+    "9_backend_put_saves_custom_description": {
+      "status": "PASS",
+      "details": "PUT /api/website-admin/collections/{series_name} with custom_description saves to DB"
+    }
+  }
+}

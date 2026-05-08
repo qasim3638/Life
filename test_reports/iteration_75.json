@@ -1,0 +1,73 @@
+{
+  "summary": "Tested SALE PRICE ribbon design on CollectionDetailPage.js. All design elements match requirements: red gradient background, 'SALE PRICE' label, WAS/NOW pricing, SAVE badge with amount and %, discount breakdown bar with Sale/Volume/Total percentages. Non-sale products correctly do NOT show the ribbon.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A - Frontend only testing",
+    "frontend": "100% - All sale ribbon features verified"
+  },
+  "test_credentials": "Admin: qasim@tilestation.co.uk / Tilestation_9614",
+  "seed_data_creation": "Temporarily added 'Sale' label, was_price=35.99, sale_active=true, trade_discount=10 to alabaster-60x60cm-polished for testing. Cleaned up after tests.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Sale ribbon feature is fully working. Verified: 1) Red gradient background (linear-gradient from #ef4444 to #b91c1c), 2) 'SALE PRICE' text in top-left, 3) 'WAS £X.XX' strikethrough in faded white, 4) 'NOW £Y.YY' in large bold white, 5) White badge on right with 'SAVE £X.XX' in red and 'X% OFF' below, 6) Discount breakdown bar shows Sale % (yellow dot), Volume % (amber dot), Total % (green dot). Non-sale products correctly show only volume discount badges (green) without sale ribbon.",
+  "features_tested": {
+    "sale_ribbon_design": [
+      "✓ Red gradient background (linear-gradient 135deg from #ef4444 to #b91c1c)",
+      "✓ 'SALE PRICE' label in top-left with red-200 color",
+      "✓ 'WAS £X.XX' strikethrough in white/60 opacity",
+      "✓ 'NOW £Y.YY' in large bold white (text-3xl font-black)",
+      "✓ White badge on right with 'SAVE £X.XX' in red-600 and 'X% OFF' below"
+    ],
+    "discount_breakdown_bar": [
+      "✓ Sale % shown with yellow dot when explicit was_price exists",
+      "✓ Volume % shown with amber dot when tier discount is active",
+      "✓ Total % shown with green dot (bold)",
+      "✓ Separators (|) between discount components"
+    ],
+    "sale_label_logic": [
+      "✓ Products with 'Sale' label show ribbon when tier discount is active",
+      "✓ Products with explicit was_price show WAS price from was_price field",
+      "✓ Products without Sale label do NOT show sale ribbon",
+      "✓ Sale discount % calculated correctly: (was_price - current_price) / was_price"
+    ],
+    "non_sale_products": [
+      "✓ Non-sale products show normal volume pricing",
+      "✓ Green 'Save X%' badge appears for volume discounts",
+      "✓ No red sale ribbon or WAS pricing shown"
+    ]
+  },
+  "test_scenarios": {
+    "scenario_1_sale_label_only": {
+      "setup": "Product with labels=['Sale'] but no was_price",
+      "result": "Shows ribbon with WAS=base_price, NOW=tier_price, Volume discount only",
+      "status": "PASS"
+    },
+    "scenario_2_sale_with_was_price": {
+      "setup": "Product with labels=['Sale'], was_price=35.99, sale_active=true",
+      "result": "Shows ribbon with WAS=35.99, NOW=27.54, Sale: 19% + Volume: 5% = Total: 23%",
+      "status": "PASS"
+    },
+    "scenario_3_non_sale_product": {
+      "setup": "Product without labels or sale_active",
+      "result": "No sale ribbon shown, only green volume discount badge",
+      "status": "PASS"
+    }
+  },
+  "notes": [
+    "ShopProductDetail.js clearance ribbon not tested - no shop_products in database",
+    "Trade discount breakdown not tested - requires trade user session which was not persisted",
+    "Credit back breakdown not tested - requires trade user with credit_back_rate"
+  ]
+}

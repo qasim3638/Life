@@ -1,0 +1,69 @@
+{
+  "summary": "Showroom Tours feature fully tested. All 9 backend tests passed. Frontend admin panel and customer-facing component verified working correctly. The feature is SEPARATE from Video Showroom and both sections work independently.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Customer Homepage - Showroom Tours",
+        "issues": ["Test data (TEST_Tonbridge, TEST_Gravesend) was visible during testing - cleaned up after tests"]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_showroom_tours.py",
+    "/app/test_reports/pytest/pytest_showroom_tours.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [
+    "/app/backend/tests/test_showroom_tours.py"
+  ],
+  "success_rate": {
+    "backend": "100% (9/9 tests passed)",
+    "frontend": "100% (all UI elements verified)"
+  },
+  "test_credentials": "Admin: qasim@tilestation.co.uk / Tilestation_9614",
+  "seed_data_creation": "Test data created with TEST_ prefix for showroom tours videos, cleaned up after tests",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Showroom Tours feature is fully implemented and working. Backend endpoints: PUT/GET /api/website-admin/homepage for showroom_tours_* fields (showroom_tours_visible, showroom_tours_title, showroom_tours_subtitle, showroom_tours_videos array). Deep merge ensures saving showroom_tours data doesn't overwrite video_showroom data. Frontend admin: Showroom Tours section in HomepageManager sidebar with visibility toggle, section title/subtitle inputs, Add Video button, video entries with title/description/video upload/thumbnail upload/individual toggle/delete/reorder controls, Show Preview button. Customer-facing: ShowroomTours component on homepage loads data dynamically from API, shows tabbed layout with large active video and clickable thumbnail tabs, respects showroom_tours_visible toggle.",
+  "features_tested": {
+    "backend_api": [
+      "✓ PUT /api/website-admin/homepage saves showroom_tours_* fields correctly",
+      "✓ GET /api/website-admin/homepage returns saved showroom_tours fields",
+      "✓ Deep merge preserves video_showroom data when saving showroom_tours",
+      "✓ showroom_tours_videos array structure verified (id, title, description, video_url, thumbnail_url, enabled)",
+      "✓ Public homepage endpoint returns showroom_tours data for customer-facing component",
+      "✓ Multiple videos can be saved with individual enabled/disabled states",
+      "✓ Both Video Showroom and Showroom Tours can be enabled independently",
+      "✓ Disabling one section doesn't affect the other",
+      "✓ Test data cleanup successful"
+    ],
+    "frontend_admin": [
+      "✓ 'Showroom Tours' appears as separate sidebar tab in Homepage Manager",
+      "✓ Clicking 'Showroom Tours' shows editor with all required elements",
+      "✓ Visibility toggle (data-testid='tours-toggle') present and functional",
+      "✓ Section title input (data-testid='tours-title-input') present",
+      "✓ Section subtitle input (data-testid='tours-subtitle-input') present",
+      "✓ Add Video button (data-testid='add-tour-video') present",
+      "✓ Save Changes button (data-testid='save-showroom-tours') present",
+      "✓ Show Preview button (data-testid='toggle-tours-preview') present and functional",
+      "✓ Video entries show title, description, video upload, thumbnail upload, individual toggle, delete, reorder controls",
+      "✓ 'Video Showroom' tab still exists separately (sections are independent)"
+    ],
+    "frontend_customer": [
+      "✓ ShowroomTours component (data-testid='showroom-tours') renders on homepage",
+      "✓ Section title displays correctly from API ('Explore Our Showrooms')",
+      "✓ Section subtitle displays correctly from API ('Take a virtual tour of each location')",
+      "✓ Play button (data-testid='tours-play-btn') present on main video",
+      "✓ Thumbnail tabs are clickable and switch the active video",
+      "✓ Tab switching updates main video display dynamically",
+      "✓ Video Showroom section also exists on homepage (sections are independent)"
+    ]
+  }
+}

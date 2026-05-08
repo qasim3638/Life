@@ -1,0 +1,55 @@
+{
+  "summary": "Verified bug fix for manual Cost Price and List Price inputs in Bulk Category Editor modal. The fix correctly extracts SKUs from 'supplier|||sku' format before sending to backend API. Successfully tested end-to-end: selected Canopy products, entered Cost Price (25.99) and List Price (45.99), clicked 'Apply to 2 Products', and confirmed values were saved to database.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Bulk Category Editor modal", "issues": ["Console warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent} - accessibility improvement recommended"]}
+    ]
+  },
+  "test_report_links": [
+    ".screenshots/11_modal_open.png",
+    ".screenshots/12_pricing_filled.png",
+    ".screenshots/13_after_apply.png"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Fix confirmed at lines 1314-1319 of SupplierProducts.js - SKU extraction from 'supplier|||sku' format working correctly",
+    "Pricing fields (cost_price, list_price) correctly mapped to backend updatePayload at lines 1299-1300",
+    "Backend endpoint /api/supplier-sync/products/bulk-update-unified properly handles cost_price and price fields"
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (frontend-only test)",
+    "frontend": "100%"
+  },
+  "test_credentials": {
+    "email": "qasim@tilestation.co.uk",
+    "password": "Tilestation_9614"
+  },
+  "seed_data_creation": "Updated HE6003 (Blenheim Oak Golden) and HE6002 (Chiltern Oak Natural) with Cost: 25.99, Price: 45.99",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Bug fix verified for Bulk Category Editor pricing inputs. The fix extracts SKUs from 'supplier|||sku' format (lines 1314-1319 in SupplierProducts.js). Tested with Canopy supplier products. Backend API confirms data persists correctly in supplier_products collection.",
+  "bug_verification": {
+    "original_bug": "Manual Cost Price and List Price inputs in Bulk Category Editor modal were not saving",
+    "root_cause": "product_ids were being sent in 'supplier|||sku' format but backend expected just 'sku'",
+    "fix_applied": "Lines 1314-1319 now extract SKU from selectedProducts keys before sending to API",
+    "verification_steps": [
+      "1. Logged in as admin (qasim@tilestation.co.uk)",
+      "2. Navigated to /admin/supplier-products",
+      "3. Selected Canopy supplier (246 products)",
+      "4. Selected 2 products (Blenheim Oak Golden, Chiltern Oak Natural)",
+      "5. Clicked 'Edit Categories' button",
+      "6. Entered Cost Price: 25.99, List Price: 45.99 in Pricing section",
+      "7. Clicked 'Apply to 2 Products' button",
+      "8. Verified toast message: 'Updated 2 products'",
+      "9. Verified API response shows updated values: HE6003 Cost=25.99, Price=45.99; HE6002 Cost=25.99, Price=45.99"
+    ],
+    "status": "FIXED AND VERIFIED"
+  }
+}

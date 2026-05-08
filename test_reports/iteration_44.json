@@ -1,0 +1,75 @@
+{
+  "summary": "Tested merged Collections admin tabs (Collection Manager, Collection Mapping, Collections Page Settings) into unified CollectionsHub interface. All features working correctly: 3 tabs with Shadcn Tabs, tab switching works, embedded prop hides headers, standalone routes still work independently, WebsiteHub shows consolidated Collections card, Sidebar shows Collections link.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "features_tested": {
+    "/admin/collections route loads CollectionsHub": {
+      "status": "PASS",
+      "details": "CollectionsHub component loads with data-testid='collections-hub', header shows 'Collections' with description"
+    },
+    "Collection Manager tab shows collection grid": {
+      "status": "PASS",
+      "details": "Shows 391 collections with images, search input, stats (Total Collections, Featured, Custom Images, Hidden), Grid/Reorder toggle, Card Settings, Refresh button"
+    },
+    "Collection Mapping tab shows create collection button": {
+      "status": "PASS",
+      "details": "Shows 'New Collection' button and empty state 'No Collections Yet' with 'Create Collection' CTA"
+    },
+    "Page Settings tab shows hero banner editor": {
+      "status": "PASS",
+      "details": "Shows product group selector (Tiles, Flooring, Materials, Tools, Accessories, Underfloor Heating), Hero Banners/Room Quick Links/Popular Filters tabs, live preview, Save Changes button"
+    },
+    "Tab switching between all 3 tabs": {
+      "status": "PASS",
+      "details": "Clicking tabs switches content correctly, each tab loads its respective component"
+    },
+    "Standalone /admin/collection-manager route": {
+      "status": "PASS",
+      "details": "Route works independently, shows its own header 'Collection Manager' (embedded=false)"
+    },
+    "Standalone /admin/collection-mapping route": {
+      "status": "PASS",
+      "details": "Route works independently, shows its own header 'Collection Mapping' (embedded=false)"
+    },
+    "Standalone /admin/collections-page-settings route": {
+      "status": "PASS",
+      "details": "Route works independently, shows its own header 'Collections Page Settings' (embedded=false)"
+    },
+    "WebsiteHub shows consolidated Collections card": {
+      "status": "PASS",
+      "details": "Collections card in 'Navigation & Structure' section links to /admin/collections with description 'Manage images, product mappings & page settings for collections'"
+    },
+    "Sidebar shows Collections link": {
+      "status": "PASS",
+      "details": "Sidebar under Website section has 'Collections' link pointing to /admin/collections, clicking navigates correctly"
+    }
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (frontend only test)",
+    "frontend": "100% (all 10 features working)"
+  },
+  "test_credentials": {
+    "admin_email": "admin@test.com",
+    "admin_password": "admin123",
+    "preview_url": "https://feature-verification-7.preview.emergentagent.com"
+  },
+  "seed_data_creation": "No seed data needed - existing collections data used",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "CollectionsHub at /admin/collections consolidates 3 collection management pages into tabs. The embedded prop controls whether child components show their own headers. Standalone routes (/admin/collection-manager, /admin/collection-mapping, /admin/collections-page-settings) still work independently. WebsiteHub and Sidebar both link to the new consolidated /admin/collections route.",
+  "mocked_apis": {
+    "has_mocked_apis": false,
+    "mocked_apis_list": []
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "summary": "Pinterest Engine Phase 2 (12 batched improvements) + Google Shopping XML feed fully tested. 34/34 unit tests pass + 16/17 live API tests pass (1 cache-control failure is preview ingress override, NOT a code bug — backend correctly emits 'public, max-age=3600'). Frontend: 5 tabs on Pinterest Queue (Pin Queue/Performance/AI Renders/Boards Config/Blocked Images) all render; Google Shopping Merchant Center card on /admin/seo shows feed URL + 5-step setup; Marketing & Growth hub visible at top level of admin sidebar.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "/api/feeds/google-shopping.xml",
+        "issue": "External Cache-Control header is overridden by preview ingress to 'no-store, no-cache, must-revalidate'. Backend correctly sets 'public, max-age=3600, s-maxage=3600' (verified via curl localhost:8001). Will work correctly in production once deployed behind proper CDN/ingress."
+      }
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "Google Shopping feed health metric on /admin/seo",
+        "issue": "Card shows '0 products ready for submission' and toast 'Feed returned 0 products — check filtering' in preview env. The displayed feed URL is the production URL (tilestation.co.uk/api/feeds/google-shopping.xml) so the test-fetch hits production which is empty. Live fetch of preview backend confirms 187 products in feed. Cosmetic for dev only — production will populate correctly.",
+        "affected_selectors": [".feed-health"]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_pinterest_phase2.py",
+    "/app/backend/tests/test_google_shopping_feed.py",
+    "/app/backend/tests/test_pinterest_phase2_live.py",
+    "/app/test_reports/pytest/iter176_unit.xml",
+    "/app/test_reports/pytest/iter176_live.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Pre-existing unrelated banner: 'PRODUCTION OUTAGE ALERT — 5 endpoints reporting failures right now' is shown across admin pages. Not caused by Pinterest Phase 2 / Shopping Feed. Stale monitor data — verify which 5 endpoints if not already triaged.",
+    "Layout.js sidebar: clicking 'Marketing & Growth' hub label navigates to /admin/seo (hubLink) but does not expand inline children in the same panel. Hub structure is correct; children render via a separate expand interaction. Acceptable UX.",
+    "GoogleShoppingFeedCard frontend test-fetch uses the displayed (production) feed URL not the current REACT_APP_BACKEND_URL — consider toggling to env-based URL in dev so '0 products' alarm doesn't confuse admin users in preview/staging.",
+    "routes/google_shopping_feed.py correctly sets Cache-Control + X-Product-Count headers. Verified via internal curl. External preview ingress overwrites Cache-Control — operational concern only."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_pinterest_phase2_live.py (new)"
+  ],
+  "success_rate": {"backend": "98% (50/51 — 34 unit + 16/17 live)", "frontend": "100% (all reviewed flows render)"},
+  "test_credentials": "admin@test.com / admin123 (super_admin) — confirmed working",
+  "seed_data_creation": "None new. Existing 187 products already in DB drive the Shopping feed.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Pinterest Phase 2 (#1 perf loop, #2 Nano Banana lifestyle, #3 carousel slides, #4 idea pins prep, #5 seasonal weighting, #6 repin engine, #7 A/B copy variants, #8 dashboard tabs, #10 Google Shopping XML, #12 sidebar split into Communication + Marketing & Growth) is stable. Pinterest API not connected — sync_pin_performance/repin_run return graceful integration_not_connected. EMERGENT_LLM_KEY set; A/B variant + Nano Banana queue handlers run without raising. Live feed at /api/feeds/google-shopping.xml returns 217KB / 187 items / valid RSS-2.0 g: namespace XML. New scheduler jobs registered (perf 04:15, repin Mon 04:45, lifestyle every 3h). Sidebar: Marketing & Growth hub between Communication and Reports as required.",
+  "verified_endpoints": [
+    "GET  /api/feeds/google-shopping.xml — 200, 187 items, valid RSS+g: namespace, X-Product-Count=187, https-only images, special chars escaped",
+    "GET  /api/admin/pinterest/visual/performance — 200 {top_pins, board_scores, window_days}; 401 anon",
+    "POST /api/admin/pinterest/visual/performance/sync — 200 returns {synced:0, reason:integration_not_connected}; 401 anon",
+    "POST /api/admin/pinterest/visual/repin/run — 200; 401 anon",
+    "GET  /api/admin/pinterest/visual/lifestyle-renders — 200 returns list/dict; 401 anon",
+    "POST /api/admin/pinterest/visual/lifestyle-renders/run-batch?batch_size=3 — 200 caps batch; 401 anon"
+  ],
+  "verified_unit_test_coverage": [
+    "seasonal_weight: Jan→bathroom, May→outdoor+garden+patio, Oct→kitchen, all 12 months have boosts, unknown=0",
+    "build_carousel_slides: 4 slides for full product, 4 slides for single-image fallback, no http:// leakage",
+    "_scene_prompt_for: outdoor/bathroom/wall/unknown contexts",
+    "sync_pin_performance: skips with integration_not_connected when no token",
+    "_extract_image_url: string/data-url/dict/None handling",
+    "queue_lifestyle_render: skips without EMERGENT_LLM_KEY, skips without slug",
+    "_google_product_category: outdoor→Pavers, wall→Tile, default→Tile",
+    "_product_to_item_xml: happy path / missing essentials / out_of_stock / dict stock / xml escape / http-filter / title cap=150 / additional_image_link cap=9"
+  ],
+  "verified_ui": [
+    "/admin/pinterest-queue: 5 tab buttons render — Pin Queue, Performance, AI Renders, Boards Config, Blocked Images",
+    "Performance tab: 'Sync from Pinterest' button + 'repin scheduler' button present; empty state copy shown",
+    "AI Renders tab: 'Run batch (3 renders)' button + Tier-2 fallback explanation + 'No lifestyle renders yet' empty state",
+    "/admin/seo: Google Shopping Merchant Center card shows feed URL https://tilestation.co.uk/api/feeds/google-shopping.xml + 5-step setup + Open Merchant Center link",
+    "Sidebar: Marketing & Growth hub visible at top level between Communication and Reports"
+  ]
+}

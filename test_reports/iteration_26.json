@@ -1,0 +1,136 @@
+{
+  "summary": "Tested Collection Detail Page Settings feature. Backend API: 12/12 tests passed. Frontend admin panel had a critical bug (TypeError: Cannot read properties of undefined reading 'map') which was FIXED by implementing deep merge for settings and adding null checks. After fix, admin panel loads correctly with all settings sections. Public collection page correctly shows/hides UI elements based on admin settings.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "POST /api/website-admin/collection-detail-settings",
+        "issue": "Endpoint does not require authentication - potential security concern",
+        "priority": "LOW"
+      }
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "bugs_fixed": [
+    {
+      "component": "CollectionDetailSettings.jsx",
+      "issue": "TypeError: Cannot read properties of undefined (reading 'map') when loading settings",
+      "root_cause": "Shallow merge in fetchSettings() was overwriting nested objects, losing arrays like 'badges' and 'accessories'",
+      "fix_applied": "1) Implemented deepMerge helper function for proper nested object merging. 2) Added null checks with || [] for .map() calls on badges and accessories arrays",
+      "files_modified": ["/app/frontend/src/pages/admin/CollectionDetailSettings.jsx"]
+    }
+  ],
+  "features_tested": {
+    "backend_api_get_settings": {
+      "status": "PASS",
+      "endpoint": "GET /api/website-admin/collection-detail-settings",
+      "evidence": ["Returns settings without auth (public endpoint)", "Returns empty settings object when none configured"]
+    },
+    "backend_api_save_settings": {
+      "status": "PASS",
+      "endpoint": "POST /api/website-admin/collection-detail-settings",
+      "evidence": ["Successfully saves all settings sections", "Settings persist and can be retrieved"]
+    },
+    "admin_settings_panel": {
+      "status": "PASS",
+      "url": "/admin/collection-detail-settings",
+      "evidence": [
+        "Page loads correctly after bug fix",
+        "Trust Badges Strip section with toggle and badge configuration",
+        "Delivery Estimate & Countdown section with toggle and settings",
+        "Share Buttons section with platform toggles",
+        "Frequently Bought Together section",
+        "Information Accordion section",
+        "Sticky Mobile Add-to-Cart section",
+        "Save Changes button works correctly",
+        "Reset to Defaults button available"
+      ]
+    },
+    "trust_badges_toggle": {
+      "status": "PASS",
+      "evidence": [
+        "Toggled OFF via admin panel - badges hidden on public page",
+        "Toggled ON via admin panel - badges visible on public page",
+        "All 4 badges (Free Delivery, Free Samples, Quality Guaranteed, Secure Payment) controlled correctly"
+      ]
+    },
+    "delivery_estimate_section": {
+      "status": "PASS",
+      "evidence": [
+        "Section visible on public page when enabled",
+        "Shows countdown timer with hours:minutes:seconds",
+        "Shows FREE over £299 badge",
+        "Shows Standard and Express delivery options"
+      ]
+    },
+    "share_buttons_section": {
+      "status": "PASS",
+      "evidence": [
+        "Section visible on public page when enabled",
+        "Facebook, X (Twitter), WhatsApp, Pinterest, Email, Copy Link buttons all visible"
+      ]
+    },
+    "accordion_sections": {
+      "status": "PASS",
+      "evidence": [
+        "Technical Specifications accordion visible and expandable",
+        "Installation Guide accordion visible",
+        "Maintenance Tips accordion visible"
+      ]
+    },
+    "frequently_bought_together": {
+      "status": "PASS",
+      "evidence": [
+        "Section visible on public page when enabled",
+        "Shows current product with accessories (Tile Adhesive, Tile Grout, Tile Spacers)",
+        "Add Bundle to Cart button visible",
+        "NOTE: Accessories are MOCKED/hardcoded as expected"
+      ]
+    },
+    "sticky_mobile_cart": {
+      "status": "PASS",
+      "evidence": [
+        "Visible on mobile viewport (390x844)",
+        "Shows price (£24.99/m²) and total (£26.99)",
+        "Add to Cart button visible"
+      ]
+    }
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_collection_detail_settings.py",
+    "/app/test_reports/pytest/pytest_collection_detail_settings.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "POST endpoint for collection-detail-settings does not require authentication - consider adding auth requirement for security",
+    "Frequently Bought Together section uses MOCKED/hardcoded accessory data - this is known and expected per requirements"
+  ],
+  "updated_files": [
+    "/app/frontend/src/pages/admin/CollectionDetailSettings.jsx",
+    "/app/backend/tests/test_collection_detail_settings.py"
+  ],
+  "success_rate": {
+    "backend": "100% (12/12 tests passed)",
+    "frontend": "100% (all features verified after bug fix)"
+  },
+  "test_credentials": {
+    "email": "qasim@tilestation.co.uk",
+    "password": "Tilestation_9614"
+  },
+  "seed_data_creation": "Used Bluestone collection for testing",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Collection Detail Page Settings feature is fully functional. Admin panel at /admin/collection-detail-settings allows toggling Trust Badges, Delivery Estimate, Share Buttons, Accordion Sections, Frequently Bought Together, and Sticky Mobile Cart. Settings are fetched from GET /api/website-admin/collection-detail-settings (public, no auth) and saved via POST (also no auth currently). Public collection pages at /shop/collection/{series} respect these settings. A bug was fixed in CollectionDetailSettings.jsx where shallow merge was causing TypeError - now uses deep merge.",
+  "unrelated_issues_found": {
+    "dashboard_historical_entries_500": {
+      "description": "Dashboard shows 500 error for historical entries API",
+      "endpoint": "fetchHistoricalEntries",
+      "impact": "Low - does not affect the tested feature",
+      "note": "Pre-existing issue, not related to Collection Detail Settings feature"
+    }
+  }
+}

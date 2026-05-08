@@ -1,0 +1,1091 @@
+[
+  {
+    "name": "Silver Rustic",
+    "supplier_name": "ALLURE GREY POLISHED 60X120 CM",
+    "supplier": "wallcano",
+    "sku": "POL60120A3",
+    "stock_sqm": 498.24,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732433657_0.jpg"
+    ]
+  },
+  {
+    "name": "Malaga Cloud",
+    "supplier_name": "HARD ROCK BLACK & WHITE MATT 30X45 CM",
+    "supplier": "wallcano",
+    "sku": "FEA3045A1",
+    "stock_sqm": 115.295,
+    "stock_status": "In Stock",
+    "cost": 12.99,
+    "price": 24.68,
+    "material": "Porcelain",
+    "finish": "FEATURE TILES",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732433176_0.jpg"
+    ]
+  },
+  {
+    "name": "Snow Naples",
+    "supplier_name": "HARD ROCK WHITE MATT 30X45 CM",
+    "supplier": "wallcano",
+    "sku": "FEA3045A2",
+    "stock_sqm": 95.43,
+    "stock_status": "In Stock",
+    "cost": 12.99,
+    "price": 24.68,
+    "material": "Porcelain",
+    "finish": "FEATURE TILES",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1766128307_0.jpeg"
+    ]
+  },
+  {
+    "name": "Naples Heritage",
+    "supplier_name": "MOONSTONE COTTA (009) MATT 30X45 CM",
+    "supplier": "wallcano",
+    "sku": "FEA3045A4",
+    "stock_sqm": 18.76,
+    "stock_status": "Low Stock",
+    "cost": 12.99,
+    "price": 24.68,
+    "material": "Porcelain",
+    "finish": "FEATURE TILES",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732433056_0.jpg"
+    ]
+  },
+  {
+    "name": "Terra Silver",
+    "supplier_name": "MOONSTONE GRIS (007) MATT 30X45 CM",
+    "supplier": "wallcano",
+    "sku": "FEA3045A3",
+    "stock_sqm": 422.145,
+    "stock_status": "In Stock",
+    "cost": 12.99,
+    "price": 24.68,
+    "material": "Porcelain",
+    "finish": "FEATURE TILES",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732432928_0.jpg"
+    ]
+  },
+  {
+    "name": "Sunset Slate",
+    "supplier_name": "MOONSTONE GREY (030) MATT 30X45 CM",
+    "supplier": "wallcano",
+    "sku": "FEA3045A5",
+    "stock_sqm": 92.06,
+    "stock_status": "In Stock",
+    "cost": 12.99,
+    "price": 24.68,
+    "material": "Porcelain",
+    "finish": "FEATURE TILES",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732432845_0.jpg"
+    ]
+  },
+  {
+    "name": "Dune Cloud",
+    "supplier_name": "MOONSTONE WHITE (023) MATT 30X45 CM",
+    "supplier": "wallcano",
+    "sku": "FEA3045A6",
+    "stock_sqm": 28.75,
+    "stock_status": "In Stock",
+    "cost": 12.99,
+    "price": 24.68,
+    "material": "Porcelain",
+    "finish": "FEATURE TILES",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732432771_0.jpg"
+    ]
+  },
+  {
+    "name": "Slate Rustic",
+    "supplier_name": "BRICKSTONE GREY (006) MATT 30X60 CM",
+    "supplier": "wallcano",
+    "sku": "FEA3060A1",
+    "stock_sqm": 226.845,
+    "stock_status": "In Stock",
+    "cost": 13.49,
+    "price": 25.63,
+    "material": "Porcelain",
+    "finish": "FEATURE TILES",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732432698_0.jpg"
+    ]
+  },
+  {
+    "name": "Palermo Traditional",
+    "supplier_name": "BRICKSTONE NATURAL (029) MATT 30X60 CM",
+    "supplier": "wallcano",
+    "sku": "FEA3060A2",
+    "stock_sqm": 176.265,
+    "stock_status": "In Stock",
+    "cost": 13.49,
+    "price": 25.63,
+    "material": "Porcelain",
+    "finish": "FEATURE TILES",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732432636_0.jpg"
+    ]
+  },
+  {
+    "name": "Biscuit Palermo",
+    "supplier_name": "JAISALMER BEIGE (004) MATT 30X60 CM",
+    "supplier": "wallcano",
+    "sku": "FEA3060A3",
+    "stock_sqm": 358.16,
+    "stock_status": "In Stock",
+    "cost": 13.49,
+    "price": 25.63,
+    "material": "Porcelain",
+    "finish": "FEATURE TILES",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732432551_0.jpg"
+    ]
+  },
+  {
+    "name": "Palermo Graphite",
+    "supplier_name": "STONEAGE DARK GREY (027) MATT 30X60 CM",
+    "supplier": "wallcano",
+    "sku": "FEA3060A4",
+    "stock_sqm": 227.025,
+    "stock_status": "In Stock",
+    "cost": 13.49,
+    "price": 25.63,
+    "material": "Porcelain",
+    "finish": "FEATURE TILES",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732432467_0.jpg"
+    ]
+  },
+  {
+    "name": "Porto Frost",
+    "supplier_name": "STONEAGE LIGHT GREY DROP (007) MATT 30X60 CM",
+    "supplier": "wallcano",
+    "sku": "FEA3060A5",
+    "stock_sqm": 352.485,
+    "stock_status": "In Stock",
+    "cost": 13.49,
+    "price": 25.63,
+    "material": "Porcelain",
+    "finish": "FEATURE TILES",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732432399_0.jpg"
+    ]
+  },
+  {
+    "name": "Noir Terra",
+    "supplier_name": "BLACK THUNDER HIGH-GLOSS 60X120 CM",
+    "supplier": "wallcano",
+    "sku": "HG60120A4",
+    "stock_sqm": 1023.12,
+    "stock_status": "In Stock",
+    "cost": 0.0,
+    "price": 0.0,
+    "material": "Porcelain",
+    "finish": "HIGH GLOSS",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1766128459_0.jpeg"
+    ]
+  },
+  {
+    "name": "Cordoba Organic",
+    "supplier_name": "MAGIC GOLD HIGH-GLOSS 60X120 CM",
+    "supplier": "wallcano",
+    "sku": "HG60120A3",
+    "stock_sqm": 342.0,
+    "stock_status": "In Stock",
+    "cost": 0.0,
+    "price": 0.0,
+    "material": "Porcelain",
+    "finish": "HIGH GLOSS",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732432227_0.jpg"
+    ]
+  },
+  {
+    "name": "Noir Bologna",
+    "supplier_name": "ONYX BLUE HIGH-GLOSS 60X120 CM",
+    "supplier": "wallcano",
+    "sku": "HG60120A5",
+    "stock_sqm": 489.88,
+    "stock_status": "In Stock",
+    "cost": 0.0,
+    "price": 0.0,
+    "material": "Porcelain",
+    "finish": "HIGH GLOSS",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1766128625_0.jpeg"
+    ]
+  },
+  {
+    "name": "Ash Granada",
+    "supplier_name": "ETERNAL SATVARIO MATT 30X60 CM",
+    "supplier": "wallcano",
+    "sku": "MAT3060A1",
+    "stock_sqm": 1312.02,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "MATT",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732432009_0.jpg"
+    ]
+  },
+  {
+    "name": "Silver Naples",
+    "supplier_name": "DAPPLED GREY CARVING MATT 60X60 CM",
+    "supplier": "wallcano",
+    "sku": "CRV6060A2",
+    "stock_sqm": 416.34,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "MATT",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732431848_0.jpg"
+    ]
+  },
+  {
+    "name": "Graphite Rustic",
+    "supplier_name": "ETERNAL SATUARIO MATT 60X60 CM",
+    "supplier": "wallcano",
+    "sku": "MAT6060A1",
+    "stock_sqm": 1602.0,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "MATT",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1731651948_0.jpg"
+    ]
+  },
+  {
+    "name": "Roma Noir",
+    "supplier_name": "RUBY ONYX SKY MATT 60X60 CM",
+    "supplier": "wallcano",
+    "sku": "MAT6060A3",
+    "stock_sqm": 638.28,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "MATT",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732431708_0.jpg"
+    ]
+  },
+  {
+    "name": "Naples Graphite",
+    "supplier_name": "SPANISH PUNCH MATT 60X60 CM",
+    "supplier": "wallcano",
+    "sku": "MAT6060A2",
+    "stock_sqm": 781.92,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "MATT",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732431651_0.jpg"
+    ]
+  },
+  {
+    "name": "Aurora Majestic",
+    "supplier_name": "SPELNDOR GOLD MATT 60X60 CM",
+    "supplier": "wallcano",
+    "sku": "MAT6060A4",
+    "stock_sqm": 1381.32,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "MATT",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732349054_0.jpg"
+    ]
+  },
+  {
+    "name": "Cordoba Classic",
+    "supplier_name": "VEINS GREY CARVING MATT 60X60 CM",
+    "supplier": "wallcano",
+    "sku": "CRV6060A1",
+    "stock_sqm": 839.0,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "MATT",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732348875_0.jpg"
+    ]
+  },
+  {
+    "name": "Luna Charcoal",
+    "supplier_name": "DAPPLED GREY CARVING MATT 60X120 CM",
+    "supplier": "wallcano",
+    "sku": "CRV60120A1",
+    "stock_sqm": 576.0,
+    "stock_status": "In Stock",
+    "cost": 15.99,
+    "price": 30.38,
+    "material": "Porcelain",
+    "finish": "MATT",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732348757_0.jpg"
+    ]
+  },
+  {
+    "name": "Cascade Imperial",
+    "supplier_name": "GOLDEN VEINS CARVING MATT 60X120 CM",
+    "supplier": "wallcano",
+    "sku": "CRV60120A2",
+    "stock_sqm": 534.24,
+    "stock_status": "In Stock",
+    "cost": 15.99,
+    "price": 30.38,
+    "material": "Porcelain",
+    "finish": "MATT",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1753685229_0.jpg"
+    ]
+  },
+  {
+    "name": "Carrara Frost",
+    "supplier_name": "ONYX WHITE MATT 60X120 CM",
+    "supplier": "wallcano",
+    "sku": "MAT60120A7",
+    "stock_sqm": 728.6,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "MATT",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732348503_0.jpg"
+    ]
+  },
+  {
+    "name": "Verona Jet",
+    "supplier_name": "RUBY ONYX PINK MATT 60X120 CM",
+    "supplier": "wallcano",
+    "sku": "MAT60120A4",
+    "stock_sqm": 477.92,
+    "stock_status": "In Stock",
+    "cost": 15.49,
+    "price": 29.43,
+    "material": "Porcelain",
+    "finish": "MATT",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1753685133_0.jpg"
+    ]
+  },
+  {
+    "name": "Coal Grand",
+    "supplier_name": "RUBY ONYX SKY MATT 60X120 CM",
+    "supplier": "wallcano",
+    "sku": "MAT60120A5",
+    "stock_sqm": 685.44,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "MATT",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1766130194_0.jpeg"
+    ]
+  },
+  {
+    "name": "Ocean Smoke",
+    "supplier_name": "SPANISH PUNCH MATT 60X120 CM",
+    "supplier": "wallcano",
+    "sku": "MAT60120A1",
+    "stock_sqm": 874.8,
+    "stock_status": "In Stock",
+    "cost": 15.49,
+    "price": 29.43,
+    "material": "Porcelain",
+    "finish": "MATT",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732348313_0.jpg"
+    ]
+  },
+  {
+    "name": "Champagne Santorini",
+    "supplier_name": "SPLENDOR GOLD MATT 60X120 CM",
+    "supplier": "wallcano",
+    "sku": "MAT60120A12",
+    "stock_sqm": 519.12,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "MATT",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1753684998_0.jpg"
+    ]
+  },
+  {
+    "name": "Meadow Slate",
+    "supplier_name": "VEINS GREY CARVING MATT 60X120 CM",
+    "supplier": "wallcano",
+    "sku": "CRV60120A7",
+    "stock_sqm": 1043.28,
+    "stock_status": "In Stock",
+    "cost": 15.99,
+    "price": 30.38,
+    "material": "Porcelain",
+    "finish": "MATT",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1766130423_0.jpeg"
+    ]
+  },
+  {
+    "name": "Mykonos Ash",
+    "supplier_name": "DAPPLED GREY CARVING MATT 80X80 CM",
+    "supplier": "wallcano",
+    "sku": "CRV8080A1",
+    "stock_sqm": 266.0,
+    "stock_status": "In Stock",
+    "cost": 15.49,
+    "price": 29.43,
+    "material": "Porcelain",
+    "finish": "MATT",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732348095_0.jpg"
+    ]
+  },
+  {
+    "name": "Storm Mykonos",
+    "supplier_name": "ASTONISHED GREY CARVING MATT 80X120 CM",
+    "supplier": "wallcano",
+    "sku": "CAR80120A1",
+    "stock_sqm": 608.64,
+    "stock_status": "In Stock",
+    "cost": 17.99,
+    "price": 34.18,
+    "material": "Porcelain",
+    "finish": "MATT",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732348003_0.jpg"
+    ]
+  },
+  {
+    "name": "Pearl Munich",
+    "supplier_name": "CONCRETE BIANCO MATT 80X120 CM",
+    "supplier": "wallcano",
+    "sku": "MAT80120A2",
+    "stock_sqm": 99.84,
+    "stock_status": "In Stock",
+    "cost": 0.0,
+    "price": 0.0,
+    "material": "Porcelain",
+    "finish": null,
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732347949_0.jpg"
+    ]
+  },
+  {
+    "name": "Smoke Genova",
+    "supplier_name": "ELEGANT STATUARIO ENDLESS MATT 80X120 CM",
+    "supplier": "wallcano",
+    "sku": "MAT80120A1",
+    "stock_sqm": 687.36,
+    "stock_status": "In Stock",
+    "cost": 0.0,
+    "price": 0.0,
+    "material": "Porcelain",
+    "finish": null,
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732347863_0.jpg"
+    ]
+  },
+  {
+    "name": "Porto Natural",
+    "supplier_name": "ALLURE GREY POLISHED 60X60 CM",
+    "supplier": "wallcano",
+    "sku": "POL6060A3",
+    "stock_sqm": 996.4,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732347247_0.jpg"
+    ]
+  },
+  {
+    "name": "Mykonos Smoke",
+    "supplier_name": "ETERNAL SATVARIO POLISHED 60X60 CM",
+    "supplier": "wallcano",
+    "sku": "POL6060A2",
+    "stock_sqm": 1139.76,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732347162_0.jpg"
+    ]
+  },
+  {
+    "name": "Smoke Mykonos",
+    "supplier_name": "ONDULATO GREY POLISHED 60X60 CM",
+    "supplier": "wallcano",
+    "sku": "POL6060A4",
+    "stock_sqm": 1137.8,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732347056_0.jpg"
+    ]
+  },
+  {
+    "name": "Cloud Royal",
+    "supplier_name": "ONYX WHITE POLISHED 60X60 CM",
+    "supplier": "wallcano",
+    "sku": "POL6060A11",
+    "stock_sqm": 307.08,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732346978_0.jpg"
+    ]
+  },
+  {
+    "name": "Ebony Imperial",
+    "supplier_name": "RUBY ONYX SKY POLISHED 60X60 CM",
+    "supplier": "wallcano",
+    "sku": "POL6060A8",
+    "stock_sqm": 294.12,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732346830_0.jpg"
+    ]
+  },
+  {
+    "name": "Naples Traditional",
+    "supplier_name": "SPECTRA BIANCO ENDLESS 60X60 CM",
+    "supplier": "wallcano",
+    "sku": "POL6060A5",
+    "stock_sqm": 0.36,
+    "stock_status": "Low Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1753791290_0.jpg"
+    ]
+  },
+  {
+    "name": "Hazel Natural",
+    "supplier_name": "SPECTRA BROWN ENDLESS 60X60 CM",
+    "supplier": "wallcano",
+    "sku": "POL6060A7",
+    "stock_sqm": 457.4,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732346528_0.jpg"
+    ]
+  },
+  {
+    "name": "Smoke Artisan",
+    "supplier_name": "SPECTRA GRISS ENDLESS POLISHED 60X60 CM",
+    "supplier": "wallcano",
+    "sku": "POL6060A6",
+    "stock_sqm": 0.36,
+    "stock_status": "Low Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732346499_0.jpg"
+    ]
+  },
+  {
+    "name": "Amber Natural",
+    "supplier_name": "SPLENDOR GOLD POLISHED 60X60 CM",
+    "supplier": "wallcano",
+    "sku": "POL6060A10",
+    "stock_sqm": 1051.04,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732346438_0.jpg"
+    ]
+  },
+  {
+    "name": "Charcoal Cordoba",
+    "supplier_name": "ETERNAL SATVARIO POLISHED 30X60 CM",
+    "supplier": "wallcano",
+    "sku": "POL3060A1",
+    "stock_sqm": 34.92,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732346341_0.jpg"
+    ]
+  },
+  {
+    "name": "Parma Luxe",
+    "supplier_name": "ONYX WHITE POLISHED 30X60 CM",
+    "supplier": "wallcano",
+    "sku": "POL3060A6",
+    "stock_sqm": 734.0,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732348683_0.jpg"
+    ]
+  },
+  {
+    "name": "Pearl Terra",
+    "supplier_name": "SPECTRA BIANCO ENDLESS POLISHED 30X60 CM",
+    "supplier": "wallcano",
+    "sku": "POL3060A3",
+    "stock_sqm": 0.0,
+    "stock_status": "Out of Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1753684184_0.jpg"
+    ]
+  },
+  {
+    "name": "Umber Traditional",
+    "supplier_name": "SPECTRA BROWN ENDLESS POLISHED 30X60 CM",
+    "supplier": "wallcano",
+    "sku": "POL3060A4",
+    "stock_sqm": 743.04,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1753684166_0.jpg"
+    ]
+  },
+  {
+    "name": "Steel Palermo",
+    "supplier_name": "SPECTRA GRISS ENDLESS POLISHED 30X60 CM",
+    "supplier": "wallcano",
+    "sku": "POL3060A5",
+    "stock_sqm": 2.52,
+    "stock_status": "Low Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1753684147_0.jpg"
+    ]
+  },
+  {
+    "name": "Steel Heritage",
+    "supplier_name": "ETERANAL SATVARIO POLISHED 60X120 CM",
+    "supplier": "wallcano",
+    "sku": "POL60120A9",
+    "stock_sqm": 1209.6,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1753684110_0.jpg"
+    ]
+  },
+  {
+    "name": "Firenze Grand",
+    "supplier_name": "ONYX WHITE POLISHED 60X120 CM",
+    "supplier": "wallcano",
+    "sku": "POL60120A16",
+    "stock_sqm": 375.84,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732345616_0.jpg"
+    ]
+  },
+  {
+    "name": "Naples Indigo",
+    "supplier_name": "PACIFIC AQUA POLISHED 60X120 CM",
+    "supplier": "wallcano",
+    "sku": "POL60120A6",
+    "stock_sqm": 888.92,
+    "stock_status": "In Stock",
+    "cost": 15.49,
+    "price": 29.43,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732345253_0.jpg"
+    ]
+  },
+  {
+    "name": "Noir Royal",
+    "supplier_name": "RUBY ONYX PINK POLISHED 60X120 CM",
+    "supplier": "wallcano",
+    "sku": "POL60120A7",
+    "stock_sqm": 866.88,
+    "stock_status": "In Stock",
+    "cost": 15.49,
+    "price": 29.43,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1753684010_0.jpg"
+    ]
+  },
+  {
+    "name": "Raven Verona",
+    "supplier_name": "RUBY ONYX SKY POLISHED 60X120 CM",
+    "supplier": "wallcano",
+    "sku": "POL60120A4",
+    "stock_sqm": 614.52,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1766130106_0.jpeg"
+    ]
+  },
+  {
+    "name": "Santorini Classic",
+    "supplier_name": "SPLENDOR GOLD POLISHED 60X120 CM",
+    "supplier": "wallcano",
+    "sku": "POL60120A5",
+    "stock_sqm": 1055.52,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1753683945_0.jpg"
+    ]
+  },
+  {
+    "name": "Malaga Forest",
+    "supplier_name": "SPLENDOR GREEN POLISHED 60X120 CM",
+    "supplier": "wallcano",
+    "sku": "POL60120A8",
+    "stock_sqm": 407.52,
+    "stock_status": "In Stock",
+    "cost": 15.49,
+    "price": 29.43,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1753683922_0.jpg"
+    ]
+  },
+  {
+    "name": "Steel Imperial",
+    "supplier_name": "ELEGANT STATUARIO ENDLESS POLISHED 80X120 CM",
+    "supplier": "wallcano",
+    "sku": "POL80120A1",
+    "stock_sqm": 240.96,
+    "stock_status": "In Stock",
+    "cost": 16.99,
+    "price": 32.28,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1753683879_0.jpg"
+    ]
+  },
+  {
+    "name": "Ash Terra",
+    "supplier_name": "EMERALD GREY ENDLESS POLISHED 80X120 CM",
+    "supplier": "wallcano",
+    "sku": "POL80120A5",
+    "stock_sqm": 737.28,
+    "stock_status": "In Stock",
+    "cost": 16.99,
+    "price": 32.28,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732344441_0.jpg"
+    ]
+  },
+  {
+    "name": "Aurora Sahara",
+    "supplier_name": "IMPERIAL BEIGE POLISHED 80X120 CM",
+    "supplier": "wallcano",
+    "sku": "POL80120A4",
+    "stock_sqm": 448.32,
+    "stock_status": "In Stock",
+    "cost": 16.99,
+    "price": 32.28,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1753683751_0.jpg"
+    ]
+  },
+  {
+    "name": "Napoli Grand",
+    "supplier_name": "ONYX PEARL POLISHED 80X120 CM",
+    "supplier": "wallcano",
+    "sku": "POL80120A2",
+    "stock_sqm": 504.0,
+    "stock_status": "In Stock",
+    "cost": 16.99,
+    "price": 32.28,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732344218_0.jpg"
+    ]
+  },
+  {
+    "name": "Pearl Elite",
+    "supplier_name": "ONYX WHITE POLISHED 80X120 CM",
+    "supplier": "wallcano",
+    "sku": "POL80120A3",
+    "stock_sqm": 791.04,
+    "stock_status": "In Stock",
+    "cost": 16.99,
+    "price": 32.28,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732344106_0.jpg"
+    ]
+  },
+  {
+    "name": "Charcoal Mykonos",
+    "supplier_name": "ALLURE GREY POLISHED 80X80 CM",
+    "supplier": "wallcano",
+    "sku": "POL8080A2",
+    "stock_sqm": 646.4,
+    "stock_status": "In Stock",
+    "cost": 15.49,
+    "price": 29.43,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732343971_0.jpg"
+    ]
+  },
+  {
+    "name": "Smoke Traditional",
+    "supplier_name": "REAL SATVARIO POLISHED 80X80 CM",
+    "supplier": "wallcano",
+    "sku": "POL8080A1",
+    "stock_sqm": 605.44,
+    "stock_status": "In Stock",
+    "cost": 15.49,
+    "price": 29.43,
+    "material": "Porcelain",
+    "finish": "POLISHED",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732343954_0.jpg"
+    ]
+  },
+  {
+    "name": "Ash Granada",
+    "supplier_name": "ETERNAL SATVARIO MATT 30X60 CM",
+    "supplier": "wallcano",
+    "sku": "MAT3060A1",
+    "stock_sqm": 1312.02,
+    "stock_status": "In Stock",
+    "cost": 14.99,
+    "price": 28.48,
+    "material": "Porcelain",
+    "finish": "MATT",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732686807_0.jpg",
+      "https://www.wallcanotiles.com/products/1732686723_0.jpg"
+    ]
+  },
+  {
+    "name": "Mykonos Rustic",
+    "supplier_name": "CLASSIC BLUE HIGH-GLOSS 60X120 CM",
+    "supplier": "wallcano",
+    "sku": "HG60120A1",
+    "stock_sqm": 731.08,
+    "stock_status": "In Stock",
+    "cost": 0.0,
+    "price": 0.0,
+    "material": "Porcelain",
+    "finish": "High Gloss",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1732705252_0.jpg"
+    ]
+  },
+  {
+    "name": "Ash Lisbon",
+    "supplier_name": "KANDLA GREY MATT 30X60 CM",
+    "supplier": "wallcano",
+    "sku": "FEA3060A6",
+    "stock_sqm": 228.42,
+    "stock_status": "In Stock",
+    "cost": 0.0,
+    "price": 0.0,
+    "material": "Porcelain",
+    "finish": "MATT",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1757401808_0.jpg"
+    ]
+  },
+  {
+    "name": "Biscuit Heritage",
+    "supplier_name": "SANDSTONE NATURAL MATT 30X60 CM",
+    "supplier": "wallcano",
+    "sku": "FEA3060A7",
+    "stock_sqm": 251.82,
+    "stock_status": "In Stock",
+    "cost": 0.0,
+    "price": 0.0,
+    "material": "Porcelain",
+    "finish": "MATT",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1757402141_0.jpg"
+    ]
+  },
+  {
+    "name": "Blush Rhodes",
+    "supplier_name": "SPLITFACE PINK MATT 30X60 CM",
+    "supplier": "wallcano",
+    "sku": "FEA3060A8",
+    "stock_sqm": 201.42,
+    "stock_status": "In Stock",
+    "cost": 0.0,
+    "price": 0.0,
+    "material": "Porcelain",
+    "finish": "MATT",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1757402348_0.jpg"
+    ]
+  },
+  {
+    "name": "Seville Ash",
+    "supplier_name": "SPLITFACE MINT MATT 30X60 CM",
+    "supplier": "wallcano",
+    "sku": "FEA3060A9",
+    "stock_sqm": 219.42,
+    "stock_status": "In Stock",
+    "cost": 0.0,
+    "price": 0.0,
+    "material": "Porcelain",
+    "finish": "MATT",
+    "size": null,
+    "images": [
+      "https://www.wallcanotiles.com/products/1757402484_0.jpg"
+    ]
+  }
+]

@@ -1,0 +1,63 @@
+{
+  "summary": "Tested 'Currently saved:' enhancement in Bulk Category Editor. All features VERIFIED WORKING. Categories, Filters, and Specifications sections now show 'Currently saved:' with per-value product counts and 'Mixed' badges when products have different values.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_85.json"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "100%",
+    "frontend": "100%"
+  },
+  "test_credentials": "Admin: qasim@tilestation.co.uk / admin123",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "The 'Currently saved:' enhancement is fully implemented and working. Key verification points: (1) Categories section shows 'Currently saved:' with sub_category names and counts (e.g., 'Floor Tiles (26)', 'Wall & Floor Tiles (24)'), (2) Filter headers show 'Mixed' badge when products have different values, (3) Inside expanded filters, 'Currently saved:' appears with value counts, (4) Specifications section shows 'Currently saved:' with values and counts for Material, Finish, Thickness, Size, etc. (e.g., 'Porcelain (29)', 'Engineered Wood (2)'), (5) Scope Summary Panel still renders correctly at bottom showing '18 attributes' and '13 partially applied', (6) Orange scope badges persist after save (P0 bug fix verified in iteration_83).",
+  "verified_working": {
+    "admin_page_loads": "SUCCESS - /admin/supplier-products loads correctly",
+    "product_selection": "SUCCESS - Products can be selected via checkboxes",
+    "bulk_category_editor_opens": "SUCCESS - Modal opens when clicking 'Edit Categories' button",
+    "categories_currently_saved": "SUCCESS - Shows 'Currently saved:' with sub_category names and counts (Floor Tiles (26), Wall & Floor Tiles (24), Kitchen Tiles (24), Large Format (2), Outdoor Tiles (1), Wall Tiles (1), Stone Effect (1))",
+    "categories_mixed_badge": "SUCCESS - Shows 'Mixed' badge when products have different sub_categories",
+    "filters_mixed_badge": "SUCCESS - Filter headers show 'Mixed' badge when values differ",
+    "filters_currently_saved": "SUCCESS - Inside expanded filters, 'Currently saved:' appears with value counts",
+    "specifications_currently_saved": "SUCCESS - Shows 'Currently saved:' with values and counts (Porcelain (29), Engineered Wood (2), Laminate (1), Ceramic (1))",
+    "specifications_mixed_badge": "SUCCESS - Shows 'Mixed' badge when products have different values",
+    "specifications_already_set": "SUCCESS - Shows 'Already set:' with counts (Material: 33/35, Finish: 35/35, Edge: 1/35, Origin: 4/35, Slip Rating: 1/35, Thickness: 10/35, Size: 35/35)",
+    "scope_summary_panel": "SUCCESS - Found with data-testid='scope-summary-panel', shows '18 attributes' and '13 partially applied'",
+    "backend_products_api": "SUCCESS - /api/supplier-sync/products returns products with sub_categories, finish, material, thickness, size, colors fields"
+  },
+  "feature_verification": {
+    "feature_name": "Currently saved: display with per-value product counts",
+    "components_modified": [
+      "/app/frontend/src/pages/admin/components/supplier-products/BulkCategoryEditorSections.jsx",
+      "/app/frontend/src/pages/admin/SupplierProducts.js"
+    ],
+    "key_elements_verified": [
+      "Categories section: 'Currently saved:' with sub_category names and counts",
+      "Filter headers: 'Mixed' badge when values differ",
+      "Inside filters: 'Currently saved:' with value counts",
+      "Specifications: 'Currently saved:' with value counts for Material, Finish, Thickness, Size",
+      "Specifications: 'Mixed' badge when products have different values",
+      "Scope Summary Panel: Still renders correctly at bottom"
+    ],
+    "verification_result": "FULLY IMPLEMENTED - All features working as specified"
+  },
+  "test_counts": {
+    "currently_saved_sections": 7,
+    "mixed_badges": 9,
+    "already_set_sections": 1,
+    "blue_background_sections": 46
+  }
+}

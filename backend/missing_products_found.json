@@ -1,0 +1,1351 @@
+{
+  "found_products": [
+    {
+      "sku": "11PERPFSSTARBLU",
+      "name": "Fs Star Blue",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/fs-star-blue",
+      "extracted_data": {
+        "name": "Fs Star Blue",
+        "extracted_sku": "11PERPFSSTARBLU",
+        "product_id": "39076",
+        "price": 22.47,
+        "stock_m2": 19,
+        "in_stock": true,
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/c/scintilla-sapphire-star-tiles-1000-5.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/c/scintilla-sapphire-tiles.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/c/scintilla-sapphire-star-tiles-1000-1.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/c/scintilla-sapphire-star-tiles-1000-3.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/c/scintilla-sapphire-tiles-corner-1000.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/c/scintilla-sapphire-star-tiles-1000-5.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "11PERPFSSTAROX",
+      "name": "Fs Star Oxide",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/fs-star-oxide",
+      "extracted_data": {
+        "name": "Fs Star Oxide",
+        "extracted_sku": "11PERPFSSTAROX",
+        "product_id": "39077",
+        "price": 22.47,
+        "stock_m2": 125,
+        "in_stock": true,
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/c/scintilla-oxid-tile-1000.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/c/scintilla-paprika-tiles.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/i/bijou-circular-matt-white-mosaic-tile-1000.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/c/scintilla-oxid-tile-1000-2.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/c/scintilla-paprika-tiles-corner-1000.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/c/scintilla-oxid-tile-1000.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "11PERPFSSTARSAG",
+      "name": "Fs Star Sage",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/fs-star-sage",
+      "extracted_data": {
+        "name": "Fs Star Sage",
+        "extracted_sku": "11PERPFSSTARSAG",
+        "product_id": "39078",
+        "price": 22.47,
+        "stock_m2": 207,
+        "in_stock": true,
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/c/scintilla-olive-tiles-1000.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/c/scintilla-olive-tiles.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/c/scintilla-olive-star-tiles-1000.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/c/scintilla-sage-b-2.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/c/scintilla-olive-tiles-corner-1000.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/c/scintilla-olive-tiles-1000.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "1PRV2",
+      "name": "Prismatics Victorian Cream",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/prismatics-victorian-cream",
+      "extracted_data": {
+        "name": "Prismatics Victorian Cream",
+        "extracted_sku": "1PRV2",
+        "product_id": "5349",
+        "price": 36.21,
+        "stock_m2": 62,
+        "in_stock": true,
+        "size": "150x150x6mm",
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/5/3/5349.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/5/3/5349.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "2PRG104",
+      "name": "Prismatics Suede Gloss Field",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/prismatics-suede-gloss-field",
+      "extracted_data": {
+        "name": "Prismatics Suede Gloss Field",
+        "extracted_sku": "2PRG104",
+        "product_id": "15041",
+        "price": 27.37,
+        "stock_m2": 119,
+        "in_stock": true,
+        "size": "150x150x6mm",
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/p/r/prismatics-gloss-suede-greige---2prg104.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/u/suede-gloss-medium-prg104-tiles-prismatics-gloss-natural-tiles-zoom-image.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/p/r/prismatics-gloss-suede-greige---2prg104.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "2PRG11",
+      "name": "Prismatics Shark Gloss",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/prismatics-shark-gloss",
+      "extracted_data": {
+        "name": "Prismatics Shark Gloss",
+        "extracted_sku": "2PRG11",
+        "product_id": "5176",
+        "price": 36.74,
+        "stock_m2": 78,
+        "in_stock": true,
+        "size": "150x150x6mm",
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/2/p/2prg11-_1_.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/2/p/2prg11_1_.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/2/p/2prg11_1.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/2/p/2prg11_2_.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/2/p/2prg11_1_1_1.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/2/p/2prg11-_1_.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "2PRG24",
+      "name": "Prismatics Storm Grey Gloss",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/prismatics-storm-grey-gloss",
+      "extracted_data": {
+        "name": "Prismatics Storm Grey Gloss",
+        "extracted_sku": "2PRG24",
+        "product_id": "2PRG24",
+        "price": 29.05,
+        "stock_m2": 77,
+        "in_stock": true,
+        "size": "150x150x6mm",
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/t/storm_grey_big_0_1.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/t/storm_grey_big_0_1.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "402460",
+      "name": "Springwood Honey (Miel) 150x900",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/springwood-honey-miel-150x900",
+      "extracted_data": {
+        "name": "Springwood Honey (Miel) Wood Effect Tile 150x900",
+        "extracted_sku": "402460",
+        "product_id": "402460",
+        "price": 17.53,
+        "stock_m2": 775,
+        "in_stock": true,
+        "size": "900x150x7mm",
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/p/springwood-honey-_miel_-150x900-bathroom-floor-2300-3.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/p/springwood-honey-150x900-single-tile-2300-2.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/p/springwood-honey-_miel_-150x900-bathroom-floor-2300-1.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/p/springwood-honey-_miel_-150x900-bathroom-floor-2300-4.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/p/springwood-honey-_miel_-150x900-bathroom-floor-2300-5.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/p/springwood-honey-_miel_-150x900-bathroom-floor-2300-3.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "63LUCBLAB34",
+      "name": "Lucia Blanco Brillo (R145)",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/lucia-blanco-brillo-r145",
+      "extracted_data": {
+        "name": "Lucia Blanco Brillo (R145)",
+        "extracted_sku": "63LUCBLAB34",
+        "product_id": "8363",
+        "price": 15.37,
+        "stock_m2": 43,
+        "in_stock": true,
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/r/h/rhian-white-gloss-bathroom-5.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/l/blanco-gloss_1.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/r/h/rhian-white-gloss-bathroom-6.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/r/h/rhian-white-gloss-bathroom-3.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/r/h/rhian-white-gloss-bathroom-4.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/r/h/rhian-white-gloss-bathroom-5.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "63LUCBLAM34",
+      "name": "Lucia Blanco Mate (R142)",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/lucia-blanco-mate-r142",
+      "extracted_data": {
+        "name": "Lucia Blanco Mate (R142)",
+        "extracted_sku": "63LUCBLAM34",
+        "product_id": "8364",
+        "price": 15.37,
+        "stock_m2": 51,
+        "in_stock": true,
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/r/h/rhian-white-matt-7.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/l/blanco-matt_1.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/r/h/rhian-white-matt-2.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/r/h/rhian-white-matt-9.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/r/h/rhian-white-matt-3.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/r/h/rhian-white-matt-7.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "63LUCNEG34",
+      "name": "Lucia Negro Brillo ( R144)",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/lucia-negro-brillo-r144",
+      "extracted_data": {
+        "name": "Lucia Negro Brillo ( R144)",
+        "extracted_sku": "63LUCNEG34",
+        "product_id": "8371",
+        "price": 17.0,
+        "stock_m2": 43,
+        "in_stock": true,
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/r/h/rhianblackgloss-4.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/l/black-gloss.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/r/h/rhianblackgloss-9.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/r/h/rhianblackgloss-8.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/r/h/rhianblackgloss-7.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/r/h/rhianblackgloss-4.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "63LUCPER34",
+      "name": "Lucia Perla Brillo (R148)",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/lucia-perla-brillo-r148",
+      "extracted_data": {
+        "name": "Lucia Perla Brillo (R148)",
+        "extracted_sku": "63LUCPER34",
+        "product_id": "8374",
+        "price": 17.0,
+        "stock_m2": 97,
+        "in_stock": true,
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/p/e/perla-gloss-tiles-rhian-30x10-tiles-zoom-image-1.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/p/e/perla-gloss.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/p/e/perla-gloss-tiles-rhian-30x10-tiles-zoom-image-1.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "800999",
+      "name": "Signature Urbex Pearl",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/signature-urbex-pearl",
+      "extracted_data": {
+        "name": "Signature Urbex Pearl Matt Tiles",
+        "extracted_sku": "800999",
+        "product_id": "800999",
+        "price": 21.37,
+        "stock_m2": 46,
+        "in_stock": true,
+        "size": "1200x600x9mm",
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/i/signature-urbex-pearl-single-tle-2300.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/p/e/perl_terrazo.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/i/signature-urbex-pearl-single-tle-2300.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "801000",
+      "name": "Signature Urbex Arena",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/signature-urbex-arena",
+      "extracted_data": {
+        "name": "Signature Urbex Arena Matt Tiles",
+        "extracted_sku": "801000",
+        "product_id": "801000",
+        "price": 21.37,
+        "stock_m2": 195,
+        "in_stock": true,
+        "size": "1200x600x9mm",
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/i/signature-urbex-arena-single-tile-1700-edit.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/i/signature-urbex-arena-bathroom-wall-floor-2300-3.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/i/signature-urbex-arena-bathroom-wall-2300-1.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/i/signature-urbex-arena-bathroom-floor-2300-2.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/i/signature-urbex-arena-bathroom-floor-2300-1.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/i/signature-urbex-arena-single-tile-1700-edit.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "801660",
+      "name": "Sirocco Green Flower",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/sirocco-green-flower",
+      "extracted_data": {
+        "name": "Sirocco Green Flower",
+        "extracted_sku": "801660",
+        "product_id": "801660",
+        "price": 25.79,
+        "stock_m2": 37,
+        "in_stock": true,
+        "size": "223x223x10mm",
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/l/blossom-green-flower-tiles-single-tile-2300.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/l/blossom-green-flower-pattern-tiles-bathroom-wall-2300-6.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/l/blossom-green-flower-pattern-tiles-bathroom-wall-2300-8.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/l/blossom-green-flower-pattern-tiles-bathroom-wall-2300-1.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/l/blossom-green-flower-pattern-tiles-bathroom-wall-2300-2.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/l/blossom-green-flower-tiles-single-tile-2300.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "801661",
+      "name": "Sirocco Bloom",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/sirocco-bloom",
+      "extracted_data": {
+        "name": "Sirocco Bloom",
+        "extracted_sku": "801661",
+        "product_id": "801661",
+        "price": 25.79,
+        "stock_m2": 53,
+        "in_stock": true,
+        "size": "223x223x10mm",
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/l/blossom-bloom-pattern-tiles-single-tile-2300.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/l/blossom-bloom-pattern-tiles-bathroom-floor-2300-5.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/l/blossom-bloom-pattern-tiles-bathroom-floor-2300-4.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/l/blossom-bloom-pattern-tiles-bathroom-floor-2300-2.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/l/blossom-bloom-pattern-tiles-bathroom-floor-2300-1.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/l/blossom-bloom-pattern-tiles-single-tile-2300.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "801662",
+      "name": "Sirocco Blue Ornate",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/sirocco-blue-ornate",
+      "extracted_data": {
+        "name": "Sirocco Blue Ornate",
+        "extracted_sku": "801662",
+        "product_id": "801662",
+        "price": 25.79,
+        "stock_m2": 195,
+        "in_stock": true,
+        "size": "223x223x10mm",
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/i/sirocco-blue-ornate-single-tile-2300_1.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/l/blossom-blue-ornate-pattern-tiles-kitchen-floor-tiles-2300-1.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/l/blue_ornate.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/i/sirocco-blue-ornate-single-tile-2300_1.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "801663",
+      "name": "Sirocco Blue Cross",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/sirocco-blue-cross",
+      "extracted_data": {
+        "name": "Sirocco Blue Cross",
+        "extracted_sku": "801663",
+        "product_id": "801663",
+        "price": 25.79,
+        "stock_m2": 57,
+        "in_stock": true,
+        "size": "223x223x10mm",
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/i/sirocco-blue-cross-pattern-single-tile-2300.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/l/blossom-blue-cross-pattern-tiles-bathroom-floor-close-up-2300-1.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/l/blossom-blue-cross-pattern-tiles-bathroom-floor-close-up-2300-3.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/l/blossom-blue-cross-pattern-tiles-bathroom-floor-2300.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/l/blue_cross.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/i/sirocco-blue-cross-pattern-single-tile-2300.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "801664",
+      "name": "Sirocco Green Petals",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/sirocco-green-petals",
+      "extracted_data": {
+        "name": "Sirocco Green Petals",
+        "extracted_sku": "801664",
+        "product_id": "801664",
+        "price": 25.79,
+        "stock_m2": 122,
+        "in_stock": true,
+        "size": "223x223x10mm",
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/i/sirocco-green-petals-single-tile-2300.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/c/scirocco-green-petals-hallway-floor-2300-5.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/c/scirocco-green-petals-hallway-floor-2300-3.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/c/scirocco-green-petals-hallway-floor-2300-2.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/c/scirocco-green-petals-hallway-floor-2300-1.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/i/sirocco-green-petals-single-tile-2300.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "801902",
+      "name": "Stracciatella Nacar",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/stracciatella-nacar",
+      "extracted_data": {
+        "name": "Stracciatella Nacar",
+        "extracted_sku": "801902",
+        "product_id": "801902",
+        "price": 38.42,
+        "stock_m2": 40,
+        "in_stock": true,
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/o/sorrento-terrazzo-tile-2300.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/o/sorrento_terrazzo_effect_tile-single-tile-800_1.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/o/sorrento-terrazzo-tile-2300-1.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/o/sorrento-terrazzo-tile-2300-4.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/o/sorrento-terrazzo-tile-2300-5.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/s/o/sorrento-terrazzo-tile-2300.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "802142",
+      "name": "Pure Travertine Ivory",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/pure-travertine-ivory",
+      "extracted_data": {
+        "name": "Pure Travertine Ivory",
+        "extracted_sku": "802142",
+        "product_id": "802142",
+        "price": 29.05,
+        "stock_m2": 149,
+        "in_stock": true,
+        "size": "443x888x10mm",
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/p/u/pure-travertine-ivory-kitchen-wall-2300-1.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/p/u/pure-travertine-ivory-single-tile-2300.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/p/u/pure-travertine-ivory-bathroom-floor-2300-1.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/2/0/2025-11-18_16-41-52.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/p/u/pure-travertine-ivory-kitchen-wall-2300-1.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "802143",
+      "name": "Pure Travertine Light Grey",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/pure-travertine-light-grey",
+      "extracted_data": {
+        "name": "Pure Travertine Light Grey",
+        "extracted_sku": "802143",
+        "product_id": "802143",
+        "price": 29.05,
+        "stock_m2": 356,
+        "in_stock": true,
+        "size": "443x888x10mm",
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/p/u/pure-travertine-light-grey-restaurant-floor-2300-1.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/p/u/pure-travertine-light-grey-single-tile-2300.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/p/u/pure-travertine-light-grey-reception-2300-1.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/p/u/pure_travertine_light_grey_living_room_floor_2000_2.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/2/0/2025-11-18_16-42-19.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/p/u/pure-travertine-light-grey-restaurant-floor-2300-1.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "RKNADBLKGLS1515",
+      "name": "Night Time Black Gloss",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/night-time-black-gloss",
+      "extracted_data": {
+        "name": "Night Time Black Gloss",
+        "extracted_sku": "RKNADBLKGLS1515",
+        "product_id": "13665",
+        "price": 20.26,
+        "stock_m2": 157,
+        "in_stock": true,
+        "size": "148x148x6mm",
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/z/o/zoomimage1colour-prismatics-main-set_black1417692835_1.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/z/o/zoomimagemarvel-smokey-black-136651413464601_1.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/z/o/zoomimage1colour-prismatics-main-set_black1417692835_1.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "RKNADCRMGLS1515",
+      "name": "Night Time Pale Cream Gloss",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/night-time-pale-cream-gloss",
+      "extracted_data": {
+        "name": "Night Time Pale Cream Gloss",
+        "extracted_sku": "RKNADCRMGLS1515",
+        "product_id": "RKNADCRMGLS1515",
+        "price": 13.16,
+        "stock_m2": 143,
+        "in_stock": true,
+        "size": "148x148x6mm",
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/z/o/zoomimage1marvel-colours-3-1000-almond-gloss-1434018779_1.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/z/o/zoomimagealmond-milk-gloss-tiles-1376731413457283_1.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/z/o/zoomimage1marvel-colours-3-1000-almond-gloss-1434018779_1.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "RKNADDKGREYGLS1515",
+      "name": "Night Time Dark Grey Gloss",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/night-time-dark-grey-gloss",
+      "extracted_data": {
+        "name": "Night Time Dark Grey Gloss",
+        "extracted_sku": "RKNADDKGREYGLS1515",
+        "product_id": "13679",
+        "price": 14.79,
+        "stock_m2": 502,
+        "in_stock": true,
+        "size": "148x148x6mm",
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/r/i/rico-grey-gloss-150x150-_4-of-5__1.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/z/o/zoomimagegravel-dark-grey-gloss-tiles-136791413457657_1.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/r/i/rico-grey-gloss-150x150-_4-of-5__1.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "RKNADDKGREYMAT1515",
+      "name": "Night Time Dark Grey Matt",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/night-time-dark-grey-matt",
+      "extracted_data": {
+        "name": "Night Time Dark Grey Matt",
+        "extracted_sku": "RKNADDKGREYMAT1515",
+        "product_id": "13680",
+        "price": 13.15,
+        "stock_m2": 76,
+        "in_stock": true,
+        "size": "148x148x6mm",
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/z/o/zoomimage1marvel-tiles-gravel-grey-matt1434019715_1.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/z/o/zoomimagegravel-dark-grey-matt-tiles-136801413458153_1.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/z/o/zoomimage1marvel-tiles-gravel-grey-matt1434019715_1.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "TEHMMETBIA75300",
+      "name": "Hand Made Metro Bianco 75 X 300",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/hand-made-metro-bianco-75-x-300",
+      "extracted_data": {
+        "name": "Hand Made Metro Bianco 75 X 300",
+        "extracted_sku": "TEHMMETBIA75300",
+        "product_id": "34249",
+        "price": 27.42,
+        "stock_m2": 54,
+        "in_stock": true,
+        "size": "300x75x7mm",
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/o/boutique-brick-300x75-tiles-chiffon-handcrafted-metro-tiles_1.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/o/boutique-brick-chiffon-300x75-1000.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/o/boutique-brick-chiffon-300x75-1000_1.webp",
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/3/3/333333.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/o/boutique-brick-300x75-tiles-chiffon-handcrafted-metro-tiles_1.webp"
+      },
+      "error": null
+    },
+    {
+      "sku": "TEHMMETNERO",
+      "name": "Hand Made Metro Nero 75 X 150",
+      "found": true,
+      "url": "https://www.splendourtiles.co.uk/hand-made-metro-nero-75-x-150",
+      "extracted_data": {
+        "name": "Hand Made Metro Nero 75 X 150",
+        "extracted_sku": "TEHMMETNERO",
+        "product_id": "34258",
+        "price": 26.84,
+        "stock_m2": 69,
+        "in_stock": true,
+        "size": "150x75x7mm",
+        "images": [
+          "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/1/b12.webp"
+        ],
+        "image": "https://m2wholesale.wallsandfloors.co.uk/media/catalog/2300X2300/b/1/b12.webp"
+      },
+      "error": null
+    }
+  ],
+  "not_found_products": [
+    {
+      "sku": "11PERPFS14545",
+      "name": "Vintage Industrial Divina 450x450 (Fs-1)",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/vintage-industrial-divina-450x450-fs-1",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "11PERPFSNIJ4545",
+      "name": "Fs Vintage Industrial Nijar 450x450",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/fs-vintage-industrial-nijar-450x450",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "11PERPFSSTAR4545",
+      "name": "Fs Vintage Industrial Star-N 450x450",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/fs-vintage-industrial-star-n-450x450",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "43INGBLA",
+      "name": "Ingot Blanco",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/ingot-blanco",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "47PROANT3248",
+      "name": "Proxi Antracite 32 X 48",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/proxi-antracite-32-x-48",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "47PROANT4848",
+      "name": "Proxi Antracite 48 X 48",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/proxi-antracite-48-x-48",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "47PROANT4896",
+      "name": "Proxi Antracite 48 X 96",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/proxi-antracite-48-x-96",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "47PROBIA3232",
+      "name": "Proxi Bianco 32 X 32",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/proxi-bianco-32-x-32",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "47PROBIA3248",
+      "name": "Proxi Bianco 32 X 48",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/proxi-bianco-32-x-48",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "47PROBIA4848",
+      "name": "Proxi Bianco 48 X 48",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/proxi-bianco-48-x-48",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "47PROBRU4896",
+      "name": "Proxi Bruno 48 X 96",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/proxi-bruno-48-x-96",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "47PROGRG4896",
+      "name": "Proxi Grigio 48 X 96",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/proxi-grigio-48-x-96",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "47PROTOR3232",
+      "name": "Proxi Tortora 32 X 32",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/proxi-tortora-32-x-32",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "47PROTOR3248",
+      "name": "Proxi Tortora 32 X 48",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/proxi-tortora-32-x-48",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "47PROTOR4848",
+      "name": "Proxi Tortora 48 X 48",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/proxi-tortora-48-x-48",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "47PROTOR4896",
+      "name": "Proxi Tortora 48 X 96",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/proxi-tortora-48-x-96",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "48METBLA30X1034",
+      "name": "METRO BLANCO GLOSS",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/metro-blanco-gloss",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "48METLGRY30X1034",
+      "name": "METRO LIGHT GREY GLOSS",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/metro-light-grey-gloss",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "57POMBEI",
+      "name": "Pompeya Beige",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/pompeya-beige",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "57POMDAR",
+      "name": "Pompeya Dark",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/pompeya-dark",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "57POMOXI",
+      "name": "Pompeya Oxido",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/pompeya-oxido",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "63LUCMARB34",
+      "name": "Lucia Marino Brillo 10x30",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/lucia-marino-brillo-10x30",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "800398",
+      "name": "Riad Gloss Aqua",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/riad-gloss-aqua",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "800399",
+      "name": "Riad Gloss Green",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/riad-gloss-green",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "800400",
+      "name": "Riad Gloss Grey",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/riad-gloss-grey",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "800401",
+      "name": "Riad Gloss Pink",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/riad-gloss-pink",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "800404",
+      "name": "Riad Gloss Sky",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/riad-gloss-sky",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "800405",
+      "name": "Riad Gloss Taupe",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/riad-gloss-taupe",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "800406",
+      "name": "Riad Gloss White",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/riad-gloss-white",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "800408",
+      "name": "Sahn Matt Green",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/sahn-matt-green",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "800409",
+      "name": "Sahn Matt Grey",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/sahn-matt-grey",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "800411",
+      "name": "Sahn Matt Red",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/sahn-matt-red",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "800413",
+      "name": "Sahn Matt Sky",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/sahn-matt-sky",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "800415",
+      "name": "Sahn Matt White",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/sahn-matt-white",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "800663",
+      "name": "Uptown Perla Wall",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/uptown-perla-wall",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "800992",
+      "name": "Signature Murano Pearl",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/signature-murano-pearl",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "800993",
+      "name": "Signature Naza White",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/signature-naza-white",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "800996",
+      "name": "Signature Sigma Perla",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/signature-sigma-perla",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "800998",
+      "name": "Signature Urbex Marengo",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/signature-urbex-marengo",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "801001",
+      "name": "Plaster Grey Matt",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/plaster-grey-matt",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "801466",
+      "name": "Shadow Dance Grey Matt",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/shadow-dance-grey-matt",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "801467",
+      "name": "Shadow Dance White Matt",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/shadow-dance-white-matt",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "801468",
+      "name": "Shadow Dance Beige Matt",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/shadow-dance-beige-matt",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "801469",
+      "name": "Star Wood Brown",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/star-wood-brown",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "801470",
+      "name": "Star Wood Grey",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/star-wood-grey",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "801780",
+      "name": "Rapolano Marble Beige 20mm",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/rapolano-marble-beige-20mm",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "801781",
+      "name": "Rapolano Marble Light Beige 20mm",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/rapolano-marble-light-beige-20mm",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "801782",
+      "name": "Rapolano Marble Beige 10mm",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/rapolano-marble-beige-10mm",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "801783",
+      "name": "Rapolano Marble Light Beige 10mm",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/rapolano-marble-light-beige-10mm",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "801847",
+      "name": "Starwood Alpine Wood White",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/starwood-alpine-wood-white",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "801848",
+      "name": "Starwood Stylewood Dark Brown",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/starwood-stylewood-dark-brown",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "802040",
+      "name": "Tapa Light Bone Rectified 30x60",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/tapa-light-bone-rectified-30x60",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "802041",
+      "name": "Tapa Grey Rectified 30x60",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/tapa-grey-rectified-30x60",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "802042",
+      "name": "Tapa Light Grey Rectified 30x60",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/tapa-light-grey-rectified-30x60",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "802043",
+      "name": "Tapa Light Bone Rectified 60x60",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/tapa-light-bone-rectified-60x60",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "802044",
+      "name": "Tapa Grey Rectified 60x60",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/tapa-grey-rectified-60x60",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "802045",
+      "name": "Tapa Light Grey Rectified 60x60",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/tapa-light-grey-rectified-60x60",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "802046",
+      "name": "Tapa Light Bone Rectified 60x120",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/tapa-light-bone-rectified-60x120",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "802048",
+      "name": "Tapa Light Grey Rectified 60x120",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/tapa-light-grey-rectified-60x120",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "802149",
+      "name": "Zebra Green and White",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/zebra-green-and-white",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "802150",
+      "name": "Zebra Pink and White",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/zebra-pink-and-white",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "802151",
+      "name": "Zebra Blue and White",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/zebra-blue-and-white",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "802229",
+      "name": "Rapolano Marble Grey 10mm",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/rapolano-marble-grey-10mm",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "802263",
+      "name": "Strato Outdoor Natural Rustic Black Slate Effect Matt 600x1200x20mm",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/strato-outdoor-natural-rustic-black-slate-effect-matt-600x1200x20mm",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "802289",
+      "name": "PORTO IVORY 29,2x58,5",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/porto-ivory-29-2x58-5",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "802290",
+      "name": "PORTO WHITE (PEARL) 29,2x58,5",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/porto-white-pearl-29-2x58-5",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "802291",
+      "name": "PORTO GREY 29,2x58,5",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/porto-grey-29-2x58-5",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "802292",
+      "name": "PORTO IVORY DECOR 29,2x58,5",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/porto-ivory-decor-29-2x58-5",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "802293",
+      "name": "PORTO WHITE (PEARL) DECOR 29,2x58,5",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/porto-white-pearl-decor-29-2x58-5",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "802294",
+      "name": "PORTO GREY DECOR 29,2x58,5",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/porto-grey-decor-29-2x58-5",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "DUGPORANTBRE",
+      "name": "Portland Antracite Breeze",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/portland-antracite-breeze",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "ECONAIBLA",
+      "name": "Nairobi Blanco",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/nairobi-blanco",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "ECOSAFGRAF303X613",
+      "name": "Safari Grafito 303 X 613",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/safari-grafito-303-x-613",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "ESCVICBLAMOS",
+      "name": "Victorian Black Mosaic (Price Per Sheet)",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/victorian-black-mosaic-price-per-sheet",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "ESCVICREDBOR",
+      "name": "Victorian Red & Black Border (Each)",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/victorian-red-black-border-each",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "ESCVICREDCHE",
+      "name": "Victorian Red & Black Chequer Mosaic (Price Per Sheet)",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/victorian-red-black-chequer-mosaic-price-per-sheet",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "ESCVICREDCOR",
+      "name": "Victorian Red & Black Corner (Each)",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/victorian-red-black-corner-each",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "ESCVICREDMOS",
+      "name": "Victorian Red Mosaic (Price Per Sheet)",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/victorian-red-mosaic-price-per-sheet",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "ESCVICWHTBOR",
+      "name": "Victorian White & Black Border (Each)",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/victorian-white-black-border-each",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "ESCVICWHTCHE",
+      "name": "Victorian White & Black Chequer Mosaic (Price Per Sheet)",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/victorian-white-black-chequer-mosaic-price-per-sheet",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "ESCVICWHTCOR",
+      "name": "Victorian White & Black Corner (Each)",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/victorian-white-black-corner-each",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "ESCVICWHTMOS",
+      "name": "Victorian White Mosaic (Price Per Sheet)",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/victorian-white-mosaic-price-per-sheet",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "LASSATWHT1515",
+      "name": "Satin White Wall 15x15",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/satin-white-wall-15x15",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "LASSATWHT3060",
+      "name": "Satin White Wall 60x30",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/satin-white-wall-60x30",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "REABORGGRY",
+      "name": "Borgogna Stone Grey Modular (Per Pack)",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/borgogna-stone-grey-modular-per-pack",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "RKNADDKCRMGLS1515",
+      "name": "Night Time Dark Cream Gloss",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/night-time-dark-cream-gloss",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "RKNADPGREYGLS1515",
+      "name": "Night Time Pale Grey Gloss",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/night-time-pale-grey-gloss",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "SUPEVEPER5025",
+      "name": "Everest Perla 50x25",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/everest-perla-50x25",
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "sku": "YTVINBLU",
+      "name": "Vintage Blue 15x60",
+      "found": false,
+      "url": "https://www.splendourtiles.co.uk/vintage-blue-15x60",
+      "extracted_data": null,
+      "error": null
+    }
+  ],
+  "errors": [],
+  "total_checked": 117,
+  "found_count": 28,
+  "not_found_count": 89,
+  "error_count": 0,
+  "checked_at": "2026-02-19T22:39:02.309063+00:00"
+}

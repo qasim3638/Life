@@ -1,0 +1,54 @@
+{
+  "summary": "Completed testing of Site Map Unlink Feature and Top Bar removal. All backend tests pass (11/11). Frontend features verified: unlinked badge visible, view toggle visible, refresh button visible, hover tooltip with X remove button works, + dropdown shows only 'Main Nav' and 'Footer' (no Top Bar), Board View shows 3 columns (Main Navigation, Footer Links, Homepage - no Top Bar), Bulk action bar shows 3 buttons (no Top Bar).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_sitemap_unlink.py",
+    "/app/test_reports/pytest/pytest_sitemap_unlink.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [
+    "/app/backend/tests/test_sitemap_unlink.py"
+  ],
+  "success_rate": {
+    "backend": "100%",
+    "frontend": "100%"
+  },
+  "test_credentials": "Admin: qasim@tilestation.co.uk / Tilestation_9614",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Site Map Unlink Feature fully tested. Key changes verified: 1) linked_from now returns objects with {label, type, menu_type, item_id, removable} instead of strings. 2) POST /api/website-admin/sitemap/unlink endpoint works for nav (requires menu_type, item_id), footer (requires section, link_url), and homepage (requires category_id). 3) Top Bar has been completely removed from UI - not in + dropdown, not in Board View columns, not in bulk action bar. 4) Hover tooltip shows X remove button for unlinking pages.",
+  "features_tested": {
+    "backend": [
+      "GET /api/website-admin/sitemap - linked_from returns objects with type, removable, IDs (not strings)",
+      "Nav links have menu_type and item_id for unlinking",
+      "Footer links have section and link_url for unlinking",
+      "Homepage links have category_id for unlinking",
+      "POST /api/website-admin/sitemap/unlink - requires type parameter",
+      "POST /api/website-admin/sitemap/unlink type=nav - requires menu_type and item_id",
+      "POST /api/website-admin/sitemap/unlink type=footer - requires section and link_url",
+      "POST /api/website-admin/sitemap/unlink type=homepage - requires category_id",
+      "Full unlink flow: add nav item, verify in sitemap, unlink, verify removed"
+    ],
+    "frontend": [
+      "Unlinked badge (484 unlinked) visible in header, not hidden behind sidebar",
+      "View toggle (List/Board) visible in header",
+      "Refresh button visible in header",
+      "Hover tooltip shows 'LINKED FROM' with source details",
+      "Hover tooltip has X remove button for unlinking",
+      "+ dropdown on non-category pages shows only 'Main Nav' and 'Footer' (no Top Bar)",
+      "Board View shows 3 destination columns: Main Navigation, Footer Links, Homepage (no Top Bar)",
+      "Bulk action bar shows 3 buttons: Main Navigation, Footer Links, Homepage (no Top Bar)",
+      "All header controls visible and not hidden behind right sidebar"
+    ]
+  }
+}

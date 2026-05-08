@@ -1,0 +1,87 @@
+{
+  "summary": "Tested credit_back_rate field in APIs and 'Extra X% Credit Back' badges on collection cards and product detail page, plus 'Saved vs retail' section in cart. All features working correctly for trade users and correctly hidden for non-trade users.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "features_tested": {
+    "GET /api/tiles/collections - credit_back_rate": {
+      "status": "PASS",
+      "details": "Returns credit_back_rate field for each collection, defaults to 2"
+    },
+    "GET /api/tiles/collection/{series_name} - credit_back_rate": {
+      "status": "PASS",
+      "details": "Returns credit_back_rate field at collection level"
+    },
+    "GET /api/tiles/products/{slug}/tier-pricing - credit_back_rate": {
+      "status": "PASS",
+      "details": "Returns credit_back_rate field in tier pricing response"
+    },
+    "Collection Cards - Credit Back Badge (Trade User)": {
+      "status": "PASS",
+      "details": "Shows 'Extra 2% Credit Back' badge below price for trade users (32 badges found on page)"
+    },
+    "Collection Cards - Credit Back Badge (Non-Trade User)": {
+      "status": "PASS",
+      "details": "No credit back badges shown for non-trade users (0 badges found)"
+    },
+    "Product Detail Page - Credit Back Badge (Trade User)": {
+      "status": "PASS",
+      "details": "Shows 'Extra 2% Credit Back' badge near pricing for trade users"
+    },
+    "Product Detail Page - Credit Back Badge (Non-Trade User)": {
+      "status": "PASS",
+      "details": "No credit back badge shown for non-trade users"
+    },
+    "Cart - Saved vs Retail Section (Trade User)": {
+      "status": "PASS",
+      "details": "Shows 'Saved vs retail £6.04 - That's 21% off the retail inc. VAT price' for trade users"
+    },
+    "Cart - Saved vs Retail Section (Non-Trade User)": {
+      "status": "PASS",
+      "details": "No saved vs retail section shown for non-trade users"
+    },
+    "Cart - Credit Back Section (Trade User)": {
+      "status": "PASS",
+      "details": "Shows 'Credit Back Earned £0.46 on ex. VAT product total' for trade users"
+    },
+    "Cart - Credit Back Section (Non-Trade User)": {
+      "status": "PASS",
+      "details": "No credit back section shown for non-trade users"
+    },
+    "Saved vs Retail Calculation": {
+      "status": "PASS",
+      "details": "Formula verified: retailPrice = tradePrice * 1.20 / (1 - tradeDiscount/100), savings = (retailPrice - tradePrice) * qty. Example: £22.95 trade price with 5% discount = £6.04 saved (21% off)"
+    }
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_credit_back_badges.py",
+    "/app/test_reports/pytest/pytest_credit_back_badges.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [
+    "/app/backend/tests/test_credit_back_badges.py"
+  ],
+  "success_rate": {
+    "backend": "100% (7/7 tests passed)",
+    "frontend": "100% (all UI features working)"
+  },
+  "test_credentials": {
+    "trade_user_simulation": "localStorage 'tile_shop_customer' with {is_trade: true, trade_discount: 5}",
+    "cart_page_url": "/shop/tile-cart (NOT /shop/cart)"
+  },
+  "seed_data_creation": "No seed data needed - localStorage simulation used for testing",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Credit back badges and saved vs retail features fully implemented. Trade users see: 1) 'Extra X% Credit Back' badges on collection cards (TileCollectionsPage.js) and product detail page (CollectionDetailPage.js), 2) 'Saved vs retail' section in cart showing savings compared to retail inc. VAT price, 3) 'Credit Back Earned' section in cart. Non-trade users see none of these. The TileCartPage is at /shop/tile-cart, not /shop/cart. credit_back_rate defaults to 2 (TRADE_CREDIT_BACK_DEFAULT from business_rules.py).",
+  "mocked_apis": {
+    "has_mocked_apis": false,
+    "mocked_apis_list": []
+  }
+}

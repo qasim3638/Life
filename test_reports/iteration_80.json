@@ -1,0 +1,85 @@
+{
+  "summary": "Tested Admin Attributes UI State Hydration in Bulk Category Editor. Found CRITICAL BUG: Category selections (cat_* keys) are NOT being saved to products, causing hydration failure when reopening modal. Specifications (spec_*) hydration works correctly.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "BulkCategoryEditorSections / SupplierProducts.js",
+        "issue": "Category selections (cat_* keys like cat_mosaic-tiles, cat_floor-tiles) are NOT being included in bulkCategorySelections state when handleBulkCategoryUpdate is called. Visual state (button highlighting) works, but actual state value is missing.",
+        "selector": "button:has-text('Mosaic Tiles'), button:has-text('Floor Tiles')",
+        "priority": "CRITICAL",
+        "evidence": "Console log shows: bulkCategorySelections: {material: Porcelain, finish: , auto_detect_finish: false...} - NO cat_* keys present despite button being highlighted green"
+      }
+    ],
+    "integration_issues": [
+      {
+        "flow": "Category hydration on modal reopen",
+        "issue": "When reopening Bulk Category Editor for same products, previously saved categories do NOT appear highlighted. Products have empty sub_categories[] and null main_category in database.",
+        "affected_selectors": ["button.bg-green-600 (category buttons)", "cat_${slug} state keys"]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_80.json"
+  ],
+  "action_items": [
+    "CRITICAL: Debug why cat_* keys are not being included in bulkCategorySelections state when handleBulkCategoryUpdate is called",
+    "Check if there's a React state batching issue or closure issue in handleBulkCategoryUpdate",
+    "Verify setBulkCategorySelections is being called correctly from BulkCategoryEditorSections.jsx line 720-723",
+    "Add console.log in category button onClick to verify state update is happening",
+    "Check if the state is being reset somewhere between category click and Apply button click"
+  ],
+  "critical_code_review_comments": [
+    "Line 2705 validation checks hasMainCategory and hasSubCategories but cat_* keys are only converted to these AFTER validation at lines 2951-2991",
+    "The console.log at line 3050 shows bulkCategorySelections WITHOUT cat_* keys despite button being visually selected",
+    "Possible stale closure issue: handleBulkCategoryUpdate may be reading old state reference"
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A - skipped per request",
+    "frontend": "50% - Specifications hydration works, Categories hydration FAILS"
+  },
+  "test_credentials": "Admin: test@admin.com / testpass123 (NOT qasim@tilestation.co.uk as provided)",
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "The Bulk Category Editor modal has 3 sections: Categories (green), Filters (blue), Specifications (purple). When clicking a category button, it visually highlights (bg-green-600) and shows '1 selected' badge. However, when Apply is clicked, the cat_* keys are NOT in the bulkCategorySelections state. This causes: 1) Categories not being saved to products (sub_categories stays empty), 2) Categories not being hydrated when reopening modal. Specifications (spec_*) work correctly - Porcelain material IS highlighted on reopen.",
+  "rca_of_the_issue": {
+    "root_cause": "Category button clicks update visual state (isSelected check at line 714 works) but the cat_* keys are not present in bulkCategorySelections when handleBulkCategoryUpdate reads the state at line 3050",
+    "reproduction_steps": [
+      "1. Login as admin (test@admin.com / testpass123)",
+      "2. Navigate to /admin/supplier-products",
+      "3. Select 2+ products via checkboxes",
+      "4. Click 'Edit Categories' button to open Bulk Category Editor",
+      "5. Click on a category like 'Mosaic Tiles' - it turns green with checkmark",
+      "6. Click 'Apply to 16 Products' button",
+      "7. Click 'Confirm & Apply' in the confirmation dialog",
+      "8. Observe console: bulkCategorySelections does NOT contain cat_mosaic-tiles key",
+      "9. Close modal and reopen - Mosaic Tiles is NOT highlighted (hydration failure)"
+    ],
+    "potential_fixes": [
+      "1. Add useCallback with proper dependencies to handleBulkCategoryUpdate",
+      "2. Use a ref to track current state value instead of closure",
+      "3. Pass bulkCategorySelections as parameter to handleBulkCategoryUpdate",
+      "4. Debug React DevTools to see actual state at time of Apply click"
+    ]
+  },
+  "verified_working": {
+    "admin_login": "Works with test@admin.com / testpass123",
+    "supplier_products_page": "Loads correctly with 1582 products",
+    "product_selection": "Checkboxes work correctly",
+    "bulk_category_editor_modal": "Opens correctly",
+    "category_button_visual_state": "Clicking category buttons highlights them correctly",
+    "specification_hydration": "Material=Porcelain IS highlighted on reopen (WORKS)",
+    "already_set_indicators": "Shows Material: 16/16, Finish: 16/16, etc. (WORKS)"
+  },
+  "not_working": {
+    "category_state_persistence": "cat_* keys not in state when Apply is clicked",
+    "category_save_to_database": "sub_categories stays empty, main_category stays null",
+    "category_hydration_on_reopen": "Categories not highlighted when reopening modal"
+  }
+}

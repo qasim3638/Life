@@ -1,0 +1,78 @@
+{
+  "summary": "Tested merged Filter & Spec Assignment functionality into Navigation & Structure page. All features working correctly: Filters tab shows all filters with Visible/Hidden toggle buttons when a product group is selected, Specifications tab shows all specs with toggle buttons, toggle APIs work correctly, standalone /admin/filter-assignment route removed, WebsiteHub card removed.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "features_tested": {
+    "Filters tab shows ALL filters with toggle buttons": {
+      "status": "PASS",
+      "details": "16 filters displayed with Visible toggle buttons when Tiles group selected"
+    },
+    "Visible/Hidden toggle button appears when group selected": {
+      "status": "PASS",
+      "details": "Each filter shows Visible button with eye icon, changes to Hidden with EyeOff when toggled"
+    },
+    "PATCH /api/filters/types/{id}/toggle-type-visibility": {
+      "status": "PASS",
+      "details": "API correctly adds/removes product_group from hidden_groups array"
+    },
+    "Hidden filter styling (dashed border, reduced opacity)": {
+      "status": "PASS",
+      "details": "Hidden filters show with 'Hidden' label and different styling"
+    },
+    "Specifications tab shows toggle buttons": {
+      "status": "PASS",
+      "details": "8 specifications displayed with Visible toggle buttons"
+    },
+    "PATCH /api/specifications/types/{id}/toggle-type-visibility": {
+      "status": "PASS",
+      "details": "API correctly adds/removes product_group from hidden_groups array for specs"
+    },
+    "Standalone /admin/filter-assignment route removed": {
+      "status": "PASS",
+      "details": "Route redirects to homepage (catch-all route), not found in App.js"
+    },
+    "Filter & Spec Assignment hub card removed from WebsiteHub": {
+      "status": "PASS",
+      "details": "Card not present in WebsiteHub, Navigation & Structure card exists instead"
+    },
+    "Product group selector works": {
+      "status": "PASS",
+      "details": "Dropdown shows all groups (All Groups, Tiles, Flooring, Materials, Tools, Accessories, Underfloor Heating), switching updates displayed filters/specs"
+    },
+    "Toast notifications on toggle": {
+      "status": "PASS",
+      "details": "Shows 'Color hidden from Tiles' / 'Material shown in Tiles' etc."
+    }
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_filter_group_assignment.py",
+    "/app/test_reports/pytest/pytest_filter_group_assignment.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "100% (toggle APIs working)",
+    "frontend": "100% (all UI features working)"
+  },
+  "test_credentials": {
+    "admin_email": "admin@test.com",
+    "admin_password": "admin123",
+    "preview_url": "https://feature-verification-7.preview.emergentagent.com"
+  },
+  "seed_data_creation": "No seed data needed - existing filter_types and specification_types collections used",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Filter & Spec visibility toggle functionality has been merged into Navigation & Structure page (/admin/navigation-structure). The standalone /admin/filter-assignment route no longer exists. Toggle buttons appear in Filters and Specifications tabs when a specific product group is selected (not 'All Groups'). The same APIs are used by SupplierProducts BulkCategoryEditor.",
+  "mocked_apis": {
+    "has_mocked_apis": false,
+    "mocked_apis_list": []
+  }
+}

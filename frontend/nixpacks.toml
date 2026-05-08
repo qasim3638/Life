@@ -1,0 +1,15 @@
+[phases.setup]
+nixPkgs = ["nodejs_20", "yarn"]
+
+[variables]
+NIXPACKS_NO_CACHE = "1"
+BUILD_VERSION = "2026-03-13-v3"
+
+[phases.install]
+cmds = ["yarn install"]
+
+[phases.build]
+cmds = ["echo 'Build version: 2026-03-13-v3' && export CI=false && export NODE_OPTIONS='--max-old-space-size=8192' && yarn build"]
+
+[start]
+cmd = "node server.js"

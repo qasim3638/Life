@@ -1,0 +1,114 @@
+{
+  "summary": "Tested variant selector unified system on /shop/collection/Bluestone. CRITICAL BUG FOUND: Color/Finish auto-switch useEffects are overriding user clicks. When clicking a color that requires finish switch, the finish switches but color reverts. Same issue with finish clicks.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "Console 500 errors", "issue": "Two 500 errors in console during page load (unrelated to variant selection)"}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "COLOR ALWAYS CLICKABLE - Clicking color in other finish",
+        "issue": "CRITICAL BUG: When clicking Beige from Grey+Polished, the finish auto-switches to Matt BUT the color reverts to Grey instead of staying on Beige. Product shows 'Bluestone Grey 60x60' instead of 'Bluestone Beige 60x60'",
+        "affected_selectors": ["button:has(span:text-is('Beige'))", "button:has(span:text-is('White'))"],
+        "priority": "CRITICAL",
+        "root_cause": "useEffect at lines 524-527 (auto-switch color when finish changes) is firing AFTER the color click and reverting the color selection. The order of state updates causes a race condition.",
+        "expected_behavior": "Click Beige → setSelectedColor('Beige') → useEffect switches finish to Matt → Beige stays selected",
+        "actual_behavior": "Click Beige → setSelectedColor('Beige') → useEffect switches finish to Matt → useEffect at 524-527 checks availableColorsForFinish and somehow reverts to Grey"
+      },
+      {
+        "flow": "FINISH ALWAYS CLICKABLE - Clicking finish in other color",
+        "issue": "CRITICAL BUG: When clicking Polished from Beige+Matt, the color auto-switches to Grey BUT the finish stays on Matt instead of switching to Polished. Product shows 'Bluestone Grey 60x60' instead of 'Bluestone Grey 60x60 Polished'",
+        "affected_selectors": ["button:text-is('Polished')"],
+        "priority": "CRITICAL",
+        "root_cause": "Same race condition - useEffect at lines 531-535 (auto-switch finish when color changes) is reverting the finish selection after the color auto-switches"
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_88.json"
+  ],
+  "action_items": [
+    "FIX CRITICAL: The useEffects at lines 524-527 and 531-535 are causing race conditions. When user clicks a color/finish that triggers auto-switch, the clicked value should be preserved, not overwritten by the auto-switch useEffect.",
+    "SUGGESTED FIX: Add a flag or ref to track 'user-initiated' clicks vs 'auto-switch' changes. Only run auto-switch logic when the change was NOT user-initiated.",
+    "ALTERNATIVE FIX: Combine the color and finish selection into a single state update to avoid the race condition between multiple useEffects."
+  ],
+  "critical_code_review_comments": [
+    "Lines 524-527: useEffect auto-switches color when finish changes - this is overriding user's color click when finish also needs to change",
+    "Lines 531-535: useEffect auto-switches finish when color changes - this is overriding user's finish click when color also needs to change",
+    "The two useEffects create a circular dependency that causes race conditions when both color AND finish need to change simultaneously"
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A - Frontend only testing",
+    "frontend": "40% - 4/10 test cases passed"
+  },
+  "test_credentials": "No auth needed for shop pages",
+  "seed_data_creation": "None - used existing Bluestone collection",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "CRITICAL BUG: Variant selector auto-switch is broken. When clicking a color that requires finish switch (e.g., Beige from Grey+Polished), the finish switches but color reverts. Same issue with finish clicks. Root cause is race condition between useEffects at lines 524-527 and 531-535. Visual states (opacity-50 for muted colors, dashed border for muted finishes) are correctly implemented. No 'Collection Not Found' errors observed.",
+  "test_results": {
+    "1_color_always_clickable_beige": {
+      "status": "FAIL",
+      "details": "From Grey+Polished, clicked Beige. Finish switched to Matt but color reverted to Grey instead of Beige",
+      "expected": "Beige+Matt selected, product='Bluestone Beige 60x60'",
+      "actual": "Grey+Matt selected, product='Bluestone Grey 60x60'"
+    },
+    "2_color_always_clickable_white": {
+      "status": "FAIL",
+      "details": "From Grey+Polished, clicked White. Finish switched to Matt but color reverted to Grey, size stayed at 60x60cm",
+      "expected": "White+Matt selected, product='Bluestone White 30x60', size=30x60cm",
+      "actual": "Grey+Matt selected, product='Bluestone Grey 60x60', size=60x60cm"
+    },
+    "3_finish_always_clickable": {
+      "status": "FAIL",
+      "details": "From Beige+Matt, clicked Polished. Color switched to Grey but finish stayed on Matt",
+      "expected": "Grey+Polished selected, product='Bluestone Grey 60x60 Polished'",
+      "actual": "Grey+Matt selected, product='Bluestone Grey 60x60'"
+    },
+    "4_size_three_state_active": {
+      "status": "PASS",
+      "details": "60x60cm shows amber highlight when selected (active state)"
+    },
+    "5_size_three_state_disabled": {
+      "status": "PASS",
+      "details": "30x60cm and 60x120cm show disabled state (gray, cursor-not-allowed) when not available for Grey"
+    },
+    "6_size_muted_state": {
+      "status": "NOT_TESTABLE",
+      "details": "Grey has same size (60x60cm) in both Matt and Polished finishes, so no muted sizes exist for this color"
+    },
+    "7_product_title_updates": {
+      "status": "PARTIAL",
+      "details": "Product title updates correctly when clicking within same finish, but fails when auto-switch is triggered"
+    },
+    "8_no_collection_not_found": {
+      "status": "PASS",
+      "details": "No 'Collection Not Found' error observed for any combination tested"
+    },
+    "9_visual_states_muted_colors": {
+      "status": "PASS",
+      "details": "Beige and White show opacity-50 when Polished is selected (correctly indicating they're in other finish)"
+    },
+    "10_visual_states_muted_finishes": {
+      "status": "PASS",
+      "details": "Polished shows dashed border when Beige is selected (correctly indicating it's in other color)"
+    }
+  },
+  "rca_of_the_issue": {
+    "bug_description": "Color/Finish auto-switch useEffects override user clicks",
+    "reproduction_steps": [
+      "1. Navigate to /shop/collection/Bluestone",
+      "2. Select Grey color",
+      "3. Select Polished finish",
+      "4. Click Beige color (which only has Matt finish)",
+      "5. Observe: Finish switches to Matt, but color reverts to Grey instead of staying on Beige"
+    ],
+    "root_cause": "Two useEffects create a race condition: (1) useEffect at 531-535 detects Beige doesn't have Polished and switches finish to Matt, (2) useEffect at 524-527 then fires because finish changed, and since Grey is the first color in availableColorsForFinish for Matt, it switches color back to Grey",
+    "mitigation": "Need to track whether the state change was user-initiated or auto-switch-initiated. Only run auto-switch logic for non-user-initiated changes."
+  }
+}

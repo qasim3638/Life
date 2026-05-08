@@ -1,0 +1,60 @@
+{
+  "summary": "Verified the derived series fix for Collection Organizer. All 8 backend tests passed. The fix correctly updates BOTH supplier_products AND tiles collections for products with derived series (where series field is null, empty, or missing and series name is derived from product_name).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_derived_series_fix.py",
+    "/app/test_reports/pytest/pytest_derived_series_fix.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [
+    "/app/backend/tests/test_derived_series_fix.py"
+  ],
+  "success_rate": {
+    "backend": "100% (8/8 tests passed)"
+  },
+  "test_credentials": "No auth required for collection-organizer endpoints",
+  "seed_data_creation": "Test data created with TEST_DERIVED_ prefix and cleaned up after tests",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Derived series fix verified working. The fix uses $or queries in tile_conditions to match: 1) raw series field, 2) series=null with product_name starting with series, 3) series='' with product_name starting with series, 4) series field missing with product_name starting with series. Key endpoints tested: POST /api/website-admin/collection-organizer/assign, POST /api/website-admin/collection-organizer/unassign, POST /api/website-admin/collection-organizer/bulk-assign.",
+  "features_tested": {
+    "assign_endpoint": [
+      "✓ Updates ALL supplier_products including derived series (series=null, series='', series missing)",
+      "✓ Updates ALL tiles including derived series",
+      "✓ Correctly sets product_group, main_category, sub_categories"
+    ],
+    "unassign_endpoint": [
+      "✓ Clears category from ALL supplier_products including derived series",
+      "✓ Clears category from ALL tiles including derived series"
+    ],
+    "bulk_assign_endpoint": [
+      "✓ Updates ALL products and tiles for multiple series including derived series"
+    ],
+    "customer_facing": [
+      "✓ Assigned collections appear in tiles with correct sub_categories",
+      "✓ Unassigned collections are removed from tiles"
+    ],
+    "edge_cases": [
+      "✓ series=null correctly matched via derived series logic",
+      "✓ series='' (empty string) correctly matched via derived series logic",
+      "✓ series field missing correctly matched via derived series logic",
+      "✓ Partial series names do NOT incorrectly match (word boundary regex)"
+    ]
+  },
+  "fix_verification": {
+    "bug_description": "Collections assigned via Collection Organizer admin panel weren't appearing on customer-facing shop page for products with derived series",
+    "root_cause": "db.tiles.update_many queries only matched tiles by raw series field, failing for suppliers with derived series (where series is null and first word of product_name is used)",
+    "fix_applied": "Updated tile_conditions in assign, unassign, and bulk-assign endpoints to use $or queries matching both raw and derived series",
+    "fix_location": "/app/backend/routes/website_admin.py lines ~4341, ~4433, ~4564",
+    "verification_result": "PASS - All 8 tests passed, E2E verification confirmed fix working"
+  }
+}

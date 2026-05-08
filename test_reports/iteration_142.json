@@ -1,0 +1,39 @@
+{
+  "summary": "Backend-only pytest coverage for the NEW confidence-scoring / auto-approve / rescore surface on AI City Landing Pages. 26/26 tests pass (7.96s total). Coverage: (a) score_page() pure-function unit tests for local + nationwide pages covering the 4 scenarios from the review request — good body → 100, missing postcode → check fails + score drops, forbidden 'Lorem ipsum' / '[YOUR ADDRESS]' → no_forbidden_strings fails, nationwide missing one open showroom → has_all_open_showrooms fails; (b) POST /rescore admin-gating (401/403) + success + latency < 20s confirming no LLM leak + round-trip persistence of confidence_score/confidence_failed visible on subsequent GET; (c) PUT /autogen new auto_approve_enabled + auto_approve_threshold fields — persistence, partial-PUT preserves threshold, 422 for every out-of-range value (-1, 0, 10, 49, 101, 150, 999), 200 for boundary values (50, 51, 90, 99, 100). All changes (settings doc) snapshot/restore on teardown so the real autogen settings are untouched.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_city_pages_confidence.py",
+    "/app/test_reports/pytest/city_pages_confidence.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "services/city_pages_confidence.py:105 — meta_title length check is 30-75 chars, but the prompt in routes/city_landing_pages.py:_build_prompt asks the LLM for 50-60 chars. Prompt contract vs. scorer are inconsistent; a model that follows the prompt perfectly (55 chars) still scores pass, but a model that drifts to 65 also passes, which weakens the 'meta_title too long' signal. Consider tightening to 45-70 to match SERP truncation reality, or widen the prompt ask to match the scorer — either way, align them.",
+    "services/city_pages_confidence.py:106 — meta_description check is 100-180 chars; prompt asks for 140-155. Same inconsistency as above. Google truncates around 155-160 chars on desktop, so 180 as upper bound will still fail SERP truncation — recommend tightening to 120-160.",
+    "services/city_pages_confidence.py:_check_local — has_real_phone compares digits-only substring. This will pass on any body containing the phone's digit sequence anywhere (e.g. inside another number). Low risk for Tile Station phones but worth knowing.",
+    "services/city_pages_autogen.py:194 — auto-approve decision reads confidence_score fresh from DB after _generate_for_row persists it. Good defensive pattern but double-roundtrips to Mongo; could be passed back from _generate_for_row instead to save one query per row per tick.",
+    "routes/city_landing_pages.py:/rescore — iterates with .to_list(2000). If the generated queue ever exceeds 2000 the endpoint silently scores only the first 2000. Since total queue size is <200 today this is fine, but consider paginating or a find().batch_size() cursor for safety.",
+    "routes/city_landing_pages.py:502 PUT /autogen — model_dump() excludes None via the `if v is not None` check, so you cannot explicitly set auto_approve_enabled=false through the PUT if the client sends {auto_approve_enabled: false}. However test_put_persists_auto_approve_fields shows False round-trips correctly — that is because False is not None. Confirmed OK; leaving this note so the next reviewer doesn't get tripped by the ambiguous `if v is not None` reading.",
+    "tests/test_city_pages_autogen.py (from iter 141) and this new file both snapshot/restore settings but via different approaches. Consider consolidating into a shared autouse fixture in conftest for future iterations."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_city_pages_confidence.py (new, 26 tests)"
+  ],
+  "success_rate": {
+    "backend": "100% (26/26)",
+    "frontend": "skipped (backend-only request)"
+  },
+  "test_credentials": "admin@test.com / admin123 (from /app/memory/test_credentials.md)",
+  "seed_data_creation": "None permanent. AutogenSettings auto_approve_* fields are snapshot at fixture setup and restored on teardown. /rescore is idempotent — safe to call repeatedly, only touches existing status='generated' rows. No LLM calls in this suite.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "test_city_pages_confidence.py is self-contained, deterministic (no LLM calls, no network except the 4 REST endpoints), and completes in under 10 seconds. Run alongside test_city_pages_autogen.py (iter 141) for the full AI city-pages backend coverage. Intentionally SKIPPED: the POST /run-now with auto_approve_enabled=true / threshold=80 happy-path and the threshold=100-reject negative-path — both require a live LLM call per row (8-15s each) and the main agent already manually verified both in the review request ({ran:true, attempted:2, succeeded:2, auto_approved:2} at threshold=80). If a next iteration needs a cheaper auto-approve integration test, pattern: (i) set a row's body/meta/status='generated'/confidence_score=95 directly in Mongo, (ii) call the auto-approve promote loop section in isolation or patch _generate_for_row to return (True, '') without hitting the LLM — this keeps the tick logic under test without LLM cost.",
+  "rca of the issue": "N/A — no bugs found. All 26 deterministic tests + 4 endpoint round-trips pass first-run. Two word-count-range mis-calibrations in the initial test bodies were tuned to meet the scorer's 450-1200 (local) / 600-1500 (nationwide) windows; this is a test-data issue, not a product bug."
+}

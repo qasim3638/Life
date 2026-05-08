@@ -1,0 +1,138 @@
+"""
+Credential Health Check
+───────────────────────
+
+Runs once on backend startup. Verifies every env var that production
+business logic depends on is present and non-empty. If anything is
+missing, fires ONE Telegram alert (event type: `missing_credentials`)
+so the admin can patch Railway env vars before customers feel it.
+
+Scope (intentionally narrow): only credentials whose absence WILL
+break a live feature. Env vars that have sensible empty-string fallbacks
+or only matter for optional features are not checked here.
+
+Design notes:
+  • Idempotent — safe to call on every startup; dedupe at Telegram
+    layer prevents re-spamming if the issue persists across restarts.
+  • Never raises — startup must never be blocked by this check.
+  • Result is logged (WARNING) regardless of Telegram availability so
+    admins can also spot it in Railway logs.
+"""
+from __future__ import annotations
+
+import logging
+import os
+from typing import Iterable
+
+logger = logging.getLogger(__name__)
+
+
+# Env vars whose absence breaks production. Each tuple: (env_var, why).
+# Keep this list focused — adding noise here teaches the admin to ignore
+# the alert.
+REQUIRED_CREDENTIALS: list[tuple[str, str]] = [
+    # ── Admin + supplier portal logins ─────────────────────────────
+    ("TILESTATION_ADMIN_PASSWORD",
+        "Super-admin login (was hardcoded; supplier_sync + scrapers reference it)"),
+    ("SPLENDOUR_PORTAL_PASSWORD",
+        "Splendour Tiles portal login — supplier sync will fail without it"),
+    ("CERAMICA_PORTAL_PASSWORD",
+        "Ceramica Impex portal login — supplier sync will fail without it"),
+    ("WALLCANO_PORTAL_PASSWORD",
+        "Wallcano Tiles portal login — supplier sync will fail without it"),
+    ("VERONA_PORTAL_PASSWORD",
+        "Verona portal login — supplier sync will fail without it"),
+    # ── Payment processing ─────────────────────────────────────────
+    ("STRIPE_API_KEY",
+        "Stripe payments — checkout, refunds, subscription billing all break"),
+    # ── Transactional email ────────────────────────────────────────
+    ("RESEND_API_KEY",
+        "Resend transactional email — order confirmations, password reset, "
+        "weekly digests all silently drop"),
+    # ── R2 object storage (product images, marketing assets) ───────
+    ("R2_ACCOUNT_ID",
+        "Cloudflare R2 storage — image uploads + Marketing Studio fail"),
+    ("R2_ACCESS_KEY_ID",
+        "Cloudflare R2 storage — image uploads + Marketing Studio fail"),
+    ("R2_SECRET_ACCESS_KEY",
+        "Cloudflare R2 storage — image uploads + Marketing Studio fail"),
+    ("R2_BUCKET_NAME",
+        "Cloudflare R2 storage — image uploads + Marketing Studio fail"),
+    ("R2_PUBLIC_URL",
+        "Cloudflare R2 storage — public CDN URL for image serving"),
+    # ── AI / LLM ───────────────────────────────────────────────────
+    ("EMERGENT_LLM_KEY",
+        "Emergent universal LLM key — Editorial Autopilot, Marketing "
+        "Studio image gen, Sora 2 video, Pinterest copy all fail"),
+]
+
+
+def _scan() -> list[tuple[str, str]]:
+    """Returns list of (env_var, reason) for every missing/empty var."""
+    missing: list[tuple[str, str]] = []
+    for var, reason in REQUIRED_CREDENTIALS:
+        val = os.environ.get(var)
+        if not val or not str(val).strip():
+            missing.append((var, reason))
+    return missing
+
+
+def _format_telegram(missing: list[tuple[str, str]]) -> str:
+    """Human-readable message body. Plain HTML — Telegram-safe."""
+    bullet_lines = "\n".join(
+        f"• <b>{var}</b> — {reason}" for var, reason in missing
+    )
+    return (
+        "🚨 <b>Production credentials missing</b>\n"
+        f"{len(missing)} env var(s) absent on this backend instance:\n\n"
+        f"{bullet_lines}\n\n"
+        "<b>Action:</b> open Railway → service → Variables, paste the "
+        "missing values, then redeploy. Supplier syncs and admin auth "
+        "will fail until these are set.\n"
+        "<i>(Sent once per backend restart. Repeat alerts indicate the "
+        "issue persisted across deploys.)</i>"
+    )
+
+
+async def run_credential_check_on_startup() -> dict:
+    """Backend startup hook. Fires Telegram if anything is missing.
+
+    Returns a small dict so the caller can log structured info, but
+    NEVER raises — protects startup.
+    """
+    try:
+        missing = _scan()
+        if not missing:
+            logger.info(
+                "credential_check: all %d required env vars present",
+                len(REQUIRED_CREDENTIALS),
+            )
+            return {"ok": True, "missing": []}
+
+        # Log with WARNING so it shows up in Railway logs even if Telegram
+        # isn't configured.
+        logger.warning(
+            "credential_check: %d missing env var(s): %s",
+            len(missing),
+            ", ".join(var for var, _ in missing),
+        )
+
+        # Fire ONE Telegram alert. dedupe_key keyed on the missing-set so
+        # if the issue persists across restarts within the dedupe window
+        # the admin doesn't get N copies. If the set changes between
+        # restarts, a new alert fires (good — different issue).
+        try:
+            from services import telegram_notify
+            dedupe_key = "missing_creds:" + ",".join(sorted(v for v, _ in missing))
+            await telegram_notify.notify_event(
+                "missing_credentials",
+                _format_telegram(missing),
+                dedupe_key=dedupe_key,
+            )
+        except Exception:  # noqa: BLE001
+            logger.exception("credential_check: Telegram dispatch failed (non-fatal)")
+
+        return {"ok": False, "missing": [v for v, _ in missing]}
+    except Exception:  # noqa: BLE001
+        logger.exception("credential_check: unexpected error (non-fatal, swallowed)")
+        return {"ok": False, "missing": [], "error": "internal"}

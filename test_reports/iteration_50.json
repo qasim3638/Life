@@ -1,0 +1,54 @@
+{
+  "summary": "Completed testing of Site Map & Link Manager feature. All backend APIs and frontend features working correctly. Backend sitemap endpoint returns 494 pages with proper type categorization and linked_from references. Frontend displays all page types with filter pills, search, collapsible groups, and quick-link actions.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_sitemap_manager.py",
+    "/app/test_reports/pytest/pytest_sitemap_manager.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [
+    "/app/backend/tests/test_sitemap_manager.py"
+  ],
+  "success_rate": {
+    "backend": "100%",
+    "frontend": "100%"
+  },
+  "test_credentials": "Admin: qasim@tilestation.co.uk / Tilestation_9614",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Site Map & Link Manager feature fully tested. Backend endpoint GET /api/website-admin/sitemap returns aggregated page data with types (shop, collection, product, info, category) and linked_from references. Frontend at /admin/sitemap shows all pages with filter pills, search, collapsible groups, Copy URL, Open in new tab, and '+' dropdown with Add to Main Nav/Top Bar/Homepage/Footer options. Website Hub at /admin/website-hub shows 'Site Map & Links' card in Quick Actions section.",
+  "features_tested": {
+    "backend": [
+      "GET /api/website-admin/sitemap - returns 494 pages with proper structure",
+      "Sitemap summary counts match actual page counts (shop:8, collection:391, product:50, info:7, category:38)",
+      "Pages have linked_from references showing Nav:, Footer:, Homepage: sources",
+      "Categories on homepage have 'Homepage: Shop Categories' badge",
+      "POST /api/website-admin/navigation/{menu_type}/item - adds items to navigation",
+      "GET /api/website-admin/footer-settings - returns footer settings",
+      "POST /api/website-admin/footer-settings - saves footer settings"
+    ],
+    "frontend": [
+      "Site Map & Link Manager page loads at /admin/sitemap",
+      "Website Hub shows 'Site Map & Links' card in Quick Actions",
+      "Filter pills work (All, Shop Pages, Collections, Products, Info Pages, Categories)",
+      "Search input filters pages by name or URL",
+      "Collapsible groups expand/collapse on header click",
+      "Copy URL button copies URL and shows toast notification",
+      "'+' dropdown shows Add to Main Nav, Add to Top Bar, Add to Footer options",
+      "Categories show 'Add to Homepage' option in dropdown",
+      "Add to Footer action works and shows success toast",
+      "Homepage badges (Homepage: Floor Tiles, Homepage: Shop Categories) display correctly",
+      "'Not linked' badge shows for pages not linked anywhere"
+    ]
+  }
+}

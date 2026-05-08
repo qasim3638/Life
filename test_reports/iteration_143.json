@@ -1,0 +1,39 @@
+{
+  "summary": "Backend-only pytest coverage for the NEW Weekly SEO Quality Digest. 9/9 tests pass (1.77s). Coverage: (1) /api/admin/seo/city-pages/quality-digest/send-now — 401/403 without token, 401/403 with bad token, 200 + full payload {ok, recipients, auto_approved_count, manual_approved_count, low_conf_count, auto_score_avg, auto_score_min} when admin (force=True implicit, never reports skipped). (2) Idempotency — after /send-now writes last_sent_iso_week, an immediate run_seo_quality_digest_tick(force=False) returns {ok:true, skipped:true, reason:'already sent this iso week'} EXACTLY. (3) Empty-window guard — _gather_last_7d monkeypatched to return zero rows in every bucket → tick(force=False) returns {ok:true, skipped:true, reason:'no city-page activity in window'} and does NOT update settings doc. (4) _gather_last_7d bucketing — 8 synthetic city_landing_pages rows inserted (2 auto-approved in window, 1 manually-approved in window, 3 generated low-conf in window, 2 OUT-OF-WINDOW negatives) → buckets split correctly by status+approved_by, out-of-window rows excluded from every bucket, no _id leak. (5) top_failures aggregator — overlapping confidence_failed strings counted correctly across the 3 low_conf rows (has_real_phone:3, word_count_ok:1, no_forbidden_strings:1), out-of-window failure name 'should_not_count' excluded, max 6 entries, ordered desc by count. (6) Scheduler job — GET /api/import/scheduler/status confirms 'seo_quality_digest_weekly' is registered with a future Monday next_run_time (weekday()==0). (7) website_settings._id='seo_quality_digest' upserted after a successful send — last_sent_iso_week matches '%G-W%V' format, last_sent_at present, last_totals dict, recipients_count == response.recipients. (8) _render_html survives empty payload — placeholders 'Nothing auto-approved this week.', 'No manual approvals this week.', 'No low-confidence drafts pending.', 'No check failed this week.', 'no auto-approvals' all rendered. All settings & DB mutations snapshot/restored on teardown — verified clean (0 leftover TEST_QDIGEST_ rows, settings doc restored to None pre-state).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_seo_quality_digest.py",
+    "/app/test_reports/pytest/seo_quality_digest.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "services/seo_quality_digest.py:230-232 — when _admin_emails(db) returns [] the function returns {ok:false, skipped:true, reason:'no admin recipients'}. This is correct behaviour BUT the /send-now endpoint surfaces ok:false to the admin UI without a 4xx code, so the manual-trigger button will look 'successful' to the caller while having sent nothing. Consider returning a 4xx or at minimum a structured warning the UI can render distinctly.",
+    "services/seo_quality_digest.py:65 — auto_approved bucket filters by approved_by == 'auto-approve' (exact string match). If the auto-approver is ever renamed (e.g. 'auto_approve_v2', 'system') every page silently slides into the manual_approved bucket. Recommend a constant AUTO_APPROVE_MARKER imported from city_pages_autogen and asserted in a unit test, or a tag flag like is_auto_approved:bool on the row.",
+    "services/seo_quality_digest.py:82 — _gather_last_7d aggregates failure_counter ONLY across the low_conf bucket (despite the docstring on lines 75-77 implying it also counts auto-approved page failures: 'we let these through but they had X imperfection'). Either fix the docstring to match the code, or fix the code to also iterate auto_approved.confidence_failed. The current divergence is a documentation/behaviour drift bug.",
+    "services/seo_quality_digest.py:128 _render_html — _row_li hard-codes the public URL prefix as base_url + (row.url or '/tiles/' + row.slug). If a page's stored 'url' is already absolute (starts with http) it'll be double-prefixed. Add a startswith('http') guard.",
+    "services/seo_quality_digest.py:218-220 — settings doc is fetched ONCE before the empty-window/dedupe checks but the upsert at line 247 races with any concurrent tick (e.g. cron firing while the admin clicked /send-now at 09:30 sharp). Risk is low (admin would only be hitting force=True at the same instant) but a $setOnInsert + $set with the iso_week as a precondition would be cleaner.",
+    "routes/city_landing_pages.py:554 — POST /quality-digest/send-now has no explicit response_model and no rate limit. Easy to spam if an admin's machine is compromised. Consider a 1-per-30s in-memory throttle keyed on user_id.",
+    "services/scheduler.py:1063-1070 — replace_existing=True on every supervisor restart causes APScheduler to drop & re-add the job, which may shift next_run_time slightly each cold start. Acceptable for a weekly cron (still fires within the same Monday slot) but worth noting if precise timing ever matters."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_seo_quality_digest.py (new, 9 tests)"
+  ],
+  "success_rate": {
+    "backend": "100% (9/9)",
+    "frontend": "skipped (backend-only request)"
+  },
+  "test_credentials": "admin@test.com / admin123 (from /app/memory/test_credentials.md)",
+  "seed_data_creation": "None permanent. 8 synthetic city_landing_pages rows with slug prefix 'TEST_QDIGEST_' inserted in the synthetic_rows fixture and deleted on teardown (verified post-run: 0 leftover). website_settings._id='seo_quality_digest' is snapshot/restored around send-now & idempotency tests so the live cron's dedupe key is preserved (post-run: settings doc restored to None pre-state, matching prior to test).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "test_seo_quality_digest.py is self-contained, deterministic, no LLM calls, completes in <2s. Uses pytest_asyncio.fixture for async generators (settings_snapshot, synthetic_rows) — required because pytest-asyncio strict mode does NOT auto-handle plain @pytest.fixture async generators (manifested as the fixture body silently never running on first attempt). Pair with test_city_pages_confidence.py (iter 142) and test_city_pages_autogen.py (iter 141) for full AI city-pages backend coverage. Email delivery is NOT asserted — send_simple_email_if_possible is a graceful no-op and prod RESEND wiring would actually deliver mail; we only assert on API response payload + DB state to keep the suite safe for repeated CI runs. The /send-now endpoint will actually send a real email to live admin users on each successful test run since RESEND is wired in this preview env — if that becomes noisy, monkeypatch send_simple_email_if_possible at module scope in a future iter.",
+  "rca of the issue": "N/A — no product bugs found. One test-infra issue self-resolved: initial run had two failures (test_buckets_split_by_status_and_window, test_top_failures_counts_correctly) because the synthetic_rows async generator fixture was decorated with @pytest.fixture instead of @pytest_asyncio.fixture; under pytest-asyncio strict mode this silently passes the un-awaited async generator object to the test instead of running setup/teardown, so no synthetic rows were ever inserted. Fixed by switching both async fixtures to @pytest_asyncio.fixture; final run is 9/9 pass."
+}

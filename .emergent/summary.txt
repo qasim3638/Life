@@ -1,0 +1,152 @@
+<analysis>**original_problem_statement:**
+The user initially requested fixes for a series of critical, recurring bugs in the admin panel related to product data management, including data loss, incorrect data scoping between product groups, and UI inconsistencies. During this session, the user's requests evolved to include:
+1.  **P0 Bug Fix:** Fix a bug where disabling Tier Pricing for a product also incorrectly disables Trade Discount and Credit Back.
+2.  **Feature Request:** For products without size variations (e.g., Materials), provide a way to filter cost prices by individual product name in the bulk editor, similar to how Tiles are filtered by size.
+3.  **Feature Request:** Implement a system to upload and attach PDF documents (e.g., technical datasheets) to products. These should be manageable from the admin panel and viewable on the customer-facing product detail page.
+4.  **Feature Request:** In the bulk description editor, add a mechanism to apply a manually written description to a specific subset of selected products, not just one at a time or all at once.
+5.  **Enhancement:** Change the default pricing unit in the bulk editor to Per Unit for all product groups except Tiles, Flooring, and Underfloor Heating, which should remain Per m².
+
+**PRODUCT REQUIREMENTS:**
+-   Admin panel data management must be stable and reliable.
+-   The Disable Tier Pricing checkbox must only affect tier-based quantity discounts.
+-   The bulk editor must support accurate pricing for products both with and without size variations.
+-   A full-stack PDF management system must be implemented, allowing admins to upload and associate documents with products and customers to download them.
+-   The bulk description tool needs to be flexible, supporting manual overrides for specific groups of products.
+-   The default pricing unit should be context-aware based on the selected product group.
+
+**User's preferred language**: English
+
+**what currently exists?**
+The application is a full-stack React (frontend) and FastAPI (backend) e-commerce admin panel. This session successfully addressed all user requests by implementing four new features/enhancements and fixing one critical bug. The core of the admin functionality resides in a very large and complex component, , which was heavily modified to accommodate these new features. A complete PDF document management system, leveraging Emergent Object Storage, has been integrated.
+
+**Last working item**:
+-   **Last item agent was working**: Making the default Pricing Unit in the bulk editor context-aware. The goal was to default to Per Unit for most product groups, but keep Per m² for , , and .
+-   **Status**: USER VERIFICATION PENDING
+-   **Agent Testing Done**: Y
+-   **Which testing method agent to use?**: Manual testing by the user. The agent has already verified the logic with screenshots by switching between the Materials group (correctly defaulted to Per Unit) and the Tiles group (correctly defaulted to Per m²).
+-   **User Testing Done**: N
+
+**All Pending/In progress Issue list**:
+-   **Issue 1: (P1) Final User Verification of All Data Integrity Fixes**
+    -   **Description**: This is a carry-over from a previous session. The user has experienced a long series of data loss bugs. Although multiple fixes have been deployed, the user must perform a final end-to-end verification on their production environment to confirm that all data management paths are stable and changes are correctly scoped to product groups.
+    -   **Status**: USER VERIFICATION PENDING
+    -   **Is recurring issue?**: Y
+    -   **Should Test frontend/backend/both after fix?**: Both (if new issues are found by the user)
+    -   **Blocked on other issue**: No
+
+**In progress Task List**:
+-   No tasks are in progress.
+
+**Upcoming and Future Tasks**
+- **Upcoming Tasks**:
+    - **(P0)** User verification of the 5 features/fixes completed in this session (Tier Pricing, Product Pricing Filter, PDF Management, Scoped Descriptions, Default Pricing Unit).
+    - **(P1)** Add UI to assign existing filters/specs to new product groups. Currently, there is no way to make a hidden filter visible in a new group from the UI.
+- **Future Tasks**:
+    - **(P1)** Address the recurring Admin session expires frequently issue.
+    - **(P2)** Implement a Compare Products feature on the customer-facing shop.
+    - **(P2)** Replace mocked Frequently Bought Together data with real recommendations.
+    - **(P2)** Implement CSV Export/Import for products.
+    - **(P2)** Refactor massive components:  (>11k lines) and  (>4k lines).
+    - **(P2)** Implement a centralized state management library (e.g., Zustand or React Query).
+
+**Completed work in this session**
+-   **P0 Bug Fix: Tier Pricing Decoupled**: Fixed the bug where the Disable Tier Discounts checkbox incorrectly disabled Trade Discount and Credit Back inputs. The fix was made in .
+-   **Feature: Product-Based Pricing Filter**: Added a new dropdown in the bulk editor's pricing section in  that allows filtering by individual product name. This provides accurate cost price filtering for Materials and other products that lack size variations.
+-   **Feature: PDF Document Management**: Implemented a full-stack feature for managing product PDFs.
+    -   **Backend**: Created new endpoints in  for uploading, downloading, and managing PDF attachments to products, using Emergent's object storage.
+    -   **Frontend (Admin)**: Created a new modal () and integrated it into  with a bulk action button and a per-product icon in the actions column.
+    -   **Frontend (Customer)**: Added a Related Downloads section to  that dynamically displays and allows downloading of attached PDFs.
+-   **Feature: Scoped Product Descriptions**: Enhanced the bulk description editor in  with a multi-select checklist. This allows an admin to write a single description and apply it to a specific subset of selected products, rather than only all-or-one.
+-   **Enhancement: Default Pricing Unit**: Modified  to automatically set the default pricing unit to Per Unit when the active product group is not Tiles, Flooring, or Underfloor Heating.
+
+**Earlier issues found/mentioned but not fixed**
+-   **Issue 1**: React Hook  has missing dependency warnings in multiple large components. This is a technical debt item that could lead to stale state issues.
+-   **Issue 2**: Admin session expires frequently, forcing re-logins. This is a high-impact UX issue.
+
+**Known issue recurrence from previous fork**
+-   **Issue recurrence in previous fork**: Admin session expires frequently.
+-   **Recurrence count**: High
+-   **Status**: NOT STARTED
+
+**Code Architecture**
+
+
+**Key Technical Concepts**
+-   **Full-Stack Feature Implementation**: The PDF feature involved creating backend routes, database schema modifications (inferred), object storage integration, admin UI (modal, buttons), and customer-facing UI.
+-   **Complex Local State Management**:  now manages state for product selection, pricing filters (size and product), PDF documents, and description scope, all within a single component, highlighting the need for refactoring.
+-   **Robust Key Generation**: Identified and fixed a bug where non-unique keys () were being generated for React lists due to inconsistent product data. The solution was to create a more robust unique key using  or .
+-   **Conditional State Initialization**: The default pricing unit logic now conditionally sets the initial state of the pricing modal based on the currently selected product group ().
+-   **API Integration**: The agent used the  to correctly integrate with Emergent's object storage for persistent file uploads.
+
+**key DB schema**
+-   **** (New Collection): Stores metadata for uploaded PDFs.
+    -   
+-   **** (Modified Collection): A new field, , is now added to product documents to store an array of associated document IDs.
+
+**changes in tech stack**
+-   No changes to the core tech stack, but **Emergent Object Storage** was integrated for file persistence.
+
+**All files of reference**
+-   : The central hub for all new features and fixes. It's now critically oversized.
+-   : New file containing all backend logic for the PDF feature.
+-   : New file for the PDF management UI.
+-   : Updated to display downloadable PDFs to customers.
+-   : Modified to fix the P0 pricing bug.
+-   : Updated to include the new  router.
+-   : Updated with new API client functions for product documents.
+
+**Areas that need refactoring**:
+-   ** is now over 11,900 lines.** It is extremely brittle and difficult to maintain. It urgently needs to be broken down into smaller, manageable components with a proper state management solution. Each new feature added to this file increases the technical debt exponentially.
+-   The application still lacks a centralized state management library (like Zustand or React Query), forcing complex prop-drilling and leading to potential stale state issues.
+
+**key api endpoints**
+-   : Uploads a PDF file to object storage and creates a document record.
+-   : Serves the binary content of a stored PDF.
+-   : Fetches all documents associated with a given product.
+-   : Links an existing document to one or more products.
+-   : Unlinks a document from a product.
+-   : Updates a document's metadata (e.g., display name).
+-   : Soft-deletes a document.
+-   : Returns a list of valid document type categories.
+
+**Critical Info for New Agent**
+-   The user is highly engaged and providing excellent, detailed feedback and feature requests. Maintain this positive momentum by delivering clean, well-tested solutions.
+-   **BEWARE of **. This file is a monolith. Before adding any new features, strongly consider proposing a refactor to break out existing functionality. Adding more to it is risky.
+-   **Data inconsistency is a known issue.** Product data from the API may have  values for  and . When creating keys for lists or maps, use a reliable unique identifier like  or  as a fallback.
+-   The testing agent was used successfully and even found and fixed a bug in the backend () that the main agent missed. Leverage the testing agent for any non-trivial feature.
+
+**documents and test reports created in this job**
+-    (updated multiple times)
+-    (for PDF feature)
+
+**Last 10 User Messages and any pending HUMAN messages**
+10. **Request**: Make Unit pricing default for non-tiling groups. (COMPLETED)
+9. **Clarification**: Asks for a multi-select checklist for descriptions instead of a single dropdown. (COMPLETED)
+8. **Request**: Needs a way to manually enter descriptions for non-tiling products in the bulk editor. (COMPLETED)
+7. **Approval**: User says Yes to the plan for the product-based pricing filter. (COMPLETED)
+6. **Approval with Caution**: Approves the P0 tier-pricing bug fix but warns to be careful about profit calculations. (COMPLETED)
+5. **Clarification**: Asks for a clear explanation of the agent's understanding of the P0 tier-pricing bug. (ADDRESSED)
+4. **Request/Info**: Provides a screenshot of how the Related Downloads section should look on the product page. (COMPLETED)
+3. **Approval/Info**: Confirms Both bulk and per-product actions for PDFs and provides a screenshot for how metadata should look. (COMPLETED)
+2. **Request**: Asks for the ability to add PDF documents to products. (COMPLETED)
+1. **Approval**: User gives a simple Yes to a plan confirmation. (ADDRESSED)
+
+**Project Health Check:**
+-   **Broken**: No features are currently broken.
+-   **Mocked**: Frequently Bought Together section is still using mocked data.
+-   **Technical Debt**: High and increasing, primarily centered around .
+
+**3rd Party Integrations**
+-   **Emergent Object Storage**: Used for the PDF document upload feature. The integration playbook was followed, and the implementation was successful.
+
+**Testing status**
+-   **Testing agent used after significant changes**: YES. Used for the PDF document management feature. It successfully tested 14/14 backend endpoints and the frontend flow, and also found and fixed a bug in .
+-   **Troubleshoot agent used after agent stuck in loop**: NO.
+-   **Test files created**: None.
+-   **Known regressions**: None identified in this session.
+
+**Credentials to test flow:**
+-   Admin credentials can be found by searching for  in the codebase, specifically within test commands in markdown files or old curl commands.
+
+**What agent forgot to execute**
+-   The agent successfully addressed all new user requests made during this session. All pending tasks are from the pre-existing backlog.</analysis>

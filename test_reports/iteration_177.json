@@ -1,0 +1,65 @@
+{
+  "summary": "Half + Full Pallet pricing E2E test. 30/30 unit tests pass (test_pallet_pricing.py + test_pallet_tile_serializer.py). 5/6 live API tests pass. Storefront PDP at /shop/collection/TestSeries 60x60cm works: 3 chips render with correct £/m² + min m², Full Pallet click snaps qty=32 + £26.09/m² + min-notice, m²-minus respects pallet floor, m² chip preserves higher qty, Add-to-Cart writes pallet_tier='full_pallet' to localStorage. CRITICAL: PUT /api/products/{id} does NOT persist m2_per_pallet, m2_per_half_pallet, half_pallet_price — wrong handler is being hit.",
+  "backend_issues": {
+    "critical": [
+      {
+        "endpoint": "PUT /api/products/{product_id}",
+        "issue": "New pallet fields (m2_per_pallet, m2_per_half_pallet, half_pallet_price) are silently dropped. Route resolution hits /app/backend/server.py:3818 (registered first via api_router) which uses a LOCAL ProductUpdate model defined in /app/backend/server.py:483 — that model does NOT include the new pallet fields. The intended modular route at /app/backend/routes/products.py:377 (which DOES include the fields in ProductUpdate + sync_fields list) is shadowed and never executes. Verified by direct curl: payload {m2_per_pallet:40, m2_per_half_pallet:20, half_pallet_price:25.99} → GET back shows all three as null. Only legacy pallet_enabled and pallet_price persist (because they exist in server.py's local model).",
+        "priority": "CRITICAL"
+      }
+    ],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "Storefront PDP: Half Pallet chip click",
+        "issue": "Spec says 'clicking pallet-tier-half sets qty to 16 m², switches price to £27.50/m²'. Observed: when current qty=32 (after a Full Pallet click), clicking Half Pallet leaves qty=32 unchanged instead of snapping to 16. Price/min-notice updates correctly. May be intentional (don't shrink) — please confirm desired behaviour with PM. Full→m² and starting Half-from-low both behave correctly.",
+        "affected_selectors": ["[data-testid=pallet-tier-half]"]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_pallet_pricing.py",
+    "/app/backend/tests/test_pallet_tile_serializer.py",
+    "/app/backend/tests/test_pallet_pricing_live.py",
+    "/app/test_reports/pytest/iter177_pallet.xml",
+    "/app/test_reports/pytest/iter177_pallet_live.xml"
+  ],
+  "action_items": [
+    "FIX (CRITICAL): The new pallet fields aren't actually persisted via PUT /api/products/{id}. Two fixes possible: (a) add `m2_per_pallet`, `m2_per_half_pallet`, `half_pallet_price`, `half_pallet_price_per_m2`, `pallet_price_per_m2` to the ProductUpdate Pydantic model at /app/backend/server.py:483 AND extend the sync_fields list in /app/backend/server.py:3912-3931 to include those keys; OR (b) remove the duplicate PUT /products/{product_id} route from server.py:3818 so the modular routes/products.py:377 handler (which already handles the new fields) takes over.",
+    "Confirm intended behaviour for Half-Pallet chip click when current qty > 16: should it snap DOWN to 16 (per spec wording) or preserve the larger qty (current implementation)?"
+  ],
+  "critical_code_review_comments": [
+    "Duplicate PUT /products/{product_id} routes in server.py and routes/products.py — stale legacy handler in server.py is winning; routes/products.py code is dead.",
+    "server.py:3854 has dead-code condition: `if v is not None or (k in [...] and v is not None)` — second clause can never add anything the first doesn't already.",
+    "models/product.py defines new pallet fields, but server.py imports its own ProductUpdate and never picks up the model file. Consider consolidating to a single source of truth.",
+    "server.py is 9949 lines — well over the 700-line guideline. Hard to spot route shadowing. Strongly recommend continuing migration to modular routers/."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_pallet_pricing_live.py (new)"
+  ],
+  "success_rate": {"backend": "97% (35/36 — 30 unit + 5/6 live; 1 hard-fail = persistence bug)", "frontend": "92% (storefront PDP working; one spec deviation on Half→Half snap-down)"},
+  "test_credentials": "admin@test.com / admin123 (super_admin) — confirmed via /api/auth/login",
+  "seed_data_creation": "None. Used pre-seeded Alabaster Polished 60x60cm tile (m2_per_pallet=32, m2_per_half_pallet=16, half_pallet_price=27.5, pallet_price=26.09, room_lot_price=28.99). Test target Adhesive 20kg (sku=ADH-001, id=3ab24973-a23e-4805-8164-9186e5888146) was used for PUT verification — has leftover pallet_price=24.99 from failed update; restore-on-success path didn't run.",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "After main agent fixes the route shadowing bug, re-run /app/backend/tests/test_pallet_pricing_live.py (test_update_product_persists_pallet_fields). Also revisit /app/backend/tests/test_pallet_tile_serializer.py::test_admin_sync_fields_list_includes_pallet_fields — that test only checks the modular routes/products.py list and didn't catch the production route shadowing it. Consider adding a route-uniqueness assertion. Storefront PDP and cart context look solid; toast + localStorage write confirmed. /api/admin/pallet-settings GET works and is properly auth-gated. Half-pallet snap-down behaviour is a UX call.",
+  "verified_endpoints": [
+    "GET /api/tiles/products → 200, returns m2_per_pallet, m2_per_half_pallet, half_pallet_price, pallet_price keys on every product",
+    "GET /api/admin/pallet-settings → 200 with admin token, returns {pallet_pricing_mode, pallet_trade_extra_discount_pct, allowed_modes}",
+    "GET /api/admin/pallet-settings → 401 anonymous",
+    "PUT /api/products/{id} with pallet payload → 200 BUT new pallet fields NOT persisted (CRITICAL BUG)"
+  ],
+  "verified_ui": [
+    "/shop/collection/TestSeries → click 60x60cm size → [data-testid=pallet-tier-selector] visible with 3 chips",
+    "Chip text: 'Per m² £28.99/m²' / 'Half Pallet £27.50/m² · min 16 m²' / 'Full Pallet £26.09/m² · min 32 m²'",
+    "Full Pallet click → qty=32, price=£26.09/m², [data-testid=pallet-tier-min-notice] = 'Minimum order: 32 m². You can add more, but not less.'",
+    "Minus button while Full selected → qty held at 32 (floor enforced)",
+    "Per m² click after Full → qty preserved at 32 (no down-reset, per spec)",
+    "Add to Cart → localStorage tilestation_cart contains pallet_tier:'full_pallet', priceType:'full_pallet', quantity:32, price:26.09; toast 'Added 32m² (Full Pallet) to cart'"
+  ],
+  "rca_of_the_issue": "BACKEND PERSISTENCE BUG — Route shadowing. /app/backend/server.py registers PUT /api/products/{product_id} at line 3818 directly on api_router BEFORE the modular_router (which contains the new routes/products.py:377 handler) is included. FastAPI uses first-match routing, so the legacy server.py handler always wins. That handler validates input via the LOCAL `ProductUpdate` defined at server.py:483, which lists `pallet_enabled, pallet_quantity, pallet_price` but is missing `m2_per_pallet`, `m2_per_half_pallet`, `half_pallet_price`, `pallet_price_per_m2`, `half_pallet_price_per_m2`. Pydantic silently drops unknown fields → update_data has no new-pallet keys → $set never writes them → admin form save appears to succeed but new fields are lost. Reproduction: `curl -X PUT -H 'Authorization: Bearer <token>' -d '{\"m2_per_pallet\":40, \"m2_per_half_pallet\":20, \"half_pallet_price\":25.99}' /api/products/<id>` → response & subsequent GET both omit those keys (or return null)."
+}

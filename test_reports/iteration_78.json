@@ -1,0 +1,44 @@
+{
+  "summary": "Verified tier pricing, sale pricing, and specifications features. Backend: 9/10 tests passed (1 skipped due to no tiles in /api/tiles endpoint). Frontend: Collections page loads correctly showing prices, color swatches, and tier_pricing_disabled behavior.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_tier_pricing_sale_specs.py",
+    "/app/test_reports/pytest/pytest_tier_pricing_sale_specs.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [
+    "/app/backend/tests/test_tier_pricing_sale_specs.py"
+  ],
+  "success_rate": {
+    "backend": "90% (9/10 tests passed, 1 skipped)",
+    "frontend": "100% - Collections page verified"
+  },
+  "test_credentials": "Admin: test@admin.com / testpass123",
+  "seed_data_creation": "None - used existing data",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "All features verified: 1) /api/tiles/collections returns tier_pricing_disabled flag and prices_from equals min_price for non-tier products. 2) Sale pricing endpoint (PUT /api/supplier-sync/products/sale-pricing) stores discount_percentage directly from user input. 3) /api/specifications/types/by-group returns groups with nested specifications arrays. 4) Publish endpoint includes all tier pricing and sale fields. 5) BulkCategoryEditorSections correctly parses nested spec structure. 6) SupplierProducts spec pre-population uses spec_${field} without underscore-to-dash conversion.",
+  "features_verified": {
+    "tier_pricing_disabled_in_collections": "✓ API returns tier_pricing_disabled flag for each collection",
+    "prices_from_equals_min_price": "✓ For tier_pricing_disabled=true collections, prices_from equals min_price",
+    "sale_pricing_endpoint": "✓ PUT /api/supplier-sync/products/sale-pricing validates input correctly",
+    "specifications_nested_structure": "✓ /api/specifications/types/by-group returns groups with nested specifications arrays",
+    "publish_includes_tier_fields": "✓ Code verified: tier_pricing_disabled, has_custom_tier_pricing, tier_discounts, sale_active, was_price, discount_percentage in tile_doc",
+    "bulk_editor_spec_parsing": "✓ Code verified: BulkCategoryEditorSections correctly parses group.specifications arrays",
+    "spec_prepopulation_no_dash_conversion": "✓ Code verified: SupplierProducts uses spec_${field} directly (e.g., spec_slip_rating not spec_slip-rating)"
+  },
+  "api_responses_verified": {
+    "tiles_collections": "Returns tier_pricing_disabled, prices_from, min_price, max_tier_discount, trade_discount, credit_back_rate",
+    "specifications_by_group": "Returns array of groups with name and specifications array containing spec objects with name, slug, values",
+    "sale_collections": "Bluestone and Tuscania collections show is_sale=true, tier_pricing_disabled=true, prices_from=min_price"
+  }
+}

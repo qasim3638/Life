@@ -1,0 +1,35 @@
+{
+  "summary": "Pre-launch end-to-end verification of Tile Station shop checkout & admin online orders. Backend: 16/16 pytest cases passing (guest-checkout billing.same_as_delivery=True/False, admin online-orders list/detail, auth, pagination, search, status filter, slashed-dimension splat URL, public checkout-settings seed). Frontend: cart badge integer fix verified ('3' instead of '5.93999...'), free-delivery banner copy + threshold logic, free-sample 'smart+pack' and 'smart+separate' modes verified, hidden when delivery=collection, 3-step checkout with billing-address-section + toggle + checkout-free-sample-reminder, Step 3 PaymentMethodCards (cards, paypal, klarna, wallet) with Stripe footer, admin Online Orders page with 25 rows + search/status/refresh/pagination testids, detail modal with delivery-address-block + billing-address-block ('Not captured (legacy order)' branch verified) + status-select + status-save-btn. Stripe LIVE — /guest-checkout/pay was NOT called.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_launch_checkout_billing_admin_orders.py",
+    "/app/test_reports/pytest/launch_checkout_results.xml",
+    "/app/scripts/seed_checkout_settings.py"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "shop.py POST /guest-checkout correctly mirrors delivery->billing when same_as_delivery=True and uses separate billing payload otherwise; postcode is uppercased",
+    "shop.py GET /admin/online-orders enforces role check, excludes _id, returns documented summary shape with pagination clamp (1-200)",
+    "shop.py GET /admin/online-orders/{id} returns 404 for unknown id, full doc otherwise, _id excluded",
+    "TileCartContext.getCartItemCount() returning cart.length verified live — badge shows '3' for [1.2,2.3,2.44] qty cart (no floating-point regression)",
+    "Free-sample fulfillment_mode 'smart' switches copy correctly: Porcel-Thin (not direct) -> pack-with-order; Ultra Tile (direct) -> post-separately",
+    "Free-delivery banner correctly hides when delivery method switched to Collect from Store",
+    "Step 2 testids confirmed: billing-address-section, billing-same-as-delivery-toggle, billing-address-fields (toggled), checkout-free-sample-reminder, delivery-speed-standard/express, checkout-to-step-3",
+    "Step 3 PaymentMethodCards renders all 4 cards (pay-method-cards/paypal/klarna/wallet) with SVG logos and 'Secured by Stripe · 256-bit SSL · 3D Secure' footer",
+    "Admin Online Orders page exposes online-orders-page, orders-search, status-filter, refresh-btn, prev-page, next-page, order-row-{n}, view-order-{n}; modal: order-detail-modal, delivery-address-block, billing-address-block, status-select, status-save-btn",
+    "WebsiteHub.js exposes 'Online Orders' Quick Actions card linking to /admin/online-orders (registered in App.js)",
+    "Slashed-dimension URL /shop/collection/70 x 350 x 20%2F5mm returns 200 SPA shell — splat route works"
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_launch_checkout_billing_admin_orders.py",
+    "/app/scripts/seed_checkout_settings.py"
+  ],
+  "success_rate": {"backend": "100% (16/16)", "frontend": "100% — all required flows verified"},
+  "test_credentials": "admin@test.com / admin123",
+  "seed_data_creation": "Ran /app/scripts/seed_checkout_settings.py — checkout_settings.value.payments.{paypal,klarna,wallet_express}_enabled=true; free_sample={enabled:true, threshold:100, fulfillment_mode:smart, direct_ship_suppliers:['Ultra Tile'], locked_text/unlocked_text_pack/unlocked_text_separate}. Existing delivery.free_threshold=1000, default_fee=79.99 preserved. Created ~6 TEST_ guest orders during testing.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Stripe LIVE (sk_live_...). DO NOT call /api/shop/guest-checkout/pay or follow Stripe Checkout URLs. Use /api/shop/admin/online-orders to verify orders. localStorage key 'tilestation_cart'. Routes: cart /shop/tile-cart, checkout /shop/tile-checkout, admin orders /admin/online-orders, hub /admin/website-hub. Free-sample modes: pack_with_order, separate_parcel, smart, hide_on_direct.",
+  "stripe_safety_check": "VERIFIED — Stripe paid endpoints were NOT invoked."
+}

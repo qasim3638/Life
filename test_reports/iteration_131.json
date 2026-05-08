@@ -1,0 +1,32 @@
+{
+  "summary": "EPOS Trade Customer Chip — collapsible 'Show breakdown' panel — fully verified end-to-end. Backend smoke (POST /api/invoices/credit-back-rates) returns the expected breakdown[] payload with per-row product_name/sku/rate/net/credit fields; mixed-rate test (8% premium SKU + 2% default) returned total_credit=£5.00, blended_rate=5.0%, breakdown len=2 with correct premium=£4.00 / generic=£1.00 split. Frontend Playwright on /admin/invoice verified all 8 acceptance criteria: (1) toggle button [data-testid=epos-credit-breakdown-toggle] renders only inside the green earned-credit pill when creditBreakdown has rows AND in_store_credit toggle is ON; (2) clicking the toggle reveals [data-testid=epos-credit-breakdown-panel] with row-0 showing 'BD-SKU-519282 8% × £50.00 £4.00' and total cell £4.00; (3) toggle text flips Show breakdown ↔ Hide breakdown and aria-expanded flips false ↔ true on each click; (4) breakdown rows have data-testid=epos-credit-breakdown-row-{idx}; (5) total cell carries data-testid=epos-credit-breakdown-total; (6) when qty is set to 0 (no eligible items) BOTH the pill and the toggle disappear (no orphan button); (7) trade tier badges/medals globally hidden (zero matching testids in DOM); (8) when in_store_credit toggle is OFF the pill and breakdown do not render (only rose OFF-warning) — code path inspection confirms the `accrualEnabled === true` gate at line 183 of TradeCustomerChip.jsx wraps both the pill AND the breakdown panel.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "AdminDashboard", "issues": ["Pre-existing 'unique key' React warning (also flagged in iteration_127, 129, 130) — unrelated to this feature"]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_epos_credit_breakdown_preview.py"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "TradeCustomerChip.jsx breakdown panel is gated by `Array.isArray(creditBreakdown) && creditBreakdown.length > 0` AND wrapped inside the same `earnedPreview > 0 && accrualEnabled === true` block as the pill — so the OFF-warning path can never produce an orphan toggle/panel. Verified.",
+    "Row name truncation at 38 chars uses `name.slice(0, 36) + '…'` which is technically 37 chars. Cosmetic, not a bug.",
+    "The breakdown total in the panel uses `earnedPreview.toFixed(2)` rather than summing the row credits — fine because parent passes the backend-authoritative `total_credit`. If the breakdown[] array ever drifted from the total it would be silently masked, but backend computes both in the same pass so risk is minimal.",
+    "Per-row `key={row.sku || row.product_id || idx}` could collide if two lines share the same SKU (legitimate scenario for split delivery). Should ideally append `idx` always. Minor — re-render performance only, not user-visible.",
+    "Live preview endpoint validates `line_items[*].price` (not `unit_price`) — model and frontend are aligned. Documented for future testing agents in this report."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_epos_credit_breakdown_preview.py"
+  ],
+  "success_rate": {"backend": "100% (preview endpoint smoke + breakdown payload assertions all pass)", "frontend": "100% (8/8 acceptance criteria PASS)"},
+  "test_credentials": "admin@test.com / admin123 (from /app/memory/test_credentials.md)",
+  "seed_data_creation": "Seeded one trade customer (test-bd-0177b56c / bd-f942a1@example.com / £200 balance / T-BD3F07E) + one supplier_products row (BD-SKU-519282 / 8% credit_back_rate). Both removed after testing. No residual test data.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Iteration 131 added the collapsible 'Show breakdown' panel under the green earned-credit pill on TradeCustomerChip. Selectors: epos-trade-customer-chip (parent), epos-earned-credit-preview (pill), epos-credit-breakdown-toggle (button), epos-credit-breakdown-panel (table wrapper), epos-credit-breakdown-row-{idx}, epos-credit-breakdown-total. KEY GOTCHA — the customer-suggestions dropdown overlays the toggle button after typing the email; tests must dismiss with `Escape + click body` OR use `force=True` on the toggle click. Also: line items table has TWO inputs per row matching `placeholder='0'` (qty AND m²), so qty.nth(0)=row0-qty, qty.nth(1)=row0-m², qty.nth(2)=row1-qty. Use `[data-testid=price-input-{idx}]` for price. Backend live-preview endpoint payload uses field name `price` (not `unit_price`) and `line_items` (not `items`).",
+  "rca of the issue": "N/A — feature works end-to-end. The Show/Hide breakdown toggle correctly reveals a per-line audit table mirroring the backend's stamped `trade_credit_breakdown[]`, giving till staff a confident answer to 'how did you get £X?' at point of sale."
+}

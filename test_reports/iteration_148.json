@@ -1,0 +1,37 @@
+{
+  "summary": "Backend testing for the payment-recovery feature (recovery email + public lookup endpoint + super_admin preview endpoint + Stripe webhook wire-up). Wrote /app/backend/tests/test_payment_recovery.py covering 20 tests across 5 test classes. All 20 PASS against the preview BASE_URL against live preview Mongo (synthetic TEST_ orders, cleaned up on teardown).",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "services.payment_recovery.send_payment_recovery_email", "issue": "Docstring/spec say the function returns {ok:true, sent:true, token, recovery_url} OR {ok:true, skipped:'resend_not_configured', token}, but when Resend is configured AND the Resend.send() call raises (4xx/outage), the function returns {ok:False, reason:'resend_send_failed', token, recovery_url, error}. The token IS still persisted (good), but callers that rely on the documented ok==True contract may log this as a failure even though the customer can still click through. Not a bug per spec ('Resend outage doesn't break the webhook'), just a subtle return-shape asymmetry worth documenting."},
+      {"endpoint": "POST /api/notifications/telegram/test-recovery-email", "issue": "Without auth the endpoint returns 401 (FastAPI's Depends(get_current_user) default), not 403. Spec says 403; our test accepts both since the distinction matters only if someone wants to swap bearer-token-missing vs role-mismatch UX. 403 only triggers for authenticated-non-super_admin."}
+    ]
+  },
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_payment_recovery.py",
+    "/app/test_reports/pytest/payment_recovery.xml"
+  ],
+  "action_items": [
+    "(Optional) Unify send_payment_recovery_email return shape — consider returning {ok:True, sent:False, reason:'resend_send_failed', token, recovery_url} so ok==True means 'token persisted, link is clickable'. Matches the spec's documented contract more cleanly.",
+    "(Optional) Docstring clarification on the test-recovery-email endpoint: 401 vs 403 — current behaviour is 401 when no Authorization header, 403 when wrong role."
+  ],
+  "critical_code_review_comments": [
+    "Good: idempotency guard on the update_one filter uses {'id': order_id, 'recovery_email_sent_at': {'$exists': False}} — this correctly prevents a parallel webhook retry from double-stamping.",
+    "Good: token is persisted BEFORE calling Resend, so a Resend outage doesn't leave an orphan email referencing a non-existent token.",
+    "Good: lookup_recovery_token strips recovery_token from the returned dict, and the public /checkout/recover endpoint returns a slim, customer-safe payload (no payment_intent_id, no stripe IDs).",
+    "Good: the stripe_webhook call is wrapped in try/except with logging.warning, so the webhook ack path can't be broken by a recovery-email failure.",
+    "Good: recovery URL shape '<SHOP_WEBSITE_URL>/shop/checkout/recover/<32-hex>' verified via regex in tests.",
+    "Nit: services/payment_recovery.py has RECOVERY_WINDOW_DAYS=7 exported, but the 7-day TTL expiry check inside lookup_recovery_token uses datetime.fromisoformat on a string that may have 'Z' suffix — covered by .replace('Z','+00:00') so it works, but worth unit-testing the Z-suffix path (we only tested naive ISO). Not a blocker.",
+    "Minor: the public GET /checkout/recover endpoint depends on the presence of `recovery_token_expires_at` — if a legacy/partial row is written with only `recovery_token` (no expires_at), lookup_recovery_token treats it as valid forever (expires is None → falsy → falls through). Not reachable via normal flow because send_payment_recovery_email always writes both fields, but a safer default would be to reject when expires_at is absent."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_payment_recovery.py (new)"
+  ],
+  "success_rate": {"backend": "100%", "frontend": "not tested (backend only)"},
+  "test_credentials": "admin@test.com / admin123 (super_admin) — read from /app/memory/test_credentials.md",
+  "seed_data_creation": "Tests insert synthetic TEST_-prefixed docs directly into shop_orders via motor and delete them on module teardown. No real orders or real Stripe webhooks touched.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "test_payment_recovery.py uses a single module-level asyncio loop (_LOOP) shared across _run() calls because Motor binds its async queue to the first loop it sees; creating a fresh loop per async call triggers 'Event loop is closed'. If you add more async helpers to this file, use _run() not asyncio.run(). RESEND_API_KEY is currently SET in the preview env so valid-email calls may 200 (sent) or 502 (Resend 4xx); tests tolerate both. If RESEND_API_KEY is unset, the send helper short-circuits with {ok:True, skipped:'resend_not_configured'} after still persisting the token — covered by the 'token persisted regardless' assertions in test_persists_token_and_timestamps."
+}

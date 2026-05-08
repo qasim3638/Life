@@ -1,0 +1,27 @@
+{
+  "summary": "Stealth-Keyword Auto-Promote Batch Mode — both backend (31 unit tests) + live API smoke + frontend Playwright UI flow all PASS. Feature is production-ready.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_stealth_seo_auto_promote.py",
+    "/app/test_reports/pytest/iter169_ap_batch.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Minor: stealth_seo_auto_promote.py line 181 has unreachable `return None` after `return rows[0] if rows else None` — dead code, harmless but should be removed.",
+    "Pre-existing (not from this iteration): /admin route shows React 'Each child in a list should have a unique key prop' warning under AdminDashboard render; unrelated to stealth-ap feature.",
+    "Pre-existing (not from this iteration): Recharts container width(-1)/height(-1) console warnings on /admin — unrelated to stealth-ap feature."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (31/31)", "frontend": "100% (8/8 UI assertions)"},
+  "test_credentials": "admin@test.com / admin123 (super_admin) — read from /app/memory/test_credentials.md",
+  "seed_data_creation": "None on live DB. Unit tests use isolated test_stealth_ap_<uuid> Mongo DBs that auto-drop.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Live API state was restored to safe defaults at end of test run: auto_promote_enabled=false, auto_promote_batch_mode=false, auto_promote_batch_max=5. Backend route is /api/admin/seo/stealth-keywords/digest/settings (login token field is 'token' not 'access_token').",
+  "verification_details": {
+    "backend_pytest": "31/31 PASS in test_stealth_seo_auto_promote.py incl. 9 new batch-mode tests (single_mode_max_1, batch_2x_threshold, batch_caps_at_max, one_per_collection_guard, run_once_batch_promotes_multiple, run_once_batch_respects_max, batch_below_2x_qualifiers, settings_batch_max_clamped, settings_batch_mode_flag).",
+    "live_api_smoke": "GET returns auto_promote_batch_mode=false + auto_promote_batch_max=5 by default. PUT batch_max=50 → clamped to 10. PUT batch_max=1 → clamped to 2. PUT batch_mode=true,batch_max=7 → persisted. Cleanup PUT restored defaults.",
+    "frontend_ui_flow": "Login → /admin/seo → open stealth-perf-card → assert stealth-ap-batch-block hidden when AP off → toggle stealth-ap-enabled ON → assert batch-block appears → assert batch-max input hidden when batch-mode off → toggle stealth-ap-batch-mode ON → assert batch-max + save-batch-max appear → effective threshold text shows '40 impressions' (min=20 × 2) → change to 7 + click Set → toast 'Batch cap set to 7 promotions/week' → toggle batch-mode OFF → toast 'Batch mode OFF — back to 1 promotion/week' + input hides → toggle AP OFF → entire batch-block hides."
+  }
+}

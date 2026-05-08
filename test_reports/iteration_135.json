@@ -1,0 +1,30 @@
+{
+  "summary": "Frontend-only testing of new month-filter dropdown on Credit history card (/shop/trade/account → Discount tab). Seeded a trader with 4 events across Feb/Mar(×2)/Apr 2026 (via timedelta days=70/40/38/10 from 'now' which mapped exactly onto the Feb/Mar/Apr 2026 window). ALL acceptance criteria PASSED: (1) Dropdown renders only when >=2 distinct months, positioned right of the 'Credit history' title; options listed newest-first with counts — 📅 All months (4), April 2026 (1), March 2026 (2), February 2026 (1). (2) Selecting March 2026 filtered list to exactly 2 events AND rendered summary chip ('2 events in March 2026 · +£5.00 earned · −£2.00 redeemed') — earn/redeem math verified. (3) Expanding a breakdown inside the filtered March view worked (toggle + breakdown-row visible). (4) Switching filter away and back collapsed the previously-open breakdown (expandedEventId reset via setExpandedEventId(null) — confirmed: breakdown count = 0 after re-filter). (5) Selecting 'All months' cleared filter, restored all 4 events, hid summary chip. (6) Single-month customer (only April 2026 events): dropdown HIDDEN, no summary chip, no empty-month leak — confirmed. Regression: existing event card rendering (pill/channel/source/date/amount), breakdown expand, and empty-state copy (prior iteration) unchanged. Seed data cleaned up post-test.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/seed_trade_credit_history_multi_month.py",
+    "/app/backend/tests/seed_trade_credit_history.py"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Defensive 'credit-history-empty-month' branch + its 'credit-history-clear-filter' link are effectively unreachable under current logic — monthOptions only contains months with >=1 event, so selecting an option will never produce an empty filteredEvents list. Safe to keep as belt-and-braces, but worth a code comment noting it's defensive-only so future readers don't think it's a live UX path.",
+    "Per-option count in the dropdown is computed by re-iterating creditEvents.events inside the .map() callback (O(n×m)). Since events are bucketed once in monthBuckets, consider also tracking counts in a parallel Map to avoid the nested scan — negligible for 10s of events, but trivial to optimise.",
+    "The IIFE wrapper inside the Credit-history card is readable but grows the render function substantially. As flagged in iter-134, extracting <CreditHistoryCard/> (with creditMonthFilter + expandedEventId + copiedEventId as local state) would keep this card cohesive and avoid re-renders when unrelated parent state changes.",
+    "The summary chip uses colour alone (emerald vs rose) to convey earn vs redeem — consider adding aria-labels or visually-hidden text ('earned'/'redeemed' already in DOM as visible text so screen readers are fine, but the '·' separator is purely decorative and could be aria-hidden='true')."
+  ],
+  "updated_files": [
+    "/app/backend/tests/seed_trade_credit_history_multi_month.py (NEW — extended seed for 3-month coverage)"
+  ],
+  "success_rate": {"backend": "N/A (not in scope)", "frontend": "100%"},
+  "test_credentials": "Seeded ephemeral trader via /app/backend/tests/seed_trade_credit_history_multi_month.py; cleaned up at end of test run. Pattern: POST /api/shop/auth/login → token → localStorage['tile_shop_token'].",
+  "seed_data_creation": "1 trade customer with 4 credit events across Feb/Mar/Apr 2026 (created_at offsets: -70d, -40d, -38d, -10d from 'now'). Also re-ran the 1-month seed from iter-134 for the dropdown-hidden case. Both cleaned up post-test via delete_many on fe-mm-/fe-hist- / INV-MM-/INV-FE- / TS-MM-/TS-FE- prefixes.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Re-run /app/backend/tests/seed_trade_credit_history_multi_month.py (needs MONGO_URL+DB_NAME env; source backend/.env first). Selectors introduced: credit-history-month-filter, credit-history-month-summary, credit-history-empty-month, credit-history-clear-filter. Options are keyed 'YYYY-MM'; default value is '' (All months). Newest-first sort by lexical DESC of YYYY-MM. filteredEvents drives list + earn/redeem totals + count. Switching filter ALSO resets expandedEventId to null (critical — verified).",
+  "rca of the issue": "N/A — all acceptance criteria met on first pass."
+}

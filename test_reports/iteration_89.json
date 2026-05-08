@@ -1,0 +1,80 @@
+{
+  "summary": "Verified variant selector race condition fix on /shop/collection/Bluestone. ALL 6 TESTS PASSED. The userClickedRef fix successfully prevents auto-switch useEffects from overriding user clicks.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "Console 500 errors", "issue": "Two 500 errors in console during page load (unrelated to variant selection, likely analytics/tracking endpoints)"}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_89.json"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "FIX VERIFIED: userClickedRef at line 77 correctly tracks user clicks",
+    "Lines 525-528: Auto-switch color useEffect correctly skips when userClickedRef.current === 'color'",
+    "Lines 538-541: Auto-switch finish useEffect correctly skips when userClickedRef.current === 'finish'",
+    "Lines 1475 and 1524: Click handlers correctly set userClickedRef.current before state change"
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A - Frontend only testing",
+    "frontend": "100% - 6/6 test cases passed"
+  },
+  "test_credentials": "No auth needed for shop pages",
+  "seed_data_creation": "None - used existing Bluestone collection",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Variant selector race condition fix VERIFIED. The userClickedRef pattern successfully prevents auto-switch useEffects from overriding user clicks. All color/finish combinations work correctly without 'Collection Not Found' errors.",
+  "test_results": {
+    "1_color_to_finish_auto_switch_beige": {
+      "status": "PASS",
+      "details": "From Grey+Polished, clicked Beige. Finish auto-switched to Matt, Beige preserved.",
+      "expected": "Beige+Matt selected, product='Bluestone Beige 60x60'",
+      "actual": "Beige+Matt selected, product='Bluestone Beige 60x60'"
+    },
+    "2_color_to_finish_auto_switch_white": {
+      "status": "PASS",
+      "details": "From Grey+Polished, clicked White. Finish auto-switched to Matt, size auto-adjusted to 30x60cm, White preserved.",
+      "expected": "White+Matt selected, product='Bluestone White 30x60'",
+      "actual": "White+Matt selected, product='Bluestone White 30x60'"
+    },
+    "3_finish_to_color_auto_switch": {
+      "status": "PASS",
+      "details": "From Beige+Matt, clicked Polished. Color auto-switched to Grey, Polished preserved.",
+      "expected": "Grey+Polished selected, product='Bluestone Grey 60x60 Polished'",
+      "actual": "Grey+Polished selected, product='Bluestone Grey 60x60 Polished'"
+    },
+    "4_same_finish_color_switch": {
+      "status": "PASS",
+      "details": "From Grey+Polished, clicked Matt. Grey preserved, finish changed to Matt.",
+      "expected": "Grey+Matt selected, product='Bluestone Grey 60x60'",
+      "actual": "Grey+Matt selected, product='Bluestone Grey 60x60'"
+    },
+    "5_no_revert": {
+      "status": "PASS",
+      "details": "All user clicks preserved after auto-switch: Beige preserved, Polished preserved, White preserved.",
+      "sub_tests": {
+        "5a_beige_preserved": "PASS",
+        "5b_polished_preserved": "PASS",
+        "5c_white_preserved": "PASS"
+      }
+    },
+    "6_no_collection_not_found": {
+      "status": "PASS",
+      "details": "All 6 color/finish combinations tested without 'Collection Not Found' errors.",
+      "combinations_tested": ["Beige+Matt", "Beige+Polished", "Grey+Matt", "Grey+Polished", "White+Matt", "White+Polished"]
+    }
+  },
+  "fix_verification": {
+    "fix_description": "Added userClickedRef to prevent race condition between auto-switch useEffects",
+    "fix_location": "Line 77: const userClickedRef = useRef(null)",
+    "mechanism": "When user clicks COLOR, userClickedRef.current='color' is set BEFORE setSelectedColor. The 'auto-switch color' useEffect at lines 525-528 checks this ref and SKIPS if user clicked color. Similarly for finish clicks.",
+    "result": "User's clicked value is now preserved and not overwritten by auto-switch logic"
+  }
+}

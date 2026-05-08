@@ -1,0 +1,54 @@
+{
+  "summary": "Completed testing of Site Map & Link Manager 4 new features: Bulk Link, Unlinked Pages Alert, Hover Preview tooltip, and Board View. All features working correctly. Backend sitemap endpoint returns 494 pages with linked_from references. Frontend displays all new features including checkboxes, bulk action bar, unlinked alert badge, view toggle, and drag-and-drop board view.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_sitemap_manager.py",
+    "/app/test_reports/pytest/pytest_sitemap_manager.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "100%",
+    "frontend": "100%"
+  },
+  "test_credentials": "Admin: qasim@tilestation.co.uk / Tilestation_9614",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Site Map & Link Manager with 4 new features fully tested. Features verified: 1) Bulk Link - checkboxes on each page row, 'Select all X pages' toggle, fixed bulk action bar at bottom with 4 destination buttons (Main Navigation, Top Bar, Footer Links, Homepage), 'X pages selected' count and Clear button. 2) Unlinked Pages Alert - red badge '484 unlinked' in header, clicking filters to show only unlinked pages. 3) Hover Preview tooltip - hovering over 'X links' badge shows tooltip with icons showing linked sources (Nav, Footer, Homepage). 4) Board View - toggle between List/Board views, source column with draggable page cards, 4 destination columns showing currently linked pages, drag-and-drop functionality using @hello-pangea/dnd.",
+  "features_tested": {
+    "backend": [
+      "GET /api/website-admin/sitemap - returns 494 pages with proper structure",
+      "Sitemap returns linked_from references for each page",
+      "Pages have types: shop, collection, product, info, category",
+      "Summary counts match actual page counts",
+      "POST /api/website-admin/navigation/{menu_type}/item - adds items to navigation",
+      "GET/POST /api/website-admin/footer-settings - footer settings work"
+    ],
+    "frontend": [
+      "List View shows checkboxes on each page row",
+      "Select all toggle at top works ('Select all 494 pages')",
+      "Selecting pages shows fixed bulk action bar at bottom",
+      "Bulk action bar shows 'X pages selected' count and Clear button",
+      "Bulk action bar has 4 destination buttons: Main Navigation, Top Bar, Footer Links, Homepage",
+      "Unlinked alert badge shows in header with count (484 unlinked)",
+      "Clicking unlinked alert filters to show only unlinked pages",
+      "Hovering over 'X links' badge shows detailed preview tooltip with icons",
+      "View toggle switches between List and Board views",
+      "Board View shows Pages source column on the left",
+      "Board View shows 4 destination columns: Main Navigation, Top Bar, Footer Links, Homepage",
+      "Board View destination columns show currently linked pages inside them",
+      "'Not linked' badge shows in red for pages without any links",
+      "Filter pills and search work in both views"
+    ]
+  }
+}

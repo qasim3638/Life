@@ -1,0 +1,28 @@
+{
+  "summary": "Frontend e2e verification of deleted/voided EPOS invoice UI treatment on /shop/trade/account Dashboard → Recent Orders. Seeded 1 trade customer + 1 online shop_order (delivered) + 1 live EPOS invoice + 1 DELETED EPOS invoice (deleted_at, deleted_by_name='Sarah Smith'). Logged in via /api/shop/auth/login, stored tile_shop_token, navigated to Dashboard. GET /api/shop/orders correctly returns all 3 orders with the deleted invoice carrying status='deleted', deleted_at, deleted_by_name='Sarah Smith', void_reason='Deleted by staff — any credit-back or redeemed credit was automatically refunded to your account.' Frontend renders all 3 rows (data-testid=trader-recent-order-{id}). Deleted row carries the exact class set required by the spec: opacity-70, border-dashed, border-gray-300, bg-gray-100. Title tooltip contains 'Deleted by staff', 'Voided on 30 Apr 2026', and 'By Sarah Smith' (the ' · ' separators assemble correctly). Two line-through elements present on deleted row (order # + total). Rose 'Deleted' status pill has classes bg-rose-100 text-rose-700 font-semibold exactly as spec. Italic rose void reason paragraph renders with the full refund-explanation text. Download VAT Invoice icon button is correctly HIDDEN on the deleted row (querySelector returns null). Saved-pill is hidden on deleted row. Regression: live EPOS and online order rows do NOT carry opacity-70/border-dashed/line-through; both retain their download-vat-invoice-btn-{id}. All core void/delete UI behaviours from the review request verified end-to-end.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/seed_voided_orders.py"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "TradeAccountPage.jsx is 1599 lines — still exceeds the 700-line guideline (flagged previously in iteration_136). Should be split into per-tab components.",
+    "void_reason text synthesis in /app/backend/routes/shop.py happens at serve-time via a ternary rather than being stored on the invoice — OK for now but if copy changes it will immediately affect old deleted invoices. Consider storing the reason at delete time if business copy diverges.",
+    "Deleted row tooltip is plain HTML `title=` attribute. Works and is accessible but a styled popover would be more discoverable; acceptable for MVP."
+  ],
+  "updated_files": [
+    "/app/backend/tests/seed_voided_orders.py (new helper for future regression)"
+  ],
+  "success_rate": {"backend": "N/A (frontend-only scope)", "frontend": "100% on voided-order UI spec"},
+  "test_credentials": "Seeded ephemerally per-run via /app/backend/tests/seed_voided_orders.py and cleaned up after test — no persistent creds.",
+  "seed_data_creation": "1 trade customer (T-VOID01) + 1 online shop_order + 1 live EPOS invoice + 1 DELETED EPOS invoice with deleted_at/deleted_by_name set. Cleaned up post-test.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Voided/deleted EPOS invoice UI on Dashboard Recent Orders fully verified: testids trader-recent-order-{id} render, status mapping (deleted/delivered) correct, rose pill + tooltip + strikethrough + hidden download button all work. Seed script at /app/backend/tests/seed_voided_orders.py reusable. Note: the 'saved pill on non-voided rows' path requires /api/shop/trade/savings to return is_trade=true AND a valid trade_discount — a bare is_trade customer flag is not enough. Future cancelled-order (amber pill, status='cancelled') variant path was NOT seeded since the shop.py merger currently only surfaces cancelled status for existing shop_orders with status=cancelled, not for invoices — if main agent wants to verify the amber path, seed a shop_order with status='cancelled' and void_reason text.",
+  "rca of the issue": "N/A — no issues found. All acceptance criteria for the deleted-invoice UI treatment satisfied: opacity-70, border-dashed/border-gray-300, bg-gray-100, rose Deleted pill, italic rose reason, tooltip with date+admin, double line-through, hidden download button, hidden saved pill. Live rows regression-clean."
+}

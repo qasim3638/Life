@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Actual Size Toggle — Mockup</title>
+<style>
+  *{box-sizing:border-box}
+  body{font-family:'Inter',Arial,sans-serif;background:#f5f5f5;color:#1a1a1a;padding:32px;margin:0}
+  h1{font-size:22px;margin:0 0 6px}
+  h2{font-size:16px;margin:32px 0 8px;color:#333}
+  .sub{color:#666;font-size:13px;margin-bottom:24px}
+  .scenario{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+  .label{font-size:11px;color:#999;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+  .scenario-title{font-size:15px;font-weight:600;margin-bottom:14px;color:#222}
+
+  /* === toggle row === */
+  .toggle-row{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px;padding:10px 12px;background:#fafafa;border:1px solid #eee;border-radius:8px}
+  .toggle-left{display:flex;align-items:center;gap:10px;font-size:13px;color:#333}
+  .toggle-left strong{font-weight:600}
+  .toggle-left .hint{color:#888;font-size:11px;margin-top:2px}
+  .switch{position:relative;width:42px;height:24px;background:#d4d4d4;border-radius:999px;cursor:pointer;transition:background .2s}
+  .switch.on{background:#f59e0b}
+  .switch::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+  .switch.on::after{transform:translateX(18px)}
+  .pdf-btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:7px 12px;border:1px solid #d4d4d4;border-radius:6px;background:#fff;cursor:pointer;color:#333;font-weight:500}
+  .pdf-btn:hover{border-color:#f59e0b;color:#f59e0b}
+
+  /* === proportional pills (current state) === */
+  .pills-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:8px 0;min-height:120px}
+  .pill{display:flex;flex-direction:column;align-items:center;justify-content:center;border:1.5px solid #e5e5e5;border-radius:8px;background:#fff;cursor:pointer;flex-shrink:0}
+  .pill.selected{border-color:#f59e0b;border-width:2px;background:#fffbeb}
+  .pill .size{font-size:11px;font-weight:600;color:#1a1a1a;line-height:1.1}
+  .pill .price{font-size:9.5px;color:#666;margin-top:3px;line-height:1}
+
+  /* === actual size canvas === */
+  .canvas{position:relative;background:#fafafa;border:1px dashed #d4d4d4;border-radius:8px;padding:24px;display:flex;align-items:center;justify-content:center;overflow:auto}
+  .ruler-h, .ruler-v{position:absolute;background:repeating-linear-gradient(90deg,#999 0 1px,transparent 1px 38px);height:6px}
+  .ruler-h{top:8px;left:24px;right:24px}
+  .actual-tile{background:#fff;border:1px solid #999;box-shadow:0 4px 16px rgba(0,0,0,.08);position:relative;display:flex;align-items:center;justify-content:center}
+  .actual-tile .lbl{font-size:14px;color:#888;font-weight:600;letter-spacing:.05em}
+  .actual-tile.tex-1{background:linear-gradient(135deg,#f3efe7 0%,#e8e1d3 100%);background-size:cover}
+  .actual-tile.tex-2{background:linear-gradient(135deg,#e7ebef 0%,#d1d8e0 100%)}
+  .scale-badge{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.75);color:#fff;font-size:10px;padding:4px 8px;border-radius:4px;font-family:monospace;letter-spacing:.05em}
+  .dim-line-h{position:absolute;bottom:-22px;left:0;right:0;border-top:1px solid #999;text-align:center;color:#666;font-size:11px;font-family:monospace}
+  .dim-line-h::before, .dim-line-h::after{content:'';position:absolute;top:-4px;width:1px;height:8px;background:#999}
+  .dim-line-h::before{left:0}
+  .dim-line-h::after{right:0}
+  .dim-line-h span{display:inline-block;background:#fafafa;padding:0 6px;transform:translateY(-8px)}
+  .dim-line-v{position:absolute;top:0;bottom:0;right:-26px;width:1px;background:#999;color:#666;font-size:11px;font-family:monospace}
+  .dim-line-v::before, .dim-line-v::after{content:'';position:absolute;left:-4px;width:8px;height:1px;background:#999}
+  .dim-line-v::before{top:0}
+  .dim-line-v::after{bottom:0}
+  .dim-line-v span{position:absolute;top:50%;left:6px;transform:translateY(-50%);background:#fafafa;padding:4px 0;writing-mode:vertical-rl}
+
+  /* === PDF preview === */
+  .pdf-preview{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap}
+  .a4{width:210px;height:297px;background:#fff;border:1px solid #d4d4d4;box-shadow:0 4px 14px rgba(0,0,0,.08);position:relative;font-size:8px;color:#333;padding:14px;flex-shrink:0}
+  .a4 .ph{font-size:10px;font-weight:700;margin-bottom:4px;color:#1a1a1a}
+  .a4 .pm{font-size:7px;color:#666;margin-bottom:10px}
+  .a4 .grid{position:absolute;inset:30px 14px 30px 14px;background:linear-gradient(135deg,#f3efe7 0%,#e8e1d3 100%);border:1px solid #999;display:flex;align-items:center;justify-content:center;color:#888;font-weight:600;letter-spacing:.05em}
+  .a4 .footer{position:absolute;bottom:6px;left:14px;right:14px;font-size:6px;color:#999;text-align:center;border-top:1px solid #eee;padding-top:4px}
+  .a4 .crop{position:absolute;width:8px;height:8px;border:1px solid #999}
+  .a4 .crop.tl{top:8px;left:8px;border-right:none;border-bottom:none}
+  .a4 .crop.tr{top:8px;right:8px;border-left:none;border-bottom:none}
+  .a4 .crop.bl{bottom:8px;left:8px;border-right:none;border-top:none}
+  .a4 .crop.br{bottom:8px;right:8px;border-left:none;border-top:none}
+  .pdf-info{flex:1;min-width:240px;font-size:13px;color:#444;line-height:1.6}
+  .pdf-info ul{padding-left:18px;margin:8px 0}
+  .pdf-info li{margin:4px 0}
+
+  .arrow{display:inline-block;color:#f59e0b;font-weight:700;margin:0 8px}
+</style>
+</head>
+<body>
+<h1>"Actual Size" Toggle + Printable PDF Cheat-Sheet</h1>
+<div class="sub">Three views showing how this would slot into the existing PDP, with a real example using the Ridgeway collection (30×60, 60×60, 60×120, 120×120cm).</div>
+
+<!-- ============ STATE 1: Off (default — proportional pills) ============ -->
+<div class="scenario">
+  <div class="label">State 1 — Default (toggle OFF)</div>
+  <div class="scenario-title">Proportional pills — what you have today (unchanged)</div>
+
+  <div class="toggle-row">
+    <div class="toggle-left">
+      <div class="switch" id="sw1"></div>
+      <div>
+        <strong>Show actual size</strong>
+        <div class="hint">See the selected tile at its real-world dimensions on screen</div>
+      </div>
+    </div>
+    <button class="pdf-btn">📄 Download to-scale PDF</button>
+  </div>
+
+  <div style="font-size:13px;font-weight:500;margin-bottom:8px">Size: <span style="color:#f59e0b">30x60cm</span></div>
+  <div class="pills-row">
+    <div class="pill selected" style="width:76px;height:38px"><span class="size">30x60cm</span><span class="price">£28.99/m²</span></div>
+    <div class="pill" style="width:55px;height:55px"><span class="size">60x60cm</span><span class="price">£28.99/m²</span></div>
+    <div class="pill" style="width:73px;height:73px"><span class="size">80x80cm</span><span class="price">£35.99/m²</span></div>
+    <div class="pill" style="width:108px;height:54px"><span class="size">60x120cm</span><span class="price">£33.99/m²</span></div>
+    <div class="pill" style="width:130px;height:65px"><span class="size">80x160cm</span><span class="price">£46.99/m²</span></div>
+    <div class="pill" style="width:107px;height:107px"><span class="size">120x120cm</span><span class="price">£46.99/m²</span></div>
+  </div>
+</div>
+
+<!-- ============ STATE 2: On — actual size 30x60cm ============ -->
+<div class="scenario">
+  <div class="label">State 2 — Toggle ON</div>
+  <div class="scenario-title">Selected tile rendered at <strong>actual physical size</strong> — hold a ruler to your monitor</div>
+
+  <div class="toggle-row">
+    <div class="toggle-left">
+      <div class="switch on"></div>
+      <div>
+        <strong>Show actual size</strong>
+        <div class="hint">Tile below = real 30 × 60 cm. Resize browser to confirm with a credit card (85.6 mm wide).</div>
+      </div>
+    </div>
+    <button class="pdf-btn">📄 Download to-scale PDF</button>
+  </div>
+
+  <div class="canvas" style="height:340px">
+    <div class="actual-tile tex-1" style="width:340px;height:170px">
+      <div class="lbl">RIDGEWAY · 30×60cm</div>
+      <div class="scale-badge">1:1 SCALE</div>
+      <div class="dim-line-h"><span>600 mm</span></div>
+      <div class="dim-line-v"><span>300 mm</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ STATE 3: Larger tile to show value ============ -->
+<div class="scenario">
+  <div class="label">State 3 — Bigger tile selected</div>
+  <div class="scenario-title">Switch to <strong>120×120cm</strong> — instantly understand how dramatic this format is</div>
+
+  <div class="toggle-row">
+    <div class="toggle-left">
+      <div class="switch on"></div>
+      <div>
+        <strong>Show actual size</strong>
+        <div class="hint">For tiles bigger than the screen, we cap to viewport and show a "fit to view" minimap.</div>
+      </div>
+    </div>
+    <button class="pdf-btn">📄 Download to-scale PDF</button>
+  </div>
+
+  <div class="canvas" style="height:560px">
+    <div class="actual-tile tex-2" style="width:520px;height:520px">
+      <div class="lbl">RIDGEWAY · 120×120cm</div>
+      <div class="scale-badge">~85% scale (capped)</div>
+      <div class="dim-line-h"><span>1200 mm</span></div>
+      <div class="dim-line-v"><span>1200 mm</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ STATE 4: PDF cheat-sheet ============ -->
+<div class="scenario">
+  <div class="label">State 4 — Printable PDF</div>
+  <div class="scenario-title">"Download to-scale PDF" — print on A4 / A3, tape together, see real layout in your room</div>
+
+  <div class="pdf-preview">
+    <!-- A4 page mockup -->
+    <div class="a4">
+      <div class="crop tl"></div><div class="crop tr"></div><div class="crop bl"></div><div class="crop br"></div>
+      <div class="ph">Ridgeway 60×60cm</div>
+      <div class="pm">A4 sheet 1 of 4 · Print at 100% · Do not "fit to page"</div>
+      <div class="grid">TILE @ 1:1</div>
+      <div class="footer">tilestation.co.uk · Verify scale: ruler should read 100mm between marks ↔</div>
+    </div>
+
+    <div class="pdf-info">
+      <strong>What customers get:</strong>
+      <ul>
+        <li>Multi-page PDF with tiles split across A4/A3 sheets at 1:1 scale</li>
+        <li>Crop marks + alignment guides to tape pages together</li>
+        <li>"Verify scale" ruler on every page — flags incorrect printer settings</li>
+        <li>Includes pattern repeat, grout-line preview, and tile count for chosen room size</li>
+        <li>Trade customers: branded with their account name + "Quoted by [Trade Rep]"</li>
+      </ul>
+      <div style="margin-top:12px;padding:10px 12px;background:#fffbeb;border-left:3px solid #f59e0b;font-size:12px;color:#92400e">
+        <strong>Why this works:</strong> "I thought 60x60 was bigger" is one of the most common return reasons. Letting customers see and even tape up a 1:1 print before ordering eliminates that.
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

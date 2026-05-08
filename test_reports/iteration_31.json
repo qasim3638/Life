@@ -1,0 +1,109 @@
+{
+  "summary": "Bug fix verification for Navigation & Structure page - PUT merge behavior and toggle-group isolation. All 10 backend tests passed (100%). Frontend tests confirmed: 1) When working on specific group (e.g., Flooring), clicking X calls PATCH toggle-group endpoint (not DELETE), 2) When working on 'All Groups', clicking X shows confirmation dialog before global delete, 3) Spec values are filtered by selected product group.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "features_tested": {
+    "PUT /api/specifications/types/{id} merge behavior": {
+      "status": "PASS",
+      "evidence": [
+        "Sending PUT with 2 values preserves all existing 22+ values",
+        "Values are merged, not overwritten",
+        "Test verified via pytest"
+      ]
+    },
+    "PUT /api/filters/types/{id} merge behavior": {
+      "status": "PASS",
+      "evidence": [
+        "Sending PUT with partial values preserves all existing values",
+        "Merge strategy correctly implemented",
+        "Test verified via pytest"
+      ]
+    },
+    "PATCH /api/specifications/types/{id}/values/{value}/toggle-group": {
+      "status": "PASS",
+      "evidence": [
+        "Endpoint exists and accepts PATCH method",
+        "Returns product_groups array in response",
+        "Hides value from specific group without deleting globally",
+        "Value count remains same after toggle (group isolation works)"
+      ]
+    },
+    "PATCH /api/filters/types/{id}/values/{value}/toggle-group": {
+      "status": "PASS",
+      "evidence": [
+        "Endpoint exists and accepts PATCH method",
+        "Returns product_groups array in response",
+        "Hides value from specific group without deleting globally"
+      ]
+    },
+    "DELETE endpoints still work for global delete": {
+      "status": "PASS",
+      "evidence": [
+        "DELETE /api/specifications/types/{id}/values/{value} removes value globally",
+        "DELETE /api/filters/types/{id}/values/{value} removes value globally"
+      ]
+    },
+    "Frontend: Group-scoped removal (Flooring selected)": {
+      "status": "PASS",
+      "evidence": [
+        "Clicking X on spec value calls PATCH toggle-group endpoint",
+        "API call: PATCH /api/specifications/types/69ba7a646bc1e8fd70e3be39/values/Porcelain/toggle-group",
+        "Toast message: 'Value hidden from Flooring'",
+        "Value is hidden from group, not deleted globally"
+      ]
+    },
+    "Frontend: Global delete confirmation (All Groups selected)": {
+      "status": "PASS",
+      "evidence": [
+        "Clicking X shows confirmation dialog",
+        "Dialog message: 'You are working on ALL groups. This will permanently delete this value from every group. Continue?'",
+        "Prevents accidental global deletion"
+      ]
+    },
+    "Frontend: Spec values filtered by product group": {
+      "status": "PASS",
+      "evidence": [
+        "Material spec shows '20 values (22 total)' when Flooring selected",
+        "Material spec shows '22 values' when All Groups selected",
+        "Values with product_groups array are filtered correctly"
+      ]
+    }
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_spec_filter_merge_toggle.py",
+    "/app/test_reports/pytest/pytest_spec_filter_merge.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Backend PUT endpoints correctly implement MERGE strategy - preserves all existing values and only adds new ones",
+    "Backend toggle-group PATCH endpoints correctly set product_groups array for group isolation",
+    "Frontend handleRemoveSpecValue correctly checks selectedProductGroup to decide between toggle-group PATCH and global DELETE",
+    "Frontend spec values rendering correctly filters by product_groups array",
+    "Confirmation dialog prevents accidental global deletion when 'All Groups' is selected"
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_spec_filter_merge_toggle.py"
+  ],
+  "success_rate": {
+    "backend": "100% (10/10 tests passed)",
+    "frontend": "100% (all bug fixes verified)"
+  },
+  "test_credentials": {
+    "admin": "admin@test.com / TestAdmin123!"
+  },
+  "seed_data_creation": "Test values created and cleaned up during testing",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Both critical bugs in Navigation & Structure page have been fixed and verified: 1) PUT endpoints now MERGE values instead of overwriting - sending partial values preserves all existing values. 2) Deleting a spec value while working on a specific product group (e.g., Flooring) now calls toggle-group PATCH endpoint which hides the value from that group only, instead of DELETE which would remove it globally. When 'All Groups' is selected, a confirmation dialog appears before global deletion. The product_groups array on values controls visibility per group (empty array = visible everywhere).",
+  "mocked_apis": {
+    "has_mocked_apis": false,
+    "mocked_apis_list": []
+  }
+}

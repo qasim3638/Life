@@ -1,0 +1,317 @@
+{
+  "placeholders": {
+    "Persistence Test Item": false,
+    "TEST LINK": false,
+    "TEST_CTA_SECONDARY": false,
+    "TEST_DESCRIPTION": false,
+    "/test-secondary": false
+  },
+  "links": [
+    {
+      "text": "Pay in 3 ways with Klarna",
+      "href": "/shop/tiles",
+      "testid": "",
+      "aria": ""
+    },
+    {
+      "text": "Free samples with free delivery",
+      "href": "/shop/sample-service",
+      "testid": "",
+      "aria": ""
+    },
+    {
+      "text": "Free collection from all stores",
+      "href": "/shop/stores",
+      "testid": "",
+      "aria": ""
+    },
+    {
+      "text": "Free delivery on orders over \u00a3300",
+      "href": "/shop/delivery",
+      "testid": "",
+      "aria": ""
+    },
+    {
+      "text": "",
+      "href": "/shop",
+      "testid": "header-logo",
+      "aria": ""
+    },
+    {
+      "text": "Contact",
+      "href": "/shop/contact",
+      "testid": "stores-link",
+      "aria": ""
+    },
+    {
+      "text": "Sign In",
+      "href": "/shop/tile-login",
+      "testid": "login-link",
+      "aria": ""
+    },
+    {
+      "text": "Samples",
+      "href": "/shop/tile-samples",
+      "testid": "samples-link",
+      "aria": ""
+    },
+    {
+      "text": "Wishlist",
+      "href": "/shop/tile-wishlist",
+      "testid": "wishlist-link",
+      "aria": ""
+    },
+    {
+      "text": "Basket",
+      "href": "/shop/tile-cart",
+      "testid": "cart-link",
+      "aria": ""
+    },
+    {
+      "text": "Tile Station TRADE",
+      "href": "/shop/trade/login",
+      "testid": "trade-tab",
+      "aria": ""
+    },
+    {
+      "text": "NEW COLLECTIONS",
+      "href": "/tiles?new=true",
+      "testid": "",
+      "aria": ""
+    },
+    {
+      "text": "ALL TILES",
+      "href": "/tiles",
+      "testid": "",
+      "aria": ""
+    },
+    {
+      "text": "FLOORING",
+      "href": "/tiles?group=flooring",
+      "testid": "",
+      "aria": ""
+    },
+    {
+      "text": "BATHROOM",
+      "href": "/shop/bathroom",
+      "testid": "",
+      "aria": ""
+    },
+    {
+      "text": "UNDERFLOOR HEATING",
+      "href": "/tiles?group=underfloor-heating",
+      "testid": "",
+      "aria": ""
+    },
+    {
+      "text": "MATERIALS",
+      "href": "/tiles?group=materials",
+      "testid": "",
+      "aria": ""
+    },
+    {
+      "text": "TOOLS",
+      "href": "/tiles?group=tools",
+      "testid": "",
+      "aria": ""
+    },
+    {
+      "text": "ACCESSORIES",
+      "href": "/tiles?group=accessories",
+      "testid": "",
+      "aria": ""
+    },
+    {
+      "text": "Flooring Shop now",
+      "href": "/tiles?category=flooring",
+      "testid": "category-flooring",
+      "aria": ""
+    },
+    {
+      "text": "Wall Tiles Shop now",
+      "href": "/tiles?category=wall-tiles",
+      "testid": "category-wall-tiles",
+      "aria": ""
+    },
+    {
+      "text": "Floor Tiles Shop now",
+      "href": "/tiles?category=floor-tiles",
+      "testid": "category-floor-tiles",
+      "aria": ""
+    },
+    {
+      "text": "Wall & Floor Shop now",
+      "href": "/tiles?category=wall-and-floor",
+      "testid": "category-wall-&-floor",
+      "aria": ""
+    },
+    {
+      "text": "Wall & Floor Tiles Shop now",
+      "href": "/tiles?category=wall-floor-tiles",
+      "testid": "category-wall-&-floor-tiles",
+      "aria": ""
+    },
+    {
+      "text": "Bathroom Tiles Shop now",
+      "href": "/tiles?category=bathroom-tiles",
+      "testid": "category-bathroom-tiles",
+      "aria": ""
+    },
+    {
+      "text": "Kitchen Tiles Shop now",
+      "href": "/tiles?category=kitchen-tiles",
+      "testid": "category-kitchen-tiles",
+      "aria": ""
+    },
+    {
+      "text": "Outdoor Tiles Shop now",
+      "href": "/tiles?category=outdoor-tiles",
+      "testid": "category-outdoor-tiles",
+      "aria": ""
+    },
+    {
+      "text": "Order a Sample \u00a31.50/m\u00b2 100x100mm",
+      "href": "/tiles/order-a-sample",
+      "testid": "featured-tile-69ed2ad85a33b4470fb0aaa4",
+      "aria": ""
+    },
+    {
+      "text": "Bluestone Grey 60x60 \u00a329.99/m\u00b2 60x60cm",
+      "href": "/tiles/bluestone-grey-60x60",
+      "testid": "featured-tile-69bf5669e3ae0db005eecbc3",
+      "aria": ""
+    },
+    {
+      "text": "Bluestone White 30x60 \u00a324.99/m\u00b2 30x60cm",
+      "href": "/tiles/bluestone-white-30x60",
+      "testid": "featured-tile-69bf5669e3ae0db005eecbc6",
+      "aria": ""
+    },
+    {
+      "text": "Bluestone Beige 60x60 \u00a329.99/m\u00b2 60x60cm",
+      "href": "/tiles/bluestone-beige-60x60",
+      "testid": "featured-tile-69bf5669e3ae0db005eecbc4",
+      "aria": ""
+    },
+    {
+      "text": "Bluestone Grey 60x60 Polished \u00a334.99/m\u00b2 60x60cm",
+      "href": "/tiles/bluestone-grey-60x60-polished",
+      "testid": "featured-tile-69bf5669e3ae0db005eecbc5",
+      "aria": ""
+    },
+    {
+      "text": "Laminate Premium Oak 60x60 \u00a30.00/m\u00b2 60x60",
+      "href": "/tiles/laminate-premium-oak-60x60",
+      "testid": "featured-tile-69ea05451ba8c86636f6de1b",
+      "aria": ""
+    },
+    {
+      "text": "Premium Polished Porcelain 60x60 \u00a30.00/m\u00b2 60x60",
+      "href": "/tiles/premium-polished-porcelain-60x60",
+      "testid": "featured-tile-69d80af181e0ed401ac91000",
+      "aria": ""
+    },
+    {
+      "text": "Ingot Verde Green Crystal Metro Tiles 30x60cm \u00a351.99/m\u00b2 30x60cm",
+      "href": "/tiles/ingot-verde-green-crystal-metro-tiles-30x60cm",
+      "testid": "featured-tile-69c44cd0e1f4ee374a6fe1fd",
+      "aria": ""
+    },
+    {
+      "text": "Wood Effect Shop now",
+      "href": "/tiles?style=wood-effect",
+      "testid": "style-wood-effect",
+      "aria": ""
+    },
+    {
+      "text": "Marble Effect Shop now",
+      "href": "/tiles?style=marble-effect",
+      "testid": "style-marble-effect",
+      "aria": ""
+    },
+    {
+      "text": "Stone Effect Shop now",
+      "href": "/tiles?style=stone-effect",
+      "testid": "style-stone-effect",
+      "aria": ""
+    },
+    {
+      "text": "Patterned Shop now",
+      "href": "/tiles?style=patterned",
+      "testid": "style-patterned",
+      "aria": ""
+    },
+    {
+      "text": "Free Delivery Free delivery for orders over \u00a3300, or collect from store.",
+      "href": "/shop/info/delivery",
+      "testid": "",
+      "aria": ""
+    },
+    {
+      "text": "Open Trade Account",
+      "href": "/shop/trade/register",
+      "testid": "",
+      "aria": ""
+    },
+    {
+      "text": "Already have an account? Sign In",
+      "href": "/shop/login",
+      "testid": "",
+      "aria": ""
+    },
+    {
+      "text": "Tile Calculator Calculate how many tiles you need",
+      "href": "/shop/calculator",
+      "testid": "",
+      "aria": ""
+    },
+    {
+      "text": "Create Account Track orders & save favourites",
+      "href": "/shop/register",
+      "testid": "",
+      "aria": ""
+    },
+    {
+      "text": "Wall Tiles",
+      "href": "/tiles?type=wall",
+      "testid": "",
+      "aria": ""
+    },
+    {
+      "text": "Floor Tiles",
+      "href": "/tiles?type=floor",
+      "testid": "",
+      "aria": ""
+    },
+    {
+      "text": "Returns & Refunds",
+      "href": "/shop/returns",
+      "testid": "",
+      "aria": ""
+    },
+    {
+      "text": "FAQs",
+      "href": "/shop/faq",
+      "testid": "",
+      "aria": ""
+    },
+    {
+      "text": "Track Order",
+      "href": "/shop/track",
+      "testid": "",
+      "aria": ""
+    },
+    {
+      "text": "Privacy Policy",
+      "href": "/shop/privacy",
+      "testid": "",
+      "aria": ""
+    },
+    {
+      "text": "Terms & Conditions",
+      "href": "/shop/terms",
+      "testid": "",
+      "aria": ""
+    }
+  ]
+}

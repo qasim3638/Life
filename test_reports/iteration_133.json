@@ -1,0 +1,36 @@
+{
+  "summary": "Iteration 133 — Inline Preview/Hide expansion + Copy breakdown for the Trade Credit Emails audit card on /admin/sales-hub. Verified end-to-end. Backend GET /api/invoices/credit-emails/recent now projects `trade_credit_breakdown` array (with product_name/sku/rate/net/credit/quantity) and `subtotal` on every row — confirmed via curl (3/3 sent rows returned breakdown). Backend regression scripts (test_credit_email_breakdown.py, test_epos_credit_flow.py, test_credit_email_audit.py) — ALL PASSED. Frontend Playwright on /admin/sales-hub: 21/21 PASS — credit-emails-card visible, 3 preview-toggle buttons rendered (one per row with non-empty breakdown), initial label='Preview ⌄' aria-expanded=false, breakdown panel NOT in DOM before click, click expands sibling <tr> with [data-testid=credit-email-breakdown-{id}] containing 'What the trader received', 'Per-product credit breakdown', 'mirrors the email body sent to {email}', breakdown rows with 'X% × £Y' calc + £credit, and 'Total credit earned £X.XX' footer. Toggle flips Preview↔Hide + aria-expanded↔. Single-row-open invariant verified (clicking second toggle collapses the first). Copy button [credit-email-copy-{id}] writes plain-text monospace breakdown to clipboard with header 'Credit-back breakdown — Reverse Test Ltd (T-REV6BB74) · INV-REV-DFDC94' (clipboard length=294 chars), label flips Copy→✓ Copied for ~1.8s and reverts, sonner toast 'Breakdown copied — ready to paste' shown. Regressions: trade tier badges/medals globally hidden (count=0), re-send action column intact (renders only on failed rows; current dataset has 0 failed rows so 0 buttons — matches expected behaviour).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "AdminDashboard", "issues": ["Pre-existing 'Encountered two children with the same key, 2026-3' React warning (carried from iter 127–132) — unrelated to this feature, surfaced on AdminDashboard render"]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_credit_email_breakdown.py",
+    "/app/backend/tests/test_epos_credit_flow.py",
+    "/app/backend/tests/test_credit_email_audit.py"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "RecentCreditEmailsCard.jsx correctly wraps each row in <React.Fragment key={r.id}> with a sibling expanded <tr colSpan={6}> — DOM remains valid (no nested <tr>) and React keys stay unique across re-renders.",
+    "The 'Preview' toggle is gated on `hasBreakdown = breakdown.length > 0` so legacy rows without breakdown correctly skip the button — verified live (all 3 current rows have breakdown so all show Preview; no false positives).",
+    "Single-open invariant implemented via single `expandedId` state + `setExpandedId(isExpanded ? null : r.id)` — clean, no flicker, verified behaviourally.",
+    "handleCopyBreakdown reuses the same clipboard pipeline as iter 132 EPOS chip (navigator.clipboard.writeText + textarea+execCommand fallback) — consistent UX across both surfaces.",
+    "Clipboard string format matches spec: header 'Credit-back breakdown — {biz} ({T-ref}) · {invoice_no}', separator (─×56), per-line padEnd(28)+padEnd(18)+£credit, separator, 'Total credit' footer. Long product names truncated at nameCol-1 with ellipsis.",
+    "setCopiedId scoped per-row (`copiedId === r.id`) so clicking Copy in row A doesn't flip the button in row B if both happen to be visible — correct.",
+    "Backend projection at routes/invoices.py:2182 includes `trade_credit_breakdown: 1, subtotal: 1` in the find projection — minimal payload increase, no N+1.",
+    "Aria semantics: aria-expanded toggles true↔false on the toggle button — accessible.",
+    "Re-send button is conditional on `!sent` so sent rows never show it — matches existing spec, no regression."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (3/3 regression scripts PASS, projection endpoint returns expected breakdown)", "frontend": "100% (21/21 Playwright assertions PASS)"},
+  "test_credentials": "admin@test.com / admin123 (super_admin) — from /app/memory/test_credentials.md",
+  "seed_data_creation": "No new seed needed — existing 3 sent rows (INV-REV-DFDC94, INV-RFN-0F7C07, INV-TEST-D52EBF) already carry trade_credit_breakdown[1] from prior iterations and were sufficient for all 21 assertions. Note: current dataset breakdown rows have a single line each (rate=2%, net=£100, credit=£2). Multi-line breakdown rendering wasn't exercised live but is fully covered by backend test_credit_email_breakdown.py [Test 1] which asserts 2-line breakdown HTML rendering.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Iteration 133 added inline Preview/Hide expansion + Copy breakdown to RecentCreditEmailsCard.jsx on /admin/sales-hub. Selectors used: credit-emails-card, credit-email-row-{id}, credit-email-preview-toggle-{id} (only renders when trade_credit_breakdown.length>0), credit-email-breakdown-{id} (sibling <tr colSpan=6>), credit-email-breakdown-row-{id}-{idx}, credit-email-copy-{id}, credit-email-resend-{id} (failed rows only). Single-open invariant via expandedId state. Copy uses the same clipboard pipeline as iter 132 EPOS chip. Backend GET /api/invoices/credit-emails/recent now projects trade_credit_breakdown[] + subtotal at routes/invoices.py:2182. PLAYWRIGHT GOTCHA: must call context.grant_permissions(['clipboard-read','clipboard-write']) before clicking copy. Login token is in localStorage['token']. After login wait for **/admin** then goto /admin/sales-hub explicitly (Sales-Hub is not the default landing page). Sonner toast: 'Breakdown copied — ready to paste'.",
+  "rca of the issue": "N/A — feature works end-to-end on first inspection. Backend already wired; frontend implements expansion + copy with identical UX to the EPOS TradeCustomerChip from iter 132."
+}

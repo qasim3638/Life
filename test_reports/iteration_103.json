@@ -1,0 +1,55 @@
+{
+  "summary": "Tested variant cross-filtering bug fix on CollectionDetailPage.js. All 10 test cases PASSED. The bug where selecting 'Polished' finish falsely disabled '60x60cm' size for Grey color has been FIXED. Size buttons correctly enable/disable based on available products for the selected color+finish combination.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/frontend/src/pages/shop/CollectionDetailPage.js"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "getProductColor (line 185-190): Correctly returns lowercase normalized color for case-insensitive matching",
+    "availableSizes (line 552-583): Correctly filters sizes by selected color AND finish",
+    "sizesForColor (line 586-591): Provides all sizes for selected color ignoring finish - used for enable/disable logic",
+    "sizesIgnoringFinish (line 597-601): Fallback for collections without color variants - prevents false disabling",
+    "Size button render (line 1795-1834): Correctly uses sizesForColor || sizesIgnoringFinish as fallback for determining if size is available in another finish"
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A - frontend only test",
+    "frontend": "100% - All 10 tests passed"
+  },
+  "test_credentials": "N/A - no auth required for collection detail page",
+  "seed_data_creation": "None - used existing Bluestone collection with 7 products",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Variant cross-filtering bug is FIXED. The Bluestone collection has 7 products: 3 without explicit color (Polished 60x120cm, Matt 60x60cm, Polished 60x60cm) and 4 with colors (Beige Matt 60x60, Grey Matt 60x60, Grey Polished 60x60, White Matt 30x60). Key fix: getProductColor now returns lowercase for case-insensitive matching, and sizesIgnoringFinish provides fallback for collections without color variants.",
+  "test_results": {
+    "test_1_grey_polished_60x60_enabled": "PASS - 60x60cm is ENABLED for Grey + Polished (product exists: Bluestone Grey 60x60 Polished)",
+    "test_2_grey_matt_60x60_enabled": "PASS - 60x60cm is ENABLED for Grey + Matt (product exists: Bluestone Grey 60x60)",
+    "test_3a_beige_matt_60x60_enabled": "PASS - 60x60cm is ENABLED for Beige + Matt (product exists: Bluestone Beige 60x60)",
+    "test_3b_beige_30x60_disabled": "PASS - 30x60cm is DISABLED for Beige (no Beige 30x60 product)",
+    "test_3c_beige_60x120_disabled": "PASS - 60x120cm is DISABLED for Beige (no Beige 60x120 product)",
+    "test_4a_white_matt_30x60_enabled": "PASS - 30x60cm is ENABLED for White + Matt (product exists: Bluestone White 30x60)",
+    "test_4b_white_60x60_disabled": "PASS - 60x60cm is DISABLED for White (no White 60x60 product)",
+    "test_4c_white_60x120_disabled": "PASS - 60x120cm is DISABLED for White (no White 60x120 product)",
+    "test_5_product_banner_grey_polished": "PASS - Banner shows 'Bluestone Grey 60x60 Polished — 60x60cm'",
+    "test_6_product_banner_grey_matt": "PASS - Banner shows 'Bluestone Grey 60x60 — 60x60cm'",
+    "test_7_no_console_errors": "PASS - No error messages found on page"
+  },
+  "bluestone_collection_products": [
+    {"name": "Bluestone Polished 60x120cm", "color": "", "finish": "Polished", "size": "60x120cm"},
+    {"name": "Bluestone Matt 60x60cm", "color": "", "finish": "Matt", "size": "60x60cm"},
+    {"name": "Bluestone Polished 60x60cm", "color": "", "finish": "Polished", "size": "60x60cm"},
+    {"name": "Bluestone Beige 60x60", "color": "Beige", "finish": "Matt", "size": "60x60cm"},
+    {"name": "Bluestone Grey 60x60", "color": "Grey", "finish": "Matt", "size": "60x60cm"},
+    {"name": "Bluestone Grey 60x60 Polished", "color": "Grey", "finish": "Polished", "size": "60x60cm"},
+    {"name": "Bluestone White 30x60", "color": "White", "finish": "Matt", "size": "30x60cm"}
+  ]
+}

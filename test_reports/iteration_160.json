@@ -1,0 +1,37 @@
+{
+  "summary": "Frontend verification of two admin bug fixes: (1) Announcement Ribbon Quick Post 'Type a message first' bug, and (2) Marketing Studio gallery lightbox. Bug 2 (Quick Post) is FULLY FIXED end-to-end. Bug 1 (Lightbox) is mostly fixed (open, ESC, X close, metadata, download all work) but the click-outside-to-close backdrop handler does NOT actually close the lightbox even though the footer instructs users 'ESC or click outside to close'.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "AssetLightbox (MarketingStudio.jsx line 167-213)",
+        "issue": "Backdrop click does NOT close the lightbox. The handler `onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}` is on the outer div, but that div uses `flex flex-col` with three children (top metadata bar, flex-1 image container, footer text) that fill the entire viewport. Any click lands on a child element, so e.target === e.currentTarget is essentially never true. Verified by clicking at (100,500) and (1820,500) - both failed to close the lightbox. The misleading footer text 'ESC or click outside to close' creates a false expectation. ESC and X button close correctly.",
+        "selector": "[data-testid=\"marketing-asset-lightbox\"]",
+        "priority": "MEDIUM"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [
+    "FIX: Make backdrop click actually close the lightbox. Two simple options: (a) Add `onClick={onClose}` to the flex-1 image container div (line 201) and `onClick={(e) => e.stopPropagation()}` on the <img> itself, so clicking around the image (in the padded letterbox area) closes it. (b) Or replace inner content with an absolutely-positioned overlay so the outer div has bare clickable surface."
+  ],
+  "critical_code_review_comments": [
+    "AssetLightbox backdrop close handler relies on `e.target === e.currentTarget` which is incompatible with the flex-col layout that fills the viewport with children — child divs intercept all clicks. Footer text promises behavior that doesn't work.",
+    "Quick Post fix `onClick={() => quickPost()}` correctly prevents SyntheticEvent from being passed as `overrides` argument — verified working.",
+    "Lightbox correctly locks body scroll, listens for ESC keydown, exposes data-testids on all interactive elements (download, close).",
+    "Image uses `object-contain max-w-full max-h-full` ensuring full-size display without crop — verified."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a", "frontend": "90%"},
+  "test_credentials": "admin@test.com / admin123 (super_admin) — used as provided",
+  "seed_data_creation": "Published a TEST ribbon message via UI Quick Post; cleanup PUT /api/website-admin/announcement-ribbon with enabled:false returned 200 OK (ribbon disabled — won't show on storefront).",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "All Quick Post (Bug 2) flows verified passing: typed message + publish → success toast, input clears, message reaches public /api/website/announcement-ribbon endpoint; preset buttons populate input correctly and publish without error. For Lightbox (Bug 1): opens on image click, ESC closes, X close button closes, metadata + prompt + Download visible, image rendered with object-contain. Publish-button regression verified — clicking the asset card's Publish button toggles inline publish form (hero/banner buttons appear) and does NOT open the lightbox. The ONLY failing test is backdrop click — handler logic is broken due to flex-col children filling viewport. After main agent fixes the backdrop handler, retest by clicking outside image (e.g., at coordinates 100,500 in 1920x1080 viewport) and verify lightbox closes. Gallery had 1 published Bank Holiday Sale asset available in test environment.",
+  "rca_of_the_issue": "Backdrop click handler at /app/frontend/src/pages/admin/MarketingStudio.jsx line 169: `onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}` uses identity check on currentTarget. This is a common pattern but breaks when the container has children that fill its surface area. Here the outer div has `flex flex-col` with: (1) top metadata bar (line 173), (2) flex-1 image container (line 201), (3) footer hint (line 210) — these three children leave zero clickable surface on the outer div itself. Recommended fix: add explicit `onClick={onClose}` to the flex-1 middle div (line 201) since that's the natural 'outside the image' area, and add `onClick={(e) => e.stopPropagation()}` on the <img> (line 202) so clicking the image itself doesn't close. Alternative: render the backdrop as a sibling absolute-position div underneath the content."
+}

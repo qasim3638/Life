@@ -1,0 +1,38 @@
+{
+  "summary": "Backend integration testing of the AI City Landing Pages feature with real showroom data injection. Wrote 12 pytest tests in /app/backend/tests/test_city_landing_pages.py covering auth gating (5 endpoints), list envelope + counts, single-page generate for Gravesend / Brighton / Nationwide, and batch generate (auto-pick + explicit slugs). All 12 tests passed in 68.65s, including 4 live LLM calls. Real showroom details (DA11 8AB / 01474 878 989 for Gravesend, TN9 1SP / 01732 914 374 for Brighton via Tonbridge) verified inside generated body_md. Nationwide page lists Gravesend/Tonbridge/Chingford and excludes the closed Sydenham (SE26 5BA postcode absent). Per request, /seed and /refresh-pending were NOT re-invoked — only their auth gating was validated.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_city_landing_pages.py",
+    "/app/test_reports/pytest/city_landing_pages.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "routes/city_landing_pages.py:_generate_for_row() runs LLM calls strictly serially inside generate_batch(). At 5-15s per call x up to 25 rows that's a 6+ minute request — consider asyncio.gather with a small Semaphore (e.g. 3-4) to stay within request timeouts, mirroring the pattern already used by services.ai_descriptions.scan_for_missing_descriptions.",
+    "_parse_llm_output() does a case-insensitive prefix match for META_TITLE / META_DESCRIPTION but does not trim trailing markdown asterisks/quotes. If the model wraps the value in ** or quotes, those stay in meta_title — minor SEO data-cleanliness risk.",
+    "business_config/showrooms.py: TOWN_NEAREST_SHOWROOM is exhaustive for the current 33 TOWNS but get_nearest_showroom() silently falls back to Gravesend if a future town is added without updating the map. Consider logging.warning on fallback so an unmapped addition doesn't go unnoticed.",
+    "list_queue() always recomputes 4 count_documents() calls — fine at 168 rows, but if the queue grows consider a single $facet aggregation.",
+    "Generate endpoints don't enforce idempotency: calling /generate on a row already in 'approved' status will overwrite body_md and revert status to 'generated'. Consider blocking re-generation of approved rows or requiring ?force=true."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_city_landing_pages.py (NEW — 12 integration tests, all passing)"
+  ],
+  "success_rate": {
+    "backend": "100% (12/12 tests passing)",
+    "frontend": "N/A (frontend testing skipped per request)"
+  },
+  "test_credentials": "admin@test.com / admin123 (super_admin) — confirmed working",
+  "seed_data_creation": "None. Tests only mutate existing seeded queue rows via the public /generate endpoints (which is the feature under test). No throwaway documents created. No /seed or /refresh-pending re-invocations.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "City Landing Pages feature is fully wired and verified against real showroom data. The 4 generated rows from this run (tile-shop-gravesend, tile-shop-brighton, buy-tiles-online-uk + 2 from batch auto-pick, plus tile-shop-dartford / kitchen-tiles-rochester from explicit batch) are now in 'generated' status — re-running tests will simply re-generate those. To retest from scratch, call /refresh-pending once first to wipe the bodies (it preserves approved rows). All 33 seeded TOWNS have an entry in TOWN_NEAREST_SHOWROOM so the unmapped-town fallback path is unreachable through the seeded queue and was skipped per the review_request guidance. The LLM model used is anthropic/claude-haiku-4-5 via Emergent LLM key — each /generate takes ~12-18s in this environment.",
+  "rca of the issue": "N/A — no bugs found. All review_request assertions held: real Gravesend showroom data injected, Brighton routed to Tonbridge, nationwide page lists only open showrooms, batch endpoint returns the expected envelope shape, all admin endpoints return 401/403 without a token."
+}

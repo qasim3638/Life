@@ -1,0 +1,37 @@
+{
+  "summary": "Backend-only validation of retail-EPOS link parity work. All 3 original tests in test_retail_epos_link.py pass; added 12 new regression tests in test_retail_epos_link_extended.py covering trade-customer lookup parity, no-double-bump safety for trade-linked invoices, VAT PDF adapter, and email path with REPORTLAB_AVAILABLE=False / apply_vat=False. 15/15 backend tests green.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_retail_epos_link.py",
+    "/app/backend/tests/test_retail_epos_link_extended.py",
+    "/app/test_reports/pytest/retail_epos_link_results.xml",
+    "/app/test_reports/pytest/retail_epos_link_extended_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "routes/shop.py admin_customer_lookup correctly excludes password and _id via projection; normalises is_trade to bool for legacy rows — good defensive coding.",
+    "routes/invoices.py save flow: retail spend bump branch (line ~1043) correctly re-reads the linked customer with is_trade check, skipping trade customers so the in-store trade-credit block (line ~1121) is the sole total_spent source for trade — no double counting.",
+    "reverse_invoice_credits retail branch (line ~119) is guarded by `not earned_ref` AND re-reads is_trade from DB, so it cannot accidentally run for a trade customer whose invoice happened to have no credits.",
+    "services/email.py VAT PDF attach is wrapped in try/except + REPORTLAB_AVAILABLE guard + apply_vat=False skip — three layers of safety; email will never fail due to PDF issues.",
+    "epos_invoice_to_order_and_customer helper correctly handles apply_vat=False (gross passed as net) and falls back to gross/1.20 when subtotal is missing — verified by tests.",
+    "Minor deprecation warning: /app/backend/tests/conftest.py uses a redefined event_loop fixture; pytest-asyncio will remove this soon. Not blocking but should be migrated to asyncio_mode='auto' + loop_scope='session' in a future cleanup."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_retail_epos_link_extended.py (NEW)"
+  ],
+  "success_rate": {"backend": "100%", "frontend": "not tested (per request)"},
+  "test_credentials": "Not required — tests use direct Motor DB access + internal function imports; all test data is prefixed and cleaned up in finally blocks.",
+  "seed_data_creation": "All test fixtures are ephemeral: UUID-suffixed shop_customers and invoices rows, created and deleted within each test's try/finally. No touching of production/seed data.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Retail-EPOS link parity work is backend-validated. 15 tests cover: lookup (retail/trade/legacy/phone/null/403), invoice lifecycle (bump + reverse + idempotent re-reverse + reapply), no-double-bump for trade-linked invoices, VAT PDF adapter for linked/guest/apply_vat=False/missing subtotal, and email path with REPORTLAB unavailable + apply_vat=False. Run: `cd /app/backend && set -a && . ./.env && set +a && python -m pytest tests/test_retail_epos_link.py tests/test_retail_epos_link_extended.py -v`. Frontend testing explicitly skipped per main agent request (already smoke-tested via Playwright). Public lookup endpoint verified reachable at REACT_APP_BACKEND_URL and returns 403 without admin auth (expected).",
+  "rca of the issue": "Not applicable — no bugs found. All behavioural assertions from the review request verified green."
+}

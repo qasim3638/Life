@@ -1,0 +1,79 @@
+{
+  "summary": "Tested per-attribute product scoping feature in Bulk Category Editor. All 10 test cases passed. The feature allows individual category/filter/spec attributes to be scoped to specific products within a bulk selection.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Bulk Category Editor Modal",
+        "issues": ["Minor React warning: '<div> cannot be a descendant of <p>' - Badge component nested inside paragraph element (non-blocking)"]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_per_attribute_scoping.py"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Minor HTML nesting issue: Badge component (renders as div) is nested inside a <p> element in BulkCategoryEditorSections.jsx around line 892-896. Should use <span> instead of <p> for the parent element."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_per_attribute_scoping.py"
+  ],
+  "success_rate": {
+    "backend": "100% (6/6 tests passed)",
+    "frontend": "100% - All 10 test cases verified"
+  },
+  "test_credentials": "Admin: qasim@tilestation.co.uk / admin123",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Per-attribute scoping feature is fully functional. Key components: (1) ScopeableBadge renders scope icon next to selected attributes, (2) AttributeScopePopover shows product checklist when scope icon clicked, (3) perAttributeScopes state stores Set of product keys per attribute, (4) Scope summary banner shows count of scoped attributes with 'Clear all scopes' button, (5) Section-level scope (SectionProductScope) also works for applying all section attributes to subset of products.",
+  "verified_working": {
+    "test_1_login": "SUCCESS - Logged in with qasim@tilestation.co.uk / admin123",
+    "test_2_supplier_products_page": "SUCCESS - Page loads with 1582 products",
+    "test_3_product_selection": "SUCCESS - Can select products via checkboxes",
+    "test_4_bulk_category_editor_modal": "SUCCESS - Opens with 'Edit Categories' button",
+    "test_5_categories_help_text": "SUCCESS - Shows 'Click attribute scope icon to assign per-product'",
+    "test_6_category_button_click": "SUCCESS - Outdoor Tiles button selects and shows scope icon",
+    "test_7_scope_icon_appears": "SUCCESS - Users icon (scope button) appears next to selected category with data-testid='attr-scope-btn-cat_outdoor-tiles'",
+    "test_8_scope_popover": "SUCCESS - Popover opens with product list, title 'Scope: Outdoor Tiles', search box, and checkboxes",
+    "test_9_product_selection_in_popover": "SUCCESS - Can select products, footer shows '3 of 15 products will get Outdoor Tiles'",
+    "test_10_scope_count_badge": "SUCCESS - Scope button shows count '3' after selecting products",
+    "test_11_scope_summary_banner": "SUCCESS - Banner shows '1 attribute scoped to specific products' with 'Clear all scopes' button",
+    "test_12_section_level_scope": "SUCCESS - Section scope toggle expands to show 15 products with checkboxes",
+    "backend_bulk_update_unified": "PASSED - Endpoint accepts category updates",
+    "backend_categories_api": "PASSED - Returns categories by group",
+    "backend_filters_api": "PASSED - Returns 16 filter types",
+    "backend_specifications_api": "PASSED - Returns spec groups"
+  },
+  "test_details": {
+    "per_attribute_scoping_flow": [
+      "1. Select products in supplier products table",
+      "2. Click 'Edit Categories' to open Bulk Category Editor modal",
+      "3. Click a category button (e.g., 'Outdoor Tiles') to select it",
+      "4. Scope icon (Users icon) appears next to the selected button",
+      "5. Click scope icon to open popover with product checklist",
+      "6. Check specific products to scope the attribute to them",
+      "7. Popover footer shows count: 'X of Y products will get [attribute]'",
+      "8. Close popover - scope button shows count badge",
+      "9. Scope summary banner appears at top showing scoped attribute count",
+      "10. 'Clear all scopes' button allows resetting all scopes",
+      "11. On save, only scoped products receive the attribute"
+    ],
+    "data_testids_verified": [
+      "cat-btn-outdoor-tiles",
+      "attr-scope-btn-cat_outdoor-tiles",
+      "attr-scope-popover-cat_outdoor-tiles",
+      "attr-scope-product-cat_outdoor-tiles-*",
+      "scope-summary-banner",
+      "clear-all-scopes-btn",
+      "section-scope-toggle-categories",
+      "section-scope-product-categories-*"
+    ]
+  }
+}

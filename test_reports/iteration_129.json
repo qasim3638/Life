@@ -1,0 +1,32 @@
+{
+  "summary": "EPOS Trader Credit Visibility & Payment — full E2E verified (backend + frontend). Backend test_epos_credit_flow.py 5/5 assertions PASSED. Frontend Playwright verified all 7 acceptance criteria: TradeCustomerChip render, earned-credit preview pill (£5.00 = 5% of £100 ex-VAT) when toggle ON, rose OFF-warning AlertTriangle when toggle OFF, InvoiceCreditPaymentCard mount with amount input + Apply Max + Clear, deposits-credit-applied-line subtext (+ £120.00 trade credit), and Amount Outstanding correctly reduced (£120 - £120 redeemed = £0.00).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "AdminDashboard", "issues": ["Pre-existing React 'unique key' warning unrelated to this feature (also flagged in iteration_127)"]},
+      {"screen": "InvoiceLineItemsTable", "issues": ["React 'unique key' warning when a freshly added line-item row renders — pre-existing, not from this feature"]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_epos_credit_flow.py",
+    "/app/test_reports/pytest/pytest_epos_credit.xml"
+  ],
+  "action_items": [
+    "(Optional) Fix the InvoiceLineItemsTable 'unique key' React warning (pre-existing, unrelated to this feature)."
+  ],
+  "critical_code_review_comments": [
+    "Both TradeCustomerChip.jsx and InvoiceCreditPaymentCard.js independently fetch /api/shop/customers/lookup with their own 350ms debounce — works but duplicates network calls on every keystroke. Consider hoisting the lookup into Invoice.js (or a shared context/hook) and passing the trade customer object as a prop to both components.",
+    "InvoiceCreditPaymentCard.js does not read the in_store_credit toggle — relies on TradeCustomerChip for the OFF warning. That's fine because the card itself is independent of accrual, but worth a code comment.",
+    "TradeCustomerChip.jsx falls back to accrualEnabled=false on a fetch error of /api/storefront-messages/public, which means a transient network failure will show the rose 'OFF' warning even when the toggle is actually ON. Consider keeping accrualEnabled=null on error so neither pill renders. Current behaviour errs on the safer side (staff sees no-credit warning rather than missing it), just worth flagging."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (5/5)", "frontend": "100% (7/7)"},
+  "test_credentials": "admin@test.com / admin123",
+  "seed_data_creation": "Test trade customer (test-credit-fe-* / credit-fe-907fe9@example.com / £200 balance / 5% rate / T-CREDF1587) seeded and fully cleaned up at end. in_store_credit toggle snapshotted, flipped OFF for OFF-warning verification, then restored to ON. No residual test data left in DB.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend smoke at /app/backend/tests/test_epos_credit_flow.py is the canonical EPOS-credit regression — run with `set -a && source /app/backend/.env && set +a && python tests/test_epos_credit_flow.py`. Frontend testids exposed by this feature: epos-trade-customer-chip, epos-earned-credit-preview, epos-credit-accrual-off, epos-credit-payment-card, epos-credit-amount-input, epos-credit-apply-max-btn, epos-credit-clear-btn, epos-credit-deduct-line, deposits-credit-applied-line. Trade customer lookup is debounced 350ms — wait >= 1.2s after typing email before assertions. To exercise the OFF path, flip db.website_settings.storefront_messages.value.in_store_credit.enabled to false and restore after.",
+  "rca of the issue": "N/A — feature works end-to-end. Previously staff couldn't see earned-credit £ at the till nor apply trade credit as part/full payment; the new TradeCustomerChip earned-preview pill, OFF-toggle AlertTriangle warning, and dedicated InvoiceCreditPaymentCard (positioned below InvoicePrintPreview, above Payments Received) now address (a)+(b)+(c)+(d) per the original brief."
+}

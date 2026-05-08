@@ -1,0 +1,278 @@
+{
+  "FEA3045A1": {
+    "room_lot": 12.99,
+    "pallet": 9.99
+  },
+  "FEA3045A2": {
+    "room_lot": 12.99,
+    "pallet": 9.99
+  },
+  "FEA3045A3": {
+    "room_lot": 12.99,
+    "pallet": 9.99
+  },
+  "FEA3045A4": {
+    "room_lot": 12.99,
+    "pallet": 9.99
+  },
+  "FEA3045A5": {
+    "room_lot": 12.99,
+    "pallet": 9.99
+  },
+  "FEA3045A6": {
+    "room_lot": 12.99,
+    "pallet": 9.99
+  },
+  "FEA3060A1": {
+    "room_lot": 13.49,
+    "pallet": 10.49
+  },
+  "FEA3060A2": {
+    "room_lot": 13.49,
+    "pallet": 10.49
+  },
+  "FEA3060A3": {
+    "room_lot": 13.49,
+    "pallet": 10.49
+  },
+  "FEA3060A4": {
+    "room_lot": 13.49,
+    "pallet": 10.49
+  },
+  "FEA3060A5": {
+    "room_lot": 13.49,
+    "pallet": 10.49
+  },
+  "POL3060A1": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "POL3060A3": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "POL3060A4": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "POL3060A5": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "POL3060A6": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "MAT3060A1": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "POL6060A2": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "POL6060A3": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "POL6060A4": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "POL6060A5": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "POL6060A6": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "POL6060A7": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "POL6060A8": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "POL6060A10": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "POL6060A11": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "MAT6060A1": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "MAT6060A2": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "MAT6060A3": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "MAT6060A4": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "CRV6060A1": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "CRV6060A2": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "POL60120A9": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "POL60120A3": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "POL60120A4": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "POL60120A5": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "POL60120A16": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "POL60120A6": {
+    "room_lot": 15.49,
+    "pallet": 12.49
+  },
+  "POL60120A7": {
+    "room_lot": 15.49,
+    "pallet": 12.49
+  },
+  "POL60120A8": {
+    "room_lot": 15.49,
+    "pallet": 12.49
+  },
+  "MAT60120A1": {
+    "room_lot": 15.49,
+    "pallet": 12.49
+  },
+  "MAT60120A7": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "MAT60120A12": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "MAT60120A5": {
+    "room_lot": 14.99,
+    "pallet": 11.99
+  },
+  "MAT60120A4": {
+    "room_lot": 15.49,
+    "pallet": 12.49
+  },
+  "MAT60120A8": {
+    "room_lot": 22.0,
+    "pallet": 19.0
+  },
+  "MAT60120A9": {
+    "room_lot": 22.0,
+    "pallet": 19.0
+  },
+  "MAT60120A10": {
+    "room_lot": 22.0,
+    "pallet": 19.0
+  },
+  "MAT60120A11": {
+    "room_lot": 22.0,
+    "pallet": 19.0
+  },
+  "CRV60120A1": {
+    "room_lot": 15.99,
+    "pallet": 12.99
+  },
+  "CRV60120A2": {
+    "room_lot": 15.99,
+    "pallet": 12.99
+  },
+  "CRV60120A7": {
+    "room_lot": 15.99,
+    "pallet": 12.99
+  },
+  "POL8080A1": {
+    "room_lot": 15.49,
+    "pallet": 12.49
+  },
+  "POL8080A2": {
+    "room_lot": 15.49,
+    "pallet": 12.49
+  },
+  "MAT100100A1": {
+    "room_lot": 23.0,
+    "pallet": 20.0
+  },
+  "MAT100100A2": {
+    "room_lot": 23.0,
+    "pallet": 20.0
+  },
+  "CRV8080A1": {
+    "room_lot": 15.49,
+    "pallet": 12.49
+  },
+  "POL80120A1": {
+    "room_lot": 16.99,
+    "pallet": 13.99
+  },
+  "POL80120A2": {
+    "room_lot": 16.99,
+    "pallet": 13.99
+  },
+  "POL80120A3": {
+    "room_lot": 16.99,
+    "pallet": 13.99
+  },
+  "POL80120A4": {
+    "room_lot": 16.99,
+    "pallet": 13.99
+  },
+  "POL80120A5": {
+    "room_lot": 16.99,
+    "pallet": 13.99
+  },
+  "CAR80120A1": {
+    "room_lot": 17.99,
+    "pallet": 14.99
+  },
+  "GLS60120A2": {
+    "room_lot": 105.0,
+    "pallet": 99.0
+  },
+  "GLS60120A3": {
+    "room_lot": 105.0,
+    "pallet": 99.0
+  },
+  "GLS60120A5": {
+    "room_lot": 105.0,
+    "pallet": 99.0
+  },
+  "GLS60120A6": {
+    "room_lot": 105.0,
+    "pallet": 99.0
+  },
+  "GLS60120A7": {
+    "room_lot": 105.0,
+    "pallet": 99.0
+  },
+  "GLS60120A8": {
+    "room_lot": 105.0,
+    "pallet": 99.0
+  }
+}

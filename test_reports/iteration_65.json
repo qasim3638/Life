@@ -1,0 +1,74 @@
+{
+  "summary": "P1 Features Testing Complete. All 3 P1 tasks verified: 1) JWT token now has 30-day expiry (verified via token decode), 2) Trade Banner bathroom exclusive card with 50% badge linking to /shop/bathroom is present, 3) Admin localStorage key fixed from 'adminToken' to 'token' - Homepage Manager saves work without auth errors. BATHROOM nav link code is correct (/shop/bathroom) but navigation API returns test data overriding fallback.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Navigation Bar",
+        "issues": ["TEST LINK and TEST_SITEMAP_LINK items visible in navigation - test data from previous testing is stored in database and overriding the fallback navigation which correctly includes BATHROOM → /shop/bathroom"]
+      },
+      {
+        "screen": "Bathroom Page",
+        "issues": ["[TEST_SAVE_CHECK] placeholder text visible in hero description - appears to be test data"]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_p1_features.py",
+    "/app/test_reports/pytest/pytest_p1_features.xml"
+  ],
+  "action_items": [
+    "OPTIONAL: Clean up test navigation data from database to restore proper BATHROOM nav link visibility (code is correct, data issue)"
+  ],
+  "critical_code_review_comments": [],
+  "updated_files": [
+    "/app/backend/tests/test_p1_features.py"
+  ],
+  "success_rate": {
+    "backend": "100% (10/10 tests passed)",
+    "frontend": "100% (all P1 features verified)"
+  },
+  "test_credentials": "Admin: qasim@tilestation.co.uk / Tilestation_9614",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "P1 features all working: 1) JWT 30-day expiry confirmed via token decode in pytest, 2) Trade CTA Banner has bathroom exclusive card with 50% badge linking to /shop/bathroom, 3) HomepageManager.jsx and BathroomPageAdmin.jsx now use localStorage.getItem('token') instead of 'adminToken' - admin can save changes without auth errors. Navigation bar shows test data (TEST LINK, TEST_SITEMAP_LINK) from database instead of fallback nav items - this is a data cleanup issue, not a code issue. The fallback navigation in TileStationHome.js line 111 correctly has BATHROOM → /shop/bathroom.",
+  "features_tested": {
+    "backend_jwt_expiry": [
+      "✓ POST /api/auth/login returns token with ~30 day expiry (verified: 29-30 days)",
+      "✓ POST /api/auth/refresh-token returns new token with ~30 day expiry",
+      "✓ Token decode shows correct exp claim",
+      "✓ Refresh without auth correctly rejected (401/403)"
+    ],
+    "frontend_trade_banner": [
+      "✓ Trade CTA Banner (data-testid='trade-cta-banner') present on homepage",
+      "✓ Bathroom Exclusive card with 50% badge found",
+      "✓ Card links to /shop/bathroom",
+      "✓ Card text: 'Exclusive: Bathroom Catalogue' and '50% off all bathroom products — Trade exclusive'"
+    ],
+    "frontend_admin_token_fix": [
+      "✓ localStorage.getItem('token') used in HomepageManager.jsx (verified via grep)",
+      "✓ localStorage.getItem('token') used in BathroomPageAdmin.jsx (verified via grep)",
+      "✓ Admin login sets 'token' key in localStorage (verified via browser)",
+      "✓ 'adminToken' key NOT present in localStorage after login",
+      "✓ Homepage Manager Video Showroom section saves successfully without auth errors",
+      "✓ Toast message 'Video showroom settings saved' confirms successful save"
+    ],
+    "frontend_bathroom_page": [
+      "✓ /shop/bathroom page loads correctly",
+      "✓ 'Bath Station' title displayed",
+      "✓ Public discount 35% shown",
+      "✓ Trade discount 50% shown",
+      "✓ 'Sign In to Download' button present"
+    ],
+    "navigation_code_review": [
+      "✓ TileStationHome.js line 111: BATHROOM link_url is '/shop/bathroom' (correct)",
+      "ℹ Navigation API returns test data overriding fallback - data cleanup needed"
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "summary": "Cart Save Banner regression — backend (6/6 pytest) + frontend (5/5 critical flows) all green. Banner renders on /shop/tile-cart only when BOTH cart_save_banner_enabled (storefront-features/public) AND coupon_enabled (welcome-popup/public) are true; hides immediately when the feature flag is toggled off via admin PUT. Email submit POSTs to /api/website-admin/welcome-popup/email, shows the 'Check your inbox' success state, persists the lead in popup_emails, and mints exactly one single-use WELCOME-* code in shop_discount_codes (verified active=True, max_uses=1, source='welcome_popup', email lower-cased). Idempotent on duplicate submission. Dismiss (X) writes 'tilestation_cart_save_dismissed=1' to localStorage and the banner stays hidden after reload. Core cart flow intact: Order Summary heading, qty +/- controls, remove buttons, Proceed-to-Checkout button, subtotal/delivery/total all render correctly with the banner mounted.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_cart_save_banner.py",
+    "/app/test_reports/pytest/pytest_cart_save_banner.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "CartSaveBanner.jsx:53 — POST /welcome-popup/email errors are swallowed silently ('catch { /* silent — never block cart */ }'). The UI still flips to 'submitted' state ONLY in the success branch, but if the request fails (e.g. 500), the user sees nothing change at all (button re-enables, no toast). Consider surfacing a single 'Try again' inline error so a real failure isn't invisible. Not a blocker.",
+    "CartSaveBanner.jsx loads BOTH /storefront-features/public and /welcome-popup/public on every cart page mount with no caching/dedup — these are also fetched by the welcome-popup component itself. For a high-traffic storefront, consider memoising via a shared context or React Query, but acceptable as-is.",
+    "routes/website_admin.py:3721 capture_popup_email — the WELCOME email is sent inline (await send_email_notification) inside the request handler. If SMTP is slow/down the POST will block until the inner try/except catches. send_email_notification appears to swallow errors (warning logged), but if it ever raises a non-Exception or hangs, the user-facing request will too. Consider BackgroundTasks for the send.",
+    "routes/website_admin.py:3721 — coupon settings (percent/expires) are read AFTER the popup_emails insert. If coupon_enabled is true but generate_promo_code_for_email throws, the email row is already persisted with no code minted. Order is fine for idempotency (re-submit will reuse the same row and try to mint again), but worth a one-line comment in the handler.",
+    "services/promo_codes.generate_promo_code_for_email reuses an existing UNUSED active code per (email, source). Test confirmed only ONE WELCOME-* code is created across repeated banner submissions for the same email — matches spec.",
+    "storefront_features.py PUT requires super_admin (correct), GET admin allows super_admin/admin/manager (correct), GET /public is open (correct)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_cart_save_banner.py (new — 6 pytest cases)"
+  ],
+  "success_rate": {
+    "backend": "100% (6/6)",
+    "frontend": "100% (5/5: render-when-flags-on, email-submit-success, lead+code persistence, dismiss-persists-via-localStorage, hide-when-feature-flag-off, plus core cart elements still render)"
+  },
+  "test_credentials": "admin@test.com / admin123 (super_admin)",
+  "seed_data_creation": "Created TEST_cartbanner_*@tilestationtest.com and TEST_e2e_banner@tilestationtest.com rows in popup_emails + matching WELCOME-* shop_discount_codes during the test run. Backend tests have a teardown that deletes them per email; manual cleanup of TEST_e2e_banner@tilestationtest.com is harmless to leave (single row).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Reusable regression at /app/backend/tests/test_cart_save_banner.py — 6 cases covering storefront-features/public flag exposure, admin PUT toggle reflection on /public, welcome-popup/public coupon fields, email-capture happy path (lead row + WELCOME-* code minted with email field, max_uses=1, source=welcome_popup), 400 on missing email, and idempotent re-submit (still 1 popup_emails row + 1 unused WELCOME code). Frontend flows verified via Playwright on the live preview URL: seed cart in localStorage key 'tilestation_cart' with item {id,name,price,quantity,priceType:'room_lot'}; banner test-ids are 'cart-save-banner', 'cart-save-banner-input', 'cart-save-banner-submit', 'cart-save-banner-success', 'cart-save-banner-dismiss', 'cart-save-banner-dismiss-success'; localStorage dismiss key is 'tilestation_cart_save_dismissed'. Note: /shop home page still has the pre-existing 'Failed to execute json on Response: body stream already read' product-fetch error — unrelated to cart banner work, was present before this iteration.",
+  "rca of the issue": "N/A — no bugs found."
+}

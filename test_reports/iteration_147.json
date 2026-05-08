@@ -1,0 +1,35 @@
+{
+  "summary": "Verified the new '🚨 Payment failed' Telegram alert pipeline end-to-end. Built an 18-test pytest suite covering: (a) auth gating on POST /api/notifications/telegram/test-failed-payment (no token / invalid token → 401/403), (b) all 4 validation error paths (disabled / failed_payment toggle OFF / missing bot_token / missing chat_ids — each returns 400 with the expected detail copy), (c) happy path returns {ok:true, result:dict, preview_text:str} where preview_text contains '🚨' + 'Payment failed' + 'TEST', (d) dedupe isolation — source inspection confirms test endpoint uses 'failed-payment-test:' prefix while real webhook uses 'failed-payment:<order_id|pi_id>' prefix, (e) server.py stripe_webhook failed-payment branch handles BOTH event types in the same elif tuple ('payment_intent.payment_failed' AND 'checkout.session.async_payment_failed'), (f) idempotent persistence via update_one filter {'id': order_id, 'payment_failed_at': {'$exists': False}} stamping payment_failed_at/reason/code/status='failed' exactly once — Stripe retries cannot overwrite, (g) order_id resolution via metadata.order_id primary + payment_transactions.find_one({'session_id': sess_id}) fallback, (h) decline info extraction (last_payment_error.message[:160], decline_code/code, amount/amount_total divided by 100 for £), (i) fire_and_forget('failed_payment', ...) try/except wrap with logging.warning fallback, (j) defaults: TelegramEventToggles.failed_payment:bool=True and services.telegram_notify._default_config.events.failed_payment=True, (k) regression: /test-new-order endpoint still 400s when telegram disabled. All 18/18 tests PASSED. Original telegram config snapshotted on entry and restored on teardown so preview env is undisturbed.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "routes/notifications.py::test_failed_payment", "issue": "Spec in review request says error copy is 'The failed_payment event toggle is OFF — turn it on first.' but actual code (mirroring test_new_order) says 'The \\'failed_payment\\' event toggle is OFF — turn it on first.' (single quotes around event name). Harmless — tests match actual shipped copy."}
+    ]
+  },
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_telegram_failed_payment_alert.py",
+    "/app/test_reports/pytest/telegram_failed_payment.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Idempotent update filter {'payment_failed_at': {'$exists': False}} is the right pattern — Stripe retries after >1h dedupe window cannot clobber the original decline timestamp. Nice.",
+    "Dedupe key prefix split is correct: real webhook uses 'failed-payment:{order_id|pi_id}', test endpoint uses 'failed-payment-test:{fake_order}'. Test pings cannot suppress real alerts (same pattern as new_order — consistent).",
+    "fire_and_forget call is wrapped in try/except with logging.warning — a Telegram outage cannot break the Stripe webhook flow (order will still update in Mongo). Correct.",
+    "order_id resolution falls back to payment_transactions only for checkout.session.async_payment_failed (line 8595 guards the type). For payment_intent.payment_failed the PI is expected to carry metadata.order_id from the PI-create call. Verify upstream PI-create always sets metadata.order_id or the alert will say 'order=—'.",
+    "Amount fallback: PI uses obj.get('amount'); checkout.session uses amount_total. Both in minor units. Formula int(amount_minor)/100.0 is correct for GBP but hardcodes '£' — if the shop ever supports multi-currency the alert message will display '£' for EUR/USD too.",
+    "Decline message truncated to [:160] — sensible given Telegram's 4096-char message limit and prevents verbose Stripe error objects from flooding the channel.",
+    "The 4 validation gates in test_failed_payment are copy-paste from test_new_order with only the event name swapped — consistent and correct, but could be refactored into a shared helper if more test-* endpoints are added.",
+    "server.py is now 9707 lines (up from 9600 in iteration_146) — still well past the 700-line guideline. Not blocking this feature but the webhook function specifically keeps growing."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_telegram_failed_payment_alert.py (created)"
+  ],
+  "success_rate": {"backend": "100%", "frontend": "n/a (skipped per request)"},
+  "test_credentials": "admin@test.com / admin123 (super_admin) — login via POST /api/auth/login confirmed working",
+  "seed_data_creation": "None. Telegram config was temporarily mutated during tests but the autouse module-scope fixture snapshots the original config at setup and restores it on teardown.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "test_telegram_failed_payment_alert.py is fully repeatable — fixture restores config and uses fake bot_tokens (1234567890:AA-test-fake-fp...) so no real Telegram traffic is generated (the 401 from Telegram's side is OK because the code reached send_telegram which proves all gates passed). In-process dedupe ledger resets on backend restart. If notification config moves to a new collection or key, update the _save_config helper. The happy-path test rotates bot_token on each run via int(time.time()) suffix to avoid dedupe collision inside the same backend process.",
+  "rca of the issue": "N/A — feature wire-up VERIFIED present and correct. All 4 validation gates trip with correct 400 + detail. Happy path reaches notify_event (preview_text includes 🚨/Payment failed/TEST, result is dict with sent/errors/skipped). Source-code assertions confirm both Stripe event types are handled, idempotent Mongo stamping, order_id fallback via payment_transactions, decline-info extraction, fire_and_forget wire-up with dedupe_key='failed-payment:{dedupe}', try/except wrap, and isolated 'failed-payment-test:' prefix for the test endpoint."
+}

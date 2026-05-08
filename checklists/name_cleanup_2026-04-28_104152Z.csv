@@ -1,0 +1,701 @@
+issue_type,product_id,sku,before,after_or_details
+missing_finish,tile-ULT-GGI,ULT-GGI,GGI,
+missing_finish,tile-ULT-INS-MB,ULT-INS-MB,INS MIXING BUCKET,
+missing_finish,tile-ULT-LIR,ULT-LIR,LEVEL IT RENOVATE,
+missing_finish,tile-ULT-PIG,ULT-PIG,PRIME IT GRIT,
+missing_finish,tile-ULT-PP,ULT-PP,PRO-PRIME,
+missing_finish,tile-ULT-EC,ULT-EC,UT EASY CLEAN,
+missing_finish,tile-ULT-GA1L,ULT-GA1L,UT GROUT AID 1L,
+missing_finish,tile-ULT-GH1L,ULT-GH1L,UT GROUT HAZE 1L,
+missing_finish,tile-ULT-PGEC,ULT-PGEC,UT PG EPOXY CHAR,
+missing_finish,tile-ULT-PGEG,ULT-PGEG,UT PG EPOXY GREY,
+missing_finish,tile-ULT-PGEJ,ULT-PGEJ,UT PG EPOXY JAS,
+missing_finish,tile-ULT-PGESG,ULT-PGESG,UT PG EPOXY SIL-GREY,
+missing_finish,tile-ULT-PGEW,ULT-PGEW,UT PG EPOXY WHITE,
+missing_finish,tile-ULT-PGFAL3,ULT-PGFAL3,UT PG FLEXIBLE AL 3,
+missing_finish,tile-ULT-PGFBW3,ULT-PGFBW3,UT PG FLEXIBLE BW 3,
+missing_finish,tile-ULT-PGFDG10,ULT-PGFDG10,UT PG FLEXIBLE DG 10,
+missing_finish,tile-ULT-PGFDG3,ULT-PGFDG3,UT PG FLEXIBLE DG 3,
+missing_finish,tile-ULT-PGFI3,ULT-PGFI3,UT PG FLEXIBLE I 3,
+missing_finish,tile-ULT-PGFM3,ULT-PGFM3,UT PG FLEXIBLE M 3,
+missing_finish,tile-ULT-PGFVW10,ULT-PGFVW10,UT PG FLEXIBLE VW 10,
+missing_finish,tile-ULT-PGFVW3,ULT-PGFVW3,UT PG FLEXIBLE VW 3,
+missing_finish,tile-ULT-PGFLCH,ULT-PGFLCH,UT PG FLOWABLE CH,
+missing_finish,tile-ULT-PGFLG,ULT-PGFLG,UT PG FLOWABLE G,
+missing_finish,tile-ULT-PGFLL,ULT-PGFLL,UT PG FLOWABLE L,
+missing_finish,tile-ULT-PGFLSG,ULT-PGFLSG,UT PG FLOWABLE SG,
+missing_finish,tile-ULT-PAS,ULT-PAS,UT PRO AQUA SHIELD,
+missing_finish,tile-ULT-PSG,ULT-PSG,UT PRO SUPERGRIP,
+missing_finish,tile-ULT-PGFX20G,ULT-PGFX20G,UT PROGRIP FX 20 G,
+missing_finish,tile-ULT-PGFX20W,ULT-PGFX20W,UT PROGRIP FX 20 W,
+missing_finish,tile-ULT-TGS,ULT-TGS,UT TILE AND GROUT SEALER,
+missing_finish,tile-ULT-TC1L,ULT-TC1L,UT TILE CLEANER 1L,
+missing_finish,tile-ULT-TX1L,ULT-TX1L,UT TILE XTREME 1L,
+missing_finish,tile-ULT-PFSP20G,ULT-PFSP20G,UTF PFLEX SPES 20 G,
+missing_finish,tile-ULT-PFSP20W,ULT-PFSP20W,UTF PFLEX SPES 20 W,
+missing_finish,tile-ULT-PGFXCH10,ULT-PGFXCH10,UTF PG FLEX CH 10,
+missing_finish,tile-ULT-PGFXMG10,ULT-PGFXMG10,UTF PG FLEX MG 10,
+missing_finish,tile-ULT-PGFXBL3,ULT-PGFXBL3,UTF PG FLEXIBLE BL 3,
+missing_finish,tile-ULT-PGFXCH3,ULT-PGFXCH3,UTF PG FLEXIBLE CH 3,
+missing_finish,tile-ULT-PGFXG10,ULT-PGFXG10,UTF PG FLEXIBLE G 10,
+missing_finish,tile-ULT-PGFXG3,ULT-PGFXG3,UTF PG FLEXIBLE G 3,
+missing_finish,tile-ULT-PGFXJ10,ULT-PGFXJ10,UTF PG FLEXIBLE J 10,
+missing_finish,tile-ULT-PGFXJ3,ULT-PGFXJ3,UTF PG FLEXIBLE J 3,
+missing_finish,tile-ULT-PGFXL10,ULT-PGFXL10,UTF PG FLEXIBLE L 10,
+missing_finish,tile-ULT-PGFXL3,ULT-PGFXL3,UTF PG FLEXIBLE L 3,
+missing_finish,tile-ULT-PGFXMG3,ULT-PGFXMG3,UTF PG FLEXIBLE MG 3,
+missing_finish,tile-ULT-PGFXS10,ULT-PGFXS10,UTF PG FLEXIBLE S 10,
+missing_finish,tile-ULT-PGFXS3,ULT-PGFXS3,UTF PG FLEXIBLE S 3,
+missing_finish,tile-ULT-PGFXT3,ULT-PGFXT3,UTF PG FLEXIBLE T 3,
+missing_finish,tile-ULT-PLF20,ULT-PLF20,UTF PLEVEL FIBRE 20,
+missing_finish,tile-ULT-PLR20,ULT-PLR20,UTF PLEVEL RAPID 20,
+missing_finish,tile-ULT-PSSF20G,ULT-PSSF20G,UTF PRO SS FLEX 20 G,
+missing_finish,tile-ULT-PSSF20W,ULT-PSSF20W,UTF PRO SS FLEX 20 W,
+missing_finish,tile-ULT-PSW,ULT-PSW,UTF PRO SUPERWHITE,
+missing_finish,tile-ULT-PFS220G,ULT-PFS220G,UTF PROFLEX S2 20 G,
+missing_finish,tile-ULT-PFS220W,ULT-PFS220W,UTF PROFLEX S2 20 W,
+missing_finish,tile-ULT-PFSP20G2,ULT-PFSP20G2,UTF PROFLEX SP 20 G,
+missing_finish,tile-ULT-PFSP20W2,ULT-PFSP20W2,UTF PROFLEX SP 20 W,
+missing_finish,tile-ULT-PL120,ULT-PL120,UTF PROLEVEL ONE 20,
+missing_finish,tile-ULT-PL2,ULT-PL2,UTF PROLEVEL TWO,
+missing_finish,tile-ULT-PL2BD,ULT-PL2BD,UTF PROLEVEL TWO BOT DIST,
+missing_finish,tile-ULT-PPCB,ULT-PPCB,UTF PROPAVE COSMIC B,
+missing_finish,tile-ULT-PPM,ULT-PPM,UTF PROPAVE MORTAR,
+missing_finish,tile-ULT-PPN,ULT-PPN,UTF PROPAVE NATURAL,
+missing_finish,tile-ULT-PPP,ULT-PPP,UTF PROPAVE PEBBLE,
+missing_finish,tile-ULT-PPPR,ULT-PPPR,UTF PROPAVE PRIMER,
+missing_finish,tile-ULT-PPS,ULT-PPS,UTF PROPAVE STORM,
+missing_finish,tile-ULT-PPR1L,ULT-PPR1L,UTF PROPRIMER 1L,
+missing_finish,tile-ULT-PPR5L,ULT-PPR5L,UTF PROPRIMER 5L,
+missing_finish,tile-ULT-PRRS20G,ULT-PRRS20G,UTF PRORAPID RS 20 G,
+missing_finish,tile-ULT-PRRS20W,ULT-PRRS20W,UTF PRORAPID RS 20 W,
+missing_finish,tile-ULT-PSBLK,ULT-PSBLK,UTF PROSEALER BLACK,
+missing_finish,tile-ULT-PSCHR,ULT-PSCHR,UTF PROSEALER CHAR,
+missing_finish,tile-ULT-PSCLR,ULT-PSCLR,UTF PROSEALER CLEAR,
+missing_finish,tile-ULT-PSGRY,ULT-PSGRY,UTF PROSEALER GREY,
+missing_finish,tile-ULT-PSJAS,ULT-PSJAS,UTF PROSEALER JASM,
+missing_finish,tile-ULT-PSLMS,ULT-PSLMS,UTF PROSEALER LIMES,
+missing_finish,tile-ULT-PSMGR,ULT-PSMGR,UTF PROSEALER MID-GR,
+missing_finish,tile-ULT-PSSGR,ULT-PSSGR,UTF PROSEALER SIL-GR,
+missing_finish,tile-ULT-PSTPE,ULT-PSTPE,UTF PROSEALER TAUPE,
+missing_finish,tile-ULT-PSWHT,ULT-PSWHT,UTF PROSEALER WHITE,
+missing_finish,tile-ULT-PSTAPE,ULT-PSTAPE,UTF PROSHIELD TAPE,
+missing_finish,69dc1deb24124c90dbb0cf00,TEST-HIM-001,Himalaya Marble White 60x60cm Matt,
+missing_finish,tile-TEST_SCOPED_SAVE_cdaa156c,TEST_SCOPED_SAVE_cdaa156c,Test Product TEST_SCOPED_SAVE_cdaa156c,
+missing_finish,tile-TEST_CAT_QUERY_1776944331,TEST_CAT_QUERY_1776944331,Test Category Query TEST_CAT_QUERY_1776944331 60x120cm,
+missing_finish,tile-TEST_SCOPED_SAVE_28574cb5,TEST_SCOPED_SAVE_28574cb5,Test Product TEST_SCOPED_SAVE_28574cb5,
+missing_finish,tile-TEST_CAT_QUERY_1776944582,TEST_CAT_QUERY_1776944582,Test Category Query TEST_CAT_QUERY_1776944582 60x120cm,
+missing_finish,tile-TEST_SCOPED_SAVE_3b917f06,TEST_SCOPED_SAVE_3b917f06,Test Product TEST_SCOPED_SAVE_3b917f06,
+missing_finish,tile-TEST_CAT_QUERY_1776975031,TEST_CAT_QUERY_1776975031,Test Category Query TEST_CAT_QUERY_1776975031 60x120cm,
+missing_finish,tile-TS-SAMPLE-01,TS-SAMPLE-01,Order a Sample,
+missing_size,tile-ULT-GGI,ULT-GGI,GGI,
+missing_size,tile-ULT-INS-MB,ULT-INS-MB,INS MIXING BUCKET,
+missing_size,tile-ULT-LIR,ULT-LIR,LEVEL IT RENOVATE,
+missing_size,tile-ULT-PIG,ULT-PIG,PRIME IT GRIT,
+missing_size,tile-ULT-PP,ULT-PP,PRO-PRIME,
+missing_size,tile-ULT-EC,ULT-EC,UT EASY CLEAN,
+missing_size,tile-ULT-GA1L,ULT-GA1L,UT GROUT AID 1L,
+missing_size,tile-ULT-GH1L,ULT-GH1L,UT GROUT HAZE 1L,
+missing_size,tile-ULT-PGEC,ULT-PGEC,UT PG EPOXY CHAR,
+missing_size,tile-ULT-PGEG,ULT-PGEG,UT PG EPOXY GREY,
+missing_size,tile-ULT-PGEJ,ULT-PGEJ,UT PG EPOXY JAS,
+missing_size,tile-ULT-PGESG,ULT-PGESG,UT PG EPOXY SIL-GREY,
+missing_size,tile-ULT-PGEW,ULT-PGEW,UT PG EPOXY WHITE,
+missing_size,tile-ULT-PGFAL3,ULT-PGFAL3,UT PG FLEXIBLE AL 3,
+missing_size,tile-ULT-PGFBW3,ULT-PGFBW3,UT PG FLEXIBLE BW 3,
+missing_size,tile-ULT-PGFDG10,ULT-PGFDG10,UT PG FLEXIBLE DG 10,
+missing_size,tile-ULT-PGFDG3,ULT-PGFDG3,UT PG FLEXIBLE DG 3,
+missing_size,tile-ULT-PGFI3,ULT-PGFI3,UT PG FLEXIBLE I 3,
+missing_size,tile-ULT-PGFM3,ULT-PGFM3,UT PG FLEXIBLE M 3,
+missing_size,tile-ULT-PGFVW10,ULT-PGFVW10,UT PG FLEXIBLE VW 10,
+missing_size,tile-ULT-PGFVW3,ULT-PGFVW3,UT PG FLEXIBLE VW 3,
+missing_size,tile-ULT-PGFLCH,ULT-PGFLCH,UT PG FLOWABLE CH,
+missing_size,tile-ULT-PGFLG,ULT-PGFLG,UT PG FLOWABLE G,
+missing_size,tile-ULT-PGFLL,ULT-PGFLL,UT PG FLOWABLE L,
+missing_size,tile-ULT-PGFLSG,ULT-PGFLSG,UT PG FLOWABLE SG,
+missing_size,tile-ULT-PAS,ULT-PAS,UT PRO AQUA SHIELD,
+missing_size,tile-ULT-PSG,ULT-PSG,UT PRO SUPERGRIP,
+missing_size,tile-ULT-PGFX20G,ULT-PGFX20G,UT PROGRIP FX 20 G,
+missing_size,tile-ULT-PGFX20W,ULT-PGFX20W,UT PROGRIP FX 20 W,
+missing_size,tile-ULT-TGS,ULT-TGS,UT TILE AND GROUT SEALER,
+missing_size,tile-ULT-TC1L,ULT-TC1L,UT TILE CLEANER 1L,
+missing_size,tile-ULT-TX1L,ULT-TX1L,UT TILE XTREME 1L,
+missing_size,tile-ULT-PFSP20G,ULT-PFSP20G,UTF PFLEX SPES 20 G,
+missing_size,tile-ULT-PFSP20W,ULT-PFSP20W,UTF PFLEX SPES 20 W,
+missing_size,tile-ULT-PGFXCH10,ULT-PGFXCH10,UTF PG FLEX CH 10,
+missing_size,tile-ULT-PGFXMG10,ULT-PGFXMG10,UTF PG FLEX MG 10,
+missing_size,tile-ULT-PGFXBL3,ULT-PGFXBL3,UTF PG FLEXIBLE BL 3,
+missing_size,tile-ULT-PGFXCH3,ULT-PGFXCH3,UTF PG FLEXIBLE CH 3,
+missing_size,tile-ULT-PGFXG10,ULT-PGFXG10,UTF PG FLEXIBLE G 10,
+missing_size,tile-ULT-PGFXG3,ULT-PGFXG3,UTF PG FLEXIBLE G 3,
+missing_size,tile-ULT-PGFXJ10,ULT-PGFXJ10,UTF PG FLEXIBLE J 10,
+missing_size,tile-ULT-PGFXJ3,ULT-PGFXJ3,UTF PG FLEXIBLE J 3,
+missing_size,tile-ULT-PGFXL10,ULT-PGFXL10,UTF PG FLEXIBLE L 10,
+missing_size,tile-ULT-PGFXL3,ULT-PGFXL3,UTF PG FLEXIBLE L 3,
+missing_size,tile-ULT-PGFXMG3,ULT-PGFXMG3,UTF PG FLEXIBLE MG 3,
+missing_size,tile-ULT-PGFXS10,ULT-PGFXS10,UTF PG FLEXIBLE S 10,
+missing_size,tile-ULT-PGFXS3,ULT-PGFXS3,UTF PG FLEXIBLE S 3,
+missing_size,tile-ULT-PGFXT3,ULT-PGFXT3,UTF PG FLEXIBLE T 3,
+missing_size,tile-ULT-PLF20,ULT-PLF20,UTF PLEVEL FIBRE 20,
+missing_size,tile-ULT-PLR20,ULT-PLR20,UTF PLEVEL RAPID 20,
+missing_size,tile-ULT-PSSF20G,ULT-PSSF20G,UTF PRO SS FLEX 20 G,
+missing_size,tile-ULT-PSSF20W,ULT-PSSF20W,UTF PRO SS FLEX 20 W,
+missing_size,tile-ULT-PSW,ULT-PSW,UTF PRO SUPERWHITE,
+missing_size,tile-ULT-PFS220G,ULT-PFS220G,UTF PROFLEX S2 20 G,
+missing_size,tile-ULT-PFS220W,ULT-PFS220W,UTF PROFLEX S2 20 W,
+missing_size,tile-ULT-PFSP20G2,ULT-PFSP20G2,UTF PROFLEX SP 20 G,
+missing_size,tile-ULT-PFSP20W2,ULT-PFSP20W2,UTF PROFLEX SP 20 W,
+missing_size,tile-ULT-PL120,ULT-PL120,UTF PROLEVEL ONE 20,
+missing_size,tile-ULT-PL2,ULT-PL2,UTF PROLEVEL TWO,
+missing_size,tile-ULT-PL2BD,ULT-PL2BD,UTF PROLEVEL TWO BOT DIST,
+missing_size,tile-ULT-PPCB,ULT-PPCB,UTF PROPAVE COSMIC B,
+missing_size,tile-ULT-PPM,ULT-PPM,UTF PROPAVE MORTAR,
+missing_size,tile-ULT-PPN,ULT-PPN,UTF PROPAVE NATURAL,
+missing_size,tile-ULT-PPP,ULT-PPP,UTF PROPAVE PEBBLE,
+missing_size,tile-ULT-PPPR,ULT-PPPR,UTF PROPAVE PRIMER,
+missing_size,tile-ULT-PPS,ULT-PPS,UTF PROPAVE STORM,
+missing_size,tile-ULT-PPR1L,ULT-PPR1L,UTF PROPRIMER 1L,
+missing_size,tile-ULT-PPR5L,ULT-PPR5L,UTF PROPRIMER 5L,
+missing_size,tile-ULT-PRRS20G,ULT-PRRS20G,UTF PRORAPID RS 20 G,
+missing_size,tile-ULT-PRRS20W,ULT-PRRS20W,UTF PRORAPID RS 20 W,
+missing_size,tile-ULT-PSBLK,ULT-PSBLK,UTF PROSEALER BLACK,
+missing_size,tile-ULT-PSCHR,ULT-PSCHR,UTF PROSEALER CHAR,
+missing_size,tile-ULT-PSCLR,ULT-PSCLR,UTF PROSEALER CLEAR,
+missing_size,tile-ULT-PSGRY,ULT-PSGRY,UTF PROSEALER GREY,
+missing_size,tile-ULT-PSJAS,ULT-PSJAS,UTF PROSEALER JASM,
+missing_size,tile-ULT-PSLMS,ULT-PSLMS,UTF PROSEALER LIMES,
+missing_size,tile-ULT-PSMGR,ULT-PSMGR,UTF PROSEALER MID-GR,
+missing_size,tile-ULT-PSSGR,ULT-PSSGR,UTF PROSEALER SIL-GR,
+missing_size,tile-ULT-PSTPE,ULT-PSTPE,UTF PROSEALER TAUPE,
+missing_size,tile-ULT-PSWHT,ULT-PSWHT,UTF PROSEALER WHITE,
+missing_size,tile-ULT-PSTAPE,ULT-PSTAPE,UTF PROSHIELD TAPE,
+missing_size,tile-TEST_SCOPED_SAVE_4ef05734,TEST_SCOPED_SAVE_4ef05734,Test Product TEST_SCOPED_SAVE_4ef05734,
+missing_size,tile-TEST_TILES_SYNC_1af06da4,TEST_TILES_SYNC_1af06da4,Test Tiles Sync TEST_TILES_SYNC_1af06da4,
+missing_size,tile-TEST_SCOPED_SAVE_03eb28b0,TEST_SCOPED_SAVE_03eb28b0,Test Product TEST_SCOPED_SAVE_03eb28b0,
+missing_size,tile-TEST_NO_CAT_1775766485,TEST_NO_CAT_1775766485,Test No Category Product,
+missing_size,tile-TEST_SCOPED_SAVE_f8ee3b15,TEST_SCOPED_SAVE_f8ee3b15,Test Product TEST_SCOPED_SAVE_f8ee3b15,
+missing_size,tile-TEST_SCOPED_SAVE_615b00e7,TEST_SCOPED_SAVE_615b00e7,Test Product TEST_SCOPED_SAVE_615b00e7,
+missing_size,tile-TEST_SCOPED_SAVE_f79cec56,TEST_SCOPED_SAVE_f79cec56,Test Product TEST_SCOPED_SAVE_f79cec56,
+missing_size,tile-TEST_SCOPED_SAVE_72d41b12,TEST_SCOPED_SAVE_72d41b12,Test Product TEST_SCOPED_SAVE_72d41b12,
+missing_size,tile-TEST_SCOPED_SAVE_a6248c2b,TEST_SCOPED_SAVE_a6248c2b,Test Product TEST_SCOPED_SAVE_a6248c2b,
+missing_size,tile-TEST_SCOPED_SAVE_5744739c,TEST_SCOPED_SAVE_5744739c,Test Product TEST_SCOPED_SAVE_5744739c,
+missing_size,tile-TEST_SCOPED_SAVE_f5909cee,TEST_SCOPED_SAVE_f5909cee,Test Product TEST_SCOPED_SAVE_f5909cee,
+missing_size,tile-TEST_SCOPED_SAVE_838d79c7,TEST_SCOPED_SAVE_838d79c7,Test Product TEST_SCOPED_SAVE_838d79c7,
+missing_size,tile-TEST_SCOPED_SAVE_aab8a84c,TEST_SCOPED_SAVE_aab8a84c,Test Product TEST_SCOPED_SAVE_aab8a84c,
+missing_size,69dc1deb24124c90dbb0cf00,TEST-HIM-001,Himalaya Marble White 60x60cm Matt,
+missing_size,tile-TEST_NO_CAT_1775766472,TEST_NO_CAT_1775766472,Test No Category Product,
+missing_size,tile-TEST_SCOPED_SAVE_cdaa156c,TEST_SCOPED_SAVE_cdaa156c,Test Product TEST_SCOPED_SAVE_cdaa156c,
+missing_size,tile-TEST_TILES_SYNC_17666568,TEST_TILES_SYNC_17666568,Test Tiles Sync TEST_TILES_SYNC_17666568,
+missing_size,tile-TEST_NO_CAT_1776944329,TEST_NO_CAT_1776944329,Test No Category Product,
+missing_size,tile-TEST_NO_CAT_1776944543,TEST_NO_CAT_1776944543,Test No Category Product,
+missing_size,tile-TEST_SCOPED_SAVE_28574cb5,TEST_SCOPED_SAVE_28574cb5,Test Product TEST_SCOPED_SAVE_28574cb5,
+missing_size,tile-TEST_TILES_SYNC_0422c9bb,TEST_TILES_SYNC_0422c9bb,Test Tiles Sync TEST_TILES_SYNC_0422c9bb,
+missing_size,tile-TEST_SCOPED_SAVE_3b917f06,TEST_SCOPED_SAVE_3b917f06,Test Product TEST_SCOPED_SAVE_3b917f06,
+missing_size,tile-TEST_TILES_SYNC_148cae62,TEST_TILES_SYNC_148cae62,Test Tiles Sync TEST_TILES_SYNC_148cae62,
+missing_size,tile-TEST_NO_CAT_1776975029,TEST_NO_CAT_1776975029,Test No Category Product,
+redundant_words,tile-LP-6611,LP-6611,Alabaster Polished 60x60cm,cm
+redundant_words,tile-LP-1611,LP-1611,Alabaster Polished 80x160cm,cm
+redundant_words,tile-LP-3611,LP-3611,Alabaster Polished 30x60cm,cm
+redundant_words,tile-D11197,D11197,Test Product 60x60cm,cm
+redundant_words,tile-800853,800853,Ingot Verde Green Crystal Metro Tiles 30x60cm,"cm,tiles"
+redundant_words,tile-LP-1201,LP-1201,Monaco Polished 60x120cm,cm
+redundant_words,tile-LP-1202,LP-1202,Ridge White Polished 60x120cm,cm
+redundant_words,tile-LP-1203,LP-1203,Ridge Grey Polished 60x120cm,cm
+redundant_words,tile-LP-1204,LP-1204,Tuscania Polished 60x120cm,cm
+redundant_words,tile-LP-1205,LP-1205,Aurum Polished 60x120cm,cm
+redundant_words,tile-LP-1206,LP-1206,Himalaya Polished 60x120cm,cm
+redundant_words,tile-LP-1207,LP-1207,Ridgeway Polished 60x120cm,cm
+redundant_words,tile-LP-1208,LP-1208,Sapphire Polished 60x120cm,cm
+redundant_words,tile-LP-1209,LP-1209,Gilded Polished 60x120cm,cm
+redundant_words,tile-LP-1210,LP-1210,Fusion Polished 60x120cm,cm
+redundant_words,tile-LP-1211,LP-1211,Grande Polished 60x120cm,cm
+redundant_words,tile-LP-1212,LP-1212,Cobweb Polished 60x120cm,cm
+redundant_words,tile-LP-1213,LP-1213,Terrazzo Matt 60x120cm,cm
+redundant_words,tile-LP-1214,LP-1214,Greenstone Polished 60x120cm,cm
+redundant_words,tile-LP-1215,LP-1215,Volcanic Polished 60x120cm,cm
+redundant_words,tile-LP-1216,LP-1216,Cambridge Polished 60x120cm,cm
+redundant_words,tile-LP-1217,LP-1217,Seafoam Polished 60x120cm,cm
+redundant_words,tile-LP-1218,LP-1218,Bluemarble Polished 60x120cm,cm
+redundant_words,tile-LP-1219,LP-1219,Plutonic Matt 60x120cm,cm
+redundant_words,tile-LP-1220,LP-1220,Obsidian Polished 60x120cm,cm
+redundant_words,tile-LP-1221,LP-1221,Monaco Matt 60x120cm,cm
+redundant_words,tile-LP-1222,LP-1222,Ridge White Matt 60x120cm,cm
+redundant_words,tile-LP-1223,LP-1223,Ridge Grey Matt 60x120cm,cm
+redundant_words,tile-LP-1224,LP-1224,Opulent Polished 60x120cm,cm
+redundant_words,tile-LP-1225,LP-1225,Cosmos Polished 60x120cm,cm
+redundant_words,tile-LP-1227,LP-1227,Ridgeway Matt 60x120cm,cm
+redundant_words,tile-LP-1228,LP-1228,Sapphire Matt 60x120cm,cm
+redundant_words,tile-LP-1229,LP-1229,Gilded Matt 60x120cm,cm
+redundant_words,tile-LP-1230,LP-1230,Pure White Polished 60x120cm,cm
+redundant_words,tile-LP-1231,LP-1231,Stonehenge Polished 60x120cm,cm
+redundant_words,tile-LP-1233,LP-1233,Shore Polished 60x120cm,cm
+redundant_words,tile-LP-1234,LP-1234,Westminster Polished 60x120cm,cm
+redundant_words,tile-LP-1235,LP-1235,Riviera Cream Polished 60x120cm,cm
+redundant_words,tile-LP-1236,LP-1236,Westminster Cream Polished 60x120cm,cm
+redundant_words,tile-LP-1237,LP-1237,Catalunya Cream Polished 60x120cm,cm
+redundant_words,tile-LP-1238,LP-1238,Rustico Matt 60x120cm,cm
+redundant_words,tile-LP-1239,LP-1239,Emerald Polished 60x120cm,cm
+redundant_words,tile-LP-1240,LP-1240,Crystal White Polished 60x120cm,cm
+redundant_words,tile-LP-1241,LP-1241,Imperial Grey Polished 60x120cm,cm
+redundant_words,tile-LP-1242,LP-1242,Artistry Polished 60x120cm,cm
+redundant_words,tile-LP-1243,LP-1243,Westminster Matt 60x120cm,cm
+redundant_words,tile-LP-1244,LP-1244,Sparkle Cream Polished 60x120cm,cm
+redundant_words,tile-LP-1245,LP-1245,Sparkle Grey Polished 60x120cm,cm
+redundant_words,tile-LP-1232,LP-1232,Smokescreen Polished 60x120cm,cm
+redundant_words,tile-LP-1246,LP-1246,Greystone Polished 60x120cm,cm
+redundant_words,tile-LP-1247,LP-1247,Newcastle Polished 60x120cm,cm
+redundant_words,tile-LP-1248,LP-1248,Manhattan Grey Polished 60x120cm,cm
+redundant_words,tile-LP-1249,LP-1249,Sparkle White Polished 60x120cm,cm
+redundant_words,tile-LP-1250,LP-1250,Marbletta Matt 60x120x2cm,cm
+redundant_words,tile-LP-1251,LP-1251,Granite Matt 60x120x2cm,cm
+redundant_words,tile-LP-1252,LP-1252,Quarry Matt 60x120x2cm,cm
+redundant_words,tile-LP-1253,LP-1253,Opaco Anthracite 60x120x2cm,cm
+redundant_words,tile-LP-1254,LP-1254,Basalt Matt 60x120x2cm,cm
+redundant_words,tile-LP-1255,LP-1255,Sandstone Matt 60x120x2cm,cm
+redundant_words,tile-LP-1256,LP-1256,Fieldstone Matt 60x120x2cm,cm
+redundant_words,tile-LP-1257,LP-1257,Kandla Matt 60x120x2cm,cm
+redundant_words,tile-LP-1258,LP-1258,Rajasthan Matt 60x120x2cm,cm
+redundant_words,tile-LP-1259,LP-1259,Smokestone Matt 60x120x2cm,cm
+redundant_words,tile-LP-1260,LP-1260,Pebble Matt 60x120x2cm,cm
+redundant_words,tile-LP-1266,LP-1266,Statuary Polished 60x120cm,cm
+redundant_words,tile-LP-1267,LP-1267,Titanica Matt 60x120cm,cm
+redundant_words,tile-LP-1268,LP-1268,Titanium Sand Matt 60x120cm,cm
+redundant_words,tile-LP-1269,LP-1269,Titanium Matt 60x120cm,cm
+redundant_words,tile-LP-1272,LP-1272,Venetian Matt 60x120cm,cm
+redundant_words,tile-LP-1273,LP-1273,Industrial Matt 60x120cm,cm
+redundant_words,tile-LP-1274,LP-1274,Dune Matt 60x120cm,cm
+redundant_words,tile-LP-1275,LP-1275,Mist Matt 60x120cm,cm
+redundant_words,tile-LP-1276,LP-1276,Greystone Matt 60x120cm,cm
+redundant_words,tile-LP-1277,LP-1277,Steam Polished 60x120cm,cm
+redundant_words,tile-LP-1278,LP-1278,Turquoise Polished 60x120cm,cm
+redundant_words,tile-LP-1280,LP-1280,Laurent Black Polished 60x120cm,cm
+redundant_words,tile-LP-1282,LP-1282,Aquamarine Polished 60x120cm,cm
+redundant_words,tile-LP-1283,LP-1283,Bluestone Polished 60x120cm,cm
+redundant_words,tile-LP-1291,LP-1291,Liberty Polished 60x120cm,cm
+redundant_words,tile-LP-1292,LP-1292,Buckingham Matt 60x120cm,cm
+redundant_words,tile-LP-1293,LP-1293,Windsor Matt 60x120cm,cm
+redundant_words,tile-LP-1294,LP-1294,Chelsea Matt 60x120cm,cm
+redundant_words,tile-LP-1295,LP-1295,Regent Polished 60x120cm,cm
+redundant_words,tile-LP-1296,LP-1296,Lava Matt 60x120cm,cm
+redundant_words,tile-LP-1297,LP-1297,Magma Matt 60x120cm,cm
+redundant_words,tile-LP-3601,LP-3601,Monaco Polished 30x60cm,cm
+redundant_words,tile-LP-3602,LP-3602,Ridge White Polished 30x60cm,cm
+redundant_words,tile-LP-3605,LP-3605,Regal Polished 30x60cm,cm
+redundant_words,tile-LP-3606,LP-3606,Himalaya Polished 30x60cm,cm
+redundant_words,tile-LP-3607,LP-3607,Ridgeway Polished 30x60cm,cm
+redundant_words,tile-LP-3609,LP-3609,Gilded Polished 30x60cm,cm
+redundant_words,tile-LP-3631,LP-3631,Stonehenge Polished 30x60cm,cm
+redundant_words,tile-LP-3634,LP-3634,Westminster Polished 30x60cm,cm
+redundant_words,tile-LP-3638,LP-3638,Rustico Matt 30x60cm,cm
+redundant_words,tile-LP-3641,LP-3641,Imperial Grey Polished 30x60cm,cm
+redundant_words,tile-LP-3642,LP-3642,Arctic Grey Polished 30x60cm,cm
+redundant_words,tile-LP-3646,LP-3646,Greystone Polished 30x60cm,cm
+redundant_words,tile-LP-3672,LP-3672,Arctic Grey Matt 30x60cm,cm
+redundant_words,tile-LP-3675,LP-3675,Mist Matt 30x60cm,cm
+redundant_words,tile-LP-3676,LP-3676,Greystone Matt 30x60cm,cm
+redundant_words,tile-LP-6601,LP-6601,Monaco Polished 60x60cm,cm
+redundant_words,tile-LP-6602,LP-6602,Ridge White Polished 60x60cm,cm
+redundant_words,tile-LP-6603,LP-6603,Ridge Grey Polished 60x60cm,cm
+redundant_words,tile-LP-6604,LP-6604,Tuscania Polished 60x60cm,cm
+redundant_words,tile-LP-6606,LP-6606,Himalaya Polished 60x60cm,cm
+redundant_words,tile-LP-6607,LP-6607,Ridgeway Polished 60x60cm,cm
+redundant_words,tile-LP-6608,LP-6608,Sapphire Polished 60x60cm,cm
+redundant_words,tile-LP-6609,LP-6609,Gilded Polished 60x60cm,cm
+redundant_words,tile-LP-6610,LP-6610,Florentine White Polished 60x60cm,cm
+redundant_words,tile-LP-6614,LP-6614,Greenstone Polished 60x60cm,cm
+redundant_words,tile-LP-6622,LP-6622,Ridge White Matt 60x60cm,cm
+redundant_words,tile-LP-6626,LP-6626,Himalaya Matt 60x60cm,cm
+redundant_words,tile-LP-6627,LP-6627,Ridgeway Matt 60x60cm,cm
+redundant_words,tile-LP-6631,LP-6631,Stonehenge Polished 60x60cm,cm
+redundant_words,tile-LP-6632,LP-6632,Stonehenge Matt 60x60cm,cm
+redundant_words,tile-LP-6633,LP-6633,Shore Polished 60x60cm,cm
+redundant_words,tile-LP-6634,LP-6634,Westminster Polished 60x60cm,cm
+redundant_words,tile-LP-6635,LP-6635,Riviera Cream Polished 60x60cm,cm
+redundant_words,tile-LP-6636,LP-6636,Westminster Cream Polished 60x60cm,cm
+redundant_words,tile-LP-6637,LP-6637,Catalunya Cream Polished 60x60cm,cm
+redundant_words,tile-LP-6638,LP-6638,Rustico Matt 60x60cm,cm
+redundant_words,tile-LP-6640,LP-6640,Florentine Grey Polished 60x60cm,cm
+redundant_words,tile-LP-6641,LP-6641,Imperial Grey Polished 60x60cm,cm
+redundant_words,tile-LP-6642,LP-6642,Arctic Grey Polished 60x60cm,cm
+redundant_words,tile-LP-6646,LP-6646,Greystone Polished 60x60cm,cm
+redundant_words,tile-LP-6648,LP-6648,Manhattan Grey Polished 60x60cm,cm
+redundant_words,tile-LP-6650,LP-6650,Marbletta Matt 60x60x2cm,cm
+redundant_words,tile-LP-6651,LP-6651,Granite Matt 60x60x2cm,cm
+redundant_words,tile-LP-6652,LP-6652,Quarry Matt 60x60x2cm,cm
+redundant_words,tile-LP-6653,LP-6653,Opaco Anthracite 60x60x2cm,cm
+redundant_words,tile-LP-6654,LP-6654,Basalt Matt 60x60x2cm,cm
+redundant_words,tile-LP-6655,LP-6655,Sandstone Matt 60x60x2cm,cm
+redundant_words,tile-LP-6656,LP-6656,Fieldstone Matt 60x60x2cm,cm
+redundant_words,tile-LP-6657,LP-6657,Kandla Matt 60x60x2cm,cm
+redundant_words,tile-LP-6658,LP-6658,Rajasthan Matt 60x60x2cm,cm
+redundant_words,tile-LP-6659,LP-6659,Smokestone Matt 60x60x2cm,cm
+redundant_words,tile-LP-6660,LP-6660,Pebble Matt 60x60x2cm,cm
+redundant_words,tile-LP-6661,LP-6661,Coral Matt 60x60cm,cm
+redundant_words,tile-LP-6665,LP-6665,Olive Polished 60x60cm,cm
+redundant_words,tile-LP-6667,LP-6667,Titanica Textured Matt 60x60cm,cm
+redundant_words,tile-LP-6668,LP-6668,Titanium Sand Textured Matt 60x60cm,cm
+redundant_words,tile-LP-6669,LP-6669,Titanium Textured Matt 60x60cm,cm
+redundant_words,tile-LP-6670,LP-6670,Florentine Grey Matt 60x60cm,cm
+redundant_words,tile-LP-6672,LP-6672,Arctic Grey Matt 60x60cm,cm
+redundant_words,tile-LP-6673,LP-6673,Industrial Matt 60x60cm,cm
+redundant_words,tile-LP-6674,LP-6674,Dune Matt 60x60cm,cm
+redundant_words,tile-LP-6675,LP-6675,Mist Matt 60x60cm,cm
+redundant_words,tile-LP-6683,LP-6683,Bluestone Polished 60x60cm,cm
+redundant_words,tile-LP-6684,LP-6684,Oceanic Matt 60x60cm,cm
+redundant_words,tile-LP-6685,LP-6685,Pure White Polished 60x60cm,cm
+redundant_words,tile-LP-6686,LP-6686,Pure White Matt 60x60cm,cm
+redundant_words,tile-LP-6687,LP-6687,Gilded Matt 60x60cm,cm
+redundant_words,tile-LP-6688,LP-6688,Cambridge Matt 60x60cm,cm
+redundant_words,tile-LP-6689,LP-6689,Cambridge Polished 60x60cm,cm
+redundant_words,tile-LP-6690,LP-6690,Greystone Matt 60x60cm,cm
+redundant_words,tile-LP-6691,LP-6691,Monaco Matt 60x60cm,cm
+redundant_words,tile-LP-6692,LP-6692,Shore Matt 60x60cm,cm
+redundant_words,tile-LP-6693,LP-6693,Westminster Matt 60x60cm,cm
+redundant_words,tile-LP-6694,LP-6694,Imperial Grey Matt 60x60cm,cm
+redundant_words,tile-LP-6695,LP-6695,Bluestone Matt 60x60cm,cm
+redundant_words,tile-LP-9650,LP-9650,Marbletta Matt 60x90x2cm,cm
+redundant_words,tile-LP-9651,LP-9651,Granite Matt 60x90x2cm,cm
+redundant_words,tile-LP-9652,LP-9652,Quarry Matt 60x90x2cm,cm
+redundant_words,tile-LP-9653,LP-9653,Opaco Anthracite 60x90x2cm,cm
+redundant_words,tile-LP-9654,LP-9654,Basalt Matt 60x90x2cm,cm
+redundant_words,tile-LP-9655,LP-9655,Sandstone Matt 60x90x2cm,cm
+redundant_words,tile-LP-9656,LP-9656,Fieldstone Matt 60x90x2cm,cm
+redundant_words,tile-LP-9657,LP-9657,Kandla Matt 60x90x2cm,cm
+redundant_words,tile-LP-9658,LP-9658,Rajasthan Matt 60x90x2cm,cm
+redundant_words,tile-LP-9659,LP-9659,Smokestone Matt 60x90x2cm,cm
+redundant_words,tile-LP-9660,LP-9660,Pebble Matt 60x90x2cm,cm
+redundant_words,tile-LP-9661,LP-9661,Darkcrete Matt 60x90x2cm,cm
+redundant_words,tile-LP-9662,LP-9662,Ashcrete Matt 60x90x2cm,cm
+redundant_words,tile-LP-9663,LP-9663,Sandcrete Matt 60x90x2cm,cm
+redundant_words,tile-LP-8801,LP-8801,Monaco Polished 80x80cm,cm
+redundant_words,tile-LP-8807,LP-8807,Ridgeway Polished 80x80cm,cm
+redundant_words,tile-LP-8809,LP-8809,Glacier Polished 80x80cm,cm
+redundant_words,tile-LP-8811,LP-8811,Alabaster Polished 80x80cm,cm
+redundant_words,tile-LP-8827,LP-8827,Ridgeway Matt 80x80cm,cm
+redundant_words,tile-LP-8829,LP-8829,Glacier Matt 80x80cm,cm
+redundant_words,tile-LP-8831,LP-8831,Stonehenge Polished 80x80cm,cm
+redundant_words,tile-LP-8832,LP-8832,Stonehenge Matt 80x80cm,cm
+redundant_words,tile-LP-8838,LP-8838,Rustico Matt 80x80cm,cm
+redundant_words,tile-LP-8846,LP-8846,Greystone Polished 80x80cm,cm
+redundant_words,tile-LP-8873,LP-8873,Industrial Matt 80x80cm,cm
+redundant_words,tile-LP-8875,LP-8875,Mist Matt 80x80cm,cm
+redundant_words,tile-LP-8876,LP-8876,Gilded Polished 80x80cm,cm
+redundant_words,tile-LP-8877,LP-8877,Cambridge Polished 80x80cm,cm
+redundant_words,tile-LP-8878,LP-8878,Westminster Polished 80x80cm,cm
+redundant_words,tile-LP-8879,LP-8879,Imperial Grey Polished 80x80cm,cm
+redundant_words,tile-LP-1601,LP-1601,Monaco Polished 80x160cm,cm
+redundant_words,tile-LP-1607,LP-1607,Ridgeway Polished 80x160cm,cm
+redundant_words,tile-LP-1631,LP-1631,Stonehenge Polished 80x160cm,cm
+redundant_words,tile-LP-1646,LP-1646,Greystone Polished 80x160cm,cm
+redundant_words,tile-LP-1101,LP-1101,Monaco Polished 120x120cm,cm
+redundant_words,tile-LP-1107,LP-1107,Ridgeway Polished 120x120cm,cm
+redundant_words,tile-LP-1109,LP-1109,Gilded Polished 120x120cm,cm
+redundant_words,tile-LP-1116,LP-1116,Cambridge Polished 120x120cm,cm
+redundant_words,tile-LP-1127,LP-1127,Ridgeway Matt 120x120cm,cm
+redundant_words,tile-LP-1131,LP-1131,Stonehenge Polished 120x120cm,cm
+redundant_words,tile-LP-1132,LP-1132,Stonehenge Matt 120x120cm,cm
+redundant_words,tile-LP-1134,LP-1134,Westminster Polished 120x120cm,cm
+redundant_words,tile-LP-1141,LP-1141,Imperial Grey Polished 120x120cm,cm
+redundant_words,tile-LP-1146,LP-1146,Greystone Polished 120x120cm,cm
+redundant_words,tile-LP-1147,LP-1147,Mist Matt 120x120cm,cm
+redundant_words,tile-LP-1148,LP-1148,Sydney Beige Matt 120x120cm,cm
+redundant_words,tile-LP-3334,LP-3334,Darkcrete Matt 60x120x2cm,cm
+redundant_words,tile-LP-3335,LP-3335,Ashcrete Matt 60x120x2cm,cm
+redundant_words,tile-LP-3336,LP-3336,Sandcrete Matt 60x120x2cm,cm
+redundant_words,tile-LP-3337,LP-3337,Marguna Polished 60x120cm,cm
+redundant_words,tile-LP-3338,LP-3338,Spiderweb Polished 60x120cm,cm
+redundant_words,tile-LP-3339,LP-3339,Milano Grey Polished 60x120cm,cm
+redundant_words,tile-LP-3340,LP-3340,Scottish Onyx Polished 60x120cm,cm
+redundant_words,tile-LP-3341,LP-3341,Panda Polished 60x120cm,cm
+redundant_words,tile-LP-3342,LP-3342,Divine Polished 60x120cm,cm
+redundant_words,tile-LP-3343,LP-3343,Milano White Polished 60x120cm,cm
+redundant_words,tile-LP-3344,LP-3344,Milano Blue Polished 60x120cm,cm
+redundant_words,tile-LP-3345,LP-3345,Palladium Polished 60x120cm,cm
+redundant_words,tile-LP-3346,LP-3346,Rivona Polished 60x120cm,cm
+redundant_words,tile-LP-3347,LP-3347,Armani Grey Polished 60x120cm,cm
+redundant_words,tile-LP-3348,LP-3348,Armani Beige Polished 60x120cm,cm
+redundant_words,tile-LP-3349,LP-3349,Pure White Polished 30x60cm,cm
+redundant_words,tile-LP-3350,LP-3350,Darkcrete Matt 60x60x2cm,cm
+redundant_words,tile-LP-3351,LP-3351,Ashcrete Matt 60x60x2cm,cm
+redundant_words,tile-LP-3352,LP-3352,Sandcrete Matt 60x60x2cm,cm
+redundant_words,tile-HE6000,HE6000,Sherwood Oak Smooth Unfinished 80x300x10/3mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE6001,HE6001,Cotswold Oak Natural Smooth UV Lacquered 80x300x10/3mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE6002,HE6002,Chiltern Oak Natural Brushed UV Oiled 80x300x10/3mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE6003,HE6003,Blenheim Oak Golden Brushed UV Oiled 80x300x10/3mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE6004,HE6004,Kensington Oak Smooth Invisible UV Oiled 80x300x10/3mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE6017,HE6017,Hamilton Oak Natural Brushed UV Lacquered 80x300x10/3mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE6018,HE6018,Richmond Oak Grey Smoked Brushed UV Lacquered 80x300x10/3mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE6019,HE6019,Windsor Oak Dark Golden Brushed UV Lacquered 80x300x10/3mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE6101,HE6101,Windermere Oak White Brushed UV Lacquered 90x300x14/3mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE6102,HE6102,Harrogate Oak Grey Smoked White Brushed UV Oiled 90x300x14/3mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE6103,HE6103,Borrowdale Oak Antique Colour Brushed Handscraped UV Lacquered 90x300x14/3mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE6104,HE6104,Glastonbury Oak Brushed UV Invisible Oiled 90x300x14/3mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE1594,HE1594,Ambleside Oak Smooth Invisible UV Oiled 90x400x15/4mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE1595,HE1595,Rosedale Oak Golden Brushed UV Lacquered 90x400x15/4mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE1596,HE1596,Ivywood Oak Natural Brushed UV Lacquered 90x400x15/4mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE1597,HE1597,Malvern Oak Grey Smoked Brushed UV Oiled 90x400x15/4mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE1599,HE1599,Ullswater Oak Smoked Brushed UV Lacquered 90x400x15/4mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE5001,HE5001,Waverley Oak Smooth Unfinished 90x510x14/3mm Engineered Wood Chevron,mm
+redundant_words,tile-HE5002,HE5002,Saddleworth Oak Natural Brushed UV Oiled 90x510x14/3mm Engineered Wood Chevron,mm
+redundant_words,tile-HE5003,HE5003,Ashridge Oak Natural Smooth UV Lacquered 90x510x14/3mm Engineered Wood Chevron,mm
+redundant_words,tile-HE5004,HE5004,Sheringham Oak Smooth Invisible UV Oiled 90x510x14/3mm Engineered Wood Chevron,mm
+redundant_words,tile-HE4042,HE4042,Epping Oak Natural Brushed UV Oiled 125x600x15/4mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE4043,HE4043,Hatfield Oak Natural Smooth UV Oiled 125x600x15/4mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE4045,HE4045,Salisbury Oak Smooth Invisible UV Oiled 125x600x15/4mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE4046,HE4046,Thetford Oak Golden Brushed UV Oiled 125x600x15/4mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE2250,HE2250,Kingswood Oak Smoked Brushed UV Oiled 70x350x20/5mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE2251,HE2251,Ashford Oak White Smoked Brushed UV Oiled 70x350x20/5mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE2217,HE2217,Moorland Oak Golden Brushed UV Oiled 80x350x20/6mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE2218,HE2218,Mercia Oak Grey Brushed UV Lacquered 80x350x20/6mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE2219,HE2219,Wychwood Oak Brushed Invisible UV Oiled 80x350x20/6mm Engineered Wood Herringbone,mm
+redundant_words,tile-PAR218,PAR218,Deanwood Oak Natural Smooth UV Oiled 80x350x20/6mm Engineered Wood Herringbone,mm
+redundant_words,tile-PAR219,PAR219,Hartwood Oak Natural Brushed UV Oiled 80x350x20/6mm Engineered Wood Herringbone,mm
+redundant_words,tile-EO2104,EO2104,Ashbourne Oak Smooth UV Lacquered 125x300-1200x10/2mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO2105,EO2105,Newborough Oak Brushed UV Oiled 125x300-1200x10/2mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO2106,EO2106,Inglewood Oak Golden Brushed UV OIled 125x300-1200x10/2mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO2107,EO2107,Belvoir Oak Double White Brushed UV Oiled 125x300-1200x10/2mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO1097,EO1097,Heartwood Oak Natural Smooth UV Lacquered 125x300-1200x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO1098,EO1098,Greenwood Oak Natural Brushed UV Oiled 125x300-1200x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO2082,EO2082,Parkhurst Oak Natural Brushed UV Lacquered 125x300-1200x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO2102,EO2102,Wentwood Oak Coffee Brushed UV Oiled 125x300-1200x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO2103,EO2103,Avondale Oak Golden Brushed UV Oiled 125x300-1200x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO2007,EO2007,Wells Oak Smooth Invisible UV Oiled 125x300-1200x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO2055,EO2055,Tollymore Oak Golden Brushed UV Oiled 150x300-1200x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO2060,EO2060,Castlewellan Oak Natural Brushed UV Oiled 150x300-1200x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO2003,EO2003,Bedgebury Oak Natural Brushed UV Oiled 180x300-1500x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO4032,EO4032,Brighstone Oak Whitewashed Brushed UV Oiled 180x300-1500x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO1050,EO1050,Danson Oak Whitewashed Brushed UV Oiled 150x1900x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO1051,EO1051,Beaumont Oak Brushed UV Oiled 150x1900x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO1053,EO1053,Horsham Oak Brushed UV Lacquered 150x1900x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO1046,EO1046,Dalby Oak Smooth Invisible UV Lacquered 190x1900x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO4050,EO4050,Walton Oak Smoked Brushed UV Oiled 190x1900x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO4055,EO4055,Darwin Oak Golden Brushed UV Oiled 190x1900x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO4057,EO4057,Charnwood Oak Smoked Whitewashed Brushed UV Oiled 190x1900x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO4058,EO4058,Marston Oak Coffee Brushed UV Lacquered 190x1900x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO4091,EO4091,Sherwood Oak Natural Smooth UV Lacquered 190x1900x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO5019,EO5019,Gisburn Oak Smooth Invisible UV Oiled 190x1900x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO5020,EO5020,Whiteleaf Oak Grey Brushed UV Lacquered 190x1900x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO7469,EO7469,Delamere Oak Natural Brushed UV Oiled 190x1900x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO7430,EO7430,Wyre Oak Smooth Unfinished 190x1900x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-WAL4901,WAL4901,Berwyn Walnut Oak Smooth Lacquered 190x1900x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO3091,EO3091,Selby Oak Natural Smooth UV Lacquered 190x1900x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO3096,EO3096,Modena Oak Natural Brushed UV Lacquered 190x1900x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO7330,EO7330,Ontario Oak Natural Smooth Unfinished 190x1900x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO7369,EO7369,Harlow Oak Natural Brushed UV Oiled 190x1900x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EC2067,EC2067,Beacon Oak Brushed UV Oiled 190x1900x15/4mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EC2110,EC2110,Ashbury Oak Smooth UV Lacquered 190x1900x15/4mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EC3188,EC3188,Wyndham Oak White Brushed UV Oiled 190x1900x15/4mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EC3189,EC3189,Dartmoor Oak Brown Brushed UV Oiled 190x1900x15/4mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EC3190,EC3190,Cannock Oak White Smoked Brushed UV Oiled 190x1900x15/4mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO2019,EO2019,Kielder Oak Natural Smooth UV Lacquered 190x1900x20/6mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO2020,EO2020,Hamsterley Oak Natural Brushed UV Oiled 190x1900x20/6mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO2739,EO2739,Grizedale Oak Golden Brushed UV Lacquered 190x1900x20/6mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO2740,EO2740,Florence Oak Smoked Whitewashed Brushed UV Lacquered 190x1900x20/6mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO5018,EO5018,Whinlatter Oak Smooth Invisible UV Oiled 190x1900x20/6mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO6018,EO6018,Gosford Oak Natural Smooth Unfinished 190x1900x20/6mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO6019,EO6019,Aysgarth Oak Natural Smooth UV Lacquered 190x1900x20/6mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO6020,EO6020,Stirling Oak Natural Brushed UV Oiled 190x1900x20/6mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO6741,EO6741,Autumnwood Oak Natural Brushed UV Lacquered 190x1900x20/6mm Engineered Wood Straight Plank,mm
+redundant_words,tile-OD7012,OD7012,Woodvale Oak Golden Hand Sanded Matt Lacquered 220x2200x15/4mm Engineered Wood Straight Plank,mm
+redundant_words,tile-OD7020,OD7020,Rowntree Oak Natural Hand Sanded Matt Lacquered 220x2200x15/4mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO2025,EO2025,Galloway Oak Natural Brushed UV Oiled 240x2200x20/6mm Engineered Wood Straight Plank,mm
+redundant_words,tile-VER111,VER111,Banquet Oak Natural Brushed Unfinished 600x600x14/3mm Engineered Wood Versailles,mm
+redundant_words,tile-VER112,VER112,Charme Oak Natural Brushed UV Oiled 600x600x14/3mm Engineered Wood Versailles,mm
+redundant_words,tile-VER113,VER113,Classique Oak Golden Brushed UV Oiled 600x600x14/3mm Engineered Wood Versailles,mm
+redundant_words,tile-VER114,VER114,Empire Oak Brushed Invisible UV Oiled 600x600x14/3mm Engineered Wood Versailles,mm
+redundant_words,tile-VER115,VER115,Reverence Oak Grey Brown Brushed UV Oiled 600x600x14/3mm Engineered Wood Versailles,mm
+redundant_words,tile-VER116,VER116,Palais Oak Whitewashed Brushed UV Oiled 600x600x14/3mm Engineered Wood Versailles,mm
+redundant_words,tile-EO1123FSC,EO1123FSC,Heaton Oak Natural Brushed UV Oiled 180x1200x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO1139FSC,EO1139FSC,Kinburn Oak Golden Smooth UV Lacquered 180x1200x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO2093FSC,EO2093FSC,Herrington Oak Natural Brushed UV Oiled 180x1900x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO4939FSC,EO4939FSC,Elmdon Oak Golden Smooth Matte UV Lacquered 180x1900x14/3mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO2114FSC,EO2114FSC,Allendale Oak Smooth Invisible UV Oiled 125x300-1200x10/2.5mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO2115FSC,EO2115FSC,Hampstead Oak Natural Brushed UV Oiled 125x300-1200x10/2.5mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO2116FSC,EO2116FSC,Knighton Oak Golden Brushed UV Lacquered 125x300-1200x10/2.5mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO2920FSC,EO2920FSC,Lisburn Oak Natural Brushed UV OIled 190x1900x20/6mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO2924FSC,EO2924FSC,Persley Oak Smooth Invisible UV Oiled 190x1900x20/6mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO2939FSC,EO2939FSC,Farley Oak Golden Brushed UV Lacquered 190x1900x20/6mm Engineered Wood Straight Plank,mm
+redundant_words,tile-HE7012FSC,HE7012FSC,Sandringham Oak Natural Limed White Brushed UV Lacquered 70x350x10/2.5mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE7013FSC,HE7013FSC,Marwood Oak Natural Brushed UV Oiled 70x350x10/2.5mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE7018FSC,HE7018FSC,Samphire Oak White Smoked Brushed Sawn Marked UV Oiled 70x350x10/2.5mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE1590FSC,HE1590FSC,Hazlehead Oak Smoked Brushed UV Oiled 90x400x15/4mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE1592FSC,HE1592FSC,Calverley Oak Smooth Invisible UV Oiled 90x400x15/4mm Engineered Wood Herringbone,mm
+redundant_words,tile-HE1598FSC,HE1598FSC,Bramham Oak Natural Brushed UV Oiled 90x400x15/4mm Engineered Wood Herringbone,mm
+redundant_words,tile-LFGDV100,LFGDV100,Hamilton Sanded Chestnut Invisible Blonde Oak 228.6x1219.2x2/0.3mm LVT Straight Plank,mm
+redundant_words,tile-LFGDV101,LFGDV101,Hamilton Honey Drift Light Brown Oak 228.6x1219.2x2/0.3mm LVT Straight Plank,mm
+redundant_words,tile-LFGDV102,LFGDV102,Hamilton Amber Grain Brown Oak 228.6x1219.2x2/0.3mm LVT Straight Plank,mm
+redundant_words,tile-LFGDV103,LFGDV103,Hamilton Soft Truffle Grey Brown Oak 228.6x1219.2x2/0.3mm LVT Straight Plank,mm
+redundant_words,tile-LFGDV104,LFGDV104,Hamilton Havana Walnut Dark Brown Oak 228.6x1219.2x2/0.3mm LVT Straight Plank,mm
+redundant_words,tile-LFGDV200,LFGDV200,Hamilton Herringbone Sanded Chestnut Invisible Blonde Oak 76.2x457.2x2/0.3mm LVT,mm
+redundant_words,tile-LFGDV201,LFGDV201,Hamilton Herringbone Honey Drift Light Brown Oak 76.2x457.2x2/0.3mm LVT,mm
+redundant_words,tile-LFGDV202,LFGDV202,Hamilton Herringbone Amber Grain Brown Oak 76.2x457.2x2/0.3mm LVT,mm
+redundant_words,tile-LFGDV203,LFGDV203,Hamilton Herringbone Soft Truffle Grey Brown Oak 76.2x457.2x2/0.3mm LVT,mm
+redundant_words,tile-LFGDV204,LFGDV204,Hamilton Herringbone Havana Walnut Dark Brown Oak 76.2x457.2x2/0.3mm LVT,mm
+redundant_words,tile-LFGDV500,LFGDV500,Hamilton Tile Snow Drift White Slate 304.8x610x2/0.3mm LVT,"mm,tile"
+redundant_words,tile-LFGDV501,LFGDV501,Hamilton Tile Iced Marble Pebble White 304.8x610x2/0.3mm LVT,"mm,tile"
+redundant_words,tile-LFGDV502,LFGDV502,Hamilton Tile Greystone Stone Grey 304.8x610x2/0.3mm LVT,"mm,tile"
+redundant_words,tile-LFGDV503,LFGDV503,Hamilton Tile Charcoal Marble Slate Grey 304.8x610x2/0.3mm LVT,"mm,tile"
+redundant_words,tile-LFGDV305,LFGDV305,Hamilton Max Autumn Fields Brown Oak 236.6x1532x3/0.55mm LVT Straight Plank,mm
+redundant_words,tile-LFGDV306,LFGDV306,Hamilton Max Mellow Grain Invisble Blonde Oak 236.6x1532x3/0.55mm LVT Straight Plank,mm
+redundant_words,tile-LFGDV307,LFGDV307,Hamilton Max Warm Hearth Natural Brown Oak 236.6x1532x3/0.55mm LVT Straight Plank,mm
+redundant_words,tile-LFGDV308,LFGDV308,Hamilton Max Maple Whisper Soft Brown Oak 236.6x1532x3/0.55mm LVT Straight Plank,mm
+redundant_words,tile-LFGDV309,LFGDV309,Hamilton Max Woodland Echo Light Grey Oak 236.6x1532x3/0.55mm LVT Straight Plank,mm
+redundant_words,tile-LFGDV405,LFGDV405,Hamilton Max Herringbone Autumn Fields Brown Oak 150x750x3/0.55mm LVT,mm
+redundant_words,tile-LFGDV406,LFGDV406,Hamilton Max Herringbone Mellow Grain Invisble Blonde Oak 150x750x3/0.55mm LVT,mm
+redundant_words,tile-LFGDV407,LFGDV407,Hamilton Max Herringbone Warm Hearth Natural Brown Oak 150x750x3/0.55mm LVT,mm
+redundant_words,tile-LFGDV408,LFGDV408,Hamilton Max Herringbone Maple Whisper Soft Brown Oak 150x750x3/0.55mm LVT,mm
+redundant_words,tile-LFGDV409,LFGDV409,Hamilton Max Herringbone Woodland Echo Light Grey Oak 150x750x3/0.55mm LVT,mm
+redundant_words,tile-LFGDV601,LFGDV601,Hamilton Max Chevron Pale Hazel Soft Light Oak 158x710x3/0.55mm LVT,mm
+redundant_words,tile-LFGDV602,LFGDV602,Hamilton Max Chevron Aged Bourbon Golden Brown Oak 158x710x3/0.55mm LVT,mm
+redundant_words,tile-LFGDV603,LFGDV603,Hamilton Max Chevron Clay Taupe Natural Brown Oak 158x710x3/0.55mm LVT,mm
+redundant_words,tile-LFGDV604,LFGDV604,Hamilton Max Chevron Nordic Aged Grey Oak 158x710x3/0.55mm LVT,mm
+redundant_words,tile-LFLVT104,LFLVT104,Sunningdale Honey Blonde Oak 180x1220x5/0.5mm SPC LVT Straight Plank,mm
+redundant_words,tile-LFLVT105,LFLVT105,Hartland Brown Oak 180x1220x5/0.5mm SPC LVT Straight Plank,mm
+redundant_words,tile-LFLVT106,LFLVT106,Penshurst Grey Oak 180x1220x5/0.5mm SPC LVT Straight Plank,mm
+redundant_words,tile-LFLVT108,LFLVT108,Tankerton Whitewashed Grey Oak 180x1220x5/0.5mm SPC LVT Straight Plank,mm
+redundant_words,tile-LFLVT109,LFLVT109,Cromer Light Grey Oak 180x1220x5/0.5mm SPC LVT Straight Plank,mm
+redundant_words,tile-LFLVT112,LFLVT112,Holkham Grey Honey Oak 180x1220x5/0.5mm SPC LVT Straight Plank,mm
+redundant_words,tile-LFLVT204,LFLVT204,Sherburn Honey Blonde Oak 128x615x5/0.5mm SPC LVT Herringbone,mm
+redundant_words,tile-LFLVT205,LFLVT205,Farnham Brown Oak 128x615x5/0.5mm SPC LVT Herringbone,mm
+redundant_words,tile-LFLVT206,LFLVT206,Sennen Grey Oak 128x615x5/0.5mm SPC LVT Herringbone,mm
+redundant_words,tile-LFLVT208,LFLVT208,Studland Whitewashed Grey Oak 128x615x5/0.5mm SPC LVT Herringbone,mm
+redundant_words,tile-LFLVT209,LFLVT209,Compton Light Grey Oak 128x615x5/0.5mm SPC LVT Herringbone,mm
+redundant_words,tile-LFLVT212,LFLVT212,Camber Grey Honey Oak 128x615x5/0.5mm SPC LVT Herringbone,mm
+redundant_words,tile-LFLVT300,LFLVT300,Lulworth Aged Oak 180x1220x6.5/0.5mm SPC LVT Straight Plank,mm
+redundant_words,tile-LFLVT306,LFLVT306,Willacombe Antique Light Grey Oak 180x1220x6.5/0.5mm SPC LVT Straight Plank,mm
+redundant_words,tile-LFLVT308,LFLVT308,Fistral Smoked White Oak 180x1220x6.5/0.5mm SPC LVT Straight Plank,mm
+redundant_words,tile-LFLVT309,LFLVT309,Barafundle Light Grey Oak 180x1220x6.5/0.5mm SPC LVT Straight Plank,mm
+redundant_words,tile-LFLVT311,LFLVT311,Saunton Brown Oak 180x1220x6.5/0.5mm SPC LVT Straight Plank,mm
+redundant_words,tile-LFLVT312,LFLVT312,Chesil Brown Black Oak 180x1220x6.5/0.5mm SPC LVT Straight Plank,mm
+redundant_words,tile-LFLVT316,LFLVT316,Lytham Light Blonde Oak 180x1220x6.5/0.5mm SPC LVT Straight Plank,mm
+redundant_words,tile-LFLVT320,LFLVT320,Rhossili Light Brown Oak 180x1220x6.5/0.5mm SPC LVT Straight Plank,mm
+redundant_words,tile-LFLVT329,LFLVT329,Birchdale Antique Brown Oak 180x1220x6.5/0.5mm SPC LVT Straight Plank,mm
+redundant_words,tile-LFLVT411,LFLVT411,Marazion Golden Brown Oak 128x615x6.5/0.5mm SPC LVT Herringbone,mm
+redundant_words,tile-LFLVT412,LFLVT412,Pentle Brown Black Oak 128x615x6.5/0.5mm SPC LVT Herringbone,mm
+redundant_words,tile-LFLVT416,LFLVT416,Porthcurno Brown Oak 128x615x6.5/0.5mm SPC LVT Herringbone,mm
+redundant_words,tile-LFLVT432,LFLVT432,Kynance Grey Oak 128x615x6.5/0.5mm SPC LVT Herringbone,mm
+redundant_words,tile-LFLVT500,LFLVT500,Eriskay Dark Grey 300x600x6.5mm SPC LVT Tile,"mm,tile"
+redundant_words,tile-LFLVT501,LFLVT501,Calshot Weathered Natural Stone Grey 300x600x6.5mm SPC LVT Tile,"mm,tile"
+redundant_words,tile-LFLVT503,LFLVT503,Ashgrove Earth Grey 300x600x6.5mm SPC LVT Tile,"mm,tile"
+redundant_words,tile-LFLVT504,LFLVT504,Chantry White Terrazzo 300x600x6.5mm SPC LVT Tile,"mm,tile"
+redundant_words,tile-LF3DV100,LF3DV100,Bramblewood White Blue Brushed Oak 181x1520x8/0.17mm SPC LVT Straight Plank,mm
+redundant_words,tile-LF3DV101,LF3DV101,Whitby Natural Brushed Oak 181x1520x8/0.17mm SPC LVT Straight Plank,mm
+redundant_words,tile-LF3DV200,LF3DV200,Luskentyre Whitewashed Brushed Oak 127x635x8/0.17mm SPC LVT Herringbone,mm
+redundant_words,tile-LF3DV202,LF3DV202,Scarista Natural Brushed Oak 127x635x8/0.17mm SPC LVT Herringbone,mm
+redundant_words,tile-LFLAM151,LFLAM151,Willow 8mm Helmsley Oak Smoky Grey Textured 197x1218x8mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM152,LFLAM152,Willow 8mm Kingham Oak Natural Honey Textured 197x1218x8mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM153,LFLAM153,Willow 8mm Ripley Oak Soft Brown Textured 197x1218x8mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM154,LFLAM154,Willow 8mm Romsey Oak Dark Chocolate Textured 197x1218x8mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM155,LFLAM155,Willow 8mm Malham Oak Light Grey Textured 197x1218x8mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM555,LFLAM555,Willow Deluxe 12mm Helmsley Oak Smoky Grey Textured 238x1515x12mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM556,LFLAM556,Willow Deluxe 12mm Kingham Oak Natural Honey Textured 238x1515x12mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM557,LFLAM557,Willow Deluxe 12mm Ripley Oak Soft Brown Textured 238x1515x12mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM558,LFLAM558,Willow Deluxe 12mm Romsey Oak Dark Chocolate Textured 238x1515x12mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM559,LFLAM559,Willow Deluxe 12mm Malham Oak Light Grey Textured 238x1515x12mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM751,LFLAM751,Oakleigh 8mm Helmsley Oak Smoky Grey Textured 100x600x8mm Laminate Herringbone,mm
+redundant_words,tile-LFLAM752,LFLAM752,Oakleigh 8mm Kingham Oak Natural Honey Textured 100x600x8mm Laminate Herringbone,mm
+redundant_words,tile-LFLAM753,LFLAM753,Oakleigh 8mm Ripley Oak Soft Brown Textured 100x600x8mm Laminate Herringbone,mm
+redundant_words,tile-LFLAM754,LFLAM754,Oakleigh 8mm Romsey Oak Dark Chocolate Textured 100x600x8mm Laminate Herringbone,mm
+redundant_words,tile-LFLAM755,LFLAM755,Oakleigh 8mm Malham Oak Light Grey Textured 100x600x8mm Laminate Herringbone,mm
+redundant_words,tile-LFLAM850,LFLAM850,Oakleigh 8mm Buttermere Oak Golden Blonde Embossed 100x600x8mm Laminate Herringbone,mm
+redundant_words,tile-LFLAM851,LFLAM851,Oakleigh 8mm Cliveden Oak Grey Brown Embossed 100x600x8mm Laminate Herringbone,mm
+redundant_words,tile-LFLAM951,LFLAM951,Oakleigh Deluxe 12mm Helmsley Oak Smoky Grey Textured 100x600x12mm Laminate Herringbone,mm
+redundant_words,tile-LFLAM952,LFLAM952,Oakleigh Deluxe 12mm Kingham Oak Natural Honey Textured 100x600x12mm Laminate Herringbone,mm
+redundant_words,tile-LFLAM953,LFLAM953,Oakleigh Deluxe 12mm Ripley Oak Soft Brown Textured 100x600x12mm Laminate Herringbone,mm
+redundant_words,tile-LFLAM954,LFLAM954,Oakleigh Deluxe 12mm Romsey Oak Dark Chocolate Textured 100x600x12mm Laminate Herringbone,mm
+redundant_words,tile-LFLAM955,LFLAM955,Oakleigh Deluxe 12mm Malham Oak Light Grey Textured 100x600x12mm Laminate Herringbone,mm
+redundant_words,tile-LFLAM911,LFLAM911,Monarch 8mm Grantchester Blue & Brown Textured 405x805x8mm Laminate Victorian Tile,"mm,tile"
+redundant_words,tile-LFLAM912,LFLAM912,Monarch 8mm Kettlewell Grey & White Textured 405x805x8mm Laminate Victorian Tile,"mm,tile"
+redundant_words,tile-LFLAM811,LFLAM811,Tatum 12mm Clovelly Oak Cool Blonde Textured 405x805x12mm Laminate Versailles,mm
+redundant_words,tile-LFLAM812,LFLAM812,Tatum 12mm Cotswold Oak Warm Caramel Textured 405x805x12mm Laminate Versailles,mm
+redundant_words,tile-LFLAM901,LFLAM901,AGT Mood 10mm - Mist White Distressed Stone Textured 325x1195x10mm Laminate Tile,"mm,tile"
+redundant_words,tile-LFLAM902,LFLAM902,AGT Mood 10mm - Moss Dark Grey Stone Textured 325x1195x10mm Laminate Tile,"mm,tile"
+redundant_words,tile-LFLAM903,LFLAM903,AGT Mood 10mm - Maple Light Grey Stone Textured 325x1195x10mm Laminate Tile,"mm,tile"
+redundant_words,tile-LFLAM904,LFLAM904,AGT Mood 10mm - Meadow White Marbled Stone Textured 325x1195x10mm Laminate Tile,"mm,tile"
+redundant_words,tile-LFLAM170,LFLAM170,VarioClic 8mm Rio Oak Soft Grey 193x1204x8mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM171,LFLAM171,VarioClic 8mm Colorado Oak Soft Brown 193x1204x8mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM172,LFLAM172,VarioClic 8mm Arkansas Oak Smoky Grey 193x1204x8mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM173,LFLAM173,VarioClic 8mm Unye Oak White Grey 193x1204x8mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM174,LFLAM174,VarioClic 8mm Golcuk Oak Grey Brown 193x1204x8mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM175,LFLAM175,VarioClic 8mm Safranbolu Oak Rustic Brown 193x1204x8mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM176,LFLAM176,VarioClic 8mm Gelibolu Oak Pale Brown 193x1204x8mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM177,LFLAM177,VarioClic 8mm Inebolu Oak Dark Chocolate 193x1204x8mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM178,LFLAM178,VarioClic 8mm Mundanya Oak Light Brown 193x1204x8mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM180,LFLAM180,VarioClic 8mm Alto Oak Chestnut Brown 193x1204x8mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM181,LFLAM181,VarioClic 8mm Vivo Oak Cool Grey 193x1204x8mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM182,LFLAM182,VarioClic 8mm Symphony Oak Slate Grey 193x1204x8mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM260,LFLAM260,VarioClic 8mm Velena Beige Grey Stone 244x1204x8mm Laminate Tile Effect,"mm,tile"
+redundant_words,tile-LFLAM261,LFLAM261,VarioClic 8mm Vento Grey Granite 244x1204x8mm Laminate Tile Effect,"mm,tile"
+redundant_words,tile-LFLAM262,LFLAM262,VarioClic 8mm Amora White Marble 244x1204x8mm Laminate Tile Effect,"mm,tile"
+redundant_words,tile-LFLAM263,LFLAM263,VarioClic 8mm Fundo Silver Stone 244x1204x8mm Laminate Tile Effect,"mm,tile"
+redundant_words,tile-LFLAM560,LFLAM560,VarioClic 12mm Milano Oak Coffee Brown 134x1204x12mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM561,LFLAM561,VarioClic 12mm Bergamo Oak Cool Brown 134x1204x12mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM562,LFLAM562,VarioClic 12mm Palermo Oak Cocoa Brown 134x1204x12mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM563,LFLAM563,VarioClic 12mm Venice Oak Warm Brown 134x1204x12mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM564,LFLAM564,VarioClic 12mm Genova Oak Silver Grey 134x1204x12mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM565,LFLAM565,VarioClic 12mm Lecce Oak Black Ebony 134x1204x12mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM571,LFLAM571,AGT Mood 10mm Mist Oak White Distressed Stone Textured 325x1195x10mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM572,LFLAM572,AGT Mood 10mm Moss Oak Dark Grey Stone Textured 325x1195x10mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM573,LFLAM573,AGT Mood 10mm Maple Oak White Marbled Stone Textured 325x1195x10mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM574,LFLAM574,AGT Mood 10mm Meadow Oak Light Grey Stone Textured 325x1195x10mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM566,LFLAM566,AGT Pruva 8mm Aspen White Oak Textured 188x1200x8mm Laminate Chevron,mm
+redundant_words,tile-LFLAM567,LFLAM567,AGT Pruva 8mm Cedar Light Oak Textured 188x1200x8mm Laminate Chevron,mm
+redundant_words,tile-LFLAM568,LFLAM568,AGT Pruva Pinewood 8mm Grey & Brown Oak Textured 188x1200x8mm Laminate Chevron,mm
+redundant_words,tile-LFLAM569,LFLAM569,AGT Pruva 8mm Pine Grey Oak Textured 188x1200x8mm Laminate Chevron,mm
+redundant_words,tile-LFLAM570,LFLAM570,AGT Pruva 8mm Larch Beige & Brown Oak Textured 188x1200x8mm Laminate Chevron,mm
+redundant_words,tile-LFLAM806,LFLAM806,AGT Pruva 8mm Maple Oak Storm Grey 327x1200x8mm Laminate Chevron,mm
+redundant_words,tile-LFLAM807,LFLAM807,AGT Pruva 8mm Mountain Oak Caramel Gold 327x1200x8mm Laminate Chevron,mm
+redundant_words,tile-LFLAM808,LFLAM808,AGT Pruva 8mm Alder Oak Silver & White 327x1200x8mm Laminate Chevron,mm
+redundant_words,tile-LFLAM809,LFLAM809,AGT Pruva 8mm Ash Oak Taupe Grey 327x1200x8mm Laminate Chevron,mm
+redundant_words,tile-EO_BRIGHSTONE,EO_BRIGHSTONE,Brightstone Oak White Brushed UV Oiled 180x400-1500x14mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO_WHINLATTER,EO_WHINLATTER,Whinlatter Oak Light Smooth Invisible UV Oiled 190x1900x20mm Engineered Wood Straight Plank,mm
+redundant_words,tile-HE_ENNERDALE,HE_ENNERDALE,Ennerdale Oak Grey Brushed UV Lacquered 80x300x10mm Engineered Wood Herringbone,mm
+redundant_words,tile-SO_FULBOURN,SO_FULBOURN,Fulbourn Oak Natural Brushed UV Oiled 150x600x18mm Solid Straight Plank,mm
+redundant_words,tile-EO_WHINHILL,EO_WHINHILL,Whinhill Oak Natural Brushed UV Oiled 190x1900x14mm Engineered Wood Straight Plank,mm
+redundant_words,tile-EO_ABERNETHY,EO_ABERNETHY,Abernethy Oak Natural Brushed UV Oiled 190x1900x14mm Engineered Wood Straight Plank,mm
+redundant_words,tile-SO_RAVELEY,SO_RAVELEY,Raveley Oak Natural Brushed UV Oiled 150x600x18mm Solid Straight Plank,mm
+redundant_words,tile-LFLAM_GOBI,LFLAM_GOBI,VarioClic 8mm Gobi Oak Natural Textured 193x1380x8mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM_ORMSBY,LFLAM_ORMSBY,Ormsby Oak Natural Textured 193x1380x8mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM_EMMETTS,LFLAM_EMMETTS,Emmetts Oak Natural Textured 193x1380x8mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM_STONEYWELL,LFLAM_STONEYWELL,Stoneywell Oak Natural Textured 193x1380x8mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM_CHARTWELL,LFLAM_CHARTWELL,Chartwell Oak Natural Textured 193x1380x8mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM_GALLANTS,LFLAM_GALLANTS,Gallants Oak Natural Textured 193x1380x8mm Laminate Straight Plank,mm
+redundant_words,tile-LFLAM_OSTERLEY,LFLAM_OSTERLEY,Osterley Oak Natural Textured 193x1380x8mm Laminate Straight Plank,mm
+redundant_words,tile-EO_ARDEN,EO_ARDEN,Arden Oak Natural Brushed UV Oiled 190x1900x14mm Engineered Wood Straight Plank,mm
+redundant_words,tile-LFLAM_RAINHAM,LFLAM_RAINHAM,Rainham Oak Natural Textured 193x1380x8mm Laminate Straight Plank,mm
+redundant_words,tile-VER_800,VER_800,800x800 Invisible Brushed Oiled Versailles 800x800x20mm Engineered Wood,mm
+redundant_words,tile-ULT-TGS,ULT-TGS,UT TILE AND GROUT SEALER,tile
+redundant_words,tile-ULT-TC1L,ULT-TC1L,UT TILE CLEANER 1L,tile
+redundant_words,tile-ULT-TX1L,ULT-TX1L,UT TILE XTREME 1L,tile
+redundant_words,tile-355POL6060,355POL6060,Premium Polished Porcelain 60x60,porcelain
+redundant_words,tile-TEST_SCOPED_SAVE_a1b3c42c,TEST_SCOPED_SAVE_a1b3c42c,Test Product TEST_SCOPED_SAVE_a1b3c42c 30x60cm,cm
+redundant_words,tile-TEST_TILES_SYNC_1af06da4,TEST_TILES_SYNC_1af06da4,Test Tiles Sync TEST_TILES_SYNC_1af06da4,tiles
+redundant_words,tile-TEST_SCOPED_SAVE_916033c4,TEST_SCOPED_SAVE_916033c4,Test Product TEST_SCOPED_SAVE_916033c4 60x60cm,cm
+redundant_words,tile-TEST_CAT_QUERY_1775766487,TEST_CAT_QUERY_1775766487,Test Category Query TEST_CAT_QUERY_1775766487 60x120cm,cm
+redundant_words,tile-TEST_CAT_QUERY_1775766474,TEST_CAT_QUERY_1775766474,Test Category Query TEST_CAT_QUERY_1775766474 60x120cm,cm
+redundant_words,tile-TEST_SCOPED_SAVE_5f2def81,TEST_SCOPED_SAVE_5f2def81,Test Product TEST_SCOPED_SAVE_5f2def81 60x60cm,cm
+redundant_words,69dc1deb24124c90dbb0cf00,TEST-HIM-001,Himalaya Marble White 60x60cm Matt,cm
+redundant_words,tile-TEST_SCOPED_SAVE_7800d625,TEST_SCOPED_SAVE_7800d625,Test Product TEST_SCOPED_SAVE_7800d625 30x60cm,cm
+redundant_words,tile-TEST_TILES_SYNC_17666568,TEST_TILES_SYNC_17666568,Test Tiles Sync TEST_TILES_SYNC_17666568,tiles
+redundant_words,tile-TEST_SKU_1775766471,TEST_SKU_1775766471,Test Auto Publish Product TEST_SKU_1775766471 60x60cm,cm
+redundant_words,tile-TEST_FIELDS_1775766473,TEST_FIELDS_1775766473,Test Fields Product TEST_FIELDS_1775766473 30x60cm,cm
+redundant_words,tile-TEST_SKU_1775766483,TEST_SKU_1775766483,Test Auto Publish Product TEST_SKU_1775766483 60x60cm,cm
+redundant_words,tile-TEST_FIELDS_1775766485,TEST_FIELDS_1775766485,Test Fields Product TEST_FIELDS_1775766485 30x60cm,cm
+redundant_words,tile-TEST-CRAFT-001,TEST-CRAFT-001,Crafted Grey 75x300mm Matt,mm
+redundant_words,tile-TEST_SKU_1776944328,TEST_SKU_1776944328,Test Auto Publish Product TEST_SKU_1776944328 60x60cm,cm
+redundant_words,tile-TEST_FIELDS_1776944330,TEST_FIELDS_1776944330,Test Fields Product TEST_FIELDS_1776944330 30x60cm,cm
+redundant_words,tile-TEST_CAT_QUERY_1776944331,TEST_CAT_QUERY_1776944331,Test Category Query TEST_CAT_QUERY_1776944331 60x120cm,cm
+redundant_words,tile-TEST_SKU_1776944541,TEST_SKU_1776944541,Test Auto Publish Product TEST_SKU_1776944541 60x60cm,cm
+redundant_words,tile-TEST_FIELDS_1776944580,TEST_FIELDS_1776944580,Test Fields Product TEST_FIELDS_1776944580 30x60cm,cm
+redundant_words,tile-TEST_SCOPED_SAVE_afa3eeae,TEST_SCOPED_SAVE_afa3eeae,Test Product TEST_SCOPED_SAVE_afa3eeae 30x60cm,cm
+redundant_words,tile-TEST_TILES_SYNC_0422c9bb,TEST_TILES_SYNC_0422c9bb,Test Tiles Sync TEST_TILES_SYNC_0422c9bb,tiles
+redundant_words,tile-TEST_CAT_QUERY_1776944582,TEST_CAT_QUERY_1776944582,Test Category Query TEST_CAT_QUERY_1776944582 60x120cm,cm
+redundant_words,tile-TEST_SCOPED_SAVE_6e7502b5,TEST_SCOPED_SAVE_6e7502b5,Test Product TEST_SCOPED_SAVE_6e7502b5 30x60cm,cm
+redundant_words,tile-TEST_TILES_SYNC_148cae62,TEST_TILES_SYNC_148cae62,Test Tiles Sync TEST_TILES_SYNC_148cae62,tiles
+redundant_words,tile-TEST_SKU_1776975028,TEST_SKU_1776975028,Test Auto Publish Product TEST_SKU_1776975028 60x60cm,cm
+redundant_words,tile-TEST_FIELDS_1776975030,TEST_FIELDS_1776975030,Test Fields Product TEST_FIELDS_1776975030 30x60cm,cm
+redundant_words,tile-TEST_CAT_QUERY_1776975031,TEST_CAT_QUERY_1776975031,Test Category Query TEST_CAT_QUERY_1776975031 60x120cm,cm
+test_placeholder,tile-355POL6060,355POL6060,Premium Polished Porcelain 60x60,finish=NEW_FINISH_VALUE
+test_placeholder,tile-4405,4405,Laminate Premium Oak 60x60,finish=NEW_FINISH_VALUE
+autofix_applied,tile-355POL6060,,Premium Polished Porcelain 60x60,Premium Polished Porcelain 60x60
+autofix_applied,tile-4405,,Laminate Premium Oak 60x60,Laminate Premium Oak 60x60

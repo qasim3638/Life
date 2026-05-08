@@ -1,0 +1,5 @@
+Deletion Complete
+Deleted: 0
+Failed: 0
+Before: 3659
+After: 3659

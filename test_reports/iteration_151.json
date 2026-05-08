@@ -1,0 +1,53 @@
+{
+  "summary": "SEO React 19 native metadata verification across 9 storefront routes. 1 CRITICAL React-crash bug found and fixed by this agent (ShopSearchResultsPage typo). 1 remaining verification miss: a stale static <title>Tile Station</title> in public/index.html now duplicates per-page React-rendered title (titleCount=2 on every route). Description, canonical, og:*, twitter, keywords, robots noindex, and JSON-LD all render correctly across all tested routes after the typo fix.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "ShopSearchResultsPage.jsx (line 104, 106)",
+        "issue": "FIXED BY TESTING AGENT — `title={query ? ...}` referenced an undefined variable `query` (state holds it as `q`). On every visit to /shop/search?q=… and /tiles?search=… the page threw `ReferenceError: query is not defined` and rendered the React error boundary 'Something went wrong'. No SEO tags emitted, page completely broken. Replaced `query` with `q` in 4 places (lines 104,106,107). Re-verified post-fix: title/desc/canonical/noindex now correct.",
+        "selector": "[data-testid=shop-search-page]",
+        "priority": "CRITICAL"
+      },
+      {
+        "component": "public/index.html",
+        "issue": "Static `<title>Tile Station</title>` (line 8) was NOT removed when the static <meta description> was removed. React 19's metadata hoisting APPENDS a new <title> rather than replacing existing ones. Result: every page now has titleCount=2 in <head> — the static fallback AND the React-rendered per-page title. Browsers render the latter correctly, but Googlebot sees two titles and the requirement explicitly says 'Each meta tag must appear EXACTLY ONCE'. Recommendation: remove the static <title> tag (or change it to an empty string) so React 19 owns it exclusively.",
+        "selector": "head > title",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Remove static `<title>Tile Station</title>` from /app/frontend/public/index.html so per-page <title> emitted by SeoHead is the only one in <head> (currently every page has titleCount=2, violating the 'exactly once' SEO requirement).",
+    "(Already fixed by testing agent) ShopSearchResultsPage.jsx undefined `query` → `q` typo. Verify the fix is acceptable; the variable is destructured as `q` from useSearchParams at line 25.",
+    "Optional: react-helmet-async@2.0.5 still listed in package.json:64 even though HelmetProvider was removed from index.js — uninstall to drop dead dep and silence peer-dep warnings under React 19.",
+    "Optional: home page renders 0 JSON-LD scripts; info/city/product pages have global Organization+TileShop+page-specific schemas (via storefront layout). If home should also expose Organization/SearchAction schema, mount OrganizationSchema in TileStationHome (it's defined in StructuredData.jsx but unused on /). "
+  ],
+  "critical_code_review_comments": [
+    "ShopSearchResultsPage.jsx — the typo (`query` instead of `q`) wasn't caught because there is no eslint no-undef rule failing the build. Add `\"no-undef\": \"error\"` to .eslintrc to prevent recurrence; it would have flagged this at lint time.",
+    "SeoHead.jsx renders an inline `<script type=application/ld+json>` for jsonLd prop, but React 19 native hoisting only hoists scripts that are async with src — inline JSON-LD scripts stay inline in the body. This is FINE for SEO (Googlebot reads JSON-LD anywhere in the document) and our test confirms the schemas are emitted, but worth a code comment so future devs don't expect them in <head>.",
+    "StructuredData.jsx uses `dangerouslySetInnerHTML` for JSON-LD which is the correct pattern (avoids React JSX escaping issues with `</script>`), but ensure the JSON.stringify output doesn't contain an unescaped '</script>' substring in any user-supplied data (currently safe because all data comes from controlled DB fields, but a content-injection vector if an admin ever adds a city description containing literal '</script>').",
+    "public/index.html still contains `<title>Tile Station</title>` (a fallback that React 19 doesn't replace). The previous agent deleted the static <meta description> for the same reason — needed to delete the title too for consistency.",
+    "InfoPage meta description is built by stripping `**` (markdown bold) from the first text section and slicing 200 chars. Won't strip other markdown (links, headers) — so a page starting with `# Heading\\nbody…` will produce `# Heading body…` in the meta. Consider a fuller markdown-strip helper.",
+    "CityLandingPage `keywords` value duplicates the intent_phrase town twice ('${page.intent_phrase} ${page.town}, tile shop ${page.town}, tiles ${page.town} ${page.county}'). Visible in test output as 'tile shop Gravesend, tile shop Gravesend, tiles Gravesend Kent' — minor de-duplication opportunity."
+  ],
+  "updated_files": [
+    "/app/frontend/src/pages/shop/ShopSearchResultsPage.jsx (line 104,106,107: query → q)"
+  ],
+  "success_rate": {
+    "backend": "N/A (frontend-only request)",
+    "frontend": "8/9 routes 100% correct after typo fix; 9/9 affected by titleCount=2 duplicate (1 issue, all routes)"
+  },
+  "test_credentials": "None — all SEO routes are public.",
+  "seed_data_creation": "None.",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "After main agent removes the static <title> from public/index.html, re-run this Playwright check: for each of /, /tiles, /clearance, /new-collection, /shop/info/delivery, /tiles/tile-shop-gravesend, /shop/search?q=grout, /tiles/alabaster-polished-30x60cm — assert document.head.querySelectorAll('title').length === 1 AND document.head.querySelectorAll('meta[name=description]').length === 1 AND document.head.querySelectorAll('link[rel=canonical]').length === 1. Use API GET /api/shop/search-all?q=tile&limit=1 to discover a real tile slug for the product page (preview-only mocked iframe blocks /api/tiles directly). Routes /tiles/{slug} redirect via TileProductRedirect to /shop/collection/{collection}?product={slug} but canonical correctly remains /tiles/{slug} — verified.",
+  "rca of the issue": "ShopSearchResultsPage.jsx was migrated from a previous version that named the search variable `query`. During the SeoHead refactor, the destructured useSearchParams variable was renamed to `q` everywhere except inside the SeoHead title/description props (lines 104,106,107). No no-undef lint rule caught it. At runtime the JSX expression `query ? …` threw a ReferenceError on render, which the global error boundary trapped, blanking the page. Reproduction: visit /shop/search?q=anything before the fix → 'Something went wrong' screen + ReferenceError in console. Mitigation applied: replaced `query` with `q` in all 3 references; page now renders, SEO meta tags present, noindex applied, canonical /shop/search."
+}

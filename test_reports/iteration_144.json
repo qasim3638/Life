@@ -1,0 +1,38 @@
+{
+  "summary": "Backend-only pytest coverage for the NEW A/B variant feature on /api/admin/seo/city-pages and the public /api/shop/city-page route. 20/20 tests pass (17.4s). Coverage: (1) POST /generate-variant-b — 401/403 without token, 404 unknown slug, 400 when target row's body_md is empty (must generate variant A first), 200 with {ok:true, slug, variant_b_score:int, preview:str} on a fresh approved slug. After 200 the row is verified to contain variant_b={body_md, meta_title, meta_description, confidence_score, confidence_failed, ai_generated_at} AND variant_a_impressions/variant_b_impressions/variant_a_cta_clicks/variant_b_cta_clicks all reset to 0 AND ab_started_at set (single live LLM call against porcelain-tiles-maidstone). (2) Public GET /shop/city-page/<slug> with NO cookie when variant_b is populated → 200, body includes active_variant in {'a','b'}, Set-Cookie header present with name=ts_cp_ab, value in {a,b}, samesite=lax, secure, max-age=2592000. (3) Sticky cookie ts_cp_ab=a always serves variant A; ts_cp_ab=b always serves variant B and the returned body_md exactly matches the DB-stored variant_b.body_md. (4) Public GET on an approved slug WITHOUT variant_b returns the row with no active_variant key and does NOT set the ts_cp_ab cookie (verified using tile-suppliers-maidstone). (5) POST /shop/city-page/track-cta-click — variant 'a' returns {ok:true, matched:1} and increments variant_a_cta_clicks by exactly 1 (verified via ab-stats before/after); variant 'b' increments variant_b_cta_clicks; variant 'c' and empty string return 422. (6) GET /ab-stats — admin-gated, returns {rows:[{slug, town, intent_phrase, url, ab_started_at, variant_a:{score, impressions, clicks, ctr}, variant_b:{...}}]} with CTR validated as round(100*clicks/impressions, 2) when impressions>0 else null; only includes rows where variant_b is populated. (7) POST /promote-variant — admin-gated, winner='c' returns 422; winner='a' on tile-shop-gravesend keeps primary body_md unchanged, unsets variant_b + all four counters + ab_started_at, and sets ab_winner='a' + ab_won_at. (8) winner='b' on porcelain-tiles-maidstone copies variant_b.body_md/meta_title/meta_description onto the primary fields and unsets variant_b/counters; ab_winner='b'/ab_won_at set. (9) Post-promote public GET on both slugs returns the row with no active_variant key and does NOT set a cookie. Cookie assertions parsed via raw Set-Cookie header (case-insensitive) — covers samesite, secure, max-age. Total live LLM cost: 1 call (~1p).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_city_pages_ab_variants.py",
+    "/app/test_reports/pytest/ab_variants.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "routes/city_landing_pages.py:847-854 — variant assignment uses uuid.uuid4().int & 1 which is fine for 50/50 randomness, BUT response.set_cookie is only called inside the new-visitor branch. If a returning visitor sends a malformed cookie (e.g. ts_cp_ab=B uppercase, or a leftover from a deleted page), the lower() normalises 'B' to 'b' so it sticks — but ts_cp_ab=garbage falls through and re-rolls without persisting the new pick. That means the next request rolls again, and the user sees a coin-flip per request until the server happens to set a fresh cookie. Suggest: persist the cookie any time `chosen` is computed fresh (move the set_cookie call out of the if-block), so even cleanup-of-bad-cookie cases stick.",
+    "routes/city_landing_pages.py:824 — public_router has no rate limit on track-cta-click. A malicious actor can pump variant_a_cta_clicks to skew the A/B winner. Recommend an IP-based 1-per-30s throttle (Redis or in-memory LRU keyed on slug+ip) — same as the quality-digest comment from iter 143.",
+    "routes/city_landing_pages.py:884-895 — track_cta_click returns matched:1 even if the slug doesn't exist (matched_count would be 0 and we silently no-op-but-still-200). Either return 404 when matched_count==0 or document that callers shouldn't retry on matched:0. The current shape is mildly misleading.",
+    "routes/city_landing_pages.py:825 — public route is mounted at /shop/city-page but the file's docstring at line 18 claims 'admin-gated everywhere'. Update the module docstring to reflect that the public_router exists and is intentionally unauthenticated.",
+    "routes/city_landing_pages.py:730 — ab-stats query projects 'variant_b.confidence_score' but the row.variant_b is selected via the _id:0 'variant_b': 1 wildcard (line 731), and the dotted projection is then redundant/conflicting. Mongo will raise PathCollisionException on some versions. Tested OK against current Motor build but worth tidying — keep one or the other.",
+    "routes/city_landing_pages.py:801 — promote-variant winner=b copies vb.get('body_md')/meta_title/meta_description onto the primary, but does NOT copy ai_generated_at. So the page's ai_generated_at still reflects when variant A was first generated, even though the live body is now from B. Either copy variant_b.ai_generated_at across, or stamp updated_at + a separate body_generated_at — otherwise SEO age stats lie."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_city_pages_ab_variants.py (new, 20 tests, 7 test classes)"
+  ],
+  "success_rate": {
+    "backend": "100% (20/20)",
+    "frontend": "skipped (backend-only request)"
+  },
+  "test_credentials": "admin@test.com / admin123 (from /app/memory/test_credentials.md)",
+  "seed_data_creation": "Mutated state on the live preview DB (no isolation requested, agent_to_agent note explicitly OK'd this): (a) tile-shop-gravesend — promoted with winner='a': variant_b unset, all four counter fields unset, ab_started_at unset, ab_winner='a', ab_won_at set; primary body_md unchanged. (b) porcelain-tiles-maidstone — generate-variant-b ran (1 LLM call), then promote-variant winner='b': primary body_md/meta_title/meta_description now equal variant B's content, variant_b unset, counters unset, ab_winner='b', ab_won_at set. No new rows inserted. tile-suppliers-maidstone untouched. If the main agent wants to leave an active A/B test running for manual UI inspection, re-run /generate-variant-b on tile-shop-gravesend or any other approved slug.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "test_city_pages_ab_variants.py is self-contained, deterministic except for the ONE LLM call (TestGenerateVariantBHappyPath). Total runtime ~17s. Pair with test_city_pages_confidence.py (iter 142), test_city_pages_autogen.py (iter 141), test_seo_quality_digest.py (iter 143) for full city-pages backend coverage. KEY: tests assume tile-shop-gravesend has variant_b populated AT TEST START — after this run completes, variant_b is GONE on both tile-shop-gravesend and porcelain-tiles-maidstone. To re-run: call POST /api/admin/seo/city-pages/generate-variant-b {\"slug\":\"tile-shop-gravesend\"} once before pytest. Cookie domain extraction uses BASE_URL.split — works for the preview emergent host; if the deployment URL changes drastically the regex may need updating. Cookie assertions use raw Set-Cookie header parsing because requests.Session.cookies normalises out the secure/samesite/max-age attributes.",
+  "rca of the issue": "N/A — no product bugs. All 20 assertions pass first run. Initial collection error (KeyError on REACT_APP_BACKEND_URL) caused by pytest running without a frontend env loaded — fixed by falling back to BACKEND_URL/PUBLIC_PREVIEW_URL from backend/.env when REACT_APP_BACKEND_URL isn't set in the shell."
+}

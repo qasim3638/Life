@@ -1,0 +1,109 @@
+{
+  "summary": "Stripe payment integration testing completed. All 12 backend API tests passed (100%). Frontend checkout flow works correctly with 3-step navigation and Stripe redirect. Order Success page shows correct pending/processing state for unpaid orders.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "App.js routing",
+        "issues": ["Duplicate route for /shop/order-success at lines 486 and 578 - first route (ShopOrderSuccess) takes precedence over OrderSuccessPage"]
+      }
+    ]
+  },
+  "features_tested": {
+    "POST /api/shop/guest-checkout": {
+      "status": "PASS",
+      "evidence": [
+        "Creates order with order_id and order_number",
+        "Validates required customer fields (email, firstName, lastName)",
+        "Rejects empty items with 400 error",
+        "Calculates delivery fee server-side based on postcode zones"
+      ]
+    },
+    "POST /api/shop/guest-checkout/pay": {
+      "status": "PASS",
+      "evidence": [
+        "Returns valid Stripe checkout URL (https://checkout.stripe.com/...)",
+        "Returns session_id starting with cs_test_",
+        "Validates order_id and origin_url required",
+        "Returns 404 for non-existent order"
+      ]
+    },
+    "GET /api/shop/guest-checkout/status/{session_id}": {
+      "status": "PASS",
+      "evidence": [
+        "Returns order details with status",
+        "Returns 404 for invalid session_id",
+        "Shows 'unpaid' status for unpaid orders"
+      ]
+    },
+    "Order Success Page /shop/order-success": {
+      "status": "PASS",
+      "evidence": [
+        "Loads correctly with session_id parameter",
+        "Shows 'Processing Payment' for pending orders",
+        "Polls status every 3 seconds",
+        "Shows error state when no session_id provided"
+      ]
+    },
+    "Checkout Page /shop/tile-checkout Step 3 Payment": {
+      "status": "PASS",
+      "evidence": [
+        "Shows Stripe branding 'Pay Securely with Stripe'",
+        "Displays payment methods: Visa, Mastercard, Amex, Apple Pay, Google Pay",
+        "Place Order button shows total amount",
+        "Secure payment message displayed"
+      ]
+    },
+    "Backend Stripe Integration": {
+      "status": "PASS",
+      "evidence": [
+        "Uses emergentintegrations.payments.stripe.checkout.StripeCheckout",
+        "Uses CheckoutSessionRequest(amount, currency, success_url, cancel_url, metadata)",
+        "Stripe webhook endpoint exists at /api/webhook/stripe"
+      ]
+    }
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_stripe_checkout.py",
+    "/app/test_reports/pytest/pytest_stripe_checkout.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Backend correctly uses emergentintegrations library for Stripe integration",
+    "CheckoutSessionRequest correctly passes amount as float, currency as 'gbp', success_url, cancel_url, and metadata",
+    "Order total is recalculated server-side for security (never trusts frontend total)",
+    "Stripe session_id is stored in order document for status tracking",
+    "Payment transaction records are created for audit trail"
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_stripe_checkout.py"
+  ],
+  "success_rate": {
+    "backend": "100% (12/12 tests passed)",
+    "frontend": "100% (checkout flow and order success page verified)"
+  },
+  "test_credentials": {
+    "admin": "admin@test.com / Admin@2026",
+    "stripe_key": "sk_test_emergent (in backend .env)"
+  },
+  "seed_data_creation": "Test orders created via guest checkout API during testing",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Stripe integration fully functional. Guest checkout flow: 1) POST /api/shop/guest-checkout creates order, 2) POST /api/shop/guest-checkout/pay creates Stripe session with CheckoutSessionRequest, 3) Frontend redirects to session.url, 4) After payment, Stripe redirects to /shop/order-success?session_id=X&order_id=Y, 5) GET /api/shop/guest-checkout/status/{session_id} checks payment status. Cart items stored in localStorage key 'tile_cart'. Note: Actual payment completion requires real card - we verified session creation and status endpoints work correctly.",
+  "mocked_apis": {
+    "has_mocked_apis": false,
+    "mocked_apis_list": []
+  },
+  "stripe_integration_verified": {
+    "library": "emergentintegrations.payments.stripe.checkout",
+    "classes_used": ["StripeCheckout", "CheckoutSessionRequest", "CheckoutSessionResponse", "CheckoutStatusResponse"],
+    "checkout_url_format": "https://checkout.stripe.com/c/pay/cs_test_...",
+    "session_id_format": "cs_test_...",
+    "webhook_endpoint": "/api/webhook/stripe"
+  }
+}

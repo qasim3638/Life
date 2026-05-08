@@ -1,0 +1,60 @@
+{
+  "summary": "Tested Sale Labels bug fix on Collection Detail Page. All features working correctly - Sale/Clearance labels now trigger sale UI elements (ribbon badge, WAS/NOW pricing, red price color) even without explicit sale_active or was_price fields.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_sale_labels.py",
+    "/app/test_reports/pytest/pytest_sale_labels.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [
+    "/app/backend/tests/test_sale_labels.py"
+  ],
+  "success_rate": {
+    "backend": "100% (8/8 tests passed)",
+    "frontend": "100% - All sale label features verified"
+  },
+  "test_credentials": "Admin: qasim@tilestation.co.uk / Tilestation_9614",
+  "seed_data_creation": "Temporarily added 'Sale' label to alabaster-60x60cm-polished and 'Clearance' label to alabaster-30x60cm-polished for testing. Cleaned up after tests.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Sale labels feature is fully working. Products with 'Sale', 'Clearance', or 'On Sale' labels now show: 1) Sale ribbon badge on product image, 2) SALE PRICE Ribbon with WAS/NOW pricing when tier discount is active, 3) Red price color, 4) WAS price strikethrough. Non-sale products correctly show only volume discount badges (green) without sale UI elements.",
+  "features_tested": {
+    "backend_apis": [
+      "✓ GET /api/tiles/collection/{series_name} returns labels field for products",
+      "✓ GET /api/tiles/products/{slug}/tier-pricing returns tier pricing with discount fields",
+      "✓ Products with Sale label have correct pricing fields",
+      "✓ Products without labels return empty labels array",
+      "✓ Clearance label recognized in API response"
+    ],
+    "frontend_ui": [
+      "✓ Sale ribbon badge appears on product image when product has 'Sale' label",
+      "✓ Sale ribbon badge appears when product has 'Clearance' label",
+      "✓ SALE PRICE Ribbon shows WAS/NOW pricing when tier discount is active for sale items",
+      "✓ Price displays in red when product is on sale",
+      "✓ WAS price strikethrough shows below current price when tier discount is active",
+      "✓ Non-sale products do NOT show sale ribbon or WAS pricing",
+      "✓ 'Save X%' badge appears next to price when tier discount is active for sale items",
+      "✓ Mobile view correctly shows sale elements (red price, WAS strikethrough)",
+      "✓ Products without labels show normal pricing without sale elements"
+    ]
+  },
+  "pytest_results": {
+    "total_tests": 8,
+    "passed": 8,
+    "failed": 0
+  },
+  "bug_fix_verification": {
+    "original_issue": "Collection detail page did not show SALE ribbon or WAS/NOW pricing for products with Sale/Clearance labels because it only checked sale_active flag and was_price",
+    "fix_applied": "Updated isOnSale to check labels array for 'Sale'/'Clearance'/'On Sale' values in addition to sale_active && was_price",
+    "verification_status": "PASSED - All sale label scenarios working correctly"
+  }
+}

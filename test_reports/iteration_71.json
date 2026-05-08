@@ -1,0 +1,71 @@
+{
+  "summary": "Tested Trade Account Settings page and Trade Accounts management features. All features working correctly: 7 tabs present (Announcement Bar, Homepage Banner, Benefits List, Trade Pricing, Account Tiers, Account Dashboard, Full Preview), announcement bar CRUD, tier management with add/delete, Edit Trade Account modal with Pricing & Status section including custom discount override. Backend APIs (12/12 tests passed).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_trade_account_settings.py",
+    "/app/test_reports/pytest/pytest_trade_account_settings.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [
+    "/app/backend/tests/test_trade_account_settings.py"
+  ],
+  "success_rate": {
+    "backend": "100% (12/12 tests passed)",
+    "frontend": "100%"
+  },
+  "test_credentials": "Admin: qasim@tilestation.co.uk / Tilestation_9614",
+  "seed_data_creation": "None - used existing trade accounts data",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Trade Account Settings page at /admin/trade-account-settings has 7 tabs: Announcement Bar, Homepage Banner, Benefits List, Trade Pricing, Account Tiers, Account Dashboard, Full Preview. Announcement Bar tab allows managing scrolling bar items with toggle, text, link, and delete. Account Tiers tab shows 4 tiers (Bronze, Silver, Gold, Platinum) with editable name, discount %, min_spend, and color. Add Tier and Delete buttons work. Trade Accounts page at /admin/trade-accounts shows account list with Edit modal containing Pricing & Status section with Account Status dropdown, Pricing Tier dropdown, Current Discount display, and Special Custom Discount toggle+input.",
+  "features_tested": {
+    "backend_apis": [
+      "✓ GET /api/website-admin/trade-account-settings returns 200 with settings",
+      "✓ GET /api/website-admin/trade-account-settings returns announcement_bar items",
+      "✓ POST /api/website-admin/trade-account-settings saves settings successfully",
+      "✓ Settings persistence verified (save then GET)",
+      "✓ GET /api/trade-accounts returns accounts list with total count",
+      "✓ GET /api/trade-accounts/pricing-tiers returns bronze, silver, gold, platinum tiers",
+      "✓ GET /api/trade-accounts/trade-types returns list including 'Builder'",
+      "✓ PUT /api/trade-accounts/{id} updates pricing_tier",
+      "✓ PUT /api/trade-accounts/{id} updates status",
+      "✓ PUT /api/trade-accounts/{id} sets custom_discount",
+      "✓ PUT /api/trade-accounts/{id} updates multiple fields at once",
+      "✓ GET /api/website-admin/public/benefits-bar returns benefits list"
+    ],
+    "frontend_ui": [
+      "✓ Trade Account Settings page loads at /admin/trade-account-settings",
+      "✓ All 7 tabs present: Announcement Bar, Homepage Banner, Benefits List, Trade Pricing, Account Tiers, Account Dashboard, Full Preview",
+      "✓ Announcement Bar tab shows items with toggle, text input, link input, delete button",
+      "✓ Announcement Bar tab has 'Add Item' button that works",
+      "✓ Announcement Bar Preview section shows items in dark bar",
+      "✓ Account Tiers tab shows 4 tiers (Bronze, Silver, Gold, Platinum)",
+      "✓ Each tier has editable name, discount %, min_spend (£), and color picker",
+      "✓ Account Tiers tab has 'Add Tier' button",
+      "✓ Each tier has delete button (trash icon)",
+      "✓ Save Changes button works and shows success toast",
+      "✓ Trade Accounts page loads at /admin/trade-accounts with account list",
+      "✓ Edit Trade Account modal has 'Pricing & Status' section",
+      "✓ Account Status dropdown present (Active, Pending Approval, Suspended)",
+      "✓ Pricing Tier dropdown present (Bronze, Silver, Gold, Platinum)",
+      "✓ Current Discount display shows tier discount (e.g., '15% off')",
+      "✓ Special Custom Discount toggle present with checkbox",
+      "✓ Custom Discount input field appears when toggle is enabled",
+      "✓ Helper text: 'This tradesman gets a special rate regardless of their tier.'"
+    ]
+  },
+  "pytest_results": {
+    "total_tests": 12,
+    "passed": 12,
+    "failed": 0
+  }
+}

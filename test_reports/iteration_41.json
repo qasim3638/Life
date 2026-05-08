@@ -1,0 +1,100 @@
+{
+  "summary": "Tested dynamic per-product trade_discount and credit_back_rate implementation. All backend APIs correctly return both fields. Frontend correctly uses per-product/per-collection rates for price calculations and cart item storage.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "features_tested": {
+    "GET /api/tiles/collections - trade_discount": {
+      "status": "PASS",
+      "details": "Returns trade_discount field for each collection (defaults to 5 from TRADE_DISCOUNT_DEFAULT)"
+    },
+    "GET /api/tiles/collections - credit_back_rate": {
+      "status": "PASS",
+      "details": "Returns credit_back_rate field for each collection (defaults to 2 from TRADE_CREDIT_BACK_DEFAULT)"
+    },
+    "GET /api/tiles/collection/{series_name} - trade_discount": {
+      "status": "PASS",
+      "details": "Returns trade_discount field at collection level"
+    },
+    "GET /api/tiles/collection/{series_name} - credit_back_rate": {
+      "status": "PASS",
+      "details": "Returns credit_back_rate field at collection level"
+    },
+    "GET /api/tiles/products/{slug}/tier-pricing - trade_discount": {
+      "status": "PASS",
+      "details": "Returns trade_discount field in tier pricing response, uses per-product value from DB when no query param provided"
+    },
+    "GET /api/tiles/products/{slug}/tier-pricing - credit_back_rate": {
+      "status": "PASS",
+      "details": "Returns credit_back_rate field in tier pricing response"
+    },
+    "Collection Cards - Per-Collection trade_discount": {
+      "status": "PASS",
+      "details": "TileCollectionsPage.js uses collection.trade_discount (per-collection rate from API) for getProductTradePrice(), not account-level default"
+    },
+    "Collection Cards - Credit Back Badge (Trade User)": {
+      "status": "PASS",
+      "details": "Shows 'Extra 2% Credit Back' badge below price for trade users (32 badges found on page)"
+    },
+    "Product Detail Page - Credit Back Badge": {
+      "status": "PASS",
+      "details": "Shows 'Extra 2% Credit Back' badge near Add to Cart button for trade users"
+    },
+    "Cart - Per-Item trade_discount": {
+      "status": "PASS",
+      "details": "CollectionDetailPage passes productTradeDiscount to cart items. TileCartPage uses item.trade_discount for 'Saved vs retail' calculation"
+    },
+    "Cart - Per-Item credit_back_rate": {
+      "status": "PASS",
+      "details": "CollectionDetailPage passes creditBackRate to cart items. TileCartPage uses item.credit_back_rate for 'Credit Back Earned' calculation"
+    },
+    "Cart - Saved vs Retail Section": {
+      "status": "PASS",
+      "details": "Shows 'Saved vs retail £6.04 - That's 21% off the retail inc. VAT price' for trade users, using per-item trade_discount"
+    },
+    "Cart - Credit Back Section": {
+      "status": "PASS",
+      "details": "Shows 'Credit Back Earned £0.46 on ex. VAT product total' for trade users, using per-item credit_back_rate"
+    }
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_dynamic_trade_rates.py",
+    "/app/test_reports/pytest/pytest_dynamic_trade_rates.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Implementation correctly reads per-product trade_discount and credit_back_rate from DB, falling back to global defaults (TRADE_DISCOUNT_DEFAULT=5, TRADE_CREDIT_BACK_DEFAULT=2) when not set",
+    "Frontend correctly stores per-item rates in cart items and uses them for calculations instead of account-level defaults"
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_dynamic_trade_rates.py"
+  ],
+  "success_rate": {
+    "backend": "100% (10/10 tests passed)",
+    "frontend": "100% (all UI features working)"
+  },
+  "test_credentials": {
+    "trade_user_simulation": "localStorage 'tile_shop_customer' with {is_trade: true, trade_discount: 5}",
+    "preview_url": "https://feature-verification-7.preview.emergentagent.com",
+    "cart_page_url": "/shop/tile-cart"
+  },
+  "seed_data_creation": "No seed data needed - localStorage simulation used for testing. Products in preview DB use default rates (trade_discount=5, credit_back_rate=2) since per-product values are not set.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Dynamic per-product trade_discount and credit_back_rate fully implemented. APIs return both fields for collections, collection detail, and tier pricing. Frontend uses per-collection rates for price display on collection cards, and stores per-item rates in cart for calculations. Default values (trade_discount=5, credit_back_rate=2) are used when per-product values are not set in DB. The bulk-tier-update endpoint in supplier_sync.py can save per-product trade_discount and credit_back_rate.",
+  "mocked_apis": {
+    "has_mocked_apis": false,
+    "mocked_apis_list": []
+  },
+  "implementation_notes": {
+    "backend_flow": "tiles.py reads per-product trade_discount and credit_back_rate from tiles/supplier_products collections, falls back to business_rules.py defaults",
+    "frontend_flow": "TileCollectionsPage uses collection.trade_discount for getProductTradePrice(). CollectionDetailPage stores productTradeDiscount and creditBackRate from API, passes to cart. TileCartPage uses per-item rates for calculations.",
+    "admin_flow": "supplier_sync.py bulk-tier-update endpoint saves trade_discount and credit_back_rate per product"
+  }
+}

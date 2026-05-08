@@ -1,0 +1,78 @@
+{
+  "summary": "Tested Trade Discount Bug Fix for tier_pricing_disabled products. All backend tests PASSED (13/13). Frontend verification shows Trade Discount badge and Credit Back badge are correctly displayed for trade users. The fix at lines 822-827 in CollectionDetailPage.js correctly applies trade discount when tier pricing is disabled.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_trade_discount_tier_disabled.py",
+    "/app/test_reports/pytest/pytest_trade_discount_tier_disabled.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Fix at lines 822-827 correctly applies tradeDiscountFactor when tierPricing is null/empty",
+    "Collection API (tiles.py lines 1282-1303) correctly returns trade_discount and credit_back_rate from products",
+    "Tier pricing API (tiles.py lines 1935-1947) correctly returns disabled:true for tier_pricing_disabled products",
+    "useTradeUser hook (lines 10-17) correctly reads trade user status from localStorage",
+    "Trade Discount badge (lines 1996-2001) and Credit Back badge (lines 2003-2010) correctly display for trade users"
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_trade_discount_tier_disabled.py"
+  ],
+  "success_rate": {
+    "backend": "100% - All 13 API tests passed",
+    "frontend": "100% - Trade discount and credit back badges display correctly"
+  },
+  "test_credentials": "Trade user simulation: localStorage.setItem('tile_shop_customer', JSON.stringify({is_trade: true, trade_discount: 20, business_name: 'Test Trade Company'}))",
+  "seed_data_creation": "None - used existing Bluestone collection with tier_pricing_disabled product",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Trade Discount Bug Fix VERIFIED: 1) Backend returns trade_discount and credit_back_rate in collection API, 2) Tier pricing API returns disabled:true for tier_pricing_disabled products, 3) Frontend correctly applies trade discount when tier pricing is disabled (tradeDiscountFactor calculation), 4) Trade Discount badge and Credit Back badge display correctly for trade users. Test product: Bluestone Grey 60x60 Polished (slug: bluestone-grey-60x60-polished) has tier_pricing_disabled=true.",
+  "test_results": {
+    "1_collection_api_trade_discount": {
+      "status": "PASS",
+      "details": "Collection API returns trade_discount field (5%)"
+    },
+    "2_collection_api_credit_back_rate": {
+      "status": "PASS",
+      "details": "Collection API returns credit_back_rate field (2%)"
+    },
+    "3_tier_pricing_disabled_returns_disabled_true": {
+      "status": "PASS",
+      "details": "Tier pricing API returns disabled:true for bluestone-grey-60x60-polished"
+    },
+    "4_tier_pricing_disabled_returns_empty_tiers": {
+      "status": "PASS",
+      "details": "Tier pricing API returns empty tiers array when disabled"
+    },
+    "5_tier_pricing_enabled_returns_tiers": {
+      "status": "PASS",
+      "details": "Tier pricing API returns tiers for products without tier_pricing_disabled"
+    },
+    "6_tier_pricing_enabled_returns_trade_tiers": {
+      "status": "PASS",
+      "details": "Tier pricing API with is_trade=true returns trade_tiers with lower prices"
+    },
+    "7_frontend_trade_discount_badge": {
+      "status": "PASS",
+      "details": "Trade Discount badge ('Trade: 5% off') displays for trade users"
+    },
+    "8_frontend_credit_back_badge": {
+      "status": "PASS",
+      "details": "Credit Back badge ('Extra 2% Credit Back') displays for trade users"
+    },
+    "9_frontend_trade_user_detection": {
+      "status": "PASS",
+      "details": "Trade user correctly detected from localStorage tile_shop_customer"
+    },
+    "10_frontend_price_calculation": {
+      "status": "PASS",
+      "details": "Price calculation includes trade discount factor when tier pricing is disabled"
+    }
+  }
+}

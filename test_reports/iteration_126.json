@@ -1,0 +1,37 @@
+{
+  "summary": "Tested editable category-link feature on Homepage Manager (admin) and storefront integration. All 7 functional tests PASSED end-to-end: link button rendered on every homepage category card beside the image button, overlay opens with correct heading/input/save/cancel, light validation rejects 'not-a-link' with toast 'Link must start with /, http://, or https://', valid path saves with toast 'Link updated', button turns amber, backend persists custom_url, re-opening pre-fills the saved value, 'Reset to default' clears it (toast 'Link cleared (default route restored)') and reverts the button to grey, storefront homepage uses cat.custom_url || `/tiles?category={slug}` correctly. Backend GET /api/website-admin/categories/homepage reflects every change. Cleaned up all custom_urls at the end so DB is back to baseline.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Light input validation only checks the URL prefix (/ or http(s)://). Could be tightened to also reject whitespace-only and very obvious bad chars, but acceptable for an admin-only field.",
+    "/app/frontend/src/pages/admin/HomepageManager.jsx is 4,304 lines — well above the 700-line guideline. Should be split into smaller per-section components (categories, hero carousel, footer, etc.) to keep maintainability.",
+    "Console reports a non-blocking React warning: 'Each child in a list should have a unique key prop' from AdminDashboard render — pre-existing, unrelated to this feature, but worth fixing.",
+    "On the public storefront homepage, fetchProducts() throws 'body stream already read' because the response is being read twice. Pre-existing bug unrelated to this feature; suggest auditing TileStationHome.js fetchProducts to clone or read response once.",
+    "PUT /api/website-admin/categories/{id} body uses spread of full category object plus custom_url. Works but is not minimal — a partial PATCH would be safer (less risk of overwriting concurrently-edited fields)."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "admin@test.com / admin123 (super_admin)",
+  "seed_data_creation": "Temporarily set custom_url='/shop/test-collection' on Wall Tiles and used pre-existing '/shop/collection/Ridgeway' on Flooring. Both cleared at the end — DB confirmed back to baseline (all custom_url=None).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Feature works as designed. Backend route PUT /api/website-admin/categories/{id} accepts custom_url field. GET /api/website-admin/categories/homepage exposes custom_url. Admin UI uses data-testids: edit-link-{id}, link-url-input-{id}, save-link-url-{id}, clear-link-{id}. Storefront category tiles have data-testid='category-{slug}' and switch between <Link> and <a target=_blank> based on http(s) prefix.",
+  "tests_executed": [
+    "A. Overlay structure on category without custom_url (input+save visible, clear hidden, heading 'Custom destination link') — PASS",
+    "B. Invalid URL 'not-a-link' rejected with toast — PASS",
+    "C. Valid URL '/shop/test-collection' saved on Wall Tiles, toast 'Link updated', overlay closed, button amber, backend persisted — PASS",
+    "D. Re-open Flooring overlay shows pre-filled '/shop/collection/Ridgeway' and 'Reset to default' link — PASS",
+    "E. 'Reset to default' clears custom_url, toast 'Link cleared (default route restored)', button reverts to grey, backend updated — PASS",
+    "F. Storefront category-wall-tiles renders href='/shop/test-collection'; category-flooring renders href='/tiles?category=flooring' — PASS",
+    "G. Cleanup: cleared Wall Tiles custom_url, all 8 categories now have custom_url=null (verified via API) — PASS"
+  ]
+}

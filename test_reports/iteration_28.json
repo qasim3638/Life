@@ -1,0 +1,160 @@
+{
+  "summary": "Comprehensive testing of multi-step checkout system completed. All 16 backend API tests passed (100%). Frontend checkout flow fully functional with 3-step navigation, postcode-based delivery fee calculation, and click & collect option.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "POST /api/website-admin/checkout-settings",
+        "issue": "Endpoint does not require authentication - potential security concern for admin settings",
+        "priority": "LOW"
+      }
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Checkout page header",
+        "issues": ["Header shows 'Free Delivery Over £299' but checkout settings have £500 threshold - inconsistent messaging"]
+      }
+    ]
+  },
+  "features_tested": {
+    "admin_login": {
+      "status": "PASS",
+      "endpoint": "POST /api/auth/login",
+      "evidence": ["Admin login with admin@test.com / Admin@2026 successful"]
+    },
+    "admin_checkout_settings_page": {
+      "status": "PASS",
+      "url": "/admin/checkout-settings",
+      "evidence": [
+        "Page loads with 5 tabs: Delivery & Zones, Click & Collect, Time Slots, Checkout Text, Preview",
+        "All tabs navigable and functional",
+        "Save Settings button present",
+        "Delivery zones displayed with correct fees"
+      ]
+    },
+    "checkout_settings_api_get": {
+      "status": "PASS",
+      "endpoint": "GET /api/website-admin/checkout-settings",
+      "evidence": ["Returns 200 with settings object containing delivery, collection, time_slots, text sections"]
+    },
+    "checkout_settings_api_save": {
+      "status": "PASS",
+      "endpoint": "POST /api/website-admin/checkout-settings",
+      "evidence": ["Successfully saves settings", "Settings persist and are retrievable via GET"]
+    },
+    "public_checkout_settings_api": {
+      "status": "PASS",
+      "endpoint": "GET /api/website-admin/public/checkout-settings",
+      "evidence": ["Returns 200 with full settings", "No authentication required", "Contains delivery zones, collection stores, text config"]
+    },
+    "guest_checkout_api": {
+      "status": "PASS",
+      "endpoint": "POST /api/shop/guest-checkout",
+      "evidence": [
+        "Creates order successfully with order_id and order_number",
+        "Validates required customer fields (email, firstName, lastName)",
+        "Rejects empty items with 400 error",
+        "Calculates delivery fee server-side based on postcode zones"
+      ]
+    },
+    "postcode_delivery_fee_tn": {
+      "status": "PASS",
+      "evidence": ["TN postcode returns £29.99 delivery fee (Local zone)"]
+    },
+    "postcode_delivery_fee_se": {
+      "status": "PASS",
+      "evidence": ["SE postcode returns £49.99 delivery fee (Greater London zone)"]
+    },
+    "postcode_delivery_fee_default": {
+      "status": "PASS",
+      "evidence": ["Unknown postcodes return £79.99 default fee"]
+    },
+    "free_delivery_threshold": {
+      "status": "PASS",
+      "evidence": ["Orders over £500 get free delivery", "Threshold configurable in admin settings"]
+    },
+    "click_collect_free_delivery": {
+      "status": "PASS",
+      "evidence": [
+        "Click & Collect shows £0 delivery fee",
+        "Collection store displayed: Tile Station - Tonbridge",
+        "Order summary shows 'FREE' for delivery"
+      ]
+    },
+    "checkout_empty_basket": {
+      "status": "PASS",
+      "url": "/shop/tile-checkout",
+      "evidence": ["Shows 'Your basket is empty' message", "Browse Tiles button present"]
+    },
+    "checkout_step1_your_details": {
+      "status": "PASS",
+      "evidence": [
+        "Form fields: Email, First Name, Last Name, Phone",
+        "Continue button navigates to Step 2",
+        "Validation works for required fields"
+      ]
+    },
+    "checkout_step2_delivery_method": {
+      "status": "PASS",
+      "evidence": [
+        "Home Delivery and Click & Collect options displayed",
+        "Delivery address form shown when Home Delivery selected",
+        "Postcode-based fee calculation works in real-time",
+        "Collection store shown when Click & Collect selected"
+      ]
+    },
+    "checkout_step3_payment": {
+      "status": "PASS",
+      "evidence": [
+        "Payment placeholder displayed (MOCKED - no real Stripe integration)",
+        "Order review shows customer details and delivery address",
+        "Place Order button with total amount"
+      ]
+    },
+    "order_summary_sidebar": {
+      "status": "PASS",
+      "evidence": [
+        "Shows cart items with quantity controls",
+        "Subtotal calculated correctly",
+        "Delivery fee displayed (or 'Calculated at next step')",
+        "Total calculated correctly",
+        "Free delivery threshold message shown"
+      ]
+    }
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_checkout_system.py",
+    "/app/test_reports/pytest/pytest_checkout_system.xml"
+  ],
+  "action_items": [
+    "Consider adding authentication to POST /api/website-admin/checkout-settings endpoint",
+    "Fix inconsistency: Header shows 'Free Delivery Over £299' but checkout settings have £500 threshold"
+  ],
+  "critical_code_review_comments": [
+    "Checkout settings API correctly uses deep_merge to prevent partial data loss on save",
+    "Guest checkout endpoint properly recalculates delivery fee server-side for security",
+    "Frontend correctly reads cart from localStorage key 'tile_cart'",
+    "Payment integration is MOCKED - placeholder UI only, no real Stripe processing"
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_checkout_system.py"
+  ],
+  "success_rate": {
+    "backend": "100% (16/16 tests passed)",
+    "frontend": "100% (all checkout flows verified)"
+  },
+  "test_credentials": {
+    "admin": "admin@test.com / Admin@2026"
+  },
+  "seed_data_creation": "Test orders created via guest checkout API during testing",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Checkout system fully functional. Admin settings at /admin/checkout-settings with 5 tabs. Customer checkout at /shop/tile-checkout reads cart from localStorage 'tile_cart'. Delivery zones: Local (TN,ME,BR,DA) £29.99, Greater London (E,EC,N,NW,SE,SW,W,WC) £49.99, South East £59.99, Rest of UK £79.99. Free delivery over £500. Click & Collect shows £0 delivery. Payment is MOCKED placeholder only.",
+  "mocked_apis": {
+    "payment_processing": "Payment integration in Step 3 is a placeholder UI - no real Stripe/payment processing"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "summary": "Storefront link audit on https://feature-verification-7.preview.emergentagent.com/. Enumerated every <a> and <button> on the public homepage (desktop + mobile) and validated each href against React Router routes defined in /app/frontend/src/App.js. Discovered 56 visible anchors + 21 buttons (77 elements). 38 unique hrefs route to known/valid public routes (logo, header icons, hero CTA, category tiles, product cards, trade, calculator, contact, samples, etc.) and ALL of these resolve correctly. However 7 distinct hrefs (with multiple link instances each) point to routes that DO NOT EXIST in App.js — and because of the catch-all `<Route path='*' element={<Navigate to='/' replace/>} />` they SILENTLY REDIRECT to the homepage instead of 404'ing. This is a P0 launch-blocker per the user's brief (wrong destination > missing). Header icons, logo, hero CTA, carousel arrows/dots, product tiles, and category-by-style tiles are all wired correctly. Mobile hamburger menu opens and exposes the same set of hrefs (so the 7 broken footer/info links are also broken on mobile).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "Footer Quick Links", "issue": "href='/shop/privacy' silently redirects to homepage. App.js exposes info pages via /shop/info/:slug — should be /shop/info/privacy", "selector": "footer a[href='/shop/privacy']", "priority": "P0"},
+      {"component": "Footer Quick Links", "issue": "href='/shop/terms' silently redirects to homepage. Should be /shop/info/terms", "selector": "footer a[href='/shop/terms']", "priority": "P0"},
+      {"component": "Footer Quick Links", "issue": "href='/shop/faq' silently redirects to homepage. Should be /shop/info/faq", "selector": "footer a[href='/shop/faq']", "priority": "P0"},
+      {"component": "Footer Customer Service", "issue": "href='/shop/returns' (label 'Returns & Refunds') silently redirects to homepage. Should be /shop/info/returns", "selector": "footer a[href='/shop/returns']", "priority": "P0"},
+      {"component": "Footer + body promo card", "issue": "href='/shop/delivery' (footer label 'Delivery Information' AND body promo card 'Free Delivery — Free delivery for orders over £300') silently redirects to homepage. Should be /shop/info/delivery", "selector": "a[href='/shop/delivery']", "priority": "P0"},
+      {"component": "Mid-page promotional card", "issue": "href='/shop/visualiser' (label 'Design Your Dream Room — Tap into your creativity with help from our online visua…') silently redirects to homepage. No /shop/visualiser route exists in App.js.", "selector": "a[href='/shop/visualiser']", "priority": "P0"},
+      {"component": "Mid-page promotional card", "issue": "href='/shop/reviews' (label 'Loved By Customers — Rated 4.9 stars from thousands of happy customers') silently redirects to homepage. No reviews route exists.", "selector": "a[href='/shop/reviews']", "priority": "P0"},
+      {"component": "Top utility ribbon", "issue": "Black ribbon at top of every storefront page shows 'Persistence Test Item' linking to /test. /test does not exist and silently redirects to homepage. This is highly visible (renders above the main header).", "selector": "a[href='/test']", "priority": "P1 (placeholder per spec, but visible to end users on launch)"},
+      {"component": "Yellow secondary nav", "issue": "The sticky yellow category nav contains ONLY three 'TEST LINK' items (all pointing to /test) instead of the expected real categories (TILES, BATHROOM, FLOORING, MATERIALS, etc.). Per the brief these are admin-managed placeholders and 'may legitimately point nowhere' — but launching without a real primary category nav is a UX/IA issue worth flagging.", "selector": "nav a[href='/test']", "priority": "P1 (content config, not code — but launch-blocker for IA)"},
+      {"component": "Mid-page CTA", "issue": "Anchor labelled 'TEST_CTA_SECONDARY' with href='/test-secondary' is a non-existent route — silently redirects to homepage. Likely admin-managed placeholder; remove before launch.", "selector": "a[href='/test-secondary']", "priority": "P1 (placeholder)"}
+    ],
+    "integration_issues": [
+      {"flow": "Catch-all route silently redirecting unknown URLs to '/'", "issue": "App.js line 864 has <Route path='*' element={<Navigate to='/' replace/>} />. This MASKS broken links — users clicking 'Privacy Policy', 'Returns & Refunds', 'Delivery', 'FAQs', 'Terms', 'Design Your Dream Room', 'Loved By Customers' silently land back on the homepage with no error. Recommend either (a) fixing all hrefs to use /shop/info/<slug>, OR (b) replacing catch-all with a NotFound page so this class of bug is detected at QA.", "affected_selectors": ["a[href='/shop/privacy']","a[href='/shop/terms']","a[href='/shop/faq']","a[href='/shop/returns']","a[href='/shop/delivery']","a[href='/shop/visualiser']","a[href='/shop/reviews']"]}
+    ],
+    "design_issues": []
+  },
+  "verified_working": {
+    "header": ["Tile Station logo -> /", "Contact icon -> /shop/contact", "Sign In -> /shop/tile-login", "Samples -> /shop/tile-samples", "Wishlist -> /shop/tile-wishlist", "Basket -> /shop/tile-cart", "TRADE button -> /shop/trade/login"],
+    "hero": ["'Shop Sale Now' CTA -> /tiles?sale=true (renders TileCollectionsPage)", "Carousel Next/Prev arrows clickable", "Carousel dots 1/2/3 clickable"],
+    "category_tiles": ["Bathroom Tiles, Floor Tiles, Wall Tiles, Wall & Floor, Wall & Floor Tiles, Kitchen Tiles, Outdoor Tiles, Flooring -> /tiles?category=…  all OK"],
+    "style_tiles": ["Marble Effect, Patterned, Stone Effect, Wood Effect -> /tiles?style=… all OK"],
+    "product_cards": ["8 product cards link to /tiles/<slug> which routes through TileProductRedirect to /shop/collection/* (OK)"],
+    "promo_cards_ok": ["50% Bathroom Catalogue -> /shop/bathroom OK", "Tile Calculator -> /shop/calculator OK", "Free Samples -> /shop/sample-service OK", "Open Trade Account -> /shop/trade/register OK", "Our Showrooms -> /shop/stores (redirects /shop/contact) OK", "Create Account -> /shop/register OK", "Sign In -> /shop/login OK"],
+    "footer_ok": ["Track Order -> /shop/track OK", "Floor Tiles -> /tiles?type=floor OK", "Wall Tiles -> /tiles?type=wall OK", "View All -> /tiles OK"],
+    "mobile": ["Hamburger menu (data-testid=mobile-menu-btn) opens; surfaces 47 unique hrefs — same breakage profile as desktop"]
+  },
+  "test_report_links": ["/app/test_reports/audit/all_links.json"],
+  "action_items": [
+    "P0: Fix homepage links — /shop/privacy → /shop/info/privacy",
+    "P0: Fix homepage links — /shop/terms → /shop/info/terms",
+    "P0: Fix homepage links — /shop/faq → /shop/info/faq",
+    "P0: Fix homepage links — /shop/returns → /shop/info/returns",
+    "P0: Fix homepage links — /shop/delivery → /shop/info/delivery (BOTH the footer link AND the 'Free Delivery' body promo card)",
+    "P0: Add a /shop/visualiser page OR remove/relabel the 'Design Your Dream Room' promo card — currently dead-ends to homepage",
+    "P0: Add a /shop/reviews page OR remove/relabel the 'Loved By Customers' promo card — currently dead-ends to homepage",
+    "P1: Replace placeholder /test ribbon item ('Persistence Test Item') with real content or hide the ribbon before launch",
+    "P1: Replace the three 'TEST LINK' entries in the yellow secondary nav with real category links (TILES, BATHROOM, FLOORING, MATERIALS) — currently the primary nav shows ONLY placeholders",
+    "P1: Remove '/test-secondary' / 'TEST_CTA_SECONDARY' admin-placeholder CTA from homepage content",
+    "P2 (defensive): Replace the catch-all <Route path='*' element={<Navigate to='/' replace/>}/> in App.js with a real 404 NotFound page so that future broken links are visible in QA instead of silently redirecting"
+  ],
+  "critical_code_review_comments": [
+    "TileStationHome.js is a monolith (header @ ~182, nav @ 338, footer @ 1029) — should be split into Header/Nav/Footer/Sections components for maintainability and to localize link audits.",
+    "App.js uses a catch-all redirect to '/' which actively hides broken links and makes link-rot impossible to detect through manual QA. Replace with a NotFound component.",
+    "Info page convention is /shop/info/:slug — but homepage hardcodes flat paths like /shop/privacy, /shop/terms, /shop/faq, /shop/returns, /shop/delivery. Either (a) add redirect routes (`<Route path='/shop/privacy' element={<Navigate to='/shop/info/privacy' replace/>}/>` etc.) for backward compat, OR (b) update the link hrefs in TileStationHome.js. Option (a) is safer for launch.",
+    "Promo cards 'Design Your Dream Room' and 'Loved By Customers' on the homepage point to features that don't exist (visualiser, reviews). Either build the routes or remove the cards before launch — they actively mislead users."
+  ],
+  "updated_files": [],
+  "success_rate": {"frontend": "78% (38 of 47 unique hrefs route correctly; 9 hrefs / ≈13 link instances dead-end to homepage)"},
+  "test_credentials": "N/A — public storefront audit only, no login attempted",
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Audit script enumerates DOM anchors/buttons, then classifies hrefs against the App.js route table. Saved JSON dump at /app/test_reports/audit/all_links.json. After main agent fixes hrefs, re-run the same browser_automation script to confirm zero unknown internal hrefs remain. Specifically re-check: footer Privacy/Terms/FAQ/Returns/Delivery, body promo cards Free Delivery / Visualiser / Reviews, top ribbon /test, and the three yellow-nav TEST LINK items.",
+  "rca of the issue": "Two root causes: (1) Homepage links were authored using flat URL paths (e.g. /shop/privacy) but App.js only registers /shop/info/:slug for these info pages — the route map and the link authoring convention diverged. (2) App.js catch-all `<Route path='*' element={<Navigate to='/' replace/>}/>` silently swallows ALL unknown URLs and bounces them to the homepage, so QA never sees a 404 and the bug stayed invisible. Reproduction: navigate to https://feature-verification-7.preview.emergentagent.com/, click footer Privacy Policy → lands on homepage instead of a privacy page. Mitigation: either add redirect routes for the legacy flat paths or update the hrefs in TileStationHome.js footer + promo cards; AND replace catch-all with a NotFound component for future-proofing."
+}

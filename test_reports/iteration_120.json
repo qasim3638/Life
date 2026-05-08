@@ -1,0 +1,37 @@
+{
+  "summary": "P2 Abandoned-Basket Email Sequence — backend + frontend tests both passing. 16/16 pytest cases green covering settings GET/PUT, save/update + reminder-flag reset, mark-recovered, send-reminders idempotency, disabled-toggle, day-0 → day-1 cadence with BACK- promo minted, promo idempotency + new-after-consume, validate (missing/unknown/wrong-email/valid/expired), guest-checkout promo apply + total reduction + consumed + double-use rejection, and admin list/stats. Frontend verified end-to-end on the live preview URL: ?promo= prefill, invalid (wrong-email) inline rejection reason, valid green applied banner with discount amount, remove link, and useAbandonedCartTracker firing POST /api/abandoned-carts/save once email+items+total>0 conditions are met (debounced).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_abandoned_cart_sequence.py",
+    "/app/test_reports/pytest/pytest_abandoned_cart_sequence.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "routes/abandoned_carts.py /save: when an existing abandoned cart is updated, created_at is not preserved on the $set payload because cart_doc has no created_at — fine because $set only writes the keys present, so created_at survives. Verified in test_save_creates_then_updates_and_resets_flags.",
+    "services/promo_codes.generate_promo_code_for_email reuses the same code per email+source as long as an UNUSED active code exists, even if expires_days/percent_off arguments change between calls — minor: caller cannot bump percent_off mid-sequence without first consuming/expiring the existing code. Acceptable for current single-use abandoned-cart flow.",
+    "routes/shop.py /guest-checkout silently ignores invalid promo_code (logs nothing). Comment in code says 'UI already validated, server is final say' — correct, but consider returning promo_applied=null + a non-blocking warning so the frontend can surface 'code expired between apply and submit' to the shopper. Not a blocker.",
+    "routes/shop.py /guest-checkout/status/{session_id} marks abandoned_carts recovered only inside the Stripe paid branch (line 1528-1537) — not exercised by automated tests in this iteration because Stripe redirect can't be completed headlessly. The branch was code-reviewed and matches the spec; recommend a future integration test that stubs Stripe session retrieve.",
+    "Frontend useAbandonedCartTracker fired 2 POST /save calls during the test session (one after email-only, one after first/last name typed) because customer_name is part of the payload signature and changes the dedup hash. Expected behaviour, but worth noting: every name-field keystroke beyond the 3s debounce will create another save. If this becomes noisy in production, exclude customer_name from the dedup signature (still send latest name in body)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_abandoned_cart_sequence.py"
+  ],
+  "success_rate": {
+    "backend": "100% (16/16)",
+    "frontend": "100% (5/5 critical flows: prefill, invalid-email rejection, valid apply, remove, abandoned-cart save tracker)"
+  },
+  "test_credentials": "admin@test.com / admin123 (not required — abandoned-cart and shop endpoints are public)",
+  "seed_data_creation": "Created and cleaned up: abandoned_carts rows for test_abandoned_*@tilestationtest.com and fe_test_*@tilestationtest.com, plus matching shop_discount_codes BACK-* and EXP-* entries. Final cleanup ran: deleted carts=1 codes=1 orders=0 (test class fixture teardown handled the rest).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Reusable regression test lives at /app/backend/tests/test_abandoned_cart_sequence.py. It uses motor directly to (a) backdate updated_at to simulate >3h / >24h, (b) expire a code, (c) read shop_discount_codes — so future runs do not need real wall-clock waits. Email domain MUST be a real-looking TLD (e.g. tilestationtest.com); pydantic EmailStr v2 rejects .local. Stripe redirect isn't covered headlessly; the recovered-on-paid branch (shop.py:1528) is verified by code review only. To re-run: pytest /app/backend/tests/test_abandoned_cart_sequence.py -v --junitxml=/app/test_reports/pytest/pytest_abandoned_cart_sequence.xml.",
+  "rca of the issue": "N/A — no bugs found. Initial test failure was a test-data issue (.local TLD rejected by pydantic EmailStr); fixed by using @tilestationtest.com. After fix, all 16 backend cases plus all frontend flows pass."
+}

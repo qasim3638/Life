@@ -1,0 +1,11 @@
+[phases.setup]
+nixPkgs = ["nodejs-18_x", "yarn"]
+
+[phases.install]
+cmds = ["npm install"]
+
+[phases.build]
+cmds = ["CI=false NODE_OPTIONS='--max-old-space-size=4096' npm run build"]
+
+[start]
+cmd = "npm run start"

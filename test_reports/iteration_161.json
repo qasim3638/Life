@@ -1,0 +1,23 @@
+{
+  "summary": "Targeted re-test of the lightbox click-outside fix in MarketingStudio.jsx (iter 160 follow-up). All 5 requested scenarios PASS plus a bonus right-side letterbox click. The fix — moving onClose onto the flex-1 image container div ([data-testid=marketing-asset-lightbox-backdrop]) and adding e.stopPropagation() onto the <img> — works as designed.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Fix correctly applied at /app/frontend/src/pages/admin/MarketingStudio.jsx lines 204-215: backdrop div carries onClick={onClose} with data-testid='marketing-asset-lightbox-backdrop'; <img> carries onClick={(e) => e.stopPropagation()} preventing close-on-image-click.",
+    "ESC and X close button regressions verified working — no regression introduced."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a", "frontend": "100%"},
+  "test_credentials": "admin@test.com / admin123 (super_admin) — used as provided",
+  "seed_data_creation": "None — used existing 'Bank Holiday Sale' published gallery asset.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Lightbox click-outside fix fully verified. Test executed on 1920x1080 viewport: opened lightbox via gallery asset zoom, clicked at (80,400) — closed; reopened, clicked image centre (960,557) — stayed open (no-op as designed); reopened, ESC — closed; reopened, X button — closed; reopened, clicked (1840,500) far right letterbox — closed. Image bbox at letterbox-area click verified out-of-image but in-backdrop. No console errors related to lightbox. One unrelated React warning observed: 'Each child in a list should have a unique key prop' in AdminDashboard render — pre-existing, not in scope of this fix.",
+  "rca_of_the_issue": "iter 160 root cause was that the outer flex-col container had three children filling the viewport, so e.target===e.currentTarget identity check on the outer div never fired. iter 161 fix moved the close handler down to the flex-1 middle child (the natural letterbox area), and stopPropagation on the <img> prevents image clicks from closing. Verified working at multiple coordinates (80,400 left padding; 1840,500 right padding) with the centre image bbox (360-1560, 407-707) confirmed not closing on click."
+}

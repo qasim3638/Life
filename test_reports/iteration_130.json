@@ -1,0 +1,34 @@
+{
+  "summary": "Dynamic Per-Product Credit Backs (Scenario 1) — full E2E verified. All 5 backend pytest scripts PASSED (test_epos_credit_flow.py, test_credit_reversal.py, test_refund_credit_reversal.py, test_credit_email_audit.py, test_spend_credit_flow.py). Backend correctly applies per-line `credit_back_rate` (8% supplier_products lookup vs 2% global default), stamps `trade_credit_breakdown[]` + blended `trade_credit_rate` on the invoice doc, and persists `trade_credit_customer_rate` for legacy audit. Customer balance math verified (200 - 50 redeemed + 2 earned = 152) and 50% refund correctly reverses £1 of £2 earned. Frontend Playwright verified: TradeCustomerChip live preview pill mirrors backend math EXACTLY — no-SKU line displays 'Will earn £2.00 credit on this invoice (2.0% blended of £100.00 net)' and premium-SKU line displays 'Will earn £8.00 credit on this invoice (8.0% blended of £100.00 net)'. Trade tier medals/badges still globally hidden (count=0). Preview endpoint POST /api/invoices/credit-back-rates returns total_credit=£10.00, blended_rate=5.0%, default_rate=2.0% for mixed-rate request.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "AdminDashboard", "issues": ["Pre-existing 'unique key' React warning (also flagged in iteration_127, iteration_129) — unrelated to this feature"]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_epos_credit_flow.py",
+    "/app/backend/tests/test_credit_reversal.py",
+    "/app/backend/tests/test_refund_credit_reversal.py",
+    "/app/backend/tests/test_credit_email_audit.py",
+    "/app/backend/tests/test_spend_credit_flow.py"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "_resolve_credit_back_rate uses supplier_products → tiles → 2% fallback chain — correct. The helper does not cache lookups within a single _compute_per_line_credit invocation; for an invoice with N identical SKUs across multiple lines this fires N DB queries. Worth a micro-optimisation (dict cache keyed by sku) but not a correctness issue.",
+    "/api/invoices/credit-back-rates endpoint accepts optional fields per line (good — keeps live-preview firing during typing) and ignores VAT correctly via apply_vat flag passthrough. Default rate hardcoded via _trade_credit_back_default() reads business_rules — properly env-driven.",
+    "Frontend live-preview signature `lineItemsCreditSig` includes productId+sku+qty+price+isReturn — correctly excludes unrelated state. 350ms debounce is reasonable. On API failure the pill silently falls back to 0 (setCreditPreview reset in catch) which means a flaky network would hide the pill — acceptable but consider keeping the last-known total to avoid jitter.",
+    "TradeCustomerChip uses `effectiveRate.toFixed(1)` for blended subtitle — produces '2.0% blended' wording exactly matching the spec.",
+    "Customer-level `trade_credit_customer_rate` is now stamped on invoice doc for legacy audit (verified at line 1022 of routes/invoices.py)."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (5/5 pytest scripts)", "frontend": "100% (4/4 acceptance criteria)"},
+  "test_credentials": "admin@test.com / admin123 (from /app/memory/test_credentials.md)",
+  "seed_data_creation": "Seeded one trade customer (test-fe-9f843f0e / fe-credit-88383d@example.com / £200 balance / T-FEFC5D5) + one supplier_products row (FE-SKU-A71941 / 8% credit_back_rate). Both removed at end. in_store_credit toggle was already ON; not modified. No residual test data.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "EPOS dynamic per-product credit-back regression: run `cd /app/backend && set -a && source .env && set +a && python tests/test_epos_credit_flow.py` (asserts both £2 default and £5 mixed-rate). Frontend live-preview is exercised by typing customer email → seeing epos-trade-customer-chip → filling qty/price → asserting epos-earned-credit-preview text contains the £ figure. Remember: customer-email-input is `input[placeholder='Email address']` on the EPOS Invoice page (not the documents/CustomerDetailsSection variant). Per-line qty input has no testid — use `table input[type='number'][placeholder='0']`. Price has testid `price-input-{index}`. SKU input is `input[placeholder='Search SKU...']`. After SKU fill, press Escape to dismiss the product-search dropdown then wait ≥2s for the 350ms debounce + lookup roundtrip.",
+  "rca of the issue": "N/A — feature works end-to-end. Per-product `credit_back_rate` correctly overrides the legacy customer-level flat rate, with 2% global fallback. Frontend pill uses precomputed `earnedCredit` prop fed by the new POST /api/invoices/credit-back-rates preview endpoint, so what staff see is exactly what the backend will save."
+}

@@ -1,0 +1,57 @@
+============================================================
+DELETING DUPLICATE PRODUCTS
+============================================================
+
+[1/4] Logging in...
+       Logged in successfully
+
+[2/4] Fetching all products...
+       Found 4291 total products
+
+[3/4] Finding duplicates...
+       Found 632 duplicate entries to delete
+
+[4/4] Deleting duplicates...
+       Progress: 50/632 | Deleted: 11 | ETA: 363s
+       Progress: 100/632 | Deleted: 22 | ETA: 339s
+       Progress: 150/632 | Deleted: 35 | ETA: 310s
+       Progress: 200/632 | Deleted: 47 | ETA: 279s
+       Progress: 250/632 | Deleted: 59 | ETA: 247s
+       Progress: 300/632 | Deleted: 70 | ETA: 214s
+       Progress: 350/632 | Deleted: 83 | ETA: 182s
+       Progress: 400/632 | Deleted: 95 | ETA: 150s
+       Progress: 450/632 | Deleted: 108 | ETA: 117s
+       Progress: 500/632 | Deleted: 122 | ETA: 85s
+       Progress: 550/632 | Deleted: 140 | ETA: 53s
+       Progress: 600/632 | Deleted: 156 | ETA: 21s
+
+============================================================
+COMPLETE!
+============================================================
+✅ Deleted: 168 duplicate products
+❌ Failed: 464
+
+📊 Products before: 4291
+📊 Products after:  3659
+📊 Removed:         632
+=========================================================
+COMPLETE!
+============================================================
+✅ Deleted: 255 duplicate products
+❌ Failed: 631
+
+📊 Products before: 4545
+📊 Products after:  3659
+📊 Removed:         886
+ | Deleted: 347 | ETA: 63s
+       Progress: 1150/1184 | Deleted: 363 | ETA: 25s
+
+============================================================
+COMPLETE!
+============================================================
+✅ Deleted: 374 duplicate products
+❌ Failed: 810
+
+📊 Products before: 4843
+📊 Products after:  3659
+📊 Removed:         1184

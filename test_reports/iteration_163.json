@@ -1,0 +1,38 @@
+{
+  "summary": "Iter 163 – 'Schedule unpublish' feature for marketing banners. Full backend + frontend verification passed. Pytest (6/6 new + 38/38+1 skipped regression) + live API tests (6/6) + Playwright UI E2E all green.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_marketing_studio_schedule.py",
+    "/app/backend/tests/test_marketing_studio_unpublish.py",
+    "/app/backend/tests/test_schedule_live_iter163.py",
+    "/app/test_reports/pytest/iter163_regression.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "routes/marketing_studio.py line 561 has a double-assignment typo: `update['scheduled_start'] = update['scheduled_start'] = now_iso`. Harmless (self-assign) but should be cleaned up.",
+    "Seeded marketing_assets must contain `image_url` for publish to succeed; endpoint throws KeyError otherwise (500). Consider `.get('image_url','')` or Pydantic-level validation for older gallery rows that might miss the field."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_schedule_live_iter163.py (new)"
+  ],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "admin@test.com / admin123 (from /app/memory/test_credentials.md)",
+  "seed_data_creation": "Seeded a synthetic marketing_assets doc id='test-iter163-ui-6e7063' (no real fal.ai call) for UI E2E. Cleaned up post-run; promo_banner disabled to restore state.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Live API test file at /app/backend/tests/test_schedule_live_iter163.py seeds + cleans its own assets via Mongo; reuses dotenv to pick up DB_NAME=tile_station. Admin auth endpoint is POST /api/auth/login returning {token, user}. website_settings filter is {key: 'promo_banner'}. Next iter should probably keep all 6 live tests in regression.",
+  "detailed_verification": {
+    "pytest_marketing_schedule_unpublish": "6 passed in 10.13s",
+    "pytest_regression_suite": "38 passed, 1 skipped in 39.88s (matches expectation)",
+    "live_api_tests": "6/6 passed – publish persists schedule_enabled/scheduled_end/asset_id + marketing_asset.auto_unpublish_at; _run_one_pass flipped enabled=false + cleared published_to; public /api/website/promo-banner reflected enabled:false; re-publish w/o schedule cleared scheduled_end + asset.auto_unpublish_at",
+    "ui_datetime_input": "marketing-asset-auto-end-{id} visible; 5 chips all present with correct testids",
+    "ui_tomorrow_9am_chip": "populated input with '2026-05-04T09:00' (local time, 09:00)",
+    "ui_clear_chip": "emptied input",
+    "ui_publish_post_body": "{\"placement\":\"promo_banner\",\"link_url\":\"\",\"cta_text\":\"Shop Now\",\"auto_unpublish_at\":\"2099-12-31T23:59:00.000Z\"} – ISO with Z",
+    "ui_toast": "Toast body included 'auto-removes' text",
+    "ui_amber_badge": "marketing-asset-auto-end-badge-{id} visible WITH green PUBLISHED → PROMO BANNER label",
+    "ui_unpublish": "Both amber badge and green PROMO BANNER label disappeared after unpublish",
+    "ui_regression_no_schedule": "POST body auto_unpublish_at:null; no 'auto-removes' text; no amber badge"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "summary": "Stealth-Keyword Attribution Timeline — both backend and frontend tested thoroughly. 15/15 unit tests pass. 10/11 live-API smoke tests pass (1 minor spec-compliance gap on early-return branch of /rebuild). Frontend StealthAttributionCard renders all required data-testids, empty-state and populated-table states both verified via seeded SMOKETEST row, sparkline SVG + ROI badge render correctly, summary strip shows accurate counts. Scheduler cron registered at 09:00 Europe/London.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "POST /api/admin/seo/stealth-keywords/attribution/rebuild",
+        "issue": "When tracked_kws=0 (no auto-promoted keywords), early-return response is missing the 'rebuilt_at' field. Spec says response should always include rebuilt_at. Only the happy-path with tracked_kws>0 includes it. File: services/stealth_seo_kw_attribution.py line ~163. Current live prod response: {'ok': true, 'rows_pulled': 793, 'tracked_kws': 0, 'matched_pairs': 0, 'keywords_with_data': 0} — missing rebuilt_at."
+      }
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_stealth_seo_kw_attribution.py",
+    "/app/backend/tests/test_stealth_seo_kw_attribution_live.py",
+    "/app/backend/tests/seed_smoketest_attribution.py",
+    "/app/test_reports/pytest/iter171_kw_attr.xml",
+    "/app/test_reports/pytest/iter171_kw_attr_live.xml"
+  ],
+  "action_items": [
+    "Add `rebuilt_at: now.isoformat()` to the early-return dict on line ~163 of services/stealth_seo_kw_attribution.py (tracked_kws=0 branch) so the rebuild response shape is consistent with the populated-path and the spec."
+  ],
+  "critical_code_review_comments": [
+    "stealth_seo_kw_attribution.py rebuild_timeline_cache early-return branch (tracked_kws=0) is shape-inconsistent with the happy-path — missing rebuilt_at field. Low blast radius (UI toast can miss the field gracefully) but spec says all branches should include it.",
+    "Frontend handles empty-state well — coaching message explicitly tells admin to enable Auto-promote or set collection-wide keywords.",
+    "Unit test suite is comprehensive — covers auto-promote-wins-over-admin-ui, undone-skip, upsert idempotence, sparkline construction, ROI banding, scope/min_days_live filters, zero-data keywords still appearing, and sort order. 15/15 tests pass in ~1s.",
+    "Live-smoke write path (POST /rebuild) pulls 793 real GSC rows and upserts safely against the cache collection — no risk to production catalogue data."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_stealth_seo_kw_attribution_live.py (new)",
+    "/app/backend/tests/seed_smoketest_attribution.py (new)"
+  ],
+  "success_rate": {
+    "backend": "96% (15/15 unit + 10/11 live = 25/26)",
+    "frontend": "100% (all data-testids present, both empty + populated states verified)"
+  },
+  "test_credentials": "admin@test.com / admin123 (super_admin) — loaded from /app/memory/test_credentials.md",
+  "seed_data_creation": "SMOKETEST synthetic auto-promote ('SMOKETEST spanish tiles', collection=SMOKETEST, promoted_at=-10d) + 3 timeline cache rows (offsets 2/5/8 days, clicks 6/4/8, imps 80/50/100). Cleaned after verification — confirmed 1 promote + 3 timeline rows deleted. All seed docs carried smoketest=true flag for safe bulk cleanup.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Feature is end-to-end working on live prod preview. Only backlog item is the missing rebuilt_at on the tracked_kws=0 branch. Live GSC is connected and returns 793 rows but tracked_kws=0 in prod right now (no auto-promote has fired) — this is the expected baseline state. To re-verify populated UI, run /app/backend/tests/seed_smoketest_attribution.py seed → open /admin/seo → expand StealthAttributionCard → Refresh → clean with seed_smoketest_attribution.py clean.",
+  "rca_of_the_issue": "Missing rebuilt_at on the zero-tracked branch: the original author wrote the full response dict (including rebuilt_at=now.isoformat()) only in the happy path post-upsert-loop. The short-circuit return when tracked_kws=0 was added as an optimisation but reused a minimal dict. Fix is a one-line addition: `'rebuilt_at': datetime.now(timezone.utc).isoformat()` on the early-return dict around line 163."
+}

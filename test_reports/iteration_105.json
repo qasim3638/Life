@@ -1,0 +1,103 @@
+{
+  "summary": "Tested TWO NEW features in Bulk Category Editor: (1) Quick Push Save - green 'Save Now' button that immediately saves a single attribute to scoped products, (2) Scope Preview - inline preview showing which value goes to how many products. Both features are VERIFIED WORKING. Also verified Preview & Apply flow has no regressions.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "/api/admin/historical-entries",
+        "issue": "Returns 500 error on dashboard load",
+        "priority": "LOW",
+        "note": "Unrelated to the features being tested"
+      }
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "console_warnings": [
+      {
+        "type": "React key warning",
+        "message": "Encountered two children with the same key 'bathroom' and 'kitchen'",
+        "location": "Preview Changes dialog",
+        "priority": "LOW"
+      },
+      {
+        "type": "Missing aria-describedby",
+        "message": "Missing Description or aria-describedby for DialogContent",
+        "priority": "LOW"
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_105.json"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "VERIFIED: Quick Save button (data-testid='quick-save-filter-{slug}' and 'quick-save-spec-{slug}') renders correctly with green styling",
+    "VERIFIED: Quick Save button shows 'Saving...' with spinner during save operation",
+    "VERIFIED: Quick Save button is hidden when no values are selected (Style spec had 0 selected, no Save Now button shown)",
+    "VERIFIED: Scope Preview (data-testid='scope-preview-spec-{slug}' and 'scope-preview-filter-{slug}') shows value → count badges",
+    "VERIFIED: Scope Preview shows scoped values with purple/blue border and unscoped (default) values with gray background",
+    "VERIFIED: Quick Save triggers toast 'Thickness saved to 50 products' and 'Material saved to 50 products'",
+    "VERIFIED: Preview & Apply flow still works - shows 'Preview Changes (Dry Run)' dialog with all changes listed",
+    "VERIFIED: Force Save button is present in the editor"
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (Quick Save uses existing bulk-update-unified endpoint)",
+    "frontend": "100% (All new features working correctly)"
+  },
+  "test_credentials": "Admin: admin@test.com / admin123",
+  "seed_data_creation": "None - used existing Canopy supplier products (246 products) with restored draft",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Quick Push Save and Scope Preview features are VERIFIED WORKING. Quick Save button appears next to attribute rows with selected values, shows loading state during save, and triggers success toast. Scope Preview shows inline badges with value → count when per-value scopes are active. The Preview & Apply flow has no regressions.",
+  "verified_features": {
+    "quick_push_save": {
+      "status": "PASS",
+      "details": [
+        "Green 'Save Now' button appears next to attribute rows with selected values",
+        "Button shows 'Saving...' with spinner during operation",
+        "Success toast appears: 'Thickness saved to 50 products', 'Material saved to 50 products'",
+        "Button is hidden when no values are selected (verified with Style spec)",
+        "Found 10 Quick Save buttons in Filters section, 6 in Specifications section"
+      ]
+    },
+    "scope_preview": {
+      "status": "PASS",
+      "details": [
+        "Found 3 Scope Preview elements in Specifications section",
+        "Material preview: 'Porcelain 2 | Engineered Wood 48'",
+        "Size preview: '10mm 2 | 20mm 1 | 8mm 45 | 14mm 2'",
+        "Finish preview: 'Matt 1 | Polished 1 | ... | NEW_FINISH_VALUE 38 (default)'",
+        "Scoped values show purple/blue border, default values show gray background with '(default)' label"
+      ]
+    },
+    "preview_apply_flow": {
+      "status": "PASS",
+      "details": [
+        "Preview Changes (Dry Run) dialog opens correctly",
+        "Shows '17 attributes will be modified across 50 products'",
+        "Lists all changes: Categories, Color, Room, Suitability, Thickness, Slip Rating, Features",
+        "Has 'Go Back' and 'Confirm & Apply' buttons"
+      ]
+    },
+    "force_save": {
+      "status": "PASS",
+      "details": [
+        "Force Save button is present in the editor"
+      ]
+    }
+  },
+  "ui_verification": {
+    "bulk_category_editor_opens": "PASS",
+    "quick_save_buttons_visible": "PASS - 10 in Filters, 6 in Specifications",
+    "scope_preview_visible": "PASS - 3 elements with value → count badges",
+    "save_now_hidden_when_no_values": "PASS - Style spec had no Save Now button",
+    "loading_state_during_save": "PASS - Shows 'Saving...' with spinner",
+    "success_toast_after_save": "PASS - 'Thickness saved to 50 products'",
+    "preview_apply_dialog": "PASS",
+    "force_save_button": "PASS"
+  }
+}

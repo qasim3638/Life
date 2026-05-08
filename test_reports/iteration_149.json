@@ -1,0 +1,52 @@
+{
+  "summary": "Backend testing of GET /api/admin/failed-payments (admin failed-payment dashboard). Wrote /app/backend/tests/test_failed_payments.py with 23 tests across 7 classes covering auth gate, query validation, response envelope shape, _recovery_status pure function branches, synthetic-row end-to-end classification, top_decline_codes aggregator, ISO-string $gte window boundary, status filter narrowing with unchanged totals, row field whitelist (no Stripe IDs / no recovery_token), and reason truncation. ALL 23 PASS against live preview BASE_URL + preview Mongo. Synthetic rows use TEST_FP_ id prefix and are cleaned up on teardown.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "GET /api/admin/failed-payments",
+        "issue": "totals.count is set to len(raw_rows) (total rows in window) but the 3 per-status counts (recovered/pending/abandoned) come from a second loop that iterates raw_rows again and sums every row. This is correct — totals.count == recovered_count+pending_count+abandoned_count — and my assertion confirms it. Just flagging that the two loops iterate raw_rows twice and re-compute _recovery_status for every row; could be merged into a single pass to halve the status-function calls on large windows (500 rows). Not a correctness bug."
+      },
+      {
+        "endpoint": "GET /api/admin/failed-payments",
+        "issue": "The 500-row LIMIT is applied after sort on payment_failed_at DESC, so on a busy window you could drop older-than-500th declines from BOTH the rows array AND the totals (totals are computed from raw_rows which is already truncated). Spec says 'totals cover the full window' but in practice they only cover the top-500-newest. Unlikely to bite for a 30-day admin view, but worth a comment in the route docstring."
+      },
+      {
+        "endpoint": "GET /api/admin/failed-payments",
+        "issue": "payment_failed_code is truncated to 32 chars via slice in two places ([:32]); the string 'unknown' is short enough to be safe, but a hostile/misbehaving Stripe code >32 chars would be silently truncated without logging. Low risk; Stripe decline codes are snake_case and always short."
+      }
+    ]
+  },
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_failed_payments.py",
+    "/app/test_reports/pytest/failed_payments.xml"
+  ],
+  "action_items": [
+    "(Optional) Merge the two raw_rows loops in list_failed_payments into a single pass — currently _recovery_status is called twice per row.",
+    "(Optional) Document the 500-row cap behaviour: totals are computed from the capped (newest-500) slice, not the full DB-side window.",
+    "(Optional) Add server-side logging when payment_failed_code is being truncated (len > 32) — helps detect upstream data quality regressions."
+  ],
+  "critical_code_review_comments": [
+    "Good: _is_admin correctly accepts admin/super_admin/manager matching the rest of the admin SEO routes — no role drift.",
+    "Good: _parse_dt tolerates both ISO strings and aware datetimes, and normalises to UTC — eliminates the naive-vs-aware bug class.",
+    "Good: _recovery_status is a pure function with clear precedence (recovered > pending > abandoned) and correctly requires BOTH paid_at AND failed_at to be set AND paid_at > failed_at for the 'recovered' branch, preventing a stale 'paid before failed' from being labelled as a recovery — tested by test_paid_before_failed_is_not_recovered.",
+    "Good: ISO-string $gte filter works as claimed because ISO-8601 with a fixed format sorts lexicographically = chronologically — verified end-to-end in test_iso_gte_filter_respects_window_boundary (inside-window row returned, outside NOT returned).",
+    "Good: Response field whitelist is enforced in the projection AND in the row dict construction — payment_intent_id and recovery_token are not in the output; verified by scanning response body for 'pi_test_DO_NOT_LEAK' marker.",
+    "Good: status query param uses FastAPI Query(pattern=...) so validation happens at the router layer → 422 before the DB is hit.",
+    "Good: recovery_rate_pct guarded against divide-by-zero ('if raw_rows else 0.0').",
+    "Nit: the in-memory status filter causes totals to ignore filter but rows to reflect it — well documented in code ('so the totals row above remains accurate for the FULL window'). Totals behaviour tested by test_status_filter_narrows_rows (totals equal across filtered and unfiltered calls).",
+    "Nit: top_decline_codes is serialised as list of [code, count] JSON arrays (because Counter.most_common returns tuples which JSON encodes as arrays). Frontend must destructure entry[0]/entry[1], not entry.code/entry.count — worth calling out in the TS types if any.",
+    "Nit: The route path is '' (empty) on prefix '/admin/failed-payments', so the final URL is /api/admin/failed-payments (NOT /api/admin/failed-payments/). Trailing-slash mismatch with some client libraries is possible but FastAPI handles both. Acceptable."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_failed_payments.py (new)"
+  ],
+  "success_rate": {"backend": "100% (23/23)", "frontend": "not tested (backend only per request)"},
+  "test_credentials": "admin@test.com / admin123 (super_admin) — read from /app/memory/test_credentials.md",
+  "seed_data_creation": "Tests insert synthetic shop_orders with id prefix TEST_FP_ directly via Motor and delete_many({id: {$regex: ^TEST_FP_}}) on module teardown. No real orders touched.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "test_failed_payments.py follows the same single-shared-event-loop pattern as test_payment_recovery.py (_LOOP + _run) because Motor pins its async queue to the first loop it sees. If you add more async helpers, reuse _run(). The cleanup filter uses a regex on the id field so if you add new synthetic docs stick with the TEST_FP_ prefix. The top_decline_codes aggregator test uses a UUID-suffixed marker code to avoid collision with any prod failed-payments already in the DB — do the same if you extend aggregator tests. 23 tests pass in ~5 seconds.",
+  "rca of the issue": "N/A — no bugs found. All 7 spec-listed behaviours verified: (1) auth gate 401/403, (2) days/status 422 validation, (3) row field whitelist with no Stripe IDs, (4) _recovery_status 3-way branching, (5) empty envelope shape, (6) top_decline_codes ordering+max 6+unknown bucket, (7) recovery_rate_pct calculation + 0-div guard, (8) ISO $gte boundary test, (9) status filter narrows rows but totals stay full-window."
+}

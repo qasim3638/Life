@@ -1,0 +1,167 @@
+{
+  "summary": "Request Quote feature testing completed. All backend APIs and frontend UI working correctly. Default threshold is 150m². When quantity >= 150, 'Request Quote' button appears instead of 'Add to Cart'. Quote modal collects customer details and submits successfully to backend.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_quote_requests.py",
+    "/app/test_reports/pytest/pytest_quote_results.xml",
+    ".screenshots/01_quote_small_qty.png",
+    ".screenshots/02_quote_large_qty.png",
+    ".screenshots/03_quote_modal.png",
+    ".screenshots/04_quote_form_filled.png",
+    ".screenshots/05_quote_submitted.png"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Backend GET /api/shop/products/{id}/quote-status correctly calculates show_quote_button based on quantity vs threshold (default 150m²)",
+    "Backend supports quote_disabled query param to force show Add to Cart button",
+    "Backend supports custom_threshold query param to override default 150m² threshold",
+    "Backend POST /api/shop/quotes/request correctly creates quote with auto-generated quote_ref (QR-NNNNN format)",
+    "Backend GET /api/shop/quotes/config returns global quote settings",
+    "Backend PUT /api/supplier-sync/products/bulk-quote-settings allows admin to disable/enable quotes per product",
+    "Frontend TileDetailPage.js correctly checks quote status when quantity changes (useEffect with tile and quantity dependencies)",
+    "Frontend shows 'Add to Cart' for quantity < 150m²",
+    "Frontend shows 'Request Quote' button for quantity >= 150m²",
+    "Frontend shows 'Large Order - Custom Pricing Available' notice when quote button is displayed",
+    "Quote modal contains: product summary, name, email, phone, company (optional), delivery postcode, project details (optional), preferred contact method",
+    "Quote modal correctly submits and displays success toast with quote reference number",
+    "All form fields have data-testid attributes for testing"
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_quote_requests.py"
+  ],
+  "success_rate": {
+    "backend": "100% (12/12 pytest tests passed)",
+    "frontend": "100% (All UI flows verified via Playwright)"
+  },
+  "test_credentials": {
+    "admin": {
+      "email": "qasim@tilestation.co.uk",
+      "password": "Tilestation_9614"
+    }
+  },
+  "seed_data_creation": "Quote requests are created during testing with unique quote IDs (QR-01004 etc.)",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Request Quote feature fully tested. Test tile: alabaster-30x60cm-polished. Default quote threshold is 150m². Quote modal works correctly with all form fields. Backend stores quotes in quote_requests collection with quote_ref format QR-NNNNN.",
+  "tests_executed": [
+    {
+      "test": "GET /api/shop/products/{id}/quote-status with quantity < 150",
+      "result": "PASS",
+      "notes": "Returns show_quote_button=false"
+    },
+    {
+      "test": "GET /api/shop/products/{id}/quote-status with quantity = 150",
+      "result": "PASS",
+      "notes": "Returns show_quote_button=true"
+    },
+    {
+      "test": "GET /api/shop/products/{id}/quote-status with quantity > 150",
+      "result": "PASS",
+      "notes": "Returns show_quote_button=true, exceeds_threshold=true"
+    },
+    {
+      "test": "GET /api/shop/products/{id}/quote-status with quote_disabled=true",
+      "result": "PASS",
+      "notes": "Returns show_quote_button=false even for large quantities"
+    },
+    {
+      "test": "GET /api/shop/products/{id}/quote-status with custom_threshold",
+      "result": "PASS",
+      "notes": "Custom threshold overrides default 150m²"
+    },
+    {
+      "test": "GET /api/shop/quotes/config",
+      "result": "PASS",
+      "notes": "Returns quote_threshold=150, quote_enabled=true"
+    },
+    {
+      "test": "POST /api/shop/quotes/request with valid data",
+      "result": "PASS",
+      "notes": "Creates quote with QR-NNNNN reference"
+    },
+    {
+      "test": "POST /api/shop/quotes/request with missing fields",
+      "result": "PASS",
+      "notes": "Returns 422 validation error"
+    },
+    {
+      "test": "POST /api/shop/quotes/request with invalid email",
+      "result": "PASS",
+      "notes": "Returns 422 validation error"
+    },
+    {
+      "test": "PUT /api/supplier-sync/products/bulk-quote-settings disable",
+      "result": "PASS",
+      "notes": "Endpoint works, returns quote_disabled=true"
+    },
+    {
+      "test": "PUT /api/supplier-sync/products/bulk-quote-settings with custom threshold",
+      "result": "PASS",
+      "notes": "Endpoint works, accepts custom_quote_threshold parameter"
+    },
+    {
+      "test": "Integration test: full quote flow",
+      "result": "PASS",
+      "notes": "Check status -> show button -> submit quote all working"
+    },
+    {
+      "test": "Frontend: Add to Cart button visible for small qty (1m²)",
+      "result": "PASS",
+      "notes": "Screenshot confirms Add to Cart button displayed"
+    },
+    {
+      "test": "Frontend: Request Quote button visible for large qty (200m²)",
+      "result": "PASS",
+      "notes": "Screenshot confirms Request Quote button and 'Big Project' notice"
+    },
+    {
+      "test": "Frontend: Quote modal opens on Request Quote click",
+      "result": "PASS",
+      "notes": "Modal shows product summary, all form fields with data-testid"
+    },
+    {
+      "test": "Frontend: Quote form submission",
+      "result": "PASS",
+      "notes": "Form submits successfully, shows toast with quote ID (QR-01004), modal closes"
+    }
+  ],
+  "feature_summary": {
+    "feature_name": "Request Quote for Large Orders",
+    "description": "When customer quantity exceeds threshold (default 150m²), 'Add to Cart' button is replaced with 'Request Quote'. Quote modal collects customer details and submits to backend.",
+    "api_endpoints_tested": [
+      "GET /api/shop/products/{id}/quote-status",
+      "POST /api/shop/quotes/request",
+      "GET /api/shop/quotes/config",
+      "PUT /api/supplier-sync/products/bulk-quote-settings"
+    ],
+    "ui_components_verified": {
+      "add_to_cart_button": "data-testid='add-to-cart-btn' - visible for small quantities",
+      "request_quote_button": "data-testid='request-quote-btn' - visible for large quantities (>= 150m²)",
+      "quote_modal": "Dialog with title 'Request a Quote'",
+      "quote_form_fields": [
+        "data-testid='quote-name-input'",
+        "data-testid='quote-email-input'",
+        "data-testid='quote-phone-input'",
+        "data-testid='quote-company-input'",
+        "data-testid='quote-postcode-input'",
+        "data-testid='quote-details-input'"
+      ],
+      "submit_button": "data-testid='submit-quote-btn'",
+      "large_order_notice": "Amber box with 'Large Order - Custom Pricing Available' text"
+    },
+    "threshold_behavior": {
+      "default_threshold": "150m²",
+      "below_threshold": "Shows 'Add to Cart' button",
+      "at_or_above_threshold": "Shows 'Request Quote' button",
+      "quote_disabled_flag": "If product has quote_disabled=true, always shows 'Add to Cart'"
+    }
+  }
+}

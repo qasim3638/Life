@@ -1,0 +1,131 @@
+{
+  "identity": {
+    "persona": "E1: The Anti-AI Designer",
+    "mission": "Create a professional, high-trust e-commerce experience that breaks the generic 'template' look through bold spacing, asymmetric grids, and tactile textures.",
+    "principles": [
+      "Fusion over Imitation: Mix 'Architectural Precision' with 'Retail Warmth'.",
+      "Content is King: Every tile needs to feel like a piece of art.",
+      "Zoom In: Use high-res close-ups of textures.",
+      "Negative Space: Luxurious padding to signal premium quality."
+    ]
+  },
+  "theme": {
+    "mode": "light",
+    "strategy": "Professional & Clean (Trust-focused)",
+    "background": "bg-white",
+    "foreground": "text-slate-900"
+  },
+  "typography": {
+    "headings": {
+      "family": "Chivo, sans-serif",
+      "weights": ["font-bold", "font-black"],
+      "usage": "Use for all section titles, hero text, and product names. Tracking tight."
+    },
+    "body": {
+      "family": "IBM Plex Sans, sans-serif",
+      "weights": ["font-normal", "font-medium"],
+      "usage": "Use for descriptions, prices, and UI elements. Relaxed line height."
+    }
+  },
+  "colors": {
+    "palette": {
+      "primary": {
+        "name": "Deep Navy",
+        "hex": "#0f172a",
+        "tailwind": "bg-slate-900",
+        "usage": "Branding, Footer, Primary Text"
+      },
+      "accent": {
+        "name": "Construction Orange",
+        "hex": "#f97316",
+        "tailwind": "bg-orange-500",
+        "usage": "Call-to-Actions (Add to Cart, Checkout), Sale Badges"
+      },
+      "neutral": {
+        "name": "Stone Grey",
+        "hex": "#f8fafc",
+        "tailwind": "bg-slate-50",
+        "usage": "Section Backgrounds, Card Backgrounds"
+      },
+      "border": {
+        "name": "Soft Border",
+        "hex": "#e2e8f0",
+        "tailwind": "border-slate-200",
+        "usage": "Grid lines, Card borders"
+      }
+    }
+  },
+  "layout_strategy": {
+    "container": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
+    "spacing": "Generous. Use py-16 or py-24 for sections. Gap-8 for grids.",
+    "grid_system": "Bento Grid (Mode A) for Categories. Strict Grid (Mode B) for Product Lists.",
+    "hero_section": "Full-width slider with text overlay. 600px-800px height.",
+    "navigation": "Mega-menu style with clear categories (Bathroom, Kitchen, Floor, Wall, Outdoor)."
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-orange-500 hover:bg-orange-600 text-white rounded-full px-8 py-3 font-bold shadow-lg hover:shadow-xl transition-all",
+      "secondary": "bg-white border-2 border-slate-900 text-slate-900 hover:bg-slate-50 rounded-full px-8 py-3 font-bold transition-all",
+      "ghost": "text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg px-4 py-2"
+    },
+    "cards": {
+      "product": "group relative bg-white border border-slate-100 rounded-xl overflow-hidden hover:shadow-2xl transition-all duration-300",
+      "category": "relative overflow-hidden rounded-2xl aspect-[4/5] or aspect-square group cursor-pointer"
+    },
+    "badges": {
+      "sale": "bg-red-600 text-white text-xs font-bold px-2 py-1 rounded uppercase tracking-wider",
+      "new": "bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded uppercase tracking-wider"
+    }
+  },
+  "visual_enhancers": {
+    "shadows": "shadow-[0_8px_30px_rgb(0,0,0,0.04)] for cards. shadow-[0_8px_30px_rgb(0,0,0,0.12)] for hover.",
+    "borders": "1px solid slate-200. Use slate-900 for active states.",
+    "textures": "Subtle noise overlay on hero sections to reduce digital flatness.",
+    "icons": "Lucide React (already installed). Use thin strokes (1.5px) for elegance."
+  },
+  "image_urls": {
+    "hero_slider": [
+      {
+        "url": "https://images.unsplash.com/photo-1758448018619-4cbe2250b9ad?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "alt": "Luxury Marble Bathroom",
+        "caption": "Transform Your Sanctuary"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1695191388218-f6259600223f?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "alt": "Modern Kitchen Floor",
+        "caption": "Kitchens That Inspire"
+      }
+    ],
+    "categories": {
+      "bathroom": "https://images.unsplash.com/photo-1765766600820-58eaf8687f1d?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "kitchen": "https://images.unsplash.com/photo-1589530006797-d67347f18caa?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "outdoor": "https://images.unsplash.com/photo-1767022062386-36d4af393776?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "tools": "https://images.unsplash.com/photo-1628002580365-f3c0a322d577?crop=entropy&cs=srgb&fm=jpg&q=85"
+    },
+    "brand_logos": [
+      "https://placehold.co/200x80/e2e8f0/1e293b?text=Porcelanosa",
+      "https://placehold.co/200x80/e2e8f0/1e293b?text=Topps+Tiles",
+      "https://placehold.co/200x80/e2e8f0/1e293b?text=Victoria+Plum",
+      "https://placehold.co/200x80/e2e8f0/1e293b?text=Wickes",
+      "https://placehold.co/200x80/e2e8f0/1e293b?text=B%26Q"
+    ]
+  },
+  "instructions_to_main_agent": [
+    "1. NAVIGATION: Implement a 'Mega Menu' that opens on hover. It should show categories (Bathroom, Kitchen, etc.) and a featured image for each.",
+    "2. HERO: Build a custom Carousel using 'embla-carousel-react' or Shadcn Carousel. It must support video backgrounds if provided (use a placeholder video for now).",
+    "3. USP BAR: Below hero, add a 3-column bar: 'Free Samples', 'Next Day Delivery', 'Price Match'. Use icons.",
+    "4. CATEGORIES: Use the 'Bento Grid' layout (Mode A from guidelines). Make the 'Bathroom' category the dominant hero tile.",
+    "5. PRODUCTS: Create a 'Featured Products' section with a horizontal scroll/slider. Product cards must have a 'Quick View' button on hover.",
+    "6. BRANDS: Create a 'Marquee' section for brand logos using 'react-fast-marquee' or CSS animation.",
+    "7. FOOTER: Dark theme footer (slate-900) with 4 columns: Company, Support, Legal, Newsletter.",
+    "8. VIDEO: Add a section 'Watch Our Showroom' with a video player placeholder.",
+    "9. STORE LOCATOR: Add a prominent CTA or section for 'Find a Showroom' with a map placeholder image."
+  ],
+  "universal_guidelines": [
+    "Do not use generic centered layouts.",
+    "Use 2-3x more spacing than typical.",
+    "Every interaction needs micro-animations.",
+    "Use 'sonner' for toasts.",
+    "All interactive elements must have data-testid."
+  ]
+}

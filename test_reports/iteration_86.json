@@ -1,0 +1,69 @@
+{
+  "summary": "Tested fields_to_clear functionality for removing 'Currently saved' attributes from Bulk Category Editor. All backend tests PASSED (10/10). Frontend UI verified working - × buttons display, strikethrough toggle works, 'will be removed on save' message appears.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_fields_to_clear.py",
+    "/app/test_reports/pytest/pytest_fields_to_clear.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [
+    "/app/backend/tests/test_fields_to_clear.py"
+  ],
+  "success_rate": {
+    "backend": "100% (10/10 tests passed)",
+    "frontend": "100% - All UI elements working correctly"
+  },
+  "test_credentials": "Admin: qasim@tilestation.co.uk / admin123",
+  "seed_data_creation": "None - used existing Canopy products",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "The fields_to_clear feature is FULLY IMPLEMENTED and working. Key verification points: (1) Backend bulk-update-unified endpoint accepts fields_to_clear parameter, (2) Scalar fields (material, finish, type, edge, etc.) use $unset to clear, (3) Array fields (sub_categories, rooms, colors, features) use $pull to remove specific values, (4) attributes.* mirror fields are also cleared for spec fields, (5) Frontend × buttons on 'Currently saved' pills toggle strikethrough styling, (6) Red background and 'will be removed on save' message appear when marked for removal, (7) fieldsToClear state resets to {} after successful save, (8) All 6 API call paths in handleBulkCategoryUpdate include fields_to_clear parameter.",
+  "verified_working": {
+    "backend_endpoint_accepts_fields_to_clear": "SUCCESS - POST /api/supplier-sync/products/bulk-update-unified accepts fields_to_clear parameter",
+    "scalar_field_clearing_with_unset": "SUCCESS - material, finish, type, edge fields cleared using $unset",
+    "array_field_clearing_with_pull": "SUCCESS - sub_categories, rooms, colors, features cleared using $pull",
+    "combined_updates_and_fields_to_clear": "SUCCESS - Both work simultaneously in same request",
+    "fields_to_clear_only_empty_updates": "SUCCESS - Works when updates is empty {}",
+    "attributes_mirror_fields_cleared": "SUCCESS - attributes.material, attributes.finish etc. also cleared",
+    "multiple_array_fields_clearing": "SUCCESS - Can clear multiple array fields at once",
+    "error_when_both_empty": "SUCCESS - Returns 400 error when both updates and fields_to_clear are empty",
+    "frontend_x_buttons_display": "SUCCESS - × buttons visible on 'Currently saved' pills",
+    "frontend_strikethrough_toggle": "SUCCESS - Clicking × toggles line-through styling",
+    "frontend_red_styling_on_removal": "SUCCESS - Red background and border appear when marked for removal",
+    "frontend_removal_warning_text": "SUCCESS - '1 value(s) will be removed on save. Undo all' message appears",
+    "frontend_fields_to_clear_reset": "SUCCESS - setFieldsToClear({}) called after successful save"
+  },
+  "feature_verification": {
+    "feature_name": "Remove 'Currently saved' attributes via Bulk Category Editor",
+    "backend_implementation": {
+      "file": "/app/backend/routes/supplier_sync.py",
+      "function": "bulk_update_unified (line 10379)",
+      "fields_to_clear_processing": "Lines 10587-10617",
+      "known_array_fields": ["rooms", "materials", "styles", "colors", "features", "sub_categories"],
+      "spec_to_attr_clear": ["material", "finish", "thickness", "suitability", "edge", "slip_rating", "size", "color", "type", "pot_life", "adhesive", "origin"]
+    },
+    "frontend_implementation": {
+      "state_file": "/app/frontend/src/pages/admin/SupplierProducts.js",
+      "state_line": 295,
+      "component_file": "/app/frontend/src/pages/admin/components/supplier-products/BulkCategoryEditorSections.jsx",
+      "toggle_function": "toggleValueRemoval (lines 562-578)",
+      "x_button_locations": ["line 1126 (Categories)", "line 1370 (Filters)", "line 1598 (Specifications)"]
+    },
+    "verification_result": "FULLY IMPLEMENTED - All features working as specified"
+  },
+  "test_counts": {
+    "backend_tests_passed": 10,
+    "backend_tests_failed": 0,
+    "frontend_ui_elements_verified": 6,
+    "api_call_paths_with_fields_to_clear": 6
+  }
+}

@@ -1,0 +1,231 @@
+{
+  "version": "2.2",
+  "last_updated": "2026-02-15",
+  "rules": {
+    "data_visibility": {
+      "description": "Rules for what data is visible to different users",
+      "internal_reference_only": {
+        "description": "These fields are for INTERNAL REFERENCE ONLY - never shown to customers",
+        "fields": [
+          "name (Supplier Product Name)",
+          "supplier_code",
+          "original_supplier_code"
+        ],
+        "not_visible_on": [
+          "Invoices",
+          "Quotes",
+          "E-commerce website",
+          "Customer receipts",
+          "Any customer-facing documents"
+        ],
+        "always_show_instead": [
+          "product_name (Our Unique Name)",
+          "sku (Our SKU)"
+        ]
+      },
+      "super_admin_only": {
+        "description": "These fields are visible ONLY to Super Admin users",
+        "fields": [
+          "cost_price",
+          "cost_each",
+          "cost_m2"
+        ],
+        "reason": "Cost prices are sensitive business information"
+      }
+    },
+    "supplier_product_matching": {
+      "description": "Rules for matching synced products from extension to database products",
+      "important": "Supplier Product Name and Supplier Code are for INTERNAL REFERENCE ONLY",
+      "dual_matching": {
+        "description": "Products are matched using BOTH code AND name for reliability",
+        "priority_order": [
+          "1. original_supplier_code - Website/URL code from extension sync (e.g., P14461)",
+          "2. supplier_code - Spreadsheet code (same as original_supplier_code for Verona)",
+          "3. name - Supplier Product Name (exact match, then partial)"
+        ],
+        "rationale": "If supplier changes product names, code still matches. If code format changes, name matches."
+      },
+      "fields": {
+        "supplier_code": "Original code from spreadsheet import",
+        "original_supplier_code": "Code extracted by matching Supplier Product Name to spreadsheet",
+        "name": "Supplier Product Name (for internal reference)",
+        "product_name": "Our unique product name (customer-facing)"
+      }
+    },
+    "product_naming": {
+      "description": "Product names MUST follow the strict format: UNIQUE_NAME + COLOUR + SIZE + FINISH + TYPE",
+      "format": "{unique_name} {colour} {size} {finish} {type}",
+      "examples": [
+        "Munich Light Grey 600x600 Matt Wall & Floor Tile",
+        "Cannes Dark Grey 300x600 Polished Wall & Floor Tile",
+        "Amazon Light Blue 130x130 Gloss Wall Tile"
+      ],
+      "unique_name_rules": {
+        "description": "Each product SERIES gets ONE unique name (city/place for tiles, forest/landscape for flooring)",
+        "regular_products": "Use city/place names (e.g., Munich, Cannes, Tokyo, Lima)",
+        "flooring_products": "Use forest/landscape names (e.g., Sherwood, Redwood, Alpine)",
+        "no_duplicates": "Names must NOT be duplicated or have numeric suffixes",
+        "one_per_series": "All products in a series share the SAME unique name"
+      },
+      "colour_rules": {
+        "description": "ALWAYS preserve the FULL colour variant from the original supplier name",
+        "important": "Do NOT simplify colours - use the exact colour variant",
+        "compound_colours": [
+          "Light Grey",
+          "Dark Grey", 
+          "Medium Grey",
+          "Light Beige",
+          "Dark Beige",
+          "Medium Beige",
+          "Light Brown",
+          "Dark Brown",
+          "Medium Brown",
+          "Light Blue",
+          "Dark Blue",
+          "Light Green",
+          "Dark Green",
+          "Warm Grey",
+          "Cool Grey",
+          "Off White",
+          "Pure White",
+          "Soft White"
+        ],
+        "simple_colours": [
+          "White",
+          "Black",
+          "Grey",
+          "Beige",
+          "Brown",
+          "Blue",
+          "Green",
+          "Pink",
+          "Gold",
+          "Silver",
+          "Cream",
+          "Ivory",
+          "Bone",
+          "Sand",
+          "Smoke",
+          "Charcoal",
+          "Anthracite",
+          "Taupe",
+          "Natural"
+        ],
+        "examples": {
+          "correct": [
+            "Munich Light Grey (NOT Munich Grey)",
+            "Cannes Dark Grey (NOT Cannes Grey)",
+            "Amazon Light Blue (NOT Amazon Blue)"
+          ],
+          "wrong": [
+            "Munich Grey (missing Light/Dark variant)",
+            "Cannes Grey (missing Light/Dark variant)"
+          ]
+        }
+      },
+      "size_format": {
+        "description": "Size in millimeters, format: WIDTHxHEIGHT",
+        "examples": ["600x600", "300x600", "100x200", "1200x1200"]
+      },
+      "finish_options": [
+        "Matt",
+        "Gloss",
+        "Polished",
+        "Structured",
+        "Satin",
+        "Honed",
+        "Natural",
+        "Textured",
+        "Rustic"
+      ],
+      "type_options": [
+        "Wall Tile",
+        "Floor Tile",
+        "Wall & Floor Tile",
+        "Mosaic",
+        "Border",
+        "Décor"
+      ]
+    },
+    "sku_generation": {
+      "description": "SKU format: TS + Supplier Initial + First char of original SKU + Last 5 digits",
+      "format": "TS{supplier_initial}{first_char}{last_5_digits}",
+      "examples": [
+        "Original: P10959 (Verona) -> TSVP0959",
+        "Original: D11208 (Verona) -> TSVD1208"
+      ]
+    },
+    "pricing_calculation": {
+      "description": "List prices calculated from cost price with markup and VAT",
+      "formula": "list_price = cost_price × 1.90 × 1.20",
+      "explanation": "90% markup + 20% VAT",
+      "rounding": "Round UP to end in .99p",
+      "examples": [
+        "Cost £13.95 -> £13.95 × 1.90 × 1.20 = £31.79 -> £31.99",
+        "Cost £11.84 -> £11.84 × 1.90 × 1.20 = £27.00 -> £26.99"
+      ]
+    },
+    "stock_tracking": {
+      "fields": {
+        "stock_quantity": "Number of units/packs in stock",
+        "stock_m2": "Total square meters available",
+        "in_stock": "Boolean - true if either stock value > 0"
+      }
+    }
+  },
+  "supplier_code_mapping": {
+    "description": "Extracted from Verona spreadsheet - maps Supplier Product Name to Supplier Code",
+    "source_file": "Verona List 2026 for Website.xlsx",
+    "total_mappings": 594,
+    "updated": "2026-02-15",
+    "note": "All 594 Verona products in database now have original_supplier_code set from this spreadsheet"
+  },
+  "series_unique_names": {
+    "description": "Mapping of original supplier series names to unique names",
+    "Verona": {
+      "Anderley": "Munich",
+      "Derwent": "Cannes",
+      "Cameo": "Lima",
+      "Genesis": "Pacific",
+      "Hartford": "Jakarta",
+      "Kalksten": "Stockholm",
+      "Metro": "Genoa",
+      "Siena": "Bangkok",
+      "Veronica": "Copenhagen",
+      "Cast": "Maldives",
+      "Flash": "Amazon",
+      "Vintage": "Blanc",
+      "Central": "Siena",
+      "Rainton": "Heritage"
+    }
+  },
+  "critical_operations": {
+    "production_first": {
+      "description": "USER ALWAYS WORKS IN PRODUCTION APP",
+      "production_url": "https://carefree-friendship-production-ee2b.up.railway.app",
+      "production_api_url": "https://tile-station-production.up.railway.app",
+      "rules": [
+        "All fixes and changes must work in production",
+        "Testing in preview environment is NOT sufficient",
+        "User tests on production, not preview",
+        "Always verify fixes work in the PRODUCTION context"
+      ]
+    },
+    "debugging_protocol": {
+      "description": "MANDATORY: When investigating ANY issue, ALWAYS check PRODUCTION first",
+      "production_api_url": "https://tile-station-production.up.railway.app",
+      "rules": [
+        "NEVER rely on preview environment data for debugging - it has different/empty data",
+        "Always query PRODUCTION API directly to see real data and real issues",
+        "Use curl to hit production endpoints: curl -s 'https://tile-station-production.up.railway.app/api/...'",
+        "Compare production API responses with what user sees in screenshots",
+        "Preview environment is ONLY for testing code changes, NOT for data verification",
+        "If numbers don't match, query production database/API to understand the actual data structure"
+      ],
+      "example_debug_commands": {
+        "login": "curl -s -X POST 'https://tile-station-production.up.railway.app/api/auth/login' -H 'Content-Type: application/json' -d '{\"email\":\"...\",\"password\":\"...\"}'",
+        "get_data": "curl -s 'https://tile-station-production.up.railway.app/api/ENDPOINT' -H 'Authorization: Bearer TOKEN'"
+      }
+    }
+  }
+}

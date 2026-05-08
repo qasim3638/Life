@@ -1,0 +1,28 @@
+{
+  "summary": "End-to-end tested the Quick Post History Log feature on /admin/announcement-ribbon. Backend (6/6 pytest passed): GET returns history array (auth-required, 401/403 unauth), plain saves do NOT pollute history, record_history=true appends newest-first capped at 10 with all required fields (id, message, link_url, link_label, background_color, text_color, link_color, speed, icon, published_at, published_by), and existing fields (schedule_enabled, scheduled_start/end, theme) are preserved across history-only saves. Frontend (Playwright): login → /admin/announcement-ribbon loads, Recent posts panel renders with 10 items, publishing via input+Enter adds new row at history-item-0 with 'just now' timestamp + admin@test.com author, Re-publish button on history-item-1 moves that exact post back to position 0, live preview banner adopts the re-published row's background color (rgb(28,25,23) = charcoal), preset buttons populate the quick-message input.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_announcement_ribbon_history.py",
+    "/app/test_reports/pytest/ribbon_history.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Frontend uses controlled <input> for quick-message; page.fill() set the DOM value but React state lagged — initial click missed (toast 'Type a message first'). Not a bug for real users (they type naturally), but worth noting that an enterprise test had to switch to keyboard.type() with a small wait. No code change required.",
+    "AdminDashboard logs a non-blocking React 'Each child in a list should have a unique key prop' warning (unrelated to ribbon feature).",
+    "Re-publish button uses opacity-0 group-hover:opacity-100 — discoverable on hover only on desktop; consider keyboard-focus visibility (focus:opacity-100 is present, good). Mobile touch users may not see it without tapping the row first."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_announcement_ribbon_history.py"
+  ],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "admin@test.com / admin123 (super_admin) — verified working",
+  "seed_data_creation": "Test inserted ~14 history entries (TEST_CAP_entry_00..11, TEST_PRESERVE_fields, TEST_E2E_REPUB_*) into website_settings.announcement_ribbon.history. Cap-at-10 enforced server-side. Real production posts not affected because feature is brand-new.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Feature fully verified on iteration 128. Backend test file: /app/backend/tests/test_announcement_ribbon_history.py — re-runnable. The history may currently contain TEST_* messages from this run; main agent can clear via PUT with empty record_history if wanted, or leave them (they'll roll off as new posts come in)."
+}

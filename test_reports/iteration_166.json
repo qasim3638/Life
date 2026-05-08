@@ -1,0 +1,53 @@
+{
+  "summary": "Stealth-Keyword Performance Attribution — full-stack verification against live preview backend + UI. Backend: 17/17 unit tests + 12/12 live HTTP tests pass (auth/RBAC, days 7-90 validation, cache vs refresh, body validation 400/422, promote idempotency, collection persistence, unknown-product-id 404). Frontend: collapsed card renders, Open expands, 3 KPI cards populate with live GSC data (27 clicks / 1602 impressions / 540 queries over 28 days), 20 missed-wins rows + 5 underperformer chips render, days dropdown (7/28/90) triggers new fetch, Refresh fires force-refresh. All data-testids per spec are present. No blocking issues.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "/admin/seo → Stealth-Keyword Performance KPI cards", "issues": ["Minor: KPI value/label have no whitespace — renders as '27clicks', '1,602impr', '540qrys'. Rendered flex-baseline layout joins digits with labels. A left-margin on the 'clicks' span or a nbsp would polish this. Not a functional issue."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_stealth_seo_performance.py",
+    "/app/backend/tests/test_stealth_seo_performance_live.py",
+    "/app/test_reports/pytest/iter166_stealth_perf_unit.xml",
+    "/app/test_reports/pytest/iter166_stealth_perf_live.xml"
+  ],
+  "action_items": [
+    "Optional polish: add a small gap between KPI digit and label ('27' + space + 'clicks') in StealthPerformanceCard.jsx KpiCard — flex-baseline with no gap makes numbers run into words."
+  ],
+  "critical_code_review_comments": [
+    "In StealthPerformanceCard.jsx the promote-missed-win path is hardcoded to target='collection' — the backend supports target='product' with product_id but the UI never exercises it. Acceptable for MVP given the 'promote to a collection' spec, but the route's product code path only has test-coverage from pytest, not from real UI clicks.",
+    "StealthPerformanceCard.jsx uses window.prompt for the collection picker — workable for an admin tool but fragile UX. A proper shadcn Dialog with a Select listing collections would be cleaner; the collections list is already pre-loaded into state.",
+    "services/stealth_seo_performance.py _compute aggregates keyword_agg clicks per (kw, query) match — the inline comment correctly notes this can exceed the stealth bucket total when one query matches multiple keyword variants. Leave as-is; documented.",
+    "routes/stealth_seo.py get_performance imports 'services.stealth_seo_performance as perf' INSIDE the function body. Moving to module-top would avoid repeated import cost on every request (minor perf)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_stealth_seo_performance_live.py (new — 12 live HTTP tests)"
+  ],
+  "success_rate": {
+    "backend": "100% (29/29 across unit+live)",
+    "frontend": "100%"
+  },
+  "test_credentials": "admin@test.com / admin123 (super_admin)",
+  "seed_data_creation": "Live promote-idempotency test uses sentinel collection '__TEST_PROMOTE_SENTINEL__' with query '__test_promote_query_1234__' and clears it via POST /collection/{sentinel} {keywords:[]} at teardown. No real collection/product mutated. No GSC cache rows left behind since the cache is keyed and self-expiring.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Live API tests live in /app/backend/tests/test_stealth_seo_performance_live.py and complement the existing test_stealth_seo_live.py. Takes ~15s to run (cold /performance call fetches 5000 GSC rows). Unit tests (17) + live (12) = 29 green. The frontend card is collapsed-by-default and sits below StealthKeywordsCard on /admin/seo; data-testids all stable (stealth-perf-collapsed, -open-btn, -card, -kpi-{emerald|indigo|slate}, -winner-N, -missed-N, -promote-N, -under-N, -days, -refresh-btn). Live GSC data on the preview DB: 0 stealth wins, 0 brand wins (auto-fill not yet run), 27 'other' clicks, 20 missed wins, 5 underperformers.",
+  "live_test_evidence": {
+    "performance_endpoint": "200 OK, gsc_connected=true, totals.clicks=27 impressions=1602 queries=540 over 28 days",
+    "cache_test": "same generated_at on 2 back-to-back calls; different generated_at after refresh=true ✅",
+    "days_validation": "422 on days=3 and days=120; 200 on days=7 and days=90 ✅",
+    "promote_idempotency": "sentinel keyword added once, count stays 1 on repeat call ✅",
+    "promote_404": "target=product with unknown product_id returns 404 via LookupError handler ✅",
+    "promote_400_validation": "target=product without product_id → 400 'product_id is required'; target=collection without collection → 400 'collection is required' ✅",
+    "promote_422_validation": "target='bogus' rejected 422 by Pydantic regex ✅",
+    "ui_kpi_live_values": "emerald 0 clicks (0% share), indigo 0 clicks (0% share), slate 27 clicks (100% share, CTR 1.7%)",
+    "missed_wins_rows": 20,
+    "underperformer_chips": 5
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "summary": "Phase 2 Trade Account Pricing testing completed successfully. All features working as expected: trade customer login, trade status API, trade pricing calculation, and frontend UI displaying trade prices correctly.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_trade_pricing.py",
+    "/app/test_reports/pytest/pytest_trade_results.xml",
+    ".screenshots/01_non_trade_user_pricing.png",
+    ".screenshots/03_trade_customer_pricing.png",
+    ".screenshots/04_trade_pricing_detail.png"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Backend /api/shop/trade/status correctly returns is_trade, trade_discount for logged-in customers",
+    "Backend /api/tiles/pricing/calculate correctly handles is_trade and trade_discount params, returns trade_tiers, trade_current_price_per_m2",
+    "Frontend TileDetailPage.js properly fetches trade status and passes trade params to pricing API",
+    "UI correctly shows 'Trade Pricing' header with 'Trade Account' badge for trade customers",
+    "Trade pricing table shows 'Trade Price/m²' column with retail prices crossed out",
+    "'Trade Pricing Active' banner correctly shows 'Extra 5% off all tier prices'",
+    "Savings percentages correctly combine tier discount + trade discount",
+    "'Trade Customer?' login prompt correctly hidden for logged-in trade customers"
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_trade_pricing.py"
+  ],
+  "success_rate": {
+    "backend": "100% (9/9 pytest tests passed)",
+    "frontend": "100% (All UI elements verified)"
+  },
+  "test_credentials": {
+    "trade_customer": {
+      "email": "trade@test.com",
+      "password": "Test123!"
+    },
+    "admin": {
+      "email": "qasim@tilestation.co.uk",
+      "password": "Tilestation_9614"
+    }
+  },
+  "seed_data_creation": "Used existing trade customer account (trade@test.com) with is_trade=true, trade_discount=5. Test product LP-3611 (alabaster-30x60cm-polished).",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Trade pricing feature Phase 2 complete. Trade customer trade@test.com has is_trade=true and trade_discount=5. When logged in, product pages show: 1) 'Trade Pricing' header with 'Trade Account' badge, 2) 'Trade Pricing Active' banner, 3) Trade pricing table with retail prices crossed out, 4) Combined savings (tier + trade discount), 5) No 'Trade Customer? Login' prompt.",
+  "tests_executed": [
+    {
+      "test": "GET /api/shop/trade/status without auth",
+      "result": "PASS",
+      "notes": "Returns 401 as expected"
+    },
+    {
+      "test": "POST /api/shop/auth/login for trade customer",
+      "result": "PASS",
+      "notes": "Login successful, token and customer data returned"
+    },
+    {
+      "test": "GET /api/shop/trade/status with trade customer token",
+      "result": "PASS",
+      "notes": "Returns is_trade=true, trade_discount=5"
+    },
+    {
+      "test": "GET /api/tiles/pricing/calculate without trade params",
+      "result": "PASS",
+      "notes": "Returns regular tier pricing, is_trade=false, no trade_tiers"
+    },
+    {
+      "test": "GET /api/tiles/pricing/calculate with is_trade=true&trade_discount=5",
+      "result": "PASS",
+      "notes": "Returns trade_tiers, trade_current_price_per_m2, combined discounts"
+    },
+    {
+      "test": "GET /api/tiles/products/{slug}/tier-pricing without trade",
+      "result": "PASS",
+      "notes": "Returns regular tier pricing"
+    },
+    {
+      "test": "GET /api/tiles/products/{slug}/tier-pricing with trade params",
+      "result": "PASS",
+      "notes": "Returns trade pricing with trade_tiers"
+    },
+    {
+      "test": "GET /api/tiles/products/{slug}",
+      "result": "PASS",
+      "notes": "Test product LP-3611 exists with price £23.99"
+    },
+    {
+      "test": "GET /api/tiles/pricing/tiers",
+      "result": "PASS",
+      "notes": "Config includes trade_discount_default"
+    },
+    {
+      "test": "Non-logged-in user sees regular tier pricing",
+      "result": "PASS",
+      "notes": "Shows 'Pricing' header, regular tiers, 'Trade Customer?' prompt"
+    },
+    {
+      "test": "Trade customer login via UI",
+      "result": "PASS",
+      "notes": "Login successful, token stored in localStorage"
+    },
+    {
+      "test": "Trade customer sees 'Trade Pricing' header",
+      "result": "PASS",
+      "notes": "Header shows 'Trade Pricing' with Trade Account badge"
+    },
+    {
+      "test": "Trade customer sees 'Trade Pricing Active' banner",
+      "result": "PASS",
+      "notes": "Yellow/amber gradient banner with 'Extra 5% off all tier prices'"
+    },
+    {
+      "test": "Trade pricing table shows correct prices",
+      "result": "PASS",
+      "notes": "Trade prices shown with retail crossed out, savings combine tier+trade discount"
+    },
+    {
+      "test": "No 'Trade Customer? Login' prompt for trade user",
+      "result": "PASS",
+      "notes": "Prompt correctly hidden when is_trade=true"
+    }
+  ],
+  "feature_summary": {
+    "feature_name": "Phase 2 - Trade Account Pricing",
+    "description": "When logged-in trade customers view product pages, they see their discounted trade prices instead of regular retail prices",
+    "api_endpoints_tested": [
+      "POST /api/shop/auth/login",
+      "GET /api/shop/trade/status",
+      "GET /api/tiles/pricing/calculate?is_trade=true&trade_discount=5",
+      "GET /api/tiles/products/{slug}/tier-pricing?is_trade=true&trade_discount=5"
+    ],
+    "ui_components_verified": {
+      "trade_pricing_header": "'Trade Pricing' header replaces 'Pricing'",
+      "trade_account_badge": "Orange badge with crown icon showing 'Trade Account'",
+      "trade_pricing_active_banner": "Yellow/amber gradient banner showing 'Trade Pricing Active' and 'Extra 5% off all tier prices'",
+      "trade_pricing_table": "Shows 'Trade Price/m²' column with retail prices crossed out below",
+      "current_price": "Shows trade price with 'Retail: £X.XX/m²' crossed out below",
+      "savings_badge": "Shows combined tier + trade discount percentage",
+      "login_prompt_hidden": "'Trade Customer? Login' prompt hidden for trade customers"
+    },
+    "pricing_calculation_verified": {
+      "tier_1": "0-10m²: Trade £22.79 (Retail £23.99), Save 5%",
+      "tier_2": "10-50m²: Trade £21.65 (Retail £22.79), Save 10%",
+      "tier_3": "50-100m²: Trade £20.51 (Retail £21.59), Save 15%",
+      "tier_4": "100m²+: Trade £19.37 (Retail £20.39), Save 20%"
+    }
+  }
+}

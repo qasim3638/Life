@@ -1,0 +1,50 @@
+{
+  "summary": "Tested Supplier Margin Intelligence widget (backend + frontend). Backend: 16/16 unit tests pass; 10/10 new live API tests pass. Frontend: collapsed/expanded card, 4-tile summary, top rev-gen table (20 rows), supplier league (10 rows), refresh button + force-refresh API call all working with real production data on /admin/products-hub.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_supplier_margin_intel.py",
+    "/app/backend/tests/test_supplier_margin_intel_live.py",
+    "/app/test_reports/pytest/margin_intel_results.xml",
+    "/app/test_reports/pytest/margin_intel_live_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "supplier_margin_intel.py is well-structured (~325 lines). Pure function helpers + async builder + cache wrapper — clean separation.",
+    "_compute_report fetches GSC twice (days=7 + days=14) every cold-cache call — fine for 1h cache TTL but doubles GSC quota use; consider single 14d fetch + per-row date split if quota becomes an issue.",
+    "Median calc uses sorted()[n//2] — for even-sized samples it picks the upper median (off-by-one) but acceptable for this UI summary tile.",
+    "Endpoint correctly enforces admin auth, uses Pydantic Query() validators (top_n 5-100), excludes _id from Mongo reads, handles GSC failure gracefully (gsc_connected:false fallback).",
+    "Cache key includes top_n so different views don't collide; force_refresh path correctly bypasses read but still writes a fresh cache entry."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_supplier_margin_intel_live.py (new file — 10 live API tests against production endpoint)"
+  ],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "admin@test.com / admin123 (super_admin) — confirmed working",
+  "seed_data_creation": "None for live tests. Unit tests use isolated test_margin_intel_<uuid> Mongo DB, dropped on teardown.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Both pytest suites run clean. Live tests hit prod data: 772 active products, 743 with cost, 1 product (Order a Sample) currently has GSC organic traffic. Cache TTL=1h via seo_supplier_margin_cache collection. Frontend route is /admin/products-hub (NOT /admin/products). Card data-testids: margin-intel-collapsed, margin-intel-open-btn, margin-intel-card, margin-intel-summary, margin-intel-top, margin-intel-top-row-{N}, margin-intel-suppliers, margin-intel-supplier-row-{N}, margin-intel-price-test (only renders when candidates exist), margin-intel-refresh-btn. Note: AdminDashboard has an unrelated React 'unique key prop' warning + Categories /api/categories/stats returns 500 — pre-existing issues, NOT related to margin intel.",
+  "verified_features": [
+    "Auth: anon GET → 401; admin GET → 200",
+    "Validation: top_n=4 → 422; top_n=200 → 422 (Pydantic Query ge=5 le=100)",
+    "Response shape: summary{total_products, with_cost_data, with_organic_traffic, median_margin_pct, gsc_connected} + top_revenue_gen[] + price_test_candidates[] + suppliers[] + generated_at",
+    "Live data: gsc_connected:true, summary.total_products=772, with_cost_data=743, with_organic_traffic=1, median_margin_pct=64.1",
+    "Top row shape: product_id, name, supplier_name, price, cost_price, margin_pct, impressions_this_week, impressions_last_week, impressions_delta_pct, score",
+    "Price-test filter: every candidate has impressions>=50 AND margin<30 (or null)",
+    "Supplier league sorted by score_sum desc",
+    "Cache: 2 calls in 1h with same top_n → identical generated_at",
+    "Force refresh: refresh=true returns NEW generated_at",
+    "Cache isolation: top_n=10 vs top_n=50 are separate cache keys",
+    "Frontend: collapsed→open click → API call → expanded card with all 3 sections + 4 tile summary",
+    "Frontend refresh button: triggers GET with refresh=true (verified via network response intercept)",
+    "Margin chip color buckets: 66.7%/100% rows render with bg-emerald-100 (≥55% bucket)"
+  ]
+}

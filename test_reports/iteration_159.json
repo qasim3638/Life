@@ -1,0 +1,29 @@
+{
+  "summary": "Verified end-to-end the Validate Polygons admin tool. Backend pytest 28 pass + 1 skip as expected. Live validator endpoint returns exactly {total:10, ok:9, warn:0, bad:1} with vis_room_utility_floor as the BAD entry (dead Unsplash 404). Admin sample-rooms list returns 10, customer-facing list returns 9 (Utility hidden because active=False). Frontend admin UI: Validate button visible, banner with green '9 OK' + red '1 bad' pills appears after click, issues list shows Utility Room with 'Image fetch failed: 404' reason + '(Fix in editor)' deep-link, BAD pill overlays the Utility thumbnail, and clicking Fix opens the Sample Room Editor modal pre-populated with Utility Room data. All requested data-testid attributes are present and wired correctly.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "AdminDashboard", "issues": ["React console warning: 'Each child in a list should have a unique key prop' originating in AdminDashboard render. Pre-existing, unrelated to this change but worth fixing."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_visualizer_validate_polygons.py",
+    "/app/backend/tests/test_validate_live.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "AdminDashboard list-key warning should be addressed (not introduced by this iteration but visible during validator testing).",
+    "Validator endpoint took ~2-4s in this run — well below the 60s budget; no perf concerns."
+  ],
+  "updated_files": ["/app/backend/tests/test_validate_live.py"],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "admin@test.com / admin123 (super_admin)",
+  "seed_data_creation": "None — used existing seeded sample rooms.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Validator endpoint is POST /api/admin/visualizer/sample-rooms/validate-polygons and is fast (<5s in practice because most images are cached/CDN-fronted). Frontend testids in use: visualizer-admin-validate-btn, visualizer-admin-validation-summary, visualizer-admin-validation-issues, visualizer-admin-validation-fix-{id}, visualizer-admin-room-status-{id}. Use wait_until='domcontentloaded' for /admin/visualizer (networkidle hangs due to background polling).",
+  "rca of the issue": "N/A — this iteration verified a feature ship; no bugs found. The single BAD result for vis_room_utility_floor is an intentionally flagged dead Unsplash URL that was set active=False in seed; admin can replace via Fix in editor."
+}

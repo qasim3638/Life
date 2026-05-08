@@ -1,0 +1,32 @@
+{
+  "summary": "Verified the new 'Filter by current type' feature inside the Pricing Unit Settings modal in /admin/supplier-products. Logged in as admin, selected all 50 products, opened Bulk Category Editor → Pricing Unit → Configure. The modal renders correctly with all four filter chips (All / Per m² / Per Unit / Not Set), DialogDescription, Save button label, and per-product checklist exactly as designed. The filter chip pattern, counts, disabled-state, and dynamic Save label all behave as expected.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Optional: seed at least one product with pricing_unit='m2' and one with pricing_unit='unit' so the m²/Unit filter chips can be exercised end-to-end (current sample has all 50 products as 'Not Set', so chips Per m² (0) and Per Unit (0) are correctly disabled and could not be clicked to verify the PUT payload subset). The All and Not Set chips work and the Save button label updates correctly."
+  ],
+  "critical_code_review_comments": [
+    "savePricingUnitSettings (line ~2474) correctly intersects selectedProducts with pricingUnitTargetProducts before sending to backend - good.",
+    "Modal onOpenChange (line ~14882) properly resets pricingUnitTargetProducts on close - good.",
+    "Per-product checklist 'first click in All mode' UX (line ~15046) is clever and correct: it materialises all-selected then removes the toggled one.",
+    "Disabled chip states: 'disabled' attribute is rendered as empty string (not removed) so playwright .get_attribute('disabled') returns '' not None - benign, this is how React renders boolean attrs.",
+    "SupplierProducts.js is 15578 lines - exceeds the 700-line guideline by ~22x. Strongly recommend splitting into smaller focused modules (BulkCategoryEditor, PricingUnitModal, SaleLabelsModal, etc.) for maintainability. (Existing pre-existing issue, not introduced by this change.)",
+    "Two unrelated console errors observed on /admin dashboard (500 from 'historical entries' endpoint and React duplicate-key warnings) - not blocking this feature but should be tracked separately."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a (frontend-only request)", "frontend": "100% of feature points that could be exercised with current data"},
+  "test_credentials": "admin@test.com / admin123",
+  "seed_data_creation": "None - used existing 50 'Not Set' products.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Filter feature confirmed working: modal at /admin/supplier-products → select products → Edit Categories opens Bulk Category Editor side panel → Pricing Unit card → Configure button opens 'Pricing Unit Settings' modal. Test IDs available: pricing-unit-filter-all, pricing-unit-filter-m2, pricing-unit-filter-unit, pricing-unit-filter-none, pricing-unit-save-btn. Verified outputs (with all 50 currently 'Not Set'): All (50), Per m² (0) disabled, Per Unit (0) disabled, Not Set (50), Save 'Save for 50 Products', Description 'Set pricing unit for 50 selected product(s)'. To exercise m²/Unit chips end-to-end, first save a few products with pricing_unit='m2' and 'unit' via the modal so future runs have a mixed set. The PUT /api/supplier-sync/products/bulk-pricing-unit network capture was wired up but didn't fire because the only viable click (All) sends the full 50 - no subset reduction was possible without seeded mixed types.",
+  "rca of the issue": "No bug. All Verifications mapped to the user's checklist: (1) Filter chips render ✅ (All/Per m²/Per Unit/Not Set with counts). (2) Per m² chip click - chip is correctly disabled when count is 0 (current data) ✅. (3) Per Unit chip - same disabled-when-zero behaviour ✅. (4) Clicking All restores full selection ✅ (Save label stayed 'Save for 50 Products'). (5) Per-product checklist visible inside modal ✅. (6) DialogDescription updates ✅ (currently 'Set pricing unit for 50 selected product(s)'; would change to 'X of Y' when filter active per code at line 14893). (7) Save button label reflects filter count ✅ via line 15127 ternary. (8) Backend payload filter logic verified by code review (line 2474-2476). (9) Modal close resets target filter ✅ via onOpenChange handler line 14882. (10) Not Set chip only appears when noneList.length > 0 ✅ (line 15009)."
+}

@@ -1,0 +1,84 @@
+{
+  "summary": "Bathroom Page feature fully tested. All 15 backend tests passed. Frontend public page and admin panel verified working correctly. All required features implemented: hero section with dual pricing tiers (35% public, 50% trade), catalogue download gated behind sign-in, how to order section with 3 channels, trade credit back notice, review quote, CTA section, and full admin panel with download analytics.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Navigation Bar",
+        "issues": ["TEST LINK and TEST_SITEMAP_LINK items visible in navigation - appears to be test data from previous testing, not related to bathroom page feature"]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_bathroom_page.py",
+    "/app/test_reports/pytest/pytest_bathroom_page.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [
+    "/app/backend/tests/test_bathroom_page.py"
+  ],
+  "success_rate": {
+    "backend": "100% (15/15 tests passed)",
+    "frontend": "100% (all UI elements verified)"
+  },
+  "test_credentials": "Admin: qasim@tilestation.co.uk / Tilestation_9614",
+  "seed_data_creation": "Page content was pre-seeded via curl. Catalogue PDF (81MB) already uploaded to object storage at path 'tile-station/bathroom/catalogue/bath-station-august-2025.pdf'",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Bathroom Page feature is fully implemented and working. Backend endpoints: GET/PUT /api/bathroom/page for page content, GET /api/bathroom/catalogue/download for PDF download with tracking (accepts user_id and user_type params), GET /api/bathroom/downloads/stats for analytics, POST /api/bathroom/catalogue/upload for admin PDF upload. Frontend public page at /shop/bathroom shows hero with discount badge (35% public, 50% trade), sign-in modal for unauthenticated download attempts, 4 feature cards, 3 order channel cards (Showrooms, WhatsApp, Email), trade credit back notice (2%), review quote from Peter B. with 5 stars, CTA section with gradient background. Admin panel at /admin/bathroom-page has download stats cards (Total, Public, Trade), hero editor, pricing fields, catalogue section with current filename and upload button, feature editor, how to order editor, review editor, CTA editor. Bathroom Page card added to Website Hub under Content section.",
+  "features_tested": {
+    "backend_api": [
+      "✓ GET /api/bathroom/page returns 200 with all seeded content",
+      "✓ Page content includes hero_title, hero_subtitle, hero_description",
+      "✓ Page content includes public_discount (35%) and trade_discount (50%)",
+      "✓ Page content includes 4 features with icon, title, description",
+      "✓ Page content includes how_to_order_title, how_to_order_intro, how_to_order_channels (3 channels)",
+      "✓ Page content includes trade_credit_back_text with 2%",
+      "✓ Page content includes review_quote and review_author (Peter B.)",
+      "✓ Page content includes cta_title and cta_description",
+      "✓ Page content includes catalogue_path and catalogue_filename",
+      "✓ GET /api/bathroom/downloads/stats returns total, public, trade counts and recent downloads",
+      "✓ GET /api/bathroom/catalogue/download tracks public user downloads",
+      "✓ GET /api/bathroom/catalogue/download tracks trade user downloads",
+      "✓ PUT /api/bathroom/page updates and merges content correctly",
+      "✓ PUT /api/bathroom/page preserves array fields during partial updates",
+      "✓ Download tracking stores records in bathroom_downloads collection"
+    ],
+    "frontend_public": [
+      "✓ /shop/bathroom page loads with data-testid='bathroom-page'",
+      "✓ Hero section (data-testid='bathroom-hero') displays Bath Station title",
+      "✓ Public discount (35%) displayed correctly for unauthenticated users",
+      "✓ Both pricing tiers shown (Public: 35% Off, Trade: 50% Off)",
+      "✓ Download button shows 'Sign In to Download' for unauthenticated users",
+      "✓ Sign-in modal (data-testid='signin-modal') appears on download click",
+      "✓ Modal has Sign In button (data-testid='signin-modal-login')",
+      "✓ Modal has Create Free Account button (data-testid='signin-modal-register')",
+      "✓ Modal mentions Trade 50% off",
+      "✓ Features section (data-testid='bathroom-features') shows 4 feature cards",
+      "✓ How to Order section (data-testid='how-to-order') present",
+      "✓ 3 order channel cards displayed (Showrooms, WhatsApp, Email)",
+      "✓ Trade Credit Back notice (data-testid='trade-credit-notice') shows 2%",
+      "✓ Review section (data-testid='bathroom-review') with 5 stars and Peter B.",
+      "✓ CTA section (data-testid='bathroom-cta') with gradient background",
+      "✓ ShopHeader and ShopFooter present"
+    ],
+    "frontend_admin": [
+      "✓ /admin/bathroom-page loads with data-testid='bathroom-admin'",
+      "✓ Download stats section (data-testid='download-stats') shows Total, Public, Trade counts",
+      "✓ Hero editor fields present (title, subtitle, description)",
+      "✓ Pricing fields present (public_discount=35, trade_discount=50)",
+      "✓ Catalogue section (data-testid='catalogue-section') shows current filename",
+      "✓ Upload/Replace Catalogue button (data-testid='upload-catalogue') present",
+      "✓ Save button (data-testid='save-bathroom-page') present and functional",
+      "✓ Add Feature button (data-testid='add-feature') present",
+      "✓ Save persists changes to API (verified with reload)",
+      "✓ Bathroom Page card added to Website Hub under Content section"
+    ]
+  }
+}

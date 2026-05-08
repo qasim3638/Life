@@ -1,0 +1,84 @@
+{
+  "summary": "Verified color swatches bug fix. Collections now correctly show colors extracted from product names when DB color field is empty. Backend: 12/12 tests passed. Frontend: Color swatches render correctly with proper labels and COLOUR/COLOURS pluralization.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_color_swatches.py",
+    "/app/test_reports/pytest/pytest_color_swatches.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [
+    "/app/backend/tests/test_color_swatches.py"
+  ],
+  "success_rate": {
+    "backend": "100% (12/12 tests passed)",
+    "frontend": "100% - All color swatch features verified"
+  },
+  "test_credentials": "Admin: qasim@tilestation.co.uk",
+  "seed_data_creation": "None - used existing products in database",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Color swatches fix verified. Key test collections: Opaco (White/Grey from name extraction), Testseries (White/Grey from name), Bluestone (Grey/Beige/White from DB color field), Sparkle (Cream/Grey/White from name extraction). The fix adds extract_color_from_name() and get_product_color() functions in backend tiles.py that mirror frontend CollectionDetailPage logic. Two-pass approach ensures color entries appear FIRST in product_images array.",
+  "features_tested": {
+    "backend_api": [
+      "✓ GET /api/tiles/collections returns color_swatches with colors extracted from product names",
+      "✓ product_images array has color entries BEFORE non-color entries (prioritization working)",
+      "✓ additional_colors count is based on color_swatches length not total colors",
+      "✓ Opaco collection shows White/Grey extracted from product names like 'Opaco White 60x60cm Matt'",
+      "✓ Bluestone collection shows Grey/Beige/White from DB color field",
+      "✓ Sparkle collection shows Cream/Grey/White from name extraction",
+      "✓ Testseries collection shows White/Grey from name extraction",
+      "✓ Color swatches have required fields: color, hex, image, product_slug"
+    ],
+    "frontend_ui": [
+      "✓ Collection cards render color swatches correctly",
+      "✓ Swatch labels show extracted color names (White, Grey, Cream, etc.)",
+      "✓ COLOUR/COLOURS pluralization badge shows correctly (1 COLOUR vs 2 COLOURS)",
+      "✓ Non-color entries (sizes) appear after color entries in swatches",
+      "✓ Bluestone card shows 3 COLOURS badge with Grey/Beige/White swatches",
+      "✓ Opaco card shows 2 COLOURS badge with White/Grey swatches"
+    ]
+  },
+  "test_scenarios": {
+    "scenario_1_name_extraction": {
+      "collection": "Opaco",
+      "products": "Opaco White 60x60cm Matt, Opaco Grey 60x60cm Matt (no DB color field)",
+      "expected": "color_swatches: [White, Grey]",
+      "result": "PASS - Colors extracted from product names"
+    },
+    "scenario_2_db_color_field": {
+      "collection": "Bluestone",
+      "products": "Bluestone Grey 60x60, Bluestone Beige 60x60, Bluestone White 30x60 (have DB color field)",
+      "expected": "color_swatches: [Grey, Beige, White]",
+      "result": "PASS - Colors from DB field used"
+    },
+    "scenario_3_product_images_prioritization": {
+      "collection": "Opaco",
+      "expected": "product_images: [White, Grey, Opaco 60x120cm, ...]",
+      "result": "PASS - Color entries appear FIRST before non-color entries"
+    },
+    "scenario_4_additional_colors": {
+      "all_collections": "additional_colors = max(0, len(color_swatches) - 8)",
+      "result": "PASS - All collections have correct additional_colors count"
+    }
+  },
+  "bug_fix_verification": {
+    "original_issue": "Collection cards (e.g., Ardesia with 4 colors) only show 2 color swatches",
+    "root_cause_1": "Many products lack a 'color' DB field but have color info in product names",
+    "root_cause_2": "product_images array filled with non-color entries first, truncating actual color entries",
+    "fix_applied": [
+      "Added extract_color_from_name() function mirroring frontend CollectionDetailPage logic",
+      "Added get_product_color() function to check DB field first, then extract from name",
+      "Restructured to two-pass approach: color entries prioritized first in product_images"
+    ],
+    "verification_status": "VERIFIED - All features working correctly"
+  }
+}

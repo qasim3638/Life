@@ -1,0 +1,38 @@
+{
+  "summary": "Stealth-Keyword Local Seeder (companion to Auto-Promote): 20/20 unit tests + 5/5 live-API smoke tests PASS. Frontend conditional UI verified by code inspection — full Playwright flow blocked by GSC-not-connected on preview env (the ap-block + nested local-block only render once GSC is connected; same constraint applied in iter167-169).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_stealth_seo_local_seed.py",
+    "/app/backend/tests/test_stealth_seo_local_seed_live.py",
+    "/app/test_reports/pytest/iter170_local_seed.xml",
+    "/app/test_reports/pytest/iter170_local_seed_live.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "stealth_seo_local_seed.py find_matching_city_page line 117: condition `t in qtoks or t in _tokens(query)` — the second clause is broader (no len-3/stopword filter). For multi-word towns containing short words (e.g. 'St Albans' → 'st' is len 2 + stopword-ish), this lets the multi-word match fall through. Logic is intentional but worth a brief code comment so future maintainers don't 'simplify' it.",
+    "stealth_seo_local_seed.apply_local_seed line 222: `merged_capped = merged[:25]` keeps the OLDEST 25 keywords; once the cap is hit new seeds are silently dropped. Consider reversing to keep newest, or at least logging when a seed is dropped due to cap.",
+    "Pre-existing (carried from iter169): stealth_seo_auto_promote.py line 181 has reachable `return rows[0] if rows else None` — fine, but file-level docstring still references old single-promotion behavior; update for batch-mode + scope dispatch.",
+    "Public route /api/shop/city-page/{slug} naturally surfaces hidden_seo_keywords because Mongo find_one returns the field when set (no projection excluding it). Acceptable, but a deliberate explicit projection would be more defensive against accidental future schema changes."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_stealth_seo_local_seed_live.py (new, 6 tests)"
+  ],
+  "success_rate": {"backend": "100% (20/20 unit + 5/5 live = 25/25 active; 1 skipped due to no city-page seed data)", "frontend": "verified by code inspection only (GSC dependency)"},
+  "test_credentials": "admin@test.com / admin123 (super_admin) — read from /app/memory/test_credentials.md",
+  "seed_data_creation": "None on live DB. Settings round-trip explicitly restored auto_local_seed_enabled=false at end of test.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Live API state restored: auto_local_seed_enabled=false, auto_promote_enabled=false. Live Playwright UI testing for stealth-ap-block requires GSC to be connected on preview env — currently NOT connected, so the inner ap-block (and our new local-block) only renders behind `report && r.gsc_connected && !r.reason`. To E2E test the toggle UI, mock GSC or run on a env where GSC is hooked up. Code inspection confirms `[data-testid=stealth-ap-local-block]` is correctly conditional on `digest.auto_promote_enabled`, contains `[data-testid=stealth-ap-local-seed]` checkbox, and history rows surface a green 'local' badge for `rec.scope==='city_page'`.",
+  "verification_details": {
+    "backend_unit_pytest": "20/20 PASS in test_stealth_seo_local_seed.py: matcher (single-token, multi-word, intent-match, no-match, tile-shop fallback), pick_local (happy, already-seeded skip, 2× threshold, one-per-page, unpublished-status skip), apply (writes+records with scope=city_page), undo via shared token (city/collection scope dispatch), run_once (disabled, needs-AP-enabled, happy, batch-mode cap), settings flag, cron budget-sharing.",
+    "backend_live_pytest": "5/5 PASS, 1 skipped: GET /digest/settings returns auto_local_seed_enabled (bool); PUT round-trip persists+restores; GET /auto-promote/history rows have token redacted (token_hint only); admin /undo/UNKNOWN_id → 404; public /undo/{badtoken} → 404. Public city-page test skipped because no live page currently has hidden_seo_keywords set (expected — auto_local_seed disabled).",
+    "city_page_field_check": "curl GET /api/shop/city-page/porcelain-tiles-maidstone returns row WITHOUT hidden_seo_keywords key because field isn't set on that doc. The route uses `find_one(..., {'_id': 0})` so when the field IS set, it surfaces naturally. SSR enrich (server-seo-enrich.js::buildCityPageMeta) reads `row.hidden_seo_keywords` defensively so missing field is safe.",
+    "frontend_code_inspection": "StealthPerformanceCard.jsx: toggleLocalSeed (lines 174-190) PUTs auto_local_seed_enabled with correct toast copy. UI block stealth-ap-local-block (lines 754-781) renders below batch-block, conditional on digest.auto_promote_enabled. Contains stealth-ap-local-seed checkbox bound to auto_local_seed_enabled. Explainer text appears only when checked (lines 773-779). History rows (lines 789-832) emit green 'local' badge + town-name text when rec.scope==='city_page'.",
+    "frontend_live_playwright": "BLOCKED: GSC not connected on preview env → ap-block parent (gated by `report && r.gsc_connected && !r.reason`) does not render → local-block can't be reached. NOT a regression; same gate exists in iter166-169. Recommend mocked-GSC harness for E2E coverage."
+  }
+}

@@ -1,0 +1,362 @@
+[
+  {
+    "label": "Privacy redirect",
+    "href": "/shop/privacy",
+    "final": "/shop/info/privacy",
+    "h1": "Privacy Policy",
+    "expect_kw": "privacy",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Terms redirect",
+    "href": "/shop/terms",
+    "final": "/shop/info/terms",
+    "h1": "Terms & Conditions",
+    "expect_kw": "terms",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "FAQ redirect",
+    "href": "/shop/faq",
+    "final": "/shop/info/faq",
+    "h1": "Frequently Asked Questions",
+    "expect_kw": "faq",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Returns redirect",
+    "href": "/shop/returns",
+    "final": "/shop/info/returns",
+    "h1": "Returns & Refunds",
+    "expect_kw": "return",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Delivery redirect",
+    "href": "/shop/delivery",
+    "final": "/shop/info/delivery",
+    "h1": "Delivery Information",
+    "expect_kw": "deliver",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Free Delivery promo",
+    "href": "/shop/info/delivery",
+    "final": "/shop/info/delivery",
+    "h1": "Delivery Information",
+    "expect_kw": "deliver",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Top ribbon Klarna",
+    "href": "/shop/tiles",
+    "final": "/shop/tiles",
+    "h1": "Bathroom Tiles",
+    "expect_kw": "tile",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Top ribbon Samples",
+    "href": "/shop/sample-service",
+    "final": "/shop/sample-service",
+    "h1": "Our Sample Service",
+    "expect_kw": "sample",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Top ribbon Stores",
+    "href": "/shop/stores",
+    "final": "/shop/contact",
+    "h1": "Contact Us",
+    "expect_kw": "store|showroom|contact",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Track Order",
+    "href": "/shop/track",
+    "final": "/shop/track",
+    "h1": "Track Your Order",
+    "expect_kw": "track",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Tile Calculator",
+    "href": "/shop/calculator",
+    "final": "/shop/calculator",
+    "h1": "Tile Calculator",
+    "expect_kw": "calculator|tiles you need",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Trade Register",
+    "href": "/shop/trade/register",
+    "final": "/shop/trade/register",
+    "h1": "Open a Trade Account",
+    "expect_kw": "trade",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Trade Login",
+    "href": "/shop/trade/login",
+    "final": "/shop/trade/login",
+    "h1": "Trade Account",
+    "expect_kw": "trade",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Bathroom promo",
+    "href": "/shop/bathroom",
+    "final": "/shop/bathroom",
+    "h1": "Bath Station",
+    "expect_kw": "bathroom",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Customer Sign In",
+    "href": "/shop/login",
+    "final": "/shop/login",
+    "h1": "Welcome Back",
+    "expect_kw": "sign in|login|email",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Customer Register",
+    "href": "/shop/register",
+    "final": "/shop/register",
+    "h1": "PERSIST_TEST_2e067de1",
+    "expect_kw": "register|create|account",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Contact",
+    "href": "/shop/contact",
+    "final": "/shop/contact",
+    "h1": "Contact Us",
+    "expect_kw": "contact|store|showroom",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Header logo",
+    "href": "/shop",
+    "final": "/",
+    "h1": "BIG SALE ON",
+    "expect_kw": "tile",
+    "status": "WRONG_URL",
+    "err": ""
+  },
+  {
+    "label": "NEW COLLECTIONS",
+    "href": "/tiles?new=true",
+    "final": "/tiles?new=true",
+    "h1": "Bathroom Tiles",
+    "expect_kw": "tile|collection|new",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "ALL TILES",
+    "href": "/tiles",
+    "final": "/tiles",
+    "h1": "Bathroom Tiles",
+    "expect_kw": "tile",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "FLOORING (nav)",
+    "href": "/tiles?group=flooring",
+    "final": "/tiles?group=flooring",
+    "h1": "Vinyl Flooring",
+    "expect_kw": "floor|tile",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "BATHROOM (nav)",
+    "href": "/shop/bathroom",
+    "final": "/shop/bathroom",
+    "h1": "Bath Station",
+    "expect_kw": "bathroom",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "UNDERFLOOR HEATING (nav)",
+    "href": "/tiles?group=underfloor-heating",
+    "final": "/tiles?group=underfloor-heating",
+    "h1": "Electric Heating Mats",
+    "expect_kw": "underfloor|tile",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "MATERIALS (nav)",
+    "href": "/tiles?group=materials",
+    "final": "/tiles?group=materials",
+    "h1": "Adhesives & Grout",
+    "expect_kw": "material|tile",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "TOOLS (nav)",
+    "href": "/tiles?group=tools",
+    "final": "/tiles?group=tools",
+    "h1": "Cutting Tools",
+    "expect_kw": "tool|tile",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "ACCESSORIES (nav)",
+    "href": "/tiles?group=accessories",
+    "final": "/tiles?group=accessories",
+    "h1": "Trims & Profiles",
+    "expect_kw": "accessor|tile",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Cat: Flooring",
+    "href": "/tiles?category=flooring",
+    "final": "/tiles?category=flooring",
+    "h1": "Bathroom Tiles",
+    "expect_kw": "floor",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Cat: Wall Tiles",
+    "href": "/tiles?category=wall-tiles",
+    "final": "/tiles?category=wall-tiles",
+    "h1": "Bathroom Tiles",
+    "expect_kw": "wall",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Cat: Floor Tiles",
+    "href": "/tiles?category=floor-tiles",
+    "final": "/tiles?category=floor-tiles",
+    "h1": "Bathroom Tiles",
+    "expect_kw": "floor",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Cat: Wall & Floor",
+    "href": "/tiles?category=wall-and-floor",
+    "final": "/tiles?category=wall-and-floor",
+    "h1": "Bathroom Tiles",
+    "expect_kw": "wall|floor",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Cat: Wall & Floor Tiles",
+    "href": "/tiles?category=wall-floor-tiles",
+    "final": "/tiles?category=wall-floor-tiles",
+    "h1": "Bathroom Tiles",
+    "expect_kw": "wall|floor",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Cat: Bathroom Tiles",
+    "href": "/tiles?category=bathroom-tiles",
+    "final": "/tiles?category=bathroom-tiles",
+    "h1": "Bathroom Tiles",
+    "expect_kw": "bathroom",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Cat: Kitchen Tiles",
+    "href": "/tiles?category=kitchen-tiles",
+    "final": "/tiles?category=kitchen-tiles",
+    "h1": "Bathroom Tiles",
+    "expect_kw": "kitchen",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Cat: Outdoor Tiles",
+    "href": "/tiles?category=outdoor-tiles",
+    "final": "/tiles?category=outdoor-tiles",
+    "h1": "Bathroom Tiles",
+    "expect_kw": "outdoor",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Style: Wood Effect",
+    "href": "/tiles?style=wood-effect",
+    "final": "/tiles?style=wood-effect",
+    "h1": "Bathroom Tiles",
+    "expect_kw": "wood",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Style: Marble Effect",
+    "href": "/tiles?style=marble-effect",
+    "final": "/tiles?style=marble-effect",
+    "h1": "Bathroom Tiles",
+    "expect_kw": "marble",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Style: Stone Effect",
+    "href": "/tiles?style=stone-effect",
+    "final": "/tiles?style=stone-effect",
+    "h1": "Bathroom Tiles",
+    "expect_kw": "stone",
+    "status": "CONTENT_MISMATCH",
+    "err": ""
+  },
+  {
+    "label": "Style: Patterned",
+    "href": "/tiles?style=patterned",
+    "final": "/tiles?style=patterned",
+    "h1": "Bathroom Tiles",
+    "expect_kw": "pattern",
+    "status": "CONTENT_MISMATCH",
+    "err": ""
+  },
+  {
+    "label": "Footer Wall Tiles",
+    "href": "/tiles?type=wall",
+    "final": "/tiles?type=wall",
+    "h1": "Bathroom Tiles",
+    "expect_kw": "wall",
+    "status": "OK",
+    "err": ""
+  },
+  {
+    "label": "Footer Floor Tiles",
+    "href": "/tiles?type=floor",
+    "final": "/tiles?type=floor",
+    "h1": "Bathroom Tiles",
+    "expect_kw": "floor",
+    "status": "OK",
+    "err": ""
+  }
+]

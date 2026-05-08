@@ -1,0 +1,50 @@
+{
+  "summary": "Marketing Studio (Phase A) — full backend + frontend testing. 12/12 pytest cases pass (1 real Nano Banana 512x512 generation + soft-delete + reuse of existing asset). Storefront PromoBanner renders when enabled, disappears when toggled off. Admin /admin/marketing-studio renders with generator, gallery, stats, all data-testids present. Existing asset 63e17e3a... intact. Banner toggled OFF at end of run so storefront is not in test state.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_marketing_studio.py",
+    "/app/test_reports/pytest/marketing_studio.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Minor: /api/admin/marketing-studio/generate uses req.dict() (deprecated in Pydantic v2). services/marketing_studio.py:126 and routes use .dict()/model_dump inconsistently — consider standardising on model_dump. Non-blocking.",
+    "Minor: serve_marketing_media accepts {path:path} which allows subpaths but then force-prefixes 'tile-station/marketing/' so only filename segment is effective — works but the route signature is misleading; could be tightened to {filename}.",
+    "Minor: publish endpoint does not validate link_url / cta_text format. Not a blocker for admin-only usage.",
+    "Positive: Pydantic Field constraints (ge=256, le=4096, regex patterns) are correctly enforced and yield 422 as expected. Admin guard via _require_admin works (403 on no token).",
+    "Positive: Soft-delete filter {deleted: {$ne: True}} is correct and tested. MongoDB _id excluded cleanly."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_marketing_studio.py (new)"
+  ],
+  "success_rate": {"backend": "100% (12/12)", "frontend": "100%"},
+  "test_credentials": "admin@test.com / admin123 (super_admin) from /app/memory/test_credentials.md",
+  "seed_data_creation": "Created 1 nano-banana 512x512 asset for testing, then soft-deleted it. Existing asset 63e17e3a615347f1b2d78ef0129ab278 preserved and currently set to promo_banner=OFF (image_url retained, enabled=false).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Marketing Studio is fully functional. Promo banner is currently disabled but image_url is still set to the bank-holiday asset — main agent can flip enabled=true via PUT /api/admin/marketing-studio/promo-banner if needed for demo. Nano Banana generation costs ~$0.04 per call; gpt-image-1 NOT tested (cost conservative).",
+  "tests_executed": [
+    "POST /api/admin/marketing-studio/generate (nano-banana 512x512) → 200 with asset dict",
+    "POST generate invalid model → 422",
+    "POST generate width<256 → 422",
+    "POST generate without auth → 403",
+    "GET /api/website/marketing-media/<id>.png → 200 image/png >1KB",
+    "GET /api/admin/marketing-studio/assets → list contains generated asset",
+    "GET /api/admin/marketing-studio/assets?kind=ribbon → filtered correctly",
+    "GET /api/admin/marketing-studio/stats → total_assets, total_spend_usd present",
+    "POST /api/admin/marketing-studio/assets/<id>/publish placement=promo_banner → public GET /api/website/promo-banner returns enabled:true with image_url",
+    "POST publish placement=homepage_hero → 200 ok",
+    "PUT /api/admin/marketing-studio/promo-banner enabled:false → public GET returns {enabled:false}",
+    "DELETE /api/admin/marketing-studio/assets/<id> → soft-delete, no longer in list",
+    "FRONTEND: /admin/marketing-studio renders marketing-studio-page, marketing-studio-generator, marketing-gallery, marketing-generate-btn, marketing-studio-refresh-btn, marketing-model-select, marketing-preset-select — all present",
+    "FRONTEND: Storefront / shows promo-banner + promo-banner-image when enabled (naturalWidth=1200, correct bank holiday image)",
+    "FRONTEND: Storefront promo-banner element removed from DOM after admin toggles enabled=false"
+  ]
+}

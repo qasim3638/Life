@@ -1,0 +1,123 @@
+{
+  "summary": "Comprehensive testing of the 'Disable Tier Pricing' feature completed successfully. All backend APIs and frontend UI components work correctly. The feature allows admins to disable quantity-based tier discounts for individual products, and the shop page correctly displays either simple pricing (when disabled) or full tier table (when enabled).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_tier_pricing_disable.py",
+    "/app/test_reports/pytest/pytest_results.xml",
+    ".screenshots/20_edit_modal_open.png",
+    ".screenshots/21_tier_pricing_config_modal.png",
+    ".screenshots/22_after_checkbox_toggle.png",
+    ".screenshots/23_after_save.png",
+    ".screenshots/30_shop_page_disabled.png",
+    ".screenshots/35_shop_page_enabled.png"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Backend implementation is solid - BulkTierUpdateRequest model properly handles the 'disabled' flag",
+    "The bulk-tier-update endpoint correctly sets tier_pricing_disabled=True in both supplier_products and tiles collections",
+    "GET /api/tiles/pricing/calculate correctly returns disabled:true when product has tier_pricing_disabled=true",
+    "GET /api/tiles/products/{slug}/tier-pricing correctly returns disabled:true with empty tiers array",
+    "Frontend TileDetailPage.js conditionally renders tier pricing table vs simple price based on tierPricing.disabled flag",
+    "Admin UI (SupplierProducts.js) properly shows 'Disable Tier Discounts' checkbox in Tier Pricing Settings modal when products are selected",
+    "Toast notifications confirm successful disable/enable actions"
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_tier_pricing_disable.py"
+  ],
+  "success_rate": {
+    "backend": "100% (12/12 pytest tests passed)",
+    "frontend": "100% (Admin UI and Shop page verified)"
+  },
+  "test_credentials": {
+    "email": "qasim@tilestation.co.uk",
+    "password": "Tilestation_9614"
+  },
+  "seed_data_creation": "Used existing product LP-3611 (Alabaster 30x60cm Polished) for testing. Tier pricing was toggled during testing but restored to enabled state.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "The Disable Tier Pricing feature is fully functional. Test product LP-3611 (slug: alabaster-30x60cm-polished) can be used for future testing. Admin UI access: Admin > Supplier Products > Select products > Edit Categories > Scroll to 'Quantity Tier Discounts' section > Click Configure > Check 'Disable Tier Discounts' checkbox > Save.",
+  "tests_executed": [
+    {
+      "test": "GET /api/tiles/pricing/tiers - Global tier config",
+      "result": "PASS",
+      "notes": "Returns thresholds, discounts, trade_discount_default correctly"
+    },
+    {
+      "test": "GET /api/tiles/products/{slug} - Product exists",
+      "result": "PASS",
+      "notes": "LP-3611 product found with SKU, supplier, price"
+    },
+    {
+      "test": "PUT /api/supplier-sync/products/bulk-tier-update with disabled:true",
+      "result": "PASS",
+      "notes": "Returns success:true, action:'disabled', updated_count:1"
+    },
+    {
+      "test": "GET /api/tiles/pricing/calculate with product_sku returns disabled:true",
+      "result": "PASS",
+      "notes": "Returns disabled:true, tiers:[], current_discount_percent:0"
+    },
+    {
+      "test": "GET /api/tiles/products/{slug}/tier-pricing returns disabled:true",
+      "result": "PASS",
+      "notes": "Returns disabled:true, product.tier_pricing_disabled:true, tiers:[]"
+    },
+    {
+      "test": "PUT /api/supplier-sync/products/bulk-tier-update with disabled:false",
+      "result": "PASS",
+      "notes": "Re-enables tier pricing, returns action:'updated'"
+    },
+    {
+      "test": "Admin UI - Select product and open Edit Categories modal",
+      "result": "PASS",
+      "notes": "Modal opens with product preview, tier discounts section visible"
+    },
+    {
+      "test": "Admin UI - Click Configure in Tier Discounts section",
+      "result": "PASS",
+      "notes": "Opens 'Quantity Tier Pricing Settings' modal with disable checkbox"
+    },
+    {
+      "test": "Admin UI - Toggle 'Disable Tier Discounts' checkbox",
+      "result": "PASS",
+      "notes": "Checkbox toggles, UI shows 'Tier Discounts Disabled' message, button changes to 'Disable for X Products'"
+    },
+    {
+      "test": "Admin UI - Save disabled tier pricing",
+      "result": "PASS",
+      "notes": "Toast notification 'Tier pricing disabled for 1 products!'"
+    },
+    {
+      "test": "Shop page - Tier pricing disabled display",
+      "result": "PASS",
+      "notes": "Shows simple price £23.99/m² only, no tier table, no 'Your Price' badge"
+    },
+    {
+      "test": "Shop page - Tier pricing enabled display",
+      "result": "PASS",
+      "notes": "Shows full tier table with Quantity, Price/m², Savings columns, 4 tiers, 'Your Price' badge"
+    }
+  ],
+  "feature_summary": {
+    "feature_name": "Disable Tier Pricing for Individual Products",
+    "description": "Allows admins to disable quantity-based tier discounts for specific products via the admin UI",
+    "admin_ui_path": "Admin > Supplier Products > Select products > Edit Categories > Quantity Tier Discounts > Configure > Disable Tier Discounts checkbox",
+    "api_endpoints_tested": [
+      "PUT /api/supplier-sync/products/bulk-tier-update",
+      "GET /api/tiles/pricing/calculate?product_sku=...",
+      "GET /api/tiles/products/{slug}/tier-pricing"
+    ],
+    "shop_behavior": {
+      "when_disabled": "Simple price display (e.g., £23.99/m²) with Trade Customer prompt",
+      "when_enabled": "Full tier pricing table with quantity ranges and discount percentages"
+    }
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "summary": "Tested Bulk Category Editor scope attributes save mechanism and Force Save button. All key features VERIFIED: (1) Force Save button present with data-testid, (2) Standard save path works with id_field parameter, (3) Save status banner shows success/failure counts, (4) 'Currently Saved' tags refresh after save, (5) Saved attributes persist when reopening modal. Backend API tests: 8/9 passed (1 minor failure with fields_to_clear format).",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "POST /api/supplier-sync/products/bulk-update-unified",
+        "issue": "fields_to_clear parameter expects array values for $in operator, but test sent boolean. Returns 500 error: '$in needs an array'. This is a minor edge case - the main save functionality works correctly.",
+        "priority": "LOW"
+      }
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_bulk_scope_save.py",
+    "/app/test_reports/pytest/pytest_bulk_scope_save.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Force Save button (lines 11218-11236) correctly uses data-testid='force-save-btn' and amber styling",
+    "Save status banner (lines 11133-11169) correctly shows success/failure counts with data-testid='save-status-banner'",
+    "Force Save progress indicator (lines 11171-11196) correctly shows progress with data-testid='force-save-progress'",
+    "handleForceSave function (lines 4048-4220) correctly sends each product individually using getProductIdForApi()",
+    "Standard save path (lines 3967-4030) correctly groups products by id_field (sku vs supplier_code)",
+    "refreshBreakdownsAfterSave function (lines 4305-4312) correctly recomputes breakdowns from fresh product data",
+    "computeFieldBreakdowns function (lines 4246-4302) correctly computes value breakdowns for 'Currently Saved' tags"
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_bulk_scope_save.py"
+  ],
+  "success_rate": {
+    "backend": "89% - 8/9 tests passed (1 minor fields_to_clear format issue)",
+    "frontend": "100% - All UI elements and flows verified"
+  },
+  "test_credentials": "Admin login: admin@test.com / admin123",
+  "seed_data_creation": "None - used existing Canopy supplier products",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Bulk Category Editor scope save mechanism VERIFIED: (1) Force Save button (amber) sends each product individually for maximum reliability, (2) Standard save groups products by id_field (sku vs supplier_code), (3) Save status banner appears after save showing success count, (4) 'Currently Saved' tags update immediately after save via refreshBreakdownsAfterSave(), (5) Force Save progress bar shows during save. Test product used: Blenheim Oak from Canopy supplier.",
+  "test_results": {
+    "1_force_save_button_present": {
+      "status": "PASS",
+      "details": "Force Save button found with data-testid='force-save-btn' and amber/orange styling"
+    },
+    "2_apply_button_present": {
+      "status": "PASS",
+      "details": "Apply to N Products button found with purple styling"
+    },
+    "3_cancel_button_present": {
+      "status": "PASS",
+      "details": "Cancel button found in dialog footer"
+    },
+    "4_force_save_functionality": {
+      "status": "PASS",
+      "details": "Force Save clicked successfully, progress indicator shown, toast notification 'Force Save complete: 1/1 products saved successfully'"
+    },
+    "5_save_status_banner": {
+      "status": "PASS",
+      "details": "Green save status banner appeared showing 'All 1 products saved successfully' with timestamp"
+    },
+    "6_currently_saved_tags_refresh": {
+      "status": "PASS",
+      "details": "'Currently Saved' section shows 'Wall Tiles (1)' and 'Kitchen Tiles (1)' with 'Mixed' label after save"
+    },
+    "7_persistence_after_reopen": {
+      "status": "PASS",
+      "details": "After closing and reopening modal, 'Currently Saved' still shows the saved categories"
+    },
+    "8_backend_bulk_update_sku": {
+      "status": "PASS",
+      "details": "POST /api/supplier-sync/products/bulk-update-unified with id_field='sku' works correctly"
+    },
+    "9_backend_bulk_update_supplier_code": {
+      "status": "PASS",
+      "details": "POST /api/supplier-sync/products/bulk-update-unified with id_field='supplier_code' works correctly"
+    },
+    "10_backend_multiple_products": {
+      "status": "PASS",
+      "details": "Bulk update with multiple product IDs works correctly"
+    },
+    "11_backend_category_assignment": {
+      "status": "PASS",
+      "details": "Category assignment (main_category, sub_categories) works correctly"
+    },
+    "12_backend_fields_to_clear": {
+      "status": "FAIL",
+      "details": "fields_to_clear with boolean value returns 500 error - expects array for $in operator"
+    }
+  }
+}

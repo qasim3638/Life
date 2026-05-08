@@ -1,0 +1,452 @@
+{
+  "timestamp": "2026-02-09T13:16:39.636596",
+  "showroom": "Gravesend",
+  "showroom_id": "7411e9cf-2250-4bdc-a6ce-2dc844e32646",
+  "total_stocktake_items": 154,
+  "matched": 110,
+  "updated": 98,
+  "failed": 12,
+  "not_found": 44,
+  "not_found_items": [
+    {
+      "supplier": "Trimline",
+      "product": "Straight Edge Chrome Aluminium Trim",
+      "size": "22mm",
+      "stock": 8,
+      "price": 39.99,
+      "length": "2.5m",
+      "code": "4507",
+      "cost": 9.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "Ultra Clear Silicone",
+      "size": "310ml",
+      "stock": 17,
+      "price": 17.99,
+      "length": null,
+      "code": null,
+      "cost": 6.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "Ultra White Silicone",
+      "size": "310 ml",
+      "stock": 8,
+      "price": 17.99,
+      "length": null,
+      "code": null,
+      "cost": 6.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "Ultra Jasmine Silicone",
+      "size": "310ml",
+      "stock": 23,
+      "price": 17.99,
+      "length": null,
+      "code": null,
+      "cost": 6.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "Ultra Limestone Silicone",
+      "size": "310ml",
+      "stock": 23,
+      "price": 17.99,
+      "length": null,
+      "code": null,
+      "cost": 6.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "Ultra Cream Silicone",
+      "size": "310ml",
+      "stock": 0,
+      "price": 17.99,
+      "length": null,
+      "code": null,
+      "cost": 6.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "Ultra Taupe Silicone",
+      "size": "310ml",
+      "stock": 6,
+      "price": 17.99,
+      "length": null,
+      "code": null,
+      "cost": 6.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "Ultra Silver Grey Silicone",
+      "size": "310ml",
+      "stock": 17,
+      "price": 17.99,
+      "length": null,
+      "code": null,
+      "cost": 6.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "Ultra Mid Grey Sillicone",
+      "size": "310ml",
+      "stock": 12,
+      "price": 17.99,
+      "length": null,
+      "code": null,
+      "cost": 6.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "Ultra Grey Silicone",
+      "size": "310ml",
+      "stock": 18,
+      "price": 17.99,
+      "length": null,
+      "code": null,
+      "cost": 6.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "Ultra Charcoal Silicone",
+      "size": "310ml",
+      "stock": 11,
+      "price": 17.99,
+      "length": null,
+      "code": null,
+      "cost": 6.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "Ultra Black Silicone",
+      "size": "310ml",
+      "stock": 9,
+      "price": 17.99,
+      "length": null,
+      "code": null,
+      "cost": 6.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "Ultra Ivory Silicone",
+      "size": "310ml",
+      "stock": 7,
+      "price": 17.99,
+      "length": null,
+      "code": null,
+      "cost": 6.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "Ultra Dark Grey Silicone",
+      "size": "310ml",
+      "stock": 10,
+      "price": 17.99,
+      "length": null,
+      "code": null,
+      "cost": 6.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProGrout Flexible Vintage White",
+      "size": "3Kg",
+      "stock": 3,
+      "price": 17.99,
+      "length": null,
+      "code": null,
+      "cost": 4.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProGrout Flexible Brilliant White",
+      "size": "3Kg",
+      "stock": 9,
+      "price": 17.99,
+      "length": null,
+      "code": null,
+      "cost": 4.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProGrout Epoxy White",
+      "size": "3Kg",
+      "stock": 4,
+      "price": 59.99,
+      "length": null,
+      "code": null,
+      "cost": 24.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProPave Primer External Tiling Slurry",
+      "size": "17kg",
+      "stock": 3,
+      "price": 34.99,
+      "length": null,
+      "code": null,
+      "cost": 15.5
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProPave Grout Natural Cashmere",
+      "size": "15Kg",
+      "stock": 4,
+      "price": 59.99,
+      "length": null,
+      "code": null,
+      "cost": 28.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProPave Grout Cosmic Black",
+      "size": "15Kg",
+      "stock": 3,
+      "price": 59.99,
+      "length": null,
+      "code": null,
+      "cost": 28.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProPave Grout Storm Grey",
+      "size": "15Kg",
+      "stock": 4,
+      "price": 59.99,
+      "length": null,
+      "code": null,
+      "cost": 28.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProPave Grout Pebble Grey",
+      "size": "15Kg",
+      "stock": 6,
+      "price": 59.99,
+      "length": null,
+      "code": null,
+      "cost": 28.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProSuper Grip Acrylic Wall Tile Adhesive",
+      "size": "15Kg",
+      "stock": 0,
+      "price": 24.99,
+      "length": null,
+      "code": null,
+      "cost": 9.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProAqua Shield Tanking Kit",
+      "size": "9Kg",
+      "stock": 2,
+      "price": 69.99,
+      "length": null,
+      "code": null,
+      "cost": 32.5
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProClean Porcelain Tile & Stone Cleaner",
+      "size": "1L",
+      "stock": 4,
+      "price": 24.99,
+      "length": null,
+      "code": null,
+      "cost": 6.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProClean Grout Aid",
+      "size": "1L",
+      "stock": 5,
+      "price": 24.99,
+      "length": null,
+      "code": null,
+      "cost": 7.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProClean Tile & Grout Sealer",
+      "size": "1L",
+      "stock": 14,
+      "price": 24.99,
+      "length": null,
+      "code": null,
+      "cost": 6.5
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProClean Easy Clean Tile Protector",
+      "size": "1L",
+      "stock": 4,
+      "price": 24.99,
+      "length": null,
+      "code": null,
+      "cost": 7.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProClean Resin Off",
+      "size": "1L",
+      "stock": 5,
+      "price": 24.99,
+      "length": null,
+      "code": null,
+      "cost": 7.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProClean Grout Haze Remover",
+      "size": "1L",
+      "stock": 4,
+      "price": 24.99,
+      "length": null,
+      "code": null,
+      "cost": 7.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProLevel Fibre Reinforced Flexible Leveller",
+      "size": "20Kg",
+      "stock": 51,
+      "price": 19.99,
+      "length": null,
+      "code": null,
+      "cost": 9.5
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProFlex SP Rapid/Flexible Adhesive S1 Grey (Blue Bag)",
+      "size": "20Kg",
+      "stock": 19,
+      "price": 22.99,
+      "length": null,
+      "code": null,
+      "cost": 9.5
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProFlex SP Rapid/Flexible Adhesive S1 White (Blue Bag)",
+      "size": "20Kg",
+      "stock": 0,
+      "price": 24.99,
+      "length": null,
+      "code": null,
+      "cost": 10.5
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProEco Gel Thixotropic Flexible S1White",
+      "size": "20Kg",
+      "stock": 0,
+      "price": 27.99,
+      "length": null,
+      "code": null,
+      "cost": 12.99
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProGrip FX Fibre Reinforced semi/Rapid S1 White (Light Blue Bag)",
+      "size": "20Kg",
+      "stock": 0,
+      "price": 24.99,
+      "length": null,
+      "code": null,
+      "cost": 10.7
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProGrip FX Fibre Reinforced semi/Rapid S1 Grey (Light Blue Bag)",
+      "size": "20Kg",
+      "stock": 0,
+      "price": 22.99,
+      "length": null,
+      "code": null,
+      "cost": 9.5
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProSS Flexible Standard Set C2 Grey (Red Bag)",
+      "size": "20Kg",
+      "stock": 30,
+      "price": 13.99,
+      "length": null,
+      "code": null,
+      "cost": 6.95
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProSS Flexible Standard Set C2 White (Red Bag)",
+      "size": "20Kg",
+      "stock": 55,
+      "price": 14.99,
+      "length": null,
+      "code": null,
+      "cost": 8.01
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProRapid RS Flexible Rapid Set C2 Grey (Yellow Bag)",
+      "size": "20Kg",
+      "stock": 40,
+      "price": 17.99,
+      "length": null,
+      "code": null,
+      "cost": 7.5
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProRapid RS Flexible Rapid Set C2 White (Yellow Bag)",
+      "size": "20Kg",
+      "stock": 43,
+      "price": 19.99,
+      "length": null,
+      "code": null,
+      "cost": 9.25
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProFlex Spes Standard Set Flexible S1 Grey (Pink Bag)",
+      "size": "20Kg",
+      "stock": 37,
+      "price": 17.99,
+      "length": null,
+      "code": null,
+      "cost": 8.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProFlex Spes Standard Set Flexible S1 White (Pink Bag)",
+      "size": "20Kg",
+      "stock": 58,
+      "price": 19.99,
+      "length": null,
+      "code": null,
+      "cost": 9.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProFlex S2 Fibre Reinforced Adhesiv Grey (Green Bag)",
+      "size": "20Kg",
+      "stock": 28,
+      "price": 28.99,
+      "length": null,
+      "code": null,
+      "cost": 16.0
+    },
+    {
+      "supplier": "Ultra Tile",
+      "product": "ProFlex S2 Fibre Reinforced Adhesiv White (Green Bag)",
+      "size": "20Kg",
+      "stock": 11,
+      "price": 32.99,
+      "length": null,
+      "code": null,
+      "cost": 18.5
+    }
+  ]
+}

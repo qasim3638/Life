@@ -1,0 +1,30 @@
+{
+  "summary": "Frontend testing of trader-facing 'Credit history' card on /shop/trade/account → Discount tab. Seeded a trade customer with 3 credit events (online earn, EPOS earn with 2-product breakdown, EPOS redeem) and a separate trader with 0 events. All UX paths PASSED — login via /api/shop/auth/login, token stored in localStorage as tile_shop_token, Discount tab renders the new card, event pills/channel/source/date/amounts correct, only events with non-empty breakdown show toggle, expand reveals 2 product rows + Total = £5.00, single-event-open invariant honoured (collapse on 2nd click), Copy button writes formatted plain-text breakdown to clipboard (276 chars), label flips Copy → Copied → Copy after 1.8s, online earn (breakdown=null) correctly has NO toggle, EPOS redeem also has no toggle, empty trader sees 'No credit-back events yet…' empty-state copy. Regression: Available Discount Balance card and 'Spend my credit at checkout' CTA still render, How Discount Tiers Work appears above Credit history as required. Backend pytest 7/7 already passing per E1; spot-checked GET /api/shop/trade/credit-history-detailed → 200 with expected merged payload.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_trade_credit_history.py",
+    "/app/backend/tests/seed_trade_credit_history.py"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "TradeAccountPage.jsx is now ~1300+ lines — consider splitting Discount tab into a dedicated <DiscountTab/> sub-component (and maybe pulling CreditHistoryCard into its own file). Will help future maintainability and avoid re-render churn on tab switches.",
+    "fetchCreditHistory uses fetch() directly — codebase elsewhere uses an axios/api wrapper; minor inconsistency. Not blocking.",
+    "Single-open invariant is implemented via expandedEventId state but couldn't be exercised in this test because only one event in the dataset has a breakdown (EPOS earn). Recommend a future test fixture that seeds two EPOS earn invoices to cover the cross-event collapse path.",
+    "Clipboard copy handler should defensively fall back to document.execCommand('copy') for older browsers / restricted contexts where navigator.clipboard is undefined; sonner toast currently shows 'Copied' even if clipboard write throws silently — wrap in try/catch and surface error toast on failure."
+  ],
+  "updated_files": [
+    "/app/backend/tests/seed_trade_credit_history.py (new — seed helper, no production code touched)"
+  ],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "Seeded then cleaned up. Pattern: POST /api/shop/auth/login with seeded fe-hist-* email; token stored in localStorage as tile_shop_token. See /app/backend/tests/seed_trade_credit_history.py for re-seeding.",
+  "seed_data_creation": "Seeded 1 trade customer with 3 credit events (online earn, EPOS earn w/ 2-product breakdown, EPOS redeem) + 1 empty trade customer. Both deleted at test end (shop_customers/trade_credits/credit_transactions/invoices cleaned).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Use /app/backend/tests/seed_trade_credit_history.py to seed a fresh trade customer + events. Login via /api/shop/auth/login (NOT /api/shop/trade/login form action — this endpoint is the actual POST handler). Token goes in localStorage as 'tile_shop_token'. Selectors: credit-history-card, credit-history-empty, credit-history-event-{id}, credit-history-toggle-{id}, credit-history-breakdown-{id}, credit-history-breakdown-row-{id}-{idx}, credit-history-copy-{id}. Use page.goto with wait_until='domcontentloaded' (NOT networkidle — the trade account page has long-lived background polling that prevents networkidle from firing).",
+  "rca of the issue": "N/A — feature works as designed."
+}

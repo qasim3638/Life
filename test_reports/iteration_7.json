@@ -1,0 +1,78 @@
+{
+  "summary": "Tested pricing unit feature (per-unit vs per-m² pricing). Backend API working correctly. Admin UI pricing unit modal working correctly. Shop frontend displays correct pricing labels.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_pricing_unit.py",
+    "/app/test_reports/pytest/pytest_pricing_unit.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Dialog accessibility warnings: 'Missing Description or aria-describedby={undefined} for {DialogContent}' - Should add aria-describedby to modals for accessibility compliance"
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_pricing_unit.py"
+  ],
+  "success_rate": {
+    "backend": "100%",
+    "frontend": "100%"
+  },
+  "seed_data_creation": "Updated TestSupplier TEST-UNIFIED-002 product to use unit pricing for testing",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Pricing unit feature fully tested. Backend endpoint PUT /api/supplier-sync/products/bulk-pricing-unit works correctly with validation. Admin UI shows Pricing Unit section in Bulk Category Editor modal with Configure button. Per Unit option shows optional Unit Price input. Shop frontend TileDetailPage correctly displays /m² or /unit labels based on pricing_unit field.",
+  "test_results": {
+    "backend_tests": {
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "tests": [
+        "test_endpoint_exists - PASSED",
+        "test_valid_pricing_unit_m2 - PASSED",
+        "test_valid_pricing_unit_unit - PASSED",
+        "test_invalid_pricing_unit_returns_400 - PASSED",
+        "test_invalid_pricing_unit_box - PASSED",
+        "test_missing_pricing_unit_field - PASSED",
+        "test_unit_price_with_unit_type - PASSED",
+        "test_update_product_to_unit_pricing - PASSED",
+        "test_update_product_to_m2_pricing - PASSED",
+        "test_calculate_unit_tier_price_endpoint_exists - PASSED",
+        "test_calculate_unit_tier_price - PASSED",
+        "test_calculate_m2_tier_price - PASSED",
+        "test_get_tile_products_includes_pricing_unit - PASSED",
+        "test_get_tile_by_slug_includes_pricing_unit - PASSED"
+      ]
+    },
+    "frontend_tests": {
+      "admin_ui": {
+        "supplier_products_page": "PASSED - Page loads with Edit Categories button",
+        "pricing_unit_section": "PASSED - Section visible in Bulk Category Editor modal",
+        "pricing_unit_modal": "PASSED - Shows Per m² and Per Unit options",
+        "unit_price_input": "PASSED - Optional Unit Price input appears when Per Unit selected",
+        "save_button": "PASSED - 'Save for X Products' button functional"
+      },
+      "shop_ui": {
+        "tile_listing_page": "PASSED - Shows /m² pricing labels correctly",
+        "tile_detail_page": "PASSED - Shows correct pricing unit labels and Quantity (m²) label"
+      }
+    }
+  },
+  "features_verified": [
+    "Backend: PUT /api/supplier-sync/products/bulk-pricing-unit endpoint accepts products array, pricing_unit (m2 or unit), and optional unit_price",
+    "Backend: Endpoint validates pricing_unit is 'm2' or 'unit' (returns 400 for invalid values)",
+    "Backend: Endpoint updates supplier_products and tiles collections with pricing_unit field",
+    "Frontend (Admin): Pricing Unit section visible in Edit Categories modal with Configure button",
+    "Frontend (Admin): Pricing Unit Settings modal shows Per m² (tiles) and Per Unit (adhesive, grout, tools) options",
+    "Frontend (Admin): Per Unit selection shows optional Unit Price input field",
+    "Frontend (Admin): Save button correctly calls backend API",
+    "Frontend (Shop): TileDetailPage displays /m² label for m²-based products",
+    "Frontend (Shop): Quantity label shows 'Quantity (m²):' for m²-based products"
+  ]
+}

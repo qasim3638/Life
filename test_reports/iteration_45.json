@@ -1,0 +1,75 @@
+{
+  "summary": "Tested Collections Hub with 4 tabs (Collection Manager, Collection Mapping, Page Settings, Detail Page). All features working correctly: 4 tabs with proper content, tab switching works, Detail Page shows trust badges/delivery settings with Reset/Save toolbar, WebsiteHub has exactly ONE Collections card in Navigation & Structure section, no duplicate collection cards in Content section, all standalone routes work, sidebar Website section links to WebsiteHub where Collections card is accessible.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "features_tested": {
+    "/admin/collections shows 4 tabs": {
+      "status": "PASS",
+      "details": "CollectionsHub loads with data-testid='collections-hub', shows 4 tabs: Collection Manager, Collection Mapping, Page Settings, Detail Page"
+    },
+    "Tab switching between all 4 tabs": {
+      "status": "PASS",
+      "details": "All tabs switch correctly and render appropriate content"
+    },
+    "Detail Page tab content": {
+      "status": "PASS",
+      "details": "Shows Trust Badges Strip, Delivery Estimate & Countdown sections, Reset to Defaults button, Save Changes button"
+    },
+    "WebsiteHub Navigation & Structure section": {
+      "status": "PASS",
+      "details": "Has exactly ONE 'Collections' card with description 'Manage images, mappings, page content & detail settings', links to /admin/collections"
+    },
+    "WebsiteHub Content section": {
+      "status": "PASS",
+      "details": "No collection-related cards in Content section (Homepage Manager, Trade Account, Customer Account, Checkout Settings, etc.)"
+    },
+    "Standalone /admin/collection-manager": {
+      "status": "PASS",
+      "details": "Route works independently, shows Collection Manager header"
+    },
+    "Standalone /admin/collection-mapping": {
+      "status": "PASS",
+      "details": "Route works independently, shows Collection Mapping header"
+    },
+    "Standalone /admin/collections-page-settings": {
+      "status": "PASS",
+      "details": "Route works independently, shows Collections Page Settings content"
+    },
+    "Standalone /admin/collection-detail-settings": {
+      "status": "PASS",
+      "details": "Route works independently, shows 'Collection Detail Page Settings' header with Reset to Defaults and Save Changes buttons"
+    },
+    "Sidebar Website section": {
+      "status": "PASS",
+      "details": "Sidebar shows 'Website' as hub link pointing to /admin/website-hub. Collections is accessible via WebsiteHub page (not directly in sidebar due to hubLink design)"
+    }
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (frontend only test)",
+    "frontend": "100% (all 10 features working)"
+  },
+  "test_credentials": {
+    "admin_email": "admin@test.com",
+    "admin_password": "admin123",
+    "preview_url": "https://feature-verification-7.preview.emergentagent.com"
+  },
+  "seed_data_creation": "No seed data needed - existing collections data used",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "CollectionsHub at /admin/collections now has 4 tabs (added Detail Page tab). The embedded prop controls whether child components show their own headers. Standalone routes (/admin/collection-manager, /admin/collection-mapping, /admin/collections-page-settings, /admin/collection-detail-settings) still work independently. WebsiteHub has ONE consolidated Collections card in Navigation & Structure section. Sidebar Website section uses hubLink design so Collections is accessed via WebsiteHub page.",
+  "mocked_apis": {
+    "has_mocked_apis": false,
+    "mocked_apis_list": []
+  }
+}

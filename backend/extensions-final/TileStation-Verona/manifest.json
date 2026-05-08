@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "Tile Station - Verona Sync",
+  "version": "4.5.0",
+  "description": "Sync product data from Verona Group - Quick sync for names, Full sync for stock & prices",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://*.railway.app/*",
+    "https://*.emergentagent.com/*",
+    "https://feature-verification-7.preview.emergentagent.com/*",
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
