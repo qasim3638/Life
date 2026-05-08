@@ -3,7 +3,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import {
   Home, Dumbbell, UtensilsCrossed, Sparkles, Brain,
   Heart, CalendarDays, Compass, MessageCircle, Sunrise, Users, User as UserIcon,
-  Timer, Shield as ShieldIcon, BookOpen, TreePine, Bell, Volume2,
+  Timer, Shield as ShieldIcon, BookOpen, TreePine, Bell, Volume2, Settings as SettingsIcon,
 } from "lucide-react";
 
 const items = [
@@ -23,6 +23,7 @@ const items = [
   { to: "/events", label: "Events", icon: CalendarDays, testid: "nav-events" },
   { to: "/reminders", label: "Reminders", icon: Bell, testid: "nav-reminders" },
   { to: "/voice", label: "Voice", icon: Volume2, testid: "nav-voice" },
+  { to: "/settings", label: "Settings", icon: SettingsIcon, testid: "nav-settings" },
   { to: "/review", label: "Sunday Review", icon: BookOpen, testid: "nav-review" },
   { to: "/sanctuary", label: "Sanctuary", icon: TreePine, testid: "nav-sanctuary" },
 ];

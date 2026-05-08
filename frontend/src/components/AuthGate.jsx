@@ -3,13 +3,13 @@ import { api, API, authStore } from "../lib/api";
 import axios from "axios";
 
 /**
- * AuthGate — wraps the whole app. Shows a full-screen lock with a password
- * prompt until a valid JWT is in localStorage. Transparent in dev/preview
- * environments where the backend has no AUTH_EMAIL set (backend returns 200
- * on /auth/me without a token in that case? No — our middleware only enforces
- * if env vars are set. So on dev we just treat any 200 as "authed").
+ * AuthGate — wraps the whole app.
  *
- * Single-user app — email is just a second factor, owner sets it on Railway.
+ * Flow:
+ *   1. GET /api/auth/status to see if a password is set
+ *   2. If not configured → app is open, render children directly
+ *   3. If configured + valid token in localStorage → render children
+ *   4. Else → show lock screen
  */
 export default function AuthGate({ children }) {
   const [state, setState] = useState("checking"); // checking | authed | locked
@@ -18,35 +18,34 @@ export default function AuthGate({ children }) {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
 
-  // Initial probe
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const token = authStore.getToken();
-      if (!token) {
-        // No token — but backend might be open (no env vars set). Try anon probe.
-        try {
-          const res = await axios.get(`${API}/`);
-          if (!cancelled && res.status === 200) {
-            // If /api/ health says ok AND we can hit an authed endpoint without token,
-            // auth is effectively disabled backend-side. But we can't be sure — only
-            // /auth/me is the truth. Call it.
-            await axios.get(`${API}/auth/me`);
-            if (!cancelled) setState("authed");
-          }
-        } catch {
-          if (!cancelled) setState("locked");
-        }
-        return;
-      }
       try {
-        await api.get("/auth/me");
-        if (!cancelled) setState("authed");
-      } catch {
-        if (!cancelled) {
+        const { data } = await axios.get(`${API}/auth/status`);
+        if (cancelled) return;
+        if (!data?.configured) {
+          setState("authed");
+          return;
+        }
+        // configured — validate token if any
+        const token = authStore.getToken();
+        if (!token) {
+          setState("locked");
+          if (data.email) setEmail(data.email);
+          return;
+        }
+        try {
+          await api.get("/auth/me");
+          setState("authed");
+        } catch {
           authStore.clear();
           setState("locked");
+          if (data.email) setEmail(data.email);
         }
+      } catch {
+        // Backend unreachable — let the app render so user sees something
+        if (!cancelled) setState("authed");
       }
     })();
     return () => { cancelled = true; };
@@ -89,7 +88,6 @@ export default function AuthGate({ children }) {
 
   if (state === "authed") return children;
 
-  // locked — lock screen
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#FDFBF7] px-6" data-testid="auth-gate">
       <div className="w-full max-w-sm">

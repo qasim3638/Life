@@ -24,7 +24,7 @@ from routes import (  # noqa: E402
     focus, sobriety, echo, sunday_review, uploads, sanctuary, companion_alerts,
     voice, auth, speaker, reminders,
 )
-from auth_utils import decode_token, seed_auth_user  # noqa: E402
+from auth_utils import decode_token, seed_auth_user, is_auth_configured  # noqa: E402
 from audio_seed import (  # noqa: E402
     WISDOM_STORIES_SEED, SLEEP_STORIES_SEED, MEDITATION_MUSIC_SEED,
 )
@@ -106,13 +106,12 @@ app.include_router(api_router)
 
 # ---- Auth middleware ----
 # Require Bearer token on every /api/* route except auth endpoints and static
-# uploads. Kicks in only if AUTH_EMAIL + AUTH_PASSWORD env vars are set
-# (so the dev/preview environment without those vars stays wide-open).
+# uploads. Active iff db.auth_users has any user (set up via Settings or
+# seeded from AUTH_EMAIL/AUTH_PASSWORD env vars).
 @app.middleware("http")
 async def auth_middleware(request, call_next):
-    if not (os.environ.get("AUTH_EMAIL") and os.environ.get("AUTH_PASSWORD")):
-        return await call_next(request)
     path = request.url.path
+    # Always allow these — auth endpoints, health check, static uploads, OPTIONS
     if (
         not path.startswith("/api/")
         or path == "/api/"
@@ -121,9 +120,16 @@ async def auth_middleware(request, call_next):
         or request.method == "OPTIONS"
     ):
         return await call_next(request)
+    # If no user is registered, auth is off → let everything through
+    try:
+        configured = await is_auth_configured()
+    except Exception:
+        configured = False
+    if not configured:
+        return await call_next(request)
     auth_h = request.headers.get("Authorization", "")
     token = auth_h[7:] if auth_h.startswith("Bearer ") else None
-    if not token or not decode_token(token):
+    if not token or not await decode_token(token):
         from fastapi.responses import JSONResponse
         return JSONResponse(status_code=401, content={"detail": "Not authenticated"})
     return await call_next(request)
