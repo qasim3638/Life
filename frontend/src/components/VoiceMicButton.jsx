@@ -124,7 +124,7 @@ export default function VoiceMicButton() {
           "Content-Type": "application/json",
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
-        body: JSON.stringify({ text: t.slice(0, 800), voice: "coral" }),
+        body: JSON.stringify({ text: t.slice(0, 800), voice: "coral", provider: "openai" }),
       });
       if (!res.ok) {
         // Surface what's wrong instead of silent fail

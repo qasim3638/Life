@@ -80,7 +80,7 @@ export default function BriefSettingsDialog({ open, onOpenChange }) {
           "Content-Type": "application/json",
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
-        body: JSON.stringify({ text: text.slice(0, 4000), voice: "coral" }),
+        body: JSON.stringify({ text: text.slice(0, 4000), voice: "coral", provider: "openai" }),
       });
       if (!res.ok) { toast.error("Couldn't generate audio"); return; }
       const blob = await res.blob();

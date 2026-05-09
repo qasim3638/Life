@@ -102,7 +102,7 @@ export default function BriefScheduler() {
           "Content-Type": "application/json",
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
-        body: JSON.stringify({ text: text.slice(0, 4000), voice: "coral" }),
+        body: JSON.stringify({ text: text.slice(0, 4000), voice: "coral", provider: "openai" }),
       });
       if (!res.ok) return;
       const blob = await res.blob();

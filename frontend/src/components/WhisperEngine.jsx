@@ -107,7 +107,7 @@ export default function WhisperEngine() {
             "Content-Type": "application/json",
             ...(token ? { Authorization: `Bearer ${token}` } : {}),
           },
-          body: JSON.stringify({ text: `${name}?`, voice: "coral" }),
+          body: JSON.stringify({ text: `${name}?`, voice: "coral", provider: "openai" }),
         });
         if (res.ok) {
           const blob = await res.blob();
@@ -131,7 +131,7 @@ export default function WhisperEngine() {
           "Content-Type": "application/json",
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
-        body: JSON.stringify({ text, voice: "coral" }),
+        body: JSON.stringify({ text, voice: "coral", provider: "openai" }),
       });
       if (res.ok) {
         const blob = await res.blob();
