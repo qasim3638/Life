@@ -5,6 +5,7 @@ import { Button } from "../components/ui/button";
 import { Textarea } from "../components/ui/textarea";
 import { Sparkles, Heart, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import VoiceNoteToText from "../components/VoiceNoteToText";
 
 const MOODS = [
   { v: 1, label: "heavy" },
@@ -117,7 +118,18 @@ export default function SelfCare() {
           </div>
 
           <div className="mb-5">
-            <p className="text-xs uppercase tracking-wider text-[#9A9F9D] mb-2">Reflection</p>
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs uppercase tracking-wider text-[#9A9F9D]">Reflection</p>
+              <VoiceNoteToText
+                label="Speak it"
+                onTranscribed={(text) => {
+                  setReflection(prev => {
+                    const t = (prev || "").trim();
+                    return t ? `${t} ${text}` : text;
+                  });
+                }}
+              />
+            </div>
             <Textarea
               placeholder="What's alive in you today?"
               value={reflection}
