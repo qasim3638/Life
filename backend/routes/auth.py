@@ -132,3 +132,38 @@ async def disable(body: DisableRequest) -> dict:
     await db.login_attempts.delete_many({})
     invalidate_auth_cache()
     return {"ok": True, "disabled": True}
+
+
+@router.get("/_diag")
+async def diag() -> dict:
+    """Quick diagnostic: which critical env vars are set on this deployment.
+    Returns booleans only (never values). No auth required so we can curl it."""
+    import os as _os
+    keys = [
+        "MONGO_URL",
+        "DB_NAME",
+        "EMERGENT_LLM_KEY",
+        "ELEVENLABS_API_KEY",
+        "JWT_SECRET",
+        "AUTH_EMAIL",
+        "AUTH_PASSWORD",
+        "CORS_ORIGINS",
+    ]
+    env_set = {k: bool(_os.environ.get(k)) for k in keys}
+    # MongoDB ping
+    try:
+        await db.command("ping")
+        mongo_ok = True
+    except Exception:
+        mongo_ok = False
+    # auth users count (doesn't expose any data)
+    try:
+        users = await db.auth_users.count_documents({})
+    except Exception:
+        users = -1
+    return {
+        "env_set": env_set,
+        "mongo_ok": mongo_ok,
+        "auth_users_count": users,
+    }
+
