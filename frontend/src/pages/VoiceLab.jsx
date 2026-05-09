@@ -6,7 +6,7 @@
  * endpoint reads it via provider="auto" mode.
  */
 import React, { useEffect, useState } from "react";
-import { api, API } from "../lib/api";
+import { api, API, authStore } from "../lib/api";
 import { Play, Square, Check, Loader2, Volume2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -97,9 +97,13 @@ export default function VoiceLab() {
         ? "Salaam Qasim. Aap ka Yaar hoon. Kaisi guzar rahi hai?"
         : "Hello Qasim. Yaar here. How are you holding up today?";
     try {
+      const token = authStore.getToken();
       const res = await fetch(`${API}/voice/speak`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({ text, voice: voiceId, provider }),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);

@@ -7,7 +7,7 @@ import { Sun, CloudSun, Moon, Plus, Trash2, Volume2, Bell } from "lucide-react";
 import { toast } from "sonner";
 import { loadBriefs, saveBriefs, newCustomBrief } from "../../lib/briefs";
 import { syncBriefsToNative, requestNativePermission, isNative } from "../../lib/nativeBridge";
-import { api, API } from "../../lib/api";
+import { api, API, authStore } from "../../lib/api";
 
 const KIND_META = {
   morning: { Icon: Sun, color: "#E5A85C", label: "Morning brief", desc: "Priorities, events, weather, gentle nudges to start the day" },
@@ -73,8 +73,13 @@ export default function BriefSettingsDialog({ open, onOpenChange }) {
       const text = data?.text || "";
       if (!text) { toast.error("Couldn't build a brief — check your data"); return; }
       // Speak it
+      const token = authStore.getToken();
       const res = await fetch(`${API}/voice/speak`, {
-        method: "POST", headers: { "Content-Type": "application/json" },
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({ text: text.slice(0, 4000), voice: "coral" }),
       });
       if (!res.ok) { toast.error("Couldn't generate audio"); return; }

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { api, API } from "../lib/api";
+import { api, API, authStore } from "../lib/api";
 import { Sparkles, Play, X, Volume2 } from "lucide-react";
 import { loadBriefs, isFiredToday, markFiredToday } from "../lib/briefs";
 import { isNative, syncBriefsToNative, onBriefTap, requestNativePermission } from "../lib/nativeBridge";
@@ -95,9 +95,13 @@ export default function BriefScheduler() {
     if (!text) return;
     stop();
     try {
+      const token = authStore.getToken();
       const res = await fetch(`${API}/voice/speak`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({ text: text.slice(0, 4000), voice: "coral" }),
       });
       if (!res.ok) return;

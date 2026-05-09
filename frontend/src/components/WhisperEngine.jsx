@@ -12,7 +12,7 @@
  *      the fallback (badge / silent / vibrate).
  */
 import React, { useEffect, useRef, useState } from "react";
-import { api, API } from "../lib/api";
+import { api, API, authStore } from "../lib/api";
 import { Bell, Check, Clock, X } from "lucide-react";
 
 const POLL_MS = 30_000;
@@ -100,9 +100,13 @@ export default function WhisperEngine() {
     if (style === "chime_name" || style === "name") {
       // Tiny quiet TTS of the user's name
       try {
+        const token = authStore.getToken();
         const res = await fetch(`${API}/voice/speak`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
           body: JSON.stringify({ text: `${name}?`, voice: "coral" }),
         });
         if (res.ok) {
@@ -120,9 +124,13 @@ export default function WhisperEngine() {
   const speakReminder = async (r) => {
     try {
       const text = r.body ? `${r.title}. ${r.body}` : r.title;
+      const token = authStore.getToken();
       const res = await fetch(`${API}/voice/speak`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({ text, voice: "coral" }),
       });
       if (res.ok) {

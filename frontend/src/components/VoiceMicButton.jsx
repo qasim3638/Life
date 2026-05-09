@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Mic, MicOff, Loader2, X, Sparkles, Check, Volume2, VolumeX } from "lucide-react";
-import { api, API } from "../lib/api";
+import { api, API, authStore } from "../lib/api";
 import { toast } from "sonner";
 import useShakeToTalk from "../lib/useShakeToTalk";
 
@@ -117,9 +117,13 @@ export default function VoiceMicButton() {
     if (!t) return;
     stopSpeaking();
     try {
+      const token = authStore.getToken();
       const res = await fetch(`${API}/voice/speak`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({ text: t.slice(0, 800), voice: "coral" }),
       });
       if (!res.ok) return;
