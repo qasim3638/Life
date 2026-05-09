@@ -251,7 +251,6 @@ export default function VoiceMicButton() {
       setTimeout(() => {
         setPhase("idle"); setTranscript(""); setResultLines([]);
       }, dismissDelay);
-      resume();
     } catch (e) {
       // Surface the actual backend error so we can diagnose production issues
       const status = e?.response?.status;
@@ -263,7 +262,6 @@ export default function VoiceMicButton() {
       else if (!status) msg = `Network error: ${(e?.message || '').toString().slice(0, 60)}`;
       setErrorMsg(msg);
       setPhase("idle");
-      resume();
     }
   }, [cleanup]);
 
