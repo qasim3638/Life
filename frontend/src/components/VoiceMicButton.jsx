@@ -126,7 +126,14 @@ export default function VoiceMicButton() {
         },
         body: JSON.stringify({ text: t.slice(0, 800), voice: "coral" }),
       });
-      if (!res.ok) return;
+      if (!res.ok) {
+        // Surface what's wrong instead of silent fail
+        let detail = "";
+        try { detail = (await res.text()).slice(0, 100); } catch {}
+        toast.message(`Yaar can't speak: ${res.status} ${detail || ""}`.trim());
+        console.error("[Yaar TTS] /voice/speak failed:", res.status, detail);
+        return;
+      }
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
       const audio = new Audio(url);
@@ -136,11 +143,15 @@ export default function VoiceMicButton() {
       setSpeaking(true);
       try {
         await audio.play();
-      } catch {
-        // Autoplay blocked — ignore (visual cue still shows)
+      } catch (playErr) {
+        // Autoplay blocked — surface it so user knows to enable
+        console.warn("[Yaar TTS] autoplay blocked:", playErr?.message);
+        toast.message("Tap the speaker icon to hear Yaar (browser blocked autoplay)");
         stopSpeaking();
       }
-    } catch {
+    } catch (e) {
+      console.error("[Yaar TTS] speak() error:", e);
+      toast.message(`Yaar TTS error: ${(e?.message || "").slice(0, 60)}`);
       stopSpeaking();
     }
   }, [ttsOn, stopSpeaking]);
