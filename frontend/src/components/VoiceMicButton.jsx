@@ -249,7 +249,15 @@ export default function VoiceMicButton() {
       }, dismissDelay);
       resume();
     } catch (e) {
-      setErrorMsg("Couldn't reach Yaar. Try again.");
+      // Surface the actual backend error so we can diagnose production issues
+      const status = e?.response?.status;
+      const detail = e?.response?.data?.detail || e?.message;
+      let msg = "Couldn't reach Yaar.";
+      if (status === 401) msg = "Session expired — please sign in again.";
+      else if (status === 500) msg = `Yaar's brain hit an error: ${(detail || '').toString().slice(0, 80)}`;
+      else if (status === 502 || status === 503 || status === 504) msg = `Backend is restarting (${status}). Try again in a minute.`;
+      else if (!status) msg = `Network error: ${(e?.message || '').toString().slice(0, 60)}`;
+      setErrorMsg(msg);
       setPhase("idle");
       resume();
     }
