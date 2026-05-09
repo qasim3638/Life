@@ -3,6 +3,7 @@ import { Mic, MicOff, Loader2, X, Sparkles, Check, Volume2, VolumeX } from "luci
 import { api, API, authStore } from "../lib/api";
 import { toast } from "sonner";
 import useShakeToTalk from "../lib/useShakeToTalk";
+import { elevenStore, elevenSpeak } from "../lib/elevenLabsTTS";
 
 /**
  * Floating "Just talk to Yaar" mic button — present app-wide.
@@ -116,6 +117,33 @@ export default function VoiceMicButton() {
     const t = (text || "").trim();
     if (!t) return;
     stopSpeaking();
+
+    // Path 1: ElevenLabs direct (if user has set their API key in Settings)
+    if (elevenStore.hasKey()) {
+      try {
+        const blob = await elevenSpeak(t.slice(0, 800));
+        const url = URL.createObjectURL(blob);
+        const audio = new Audio(url);
+        audioElRef.current = audio;
+        audio.onended = () => { stopSpeaking(); };
+        audio.onerror = () => { stopSpeaking(); };
+        setSpeaking(true);
+        try {
+          await audio.play();
+        } catch (playErr) {
+          console.warn("[Yaar TTS] autoplay blocked:", playErr?.message);
+          toast.message("Tap the speaker icon to hear Yaar (browser blocked autoplay)");
+          stopSpeaking();
+        }
+        return;
+      } catch (e) {
+        console.error("[Yaar TTS] ElevenLabs direct failed:", e);
+        toast.message(`ElevenLabs error: ${(e?.message || "").slice(0, 80)}`);
+        // fall through to OpenAI fallback below
+      }
+    }
+
+    // Path 2: OpenAI via backend
     try {
       const token = authStore.getToken();
       const res = await fetch(`${API}/voice/speak`, {
@@ -127,7 +155,6 @@ export default function VoiceMicButton() {
         body: JSON.stringify({ text: t.slice(0, 800), voice: "coral", provider: "openai" }),
       });
       if (!res.ok) {
-        // Surface what's wrong instead of silent fail
         let detail = "";
         try { detail = (await res.text()).slice(0, 100); } catch {}
         toast.message(`Yaar can't speak: ${res.status} ${detail || ""}`.trim());
@@ -144,7 +171,6 @@ export default function VoiceMicButton() {
       try {
         await audio.play();
       } catch (playErr) {
-        // Autoplay blocked — surface it so user knows to enable
         console.warn("[Yaar TTS] autoplay blocked:", playErr?.message);
         toast.message("Tap the speaker icon to hear Yaar (browser blocked autoplay)");
         stopSpeaking();

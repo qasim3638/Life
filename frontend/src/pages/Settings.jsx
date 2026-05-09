@@ -6,9 +6,10 @@ import { Link } from "react-router-dom";
 import { api, API, authStore } from "../lib/api";
 import axios from "axios";
 import {
-  Lock, ShieldOff, Volume2, Bell as BellIcon, Mic, ChevronRight, LogOut, Check, AlertCircle,
+  Lock, ShieldOff, Volume2, Bell as BellIcon, Mic, ChevronRight, LogOut, Check, AlertCircle, Key,
 } from "lucide-react";
 import { toast } from "sonner";
+import { elevenStore, DEFAULT_VOICE_ID } from "../lib/elevenLabsTTS";
 
 export default function Settings() {
   const [authStatus, setAuthStatus] = useState(null);
@@ -36,6 +37,8 @@ export default function Settings() {
 
       <AccountSection authStatus={authStatus} onChanged={refresh}/>
 
+      <ElevenLabsSection/>
+
       <LinkCard
         to="/voice"
         icon={Volume2}
@@ -56,6 +59,108 @@ export default function Settings() {
         sub="Tap the gear icon near the mic, bottom right of any page"
       />
     </div>
+  );
+}
+
+function ElevenLabsSection() {
+  const [apiKey, setApiKey] = useState("");
+  const [voiceId, setVoiceId] = useState("");
+  const [hasKey, setHasKey] = useState(false);
+  const [showKey, setShowKey] = useState(false);
+
+  useEffect(() => {
+    setApiKey(elevenStore.getKey());
+    setVoiceId(elevenStore.getVoiceId());
+    setHasKey(elevenStore.hasKey());
+  }, []);
+
+  const save = () => {
+    elevenStore.setKey(apiKey);
+    elevenStore.setVoiceId(voiceId || DEFAULT_VOICE_ID);
+    setHasKey(elevenStore.hasKey());
+    toast.success("ElevenLabs settings saved. Yaar will use this voice now.");
+  };
+
+  const remove = () => {
+    elevenStore.setKey("");
+    setApiKey("");
+    setHasKey(false);
+    toast.message("ElevenLabs key removed. Yaar falls back to OpenAI voice.");
+  };
+
+  return (
+    <section className="rounded-2xl bg-white border border-sand p-6" data-testid="settings-eleven">
+      <div className="flex items-start gap-4">
+        <div className="w-10 h-10 rounded-full bg-[#C27A62]/10 flex items-center justify-center text-[#C27A62] shrink-0">
+          <Key size={18} strokeWidth={1.5}/>
+        </div>
+        <div className="flex-1">
+          <p className="font-medium text-[#2D312E]">ElevenLabs voice (premium)</p>
+          <p className="text-xs text-[#6B7270] mt-1 leading-relaxed">
+            Paste your ElevenLabs API key for a much warmer, multilingual voice (English/Hindi/Urdu).
+            Stored only on this device. {hasKey ? <span className="text-[#59745D]">· Connected</span> : <span className="text-[#A3897C]">· Not set</span>}
+          </p>
+
+          <div className="mt-4 space-y-3">
+            <div>
+              <label className="text-[10px] uppercase tracking-[0.3em] text-[#A3897C]">API Key</label>
+              <div className="flex gap-2 mt-1">
+                <input
+                  type={showKey ? "text" : "password"}
+                  value={apiKey}
+                  onChange={(e) => setApiKey(e.target.value)}
+                  placeholder="sk_..."
+                  className="flex-1 px-3 py-2 bg-[#F4F1EA] rounded-xl text-sm text-[#2D312E] focus:outline-none focus:ring-2 focus:ring-[#59745D]"
+                  data-testid="eleven-key-input"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowKey(s => !s)}
+                  className="px-3 py-2 bg-[#F4F1EA] rounded-xl text-xs text-[#6B7270] hover:bg-[#E9E4D8]"
+                >
+                  {showKey ? "Hide" : "Show"}
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label className="text-[10px] uppercase tracking-[0.3em] text-[#A3897C]">Voice ID (optional)</label>
+              <input
+                type="text"
+                value={voiceId}
+                onChange={(e) => setVoiceId(e.target.value)}
+                placeholder={DEFAULT_VOICE_ID + " (Adam)"}
+                className="w-full mt-1 px-3 py-2 bg-[#F4F1EA] rounded-xl text-sm text-[#2D312E] focus:outline-none focus:ring-2 focus:ring-[#59745D] font-mono"
+                data-testid="eleven-voice-input"
+              />
+              <p className="text-[10px] text-[#9A9F9D] mt-1">
+                Find voice IDs at elevenlabs.io → Voices → click your voice → copy ID. Leave blank for Adam.
+              </p>
+            </div>
+
+            <div className="flex gap-2">
+              <button
+                onClick={save}
+                disabled={!apiKey.trim()}
+                className="flex-1 py-2 rounded-full bg-[#59745D] hover:bg-[#4A604D] text-white text-sm font-medium disabled:opacity-50"
+                data-testid="eleven-save-btn"
+              >
+                Save
+              </button>
+              {hasKey && (
+                <button
+                  onClick={remove}
+                  className="px-4 py-2 rounded-full border border-sand text-[#B85C50] text-sm hover:bg-[#FBF5F2]"
+                  data-testid="eleven-remove-btn"
+                >
+                  Remove
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
