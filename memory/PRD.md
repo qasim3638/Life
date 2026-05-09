@@ -29,12 +29,13 @@ Android APK (Capacitor WebView) ──► loads ──► Vercel (React frontend
 - **Hands-free Phase A** (Feb 2026) — "Hi Yaar" wake word + Shake-to-talk + Eagle voiceprint. WakeSettings dialog. Foreground only.
 - **Yaar Whisper Mode** (Feb 2026) — `/reminders` page, backend `/api/reminders/*`, WhisperEngine polls + summons gently with chime + name. Configurable summon style/name/gap/max/fallback. Per-reminder overrides. Acknowledged via tap or wake word.
 - **Phase B native scaffold** (Feb 2026) — `HandsFreeService.kt` foreground service, `HandsFreePlugin.kt` Capacitor plugin, AndroidManifest + Gradle deps for Picovoice Android SDKs. JS bridge `handsFreeBridge.js` auto-copies models from web to filesDir. Always-on toggle in Settings. **Code committed but UNTESTED — needs user Android Studio rebuild + iteration**.
+- **Voice Note → Journal** (Feb 9, 2026) — New `VoiceNoteToText.jsx` inline mic button on Self-Care reflection. Tap → record (max 60s with countdown) → tap → Whisper transcribe → text appended to textarea. User reviews/edits → "Keep this" saves as journal entry. **TESTED & WORKING in production (Vercel + Railway, May 9 2026 user confirmation).**
+- **Backend diagnostic endpoint** (Feb 9, 2026) — `/api/auth/_diag` returns env-var presence + Mongo ping (booleans only, no values). Code committed, **NOT YET DEPLOYED to Railway** (Railway↔GitHub OAuth broken at time of commit).
 
 ## Active blockers
-- None code-wise — awaiting user to:
-  1. Save latest commit to GitHub (auth code)
-  2. Add `JWT_SECRET`, `AUTH_EMAIL`, `AUTH_PASSWORD` env vars on Railway
-  3. Test lock screen on phone
+- **Yaar (companion chat) failing in production with "Couldn't reach Yaar"** — but `/api/voice/transcribe` works fine (confirms `EMERGENT_LLM_KEY` IS set, MongoDB IS connected). Issue is specific to `/api/companion/chat`. Needs investigation in next session.
+- **Railway↔GitHub OAuth broken** (May 9, 2026) — Railway error "Problem completing OAuth login" when reconnecting GitHub. Backend changes can't auto-deploy until resolved. User can wait for Railway-side fix or sign in to Railway via email instead of GitHub.
+- **MongoDB Atlas migration complete** (May 9, 2026) — User created fresh cluster after losing access to old one (broken GitHub OAuth on old MongoDB account). New cluster: user `qasim3638_db_user`, db `lifeblueprint`, IP allowlist `0.0.0.0/0`. URL-encoded password in connection string.
 
 ## Roadmap (priority order)
 
