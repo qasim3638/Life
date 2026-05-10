@@ -283,6 +283,10 @@ export default function VoiceMicButton() {
     }
   }, [phase, cleanup]);
 
+  // Ref-based indirection so stopRecording can call processAudioBlob even though
+  // processAudioBlob is defined below (avoids "Cannot access before initialization").
+  const processAudioBlobRef = useRef(null);
+
   const stopRecording = useCallback(async () => {
     if (!recordingRef.current) return;
 
@@ -297,11 +301,11 @@ export default function VoiceMicButton() {
           toast.message("Hold a bit longer — too short to transcribe.");
           return;
         }
-        // Plugin returns AAC audio inside an MP4/M4A container on Android.
-        // Force-label as m4a (Whisper-compatible) regardless of plugin's reported mime.
         console.log("[Yaar mic NATIVE] plugin mime:", v.mimeType, "ms:", v.msDuration, "b64 len:", v.recordDataBase64?.length);
         const blob = base64ToBlob(v.recordDataBase64, "audio/m4a");
-        await processAudioBlob(blob, "audio/m4a");
+        if (processAudioBlobRef.current) {
+          await processAudioBlobRef.current(blob, "audio/m4a");
+        }
       } catch (e) {
         const msg = (e?.message || "").toString().slice(0, 80);
         console.error("[Yaar mic NATIVE] stop failed:", msg, e);
@@ -315,7 +319,7 @@ export default function VoiceMicButton() {
     const rec = mediaRecorderRef.current;
     if (!rec) return;
     try { rec.stop(); } catch {}
-  }, [processAudioBlob]);
+  }, []);
 
   const processAudioBlob = useCallback(async (blob, mimeHint) => {
     setPhase("transcribing");
@@ -389,6 +393,9 @@ export default function VoiceMicButton() {
       setPhase("idle");
     }
   }, [ttsOn, speak]);
+
+  // Keep ref synced so stopRecording (defined above) can call processAudioBlob
+  useEffect(() => { processAudioBlobRef.current = processAudioBlob; }, [processAudioBlob]);
 
   const handleStop = useCallback(async () => {
     const elapsed = Date.now() - startedAtRef.current;
