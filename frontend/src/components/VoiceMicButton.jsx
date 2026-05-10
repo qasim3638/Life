@@ -297,8 +297,11 @@ export default function VoiceMicButton() {
           toast.message("Hold a bit longer — too short to transcribe.");
           return;
         }
-        const blob = base64ToBlob(v.recordDataBase64, v.mimeType || "audio/aac");
-        await processAudioBlob(blob, v.mimeType);
+        // Plugin returns AAC audio inside an MP4/M4A container on Android.
+        // Force-label as m4a (Whisper-compatible) regardless of plugin's reported mime.
+        console.log("[Yaar mic NATIVE] plugin mime:", v.mimeType, "ms:", v.msDuration, "b64 len:", v.recordDataBase64?.length);
+        const blob = base64ToBlob(v.recordDataBase64, "audio/m4a");
+        await processAudioBlob(blob, "audio/m4a");
       } catch (e) {
         const msg = (e?.message || "").toString().slice(0, 80);
         console.error("[Yaar mic NATIVE] stop failed:", msg, e);
@@ -312,19 +315,25 @@ export default function VoiceMicButton() {
     const rec = mediaRecorderRef.current;
     if (!rec) return;
     try { rec.stop(); } catch {}
-  }, []);
+  }, [processAudioBlob]);
 
   const processAudioBlob = useCallback(async (blob, mimeHint) => {
     setPhase("transcribing");
     try {
       const mt = (mimeHint || blob.type || "").toLowerCase();
-      const ext = mt.includes("aac") || mt.includes("m4a") ? "m4a"
-        : mt.includes("mp4") ? "mp4"
-        : mt.includes("ogg") ? "ogg"
-        : mt.includes("wav") ? "wav"
-        : "webm";
+      // For native (Capacitor): plugin records MP4-container AAC audio. Use .mp4 ext.
+      // For browser: keep existing logic.
+      let ext;
+      if (IS_NATIVE) {
+        ext = "mp4";
+      } else if (mt.includes("aac") || mt.includes("m4a")) ext = "m4a";
+      else if (mt.includes("mp4")) ext = "mp4";
+      else if (mt.includes("ogg")) ext = "ogg";
+      else if (mt.includes("wav")) ext = "wav";
+      else ext = "webm";
       const fd = new FormData();
       fd.append("audio", blob, `voice.${ext}`);
+      console.log("[Yaar mic] uploading", ext, "size", blob.size, "type", blob.type);
       const { data } = await api.post("/voice/transcribe", fd, {
         headers: { "Content-Type": "multipart/form-data" },
       });
@@ -373,7 +382,7 @@ export default function VoiceMicButton() {
       const detail = e?.response?.data?.detail || e?.message;
       let msg = "Couldn't reach Yaar.";
       if (status === 401) msg = "Session expired — please sign in again.";
-      else if (status === 500) msg = `Yaar's brain hit an error: ${(detail || '').toString().slice(0, 80)}`;
+      else if (status === 500) msg = `Yaar's brain hit an error: ${(detail || '').toString().slice(0, 200)}`;
       else if (status === 502 || status === 503 || status === 504) msg = `Backend is restarting (${status}). Try again in a minute.`;
       else if (!status) msg = `Network error: ${(e?.message || '').toString().slice(0, 60)}`;
       setErrorMsg(msg);
