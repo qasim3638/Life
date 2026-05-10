@@ -2,6 +2,17 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Mic, Square, Loader2 } from "lucide-react";
 import { api } from "../lib/api";
 import { toast } from "sonner";
+import { VoiceRecorder } from "capacitor-voice-recorder";
+import { Capacitor } from "@capacitor/core";
+
+const IS_NATIVE = Capacitor?.isNativePlatform?.() || false;
+
+function base64ToBlob(b64, mime) {
+  const byteChars = atob(b64);
+  const arr = new Uint8Array(byteChars.length);
+  for (let i = 0; i < byteChars.length; i++) arr[i] = byteChars.charCodeAt(i);
+  return new Blob([arr], { type: mime || "audio/aac" });
+}
 
 /**
  * Inline voice-to-text recorder for journal/reflection inputs.
@@ -44,10 +55,11 @@ export default function VoiceNoteToText({ onTranscribed, label = "Voice note" })
   const recordingRef = useRef(false);
 
   useEffect(() => {
-    const ok = typeof navigator !== "undefined"
-      && navigator.mediaDevices
-      && navigator.mediaDevices.getUserMedia
-      && typeof MediaRecorder !== "undefined";
+    const ok = IS_NATIVE
+      || (typeof navigator !== "undefined"
+          && navigator.mediaDevices
+          && navigator.mediaDevices.getUserMedia
+          && typeof MediaRecorder !== "undefined");
     setUnsupported(!ok);
   }, []);
 
@@ -63,20 +75,15 @@ export default function VoiceNoteToText({ onTranscribed, label = "Voice note" })
     recordingRef.current = false;
   }, []);
 
-  const handleStop = useCallback(async () => {
-    const blob = new Blob(chunksRef.current, { type: chunksRef.current[0]?.type || "audio/webm" });
-    cleanup();
-
-    if (blob.size < 800) {
-      setPhase("idle");
-      setSeconds(0);
-      toast.message("Too short — try holding a second longer.");
-      return;
-    }
-
+  const transcribeBlob = useCallback(async (blob, mimeHint) => {
     setPhase("transcribing");
     try {
-      const ext = (blob.type.includes("mp4") ? "mp4" : blob.type.includes("ogg") ? "ogg" : "webm");
+      const mt = (mimeHint || blob.type || "").toLowerCase();
+      const ext = mt.includes("aac") ? "aac"
+        : mt.includes("mp4") ? "mp4"
+        : mt.includes("ogg") ? "ogg"
+        : mt.includes("wav") ? "wav"
+        : "webm";
       const fd = new FormData();
       fd.append("audio", blob, `voice-note.${ext}`);
       const { data } = await api.post("/voice/transcribe", fd, {
@@ -95,12 +102,80 @@ export default function VoiceNoteToText({ onTranscribed, label = "Voice note" })
       setPhase("idle");
       setSeconds(0);
     }
-  }, [cleanup, onTranscribed]);
+  }, [onTranscribed]);
+
+  const handleStop = useCallback(async () => {
+    const blob = new Blob(chunksRef.current, { type: chunksRef.current[0]?.type || "audio/webm" });
+    cleanup();
+
+    if (blob.size < 800) {
+      setPhase("idle");
+      setSeconds(0);
+      toast.message("Too short — try holding a second longer.");
+      return;
+    }
+    await transcribeBlob(blob, blob.type);
+  }, [cleanup, transcribeBlob]);
 
   const startRecording = useCallback(async () => {
     if (recordingRef.current || phase !== "idle") return;
+
+    // Native (Capacitor APK): use VoiceRecorder plugin
+    if (IS_NATIVE) {
+      try {
+        const can = await VoiceRecorder.canDeviceVoiceRecord();
+        if (!can?.value) {
+          toast.error("This device cannot record audio.");
+          return;
+        }
+        const perm = await VoiceRecorder.hasAudioRecordingPermission();
+        if (!perm?.value) {
+          const req = await VoiceRecorder.requestAudioRecordingPermission();
+          if (!req?.value) {
+            toast.error("Microphone permission denied.");
+            return;
+          }
+        }
+        const start = await VoiceRecorder.startRecording();
+        if (!start?.value) {
+          toast.error("Couldn't start recording.");
+          return;
+        }
+        recordingRef.current = true;
+        setPhase("recording");
+        setSeconds(0);
+        tickRef.current = setInterval(() => setSeconds(s => s + 1), 1000);
+        autoStopRef.current = setTimeout(async () => {
+          // Auto-stop at MAX_SECONDS
+          if (recordingRef.current) {
+            try {
+              const result = await VoiceRecorder.stopRecording();
+              recordingRef.current = false;
+              if (tickRef.current) { clearInterval(tickRef.current); tickRef.current = null; }
+              const v = result?.value;
+              if (v?.recordDataBase64) {
+                const blob = base64ToBlob(v.recordDataBase64, v.mimeType || "audio/aac");
+                await transcribeBlob(blob, v.mimeType);
+              } else {
+                setPhase("idle"); setSeconds(0);
+              }
+            } catch {
+              setPhase("idle"); setSeconds(0); recordingRef.current = false;
+            }
+          }
+        }, MAX_SECONDS * 1000);
+      } catch (e) {
+        const name = e?.name || "Error";
+        const msg = (e?.message || "").slice(0, 80);
+        console.error("[VoiceNote NATIVE] start failed:", name, msg, e);
+        toast.error(`Mic error: ${name} — ${msg}`);
+        setPhase("idle");
+      }
+      return;
+    }
+
+    // Browser path
     try {
-      // Explicit constraints — Android WebView fails on bare `{audio:true}` with NotReadableError
       let stream;
       try {
         stream = await navigator.mediaDevices.getUserMedia({
@@ -129,9 +204,7 @@ export default function VoiceNoteToText({ onTranscribed, label = "Voice note" })
       recordingRef.current = true;
       setPhase("recording");
       setSeconds(0);
-      tickRef.current = setInterval(() => {
-        setSeconds(s => s + 1);
-      }, 1000);
+      tickRef.current = setInterval(() => setSeconds(s => s + 1), 1000);
       autoStopRef.current = setTimeout(() => {
         try { rec.stop(); } catch {}
       }, MAX_SECONDS * 1000);
@@ -143,13 +216,35 @@ export default function VoiceNoteToText({ onTranscribed, label = "Voice note" })
       cleanup();
       setPhase("idle");
     }
-  }, [phase, handleStop, cleanup]);
+  }, [phase, handleStop, cleanup, transcribeBlob]);
 
-  const stopRecording = useCallback(() => {
+  const stopRecording = useCallback(async () => {
+    if (!recordingRef.current) return;
+    if (IS_NATIVE) {
+      try {
+        const result = await VoiceRecorder.stopRecording();
+        recordingRef.current = false;
+        if (tickRef.current) { clearInterval(tickRef.current); tickRef.current = null; }
+        if (autoStopRef.current) { clearTimeout(autoStopRef.current); autoStopRef.current = null; }
+        const v = result?.value;
+        if (!v?.recordDataBase64) {
+          setPhase("idle"); setSeconds(0);
+          toast.message("Too short — try holding a second longer.");
+          return;
+        }
+        const blob = base64ToBlob(v.recordDataBase64, v.mimeType || "audio/aac");
+        await transcribeBlob(blob, v.mimeType);
+      } catch (e) {
+        const msg = (e?.message || "").slice(0, 80);
+        toast.error(`Mic stop error: ${msg}`);
+        setPhase("idle"); setSeconds(0); recordingRef.current = false;
+      }
+      return;
+    }
     const rec = mediaRecorderRef.current;
-    if (!rec || !recordingRef.current) return;
+    if (!rec) return;
     try { rec.stop(); } catch {}
-  }, []);
+  }, [transcribeBlob]);
 
   const onClick = () => {
     if (phase === "idle") startRecording();

@@ -4,6 +4,17 @@ import { api, API, authStore } from "../lib/api";
 import { toast } from "sonner";
 import useShakeToTalk from "../lib/useShakeToTalk";
 import { elevenStore, elevenSpeak } from "../lib/elevenLabsTTS";
+import { VoiceRecorder } from "capacitor-voice-recorder";
+import { Capacitor } from "@capacitor/core";
+
+const IS_NATIVE = Capacitor?.isNativePlatform?.() || false;
+
+function base64ToBlob(b64, mime) {
+  const byteChars = atob(b64);
+  const byteNumbers = new Array(byteChars.length);
+  for (let i = 0; i < byteChars.length; i++) byteNumbers[i] = byteChars.charCodeAt(i);
+  return new Blob([new Uint8Array(byteNumbers)], { type: mime || "audio/aac" });
+}
 
 /**
  * Floating "Just talk to Yaar" mic button — present app-wide.
@@ -196,8 +207,43 @@ export default function VoiceMicButton() {
     setErrorMsg("");
     setTranscript("");
     setResultLines([]);
+
+    // Native (Capacitor APK): use the VoiceRecorder plugin (bypasses WebView mic bug)
+    if (IS_NATIVE) {
+      try {
+        const can = await VoiceRecorder.canDeviceVoiceRecord();
+        if (!can?.value) {
+          setErrorMsg("This device cannot record audio.");
+          return;
+        }
+        const perm = await VoiceRecorder.hasAudioRecordingPermission();
+        if (!perm?.value) {
+          const req = await VoiceRecorder.requestAudioRecordingPermission();
+          if (!req?.value) {
+            setErrorMsg("Microphone permission denied.");
+            return;
+          }
+        }
+        const start = await VoiceRecorder.startRecording();
+        if (!start?.value) {
+          setErrorMsg("Couldn't start recording.");
+          return;
+        }
+        recordingRef.current = true;
+        startedAtRef.current = Date.now();
+        setPhase("recording");
+      } catch (e) {
+        const name = e?.name || "Error";
+        const msg = (e?.message || e?.toString() || "").slice(0, 80);
+        console.error("[Yaar mic NATIVE] start failed:", name, msg, e);
+        setErrorMsg(`Mic error: ${name} — ${msg}`);
+        setPhase("idle");
+      }
+      return;
+    }
+
+    // Browser: use getUserMedia
     try {
-      // Use explicit constraints — Android WebView throws NotReadableError on `{audio:true}`
       const constraints = {
         audio: {
           echoCancellation: true,
@@ -211,7 +257,6 @@ export default function VoiceMicButton() {
       try {
         stream = await navigator.mediaDevices.getUserMedia(constraints);
       } catch (firstErr) {
-        // Fallback: try minimal constraints
         console.warn("[Yaar mic] explicit constraints failed, trying basic:", firstErr?.name);
         stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       }
@@ -229,7 +274,6 @@ export default function VoiceMicButton() {
       startedAtRef.current = Date.now();
       setPhase("recording");
     } catch (e) {
-      // Show the actual error name + message so we can diagnose
       const name = e?.name || "Error";
       const msg = (e?.message || "").toString().slice(0, 80);
       console.error("[Yaar mic] getUserMedia failed:", name, msg, e);
@@ -239,26 +283,46 @@ export default function VoiceMicButton() {
     }
   }, [phase, cleanup]);
 
-  const stopRecording = useCallback(() => {
-    const rec = mediaRecorderRef.current;
-    if (!rec || !recordingRef.current) return;
-    try { rec.stop(); } catch {}
-  }, []);
+  const stopRecording = useCallback(async () => {
+    if (!recordingRef.current) return;
 
-  const handleStop = useCallback(async () => {
-    const elapsed = Date.now() - startedAtRef.current;
-    const blob = new Blob(chunksRef.current, { type: chunksRef.current[0]?.type || "audio/webm" });
-    cleanup();
-
-    if (elapsed < 400 || blob.size < 800) {
-      setPhase("idle");
-      toast.message("Hold a bit longer — too short to transcribe.");
+    if (IS_NATIVE) {
+      try {
+        const result = await VoiceRecorder.stopRecording();
+        recordingRef.current = false;
+        const v = result?.value;
+        const elapsed = v?.msDuration || (Date.now() - startedAtRef.current);
+        if (!v?.recordDataBase64 || elapsed < 400) {
+          setPhase("idle");
+          toast.message("Hold a bit longer — too short to transcribe.");
+          return;
+        }
+        const blob = base64ToBlob(v.recordDataBase64, v.mimeType || "audio/aac");
+        await processAudioBlob(blob, v.mimeType);
+      } catch (e) {
+        const msg = (e?.message || "").toString().slice(0, 80);
+        console.error("[Yaar mic NATIVE] stop failed:", msg, e);
+        setErrorMsg(`Mic stop error: ${msg}`);
+        setPhase("idle");
+        recordingRef.current = false;
+      }
       return;
     }
 
+    const rec = mediaRecorderRef.current;
+    if (!rec) return;
+    try { rec.stop(); } catch {}
+  }, []);
+
+  const processAudioBlob = useCallback(async (blob, mimeHint) => {
     setPhase("transcribing");
     try {
-      const ext = (blob.type.includes("mp4") ? "mp4" : blob.type.includes("ogg") ? "ogg" : "webm");
+      const mt = (mimeHint || blob.type || "").toLowerCase();
+      const ext = mt.includes("aac") ? "aac"
+        : mt.includes("mp4") ? "mp4"
+        : mt.includes("ogg") ? "ogg"
+        : mt.includes("wav") ? "wav"
+        : "webm";
       const fd = new FormData();
       fd.append("audio", blob, `voice.${ext}`);
       const { data } = await api.post("/voice/transcribe", fd, {
@@ -273,7 +337,6 @@ export default function VoiceMicButton() {
       setTranscript(text);
       setPhase("thinking");
 
-      // Send transcript through companion chat & auto-apply actions
       const chat = await api.post("/companion/chat", { message: text });
       const reply = chat?.data?.reply;
       const actions = reply?.actions || [];
@@ -289,7 +352,6 @@ export default function VoiceMicButton() {
       if (applied.length > 0) {
         setResultLines(applied);
         toast.success(applied.length === 1 ? applied[0] : `${applied.length} changes applied`);
-        // Speak back a concise summary
         const spokenSummary = applied.length === 1
           ? `Done. ${applied[0]}`
           : `Done. ${applied.length} changes — ${applied.slice(0, 4).join(". ")}.`;
@@ -302,13 +364,11 @@ export default function VoiceMicButton() {
         speak("Heard you, but there was nothing to do.");
       }
       setPhase("done");
-      // Auto-clear: longer if Yaar is speaking back
       const dismissDelay = (ttsOn && (applied.length > 0 || reply?.content)) ? 12000 : 5000;
       setTimeout(() => {
         setPhase("idle"); setTranscript(""); setResultLines([]);
       }, dismissDelay);
     } catch (e) {
-      // Surface the actual backend error so we can diagnose production issues
       const status = e?.response?.status;
       const detail = e?.response?.data?.detail || e?.message;
       let msg = "Couldn't reach Yaar.";
@@ -319,7 +379,20 @@ export default function VoiceMicButton() {
       setErrorMsg(msg);
       setPhase("idle");
     }
-  }, [cleanup]);
+  }, [ttsOn, speak]);
+
+  const handleStop = useCallback(async () => {
+    const elapsed = Date.now() - startedAtRef.current;
+    const blob = new Blob(chunksRef.current, { type: chunksRef.current[0]?.type || "audio/webm" });
+    cleanup();
+
+    if (elapsed < 400 || blob.size < 800) {
+      setPhase("idle");
+      toast.message("Hold a bit longer — too short to transcribe.");
+      return;
+    }
+    await processAudioBlob(blob, blob.type);
+  }, [cleanup, processAudioBlob]);
 
   // ---- Pointer interactions ----
   const onPointerDown = (e) => {
