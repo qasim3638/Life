@@ -100,7 +100,22 @@ export default function VoiceNoteToText({ onTranscribed, label = "Voice note" })
   const startRecording = useCallback(async () => {
     if (recordingRef.current || phase !== "idle") return;
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      // Explicit constraints — Android WebView fails on bare `{audio:true}` with NotReadableError
+      let stream;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true,
+            sampleRate: 16000,
+            channelCount: 1,
+          },
+        });
+      } catch (firstErr) {
+        console.warn("[VoiceNote] explicit constraints failed, trying basic:", firstErr?.name);
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      }
       streamRef.current = stream;
       const mime = pickMime();
       const rec = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined);

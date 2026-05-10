@@ -197,7 +197,24 @@ export default function VoiceMicButton() {
     setTranscript("");
     setResultLines([]);
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      // Use explicit constraints — Android WebView throws NotReadableError on `{audio:true}`
+      const constraints = {
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+          sampleRate: 16000,
+          channelCount: 1,
+        },
+      };
+      let stream;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia(constraints);
+      } catch (firstErr) {
+        // Fallback: try minimal constraints
+        console.warn("[Yaar mic] explicit constraints failed, trying basic:", firstErr?.name);
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      }
       streamRef.current = stream;
       const mime = pickMime();
       const rec = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined);
