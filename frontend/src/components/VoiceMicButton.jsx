@@ -6,6 +6,7 @@ import useShakeToTalk from "../lib/useShakeToTalk";
 import { elevenStore, elevenSpeak } from "../lib/elevenLabsTTS";
 import { VoiceRecorder } from "capacitor-voice-recorder";
 import { Capacitor } from "@capacitor/core";
+import { convertBlobToWav } from "../lib/audioConvert";
 
 const IS_NATIVE = Capacitor?.isNativePlatform?.() || false;
 
@@ -324,20 +325,30 @@ export default function VoiceMicButton() {
   const processAudioBlob = useCallback(async (blob, mimeHint) => {
     setPhase("transcribing");
     try {
+      // On native (Capacitor), audio comes as AAC which Whisper rejects.
+      // Decode + re-encode to WAV in the browser before uploading.
+      let upload = blob;
+      let ext = "webm";
       const mt = (mimeHint || blob.type || "").toLowerCase();
-      // For native (Capacitor): plugin records MP4-container AAC audio. Use .mp4 ext.
-      // For browser: keep existing logic.
-      let ext;
       if (IS_NATIVE) {
-        ext = "mp4";
-      } else if (mt.includes("aac") || mt.includes("m4a")) ext = "m4a";
-      else if (mt.includes("mp4")) ext = "mp4";
-      else if (mt.includes("ogg")) ext = "ogg";
-      else if (mt.includes("wav")) ext = "wav";
-      else ext = "webm";
+        try {
+          upload = await convertBlobToWav(blob);
+          ext = "wav";
+          console.log("[Yaar mic] converted to WAV, bytes:", upload.size);
+        } catch (convErr) {
+          console.error("[Yaar mic] WAV conversion failed, sending raw m4a:", convErr);
+          ext = "m4a";
+        }
+      } else {
+        if (mt.includes("aac") || mt.includes("m4a")) ext = "m4a";
+        else if (mt.includes("mp4")) ext = "mp4";
+        else if (mt.includes("ogg")) ext = "ogg";
+        else if (mt.includes("wav")) ext = "wav";
+        else ext = "webm";
+      }
       const fd = new FormData();
-      fd.append("audio", blob, `voice.${ext}`);
-      console.log("[Yaar mic] uploading", ext, "size", blob.size, "type", blob.type);
+      fd.append("audio", upload, `voice.${ext}`);
+      console.log("[Yaar mic] uploading", ext, "size", upload.size, "type", upload.type);
       const { data } = await api.post("/voice/transcribe", fd, {
         headers: { "Content-Type": "multipart/form-data" },
       });

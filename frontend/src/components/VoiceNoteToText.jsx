@@ -4,6 +4,7 @@ import { api } from "../lib/api";
 import { toast } from "sonner";
 import { VoiceRecorder } from "capacitor-voice-recorder";
 import { Capacitor } from "@capacitor/core";
+import { convertBlobToWav } from "../lib/audioConvert";
 
 const IS_NATIVE = Capacitor?.isNativePlatform?.() || false;
 
@@ -78,14 +79,26 @@ export default function VoiceNoteToText({ onTranscribed, label = "Voice note" })
   const transcribeBlob = useCallback(async (blob, mimeHint) => {
     setPhase("transcribing");
     try {
+      let upload = blob;
+      let ext = "webm";
       const mt = (mimeHint || blob.type || "").toLowerCase();
-      const ext = mt.includes("aac") || mt.includes("m4a") ? "m4a"
-        : mt.includes("mp4") ? "mp4"
-        : mt.includes("ogg") ? "ogg"
-        : mt.includes("wav") ? "wav"
-        : "webm";
+      if (IS_NATIVE) {
+        try {
+          upload = await convertBlobToWav(blob);
+          ext = "wav";
+        } catch (convErr) {
+          console.error("[VoiceNote] WAV conversion failed:", convErr);
+          ext = "m4a";
+        }
+      } else {
+        if (mt.includes("aac") || mt.includes("m4a")) ext = "m4a";
+        else if (mt.includes("mp4")) ext = "mp4";
+        else if (mt.includes("ogg")) ext = "ogg";
+        else if (mt.includes("wav")) ext = "wav";
+        else ext = "webm";
+      }
       const fd = new FormData();
-      fd.append("audio", blob, `voice-note.${ext}`);
+      fd.append("audio", upload, `voice-note.${ext}`);
       const { data } = await api.post("/voice/transcribe", fd, {
         headers: { "Content-Type": "multipart/form-data" },
       });
