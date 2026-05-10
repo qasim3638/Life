@@ -176,85 +176,44 @@ export default function WakeSettings() {
                   <span className={`absolute top-0.5 w-6 h-6 rounded-full bg-white shadow transition-transform ${wake ? "translate-x-[22px]" : "translate-x-0.5"}`}/>
                 </button>
               </div>
-              <label className="block text-[10px] uppercase tracking-[0.3em] text-[#A3897C] mt-3">
-                Picovoice AccessKey
-              </label>
-              <div className="flex gap-2 mt-1">
-                <input
-                  type="password"
-                  value={key}
-                  onChange={(e) => setKey(e.target.value)}
-                  placeholder="Paste your AccessKey"
-                  className="flex-1 px-3 py-2 rounded-xl border border-sand bg-[#FDFBF7] text-sm text-[#2D312E] focus:outline-none focus:border-[#59745D]"
-                  data-testid="picovoice-key-input"
-                />
-                <button
-                  onClick={saveKey}
-                  disabled={!key.trim()}
-                  className="px-4 py-2 rounded-xl bg-[#59745D] text-white text-sm disabled:opacity-40"
-                  data-testid="picovoice-key-save"
-                >
-                  Save
-                </button>
-              </div>
-              <a
-                href="https://console.picovoice.ai"
-                target="_blank"
-                rel="noreferrer"
-                className="text-xs text-[#59745D] underline underline-offset-4 mt-3 inline-flex items-center gap-1"
-              >
-                Get free AccessKey <ExternalLink size={11}/>
-              </a>
               <p className="text-[11px] text-[#9A9F9D] mt-3 leading-relaxed">
-                Also drop <code className="bg-[#F4F1EA] px-1 rounded">hi_yaar.ppn</code>, <code className="bg-[#F4F1EA] px-1 rounded">porcupine_params.pv</code>, and <code className="bg-[#F4F1EA] px-1 rounded">eagle_params.pv</code> in <code className="bg-[#F4F1EA] px-1 rounded">/public/models/</code> then redeploy.
+                Free — uses your device's built-in speech recognizer (Google on Android). No API key needed.
+                Variants like "Hey Yaar" or "OK Yaar" also work. Pauses while Yaar speaks.
               </p>
             </div>
 
             {/* Voiceprint */}
-            <div className="rounded-2xl bg-white border border-sand p-4 mb-4">
+            <div className="rounded-2xl bg-white border border-sand p-4 mb-4 opacity-50 pointer-events-none">
               <div className="flex items-center justify-between mb-2">
                 <div>
                   <p className="font-medium text-[#2D312E] flex items-center gap-2">
                     Voiceprint
-                    {voiceprintEnrolled && <ShieldCheck size={14} className="text-[#59745D]"/>}
                   </p>
                   <p className="text-xs text-[#6B7270]">
-                    {voiceprintEnrolled
-                      ? "Only your voice triggers Yaar"
-                      : "Lock 'Hi Yaar' to your voice only"}
+                    Disabled — requires Picovoice
                   </p>
                 </div>
                 <button
-                  onClick={() => {
-                    if (!key.trim()) {
-                      toast.error("Save your AccessKey first.");
-                      return;
-                    }
-                    setEnrollOpen(true);
-                  }}
-                  className="px-3 py-1.5 rounded-xl bg-[#59745D] text-white text-xs"
-                  data-testid="enroll-open-btn"
+                  onClick={() => {}}
+                  disabled
+                  className="px-4 py-2 rounded-xl bg-[#E5DED3] text-[#9A9F9D] text-sm font-medium"
+                  data-testid="voiceprint-enroll-btn"
                 >
-                  {voiceprintEnrolled ? "Re-enroll" : "Enroll"}
+                  Enroll
                 </button>
               </div>
-              {voiceprintEnrolled && (
-                <button
-                  onClick={async () => {
-                    try {
-                      await api.delete("/speaker/profile");
-                      setVoiceprintEnrolled(false);
-                      toast.message("Voiceprint cleared");
-                    } catch {
-                      toast.error("Couldn't clear");
-                    }
-                  }}
-                  className="text-[11px] text-[#C27A62] mt-1 hover:underline"
-                >
-                  Clear voiceprint
-                </button>
-              )}
             </div>
+
+            {/* Legacy section retained but hidden via re-render below */}
+            <div style={{ display: "none" }}>
+              <input type="password" value={key} onChange={(e) => setKey(e.target.value)} data-testid="picovoice-key-input"/>
+              <button onClick={saveKey} data-testid="picovoice-key-save">Save</button>
+              <a href="https://console.picovoice.ai" target="_blank" rel="noreferrer">
+                Get free AccessKey <ExternalLink size={11}/>
+              </a>
+            </div>
+
+            {/* Voiceprint section removed (was Picovoice-dependent) */}
 
             {/* Shake to talk */}
             <div className="rounded-2xl bg-white border border-sand p-4 mb-4">
