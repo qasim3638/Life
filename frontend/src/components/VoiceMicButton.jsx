@@ -318,7 +318,7 @@ export default function VoiceMicButton() {
     setPhase("transcribing");
     try {
       const mt = (mimeHint || blob.type || "").toLowerCase();
-      const ext = mt.includes("aac") ? "aac"
+      const ext = mt.includes("aac") || mt.includes("m4a") ? "m4a"
         : mt.includes("mp4") ? "mp4"
         : mt.includes("ogg") ? "ogg"
         : mt.includes("wav") ? "wav"
