@@ -12,7 +12,7 @@ import {
 import {
   getShakeEnabled, setShakeEnabled, requestShakePermissionIfNeeded,
 } from "../lib/useShakeToTalk";
-import EnrollVoiceprint from "./EnrollVoiceprint";
+import EnrollVoiceprintV2 from "./EnrollVoiceprintV2";
 import { api } from "../lib/api";
 import { isNative, startHandsFree, stopHandsFree, onHandsFreeWake } from "../lib/handsFreeBridge";
 import { toast } from "sonner";
@@ -37,7 +37,7 @@ export default function WakeSettings() {
     let cancelled = false;
     (async () => {
       try {
-        const { data } = await api.get("/speaker/status");
+        const { data } = await api.get("/voiceprint/status");
         if (!cancelled) setVoiceprintEnrolled(!!data?.enrolled);
       } catch {
         if (!cancelled) setVoiceprintEnrolled(false);
@@ -182,35 +182,44 @@ export default function WakeSettings() {
               </p>
             </div>
 
-            {/* Voiceprint */}
-            <div className="rounded-2xl bg-white border border-sand p-4 mb-4 opacity-50 pointer-events-none">
+            {/* Voiceprint — Resemblyzer-based */}
+            <div className="rounded-2xl bg-white border border-sand p-4 mb-4">
               <div className="flex items-center justify-between mb-2">
                 <div>
                   <p className="font-medium text-[#2D312E] flex items-center gap-2">
                     Voiceprint
+                    {voiceprintEnrolled && <ShieldCheck size={14} className="text-[#59745D]"/>}
                   </p>
                   <p className="text-xs text-[#6B7270]">
-                    Disabled — requires Picovoice
+                    {voiceprintEnrolled
+                      ? "Locked to your voice"
+                      : "Lock private features to your voice only"}
                   </p>
                 </div>
                 <button
-                  onClick={() => {}}
-                  disabled
-                  className="px-4 py-2 rounded-xl bg-[#E5DED3] text-[#9A9F9D] text-sm font-medium"
-                  data-testid="voiceprint-enroll-btn"
+                  onClick={() => setEnrollOpen(true)}
+                  className="px-3 py-1.5 rounded-xl bg-[#59745D] text-white text-xs"
+                  data-testid="enroll-open-btn"
                 >
-                  Enroll
+                  {voiceprintEnrolled ? "Re-enroll" : "Enroll"}
                 </button>
               </div>
-            </div>
-
-            {/* Legacy section retained but hidden via re-render below */}
-            <div style={{ display: "none" }}>
-              <input type="password" value={key} onChange={(e) => setKey(e.target.value)} data-testid="picovoice-key-input"/>
-              <button onClick={saveKey} data-testid="picovoice-key-save">Save</button>
-              <a href="https://console.picovoice.ai" target="_blank" rel="noreferrer">
-                Get free AccessKey <ExternalLink size={11}/>
-              </a>
+              {voiceprintEnrolled && (
+                <button
+                  onClick={async () => {
+                    try {
+                      await api.delete("/voiceprint/delete");
+                      setVoiceprintEnrolled(false);
+                      toast.message("Voiceprint cleared");
+                    } catch {
+                      toast.error("Couldn't clear");
+                    }
+                  }}
+                  className="text-[11px] text-[#C27A62] mt-1 hover:underline"
+                >
+                  Clear voiceprint
+                </button>
+              )}
             </div>
 
             {/* Voiceprint section removed (was Picovoice-dependent) */}
@@ -259,12 +268,11 @@ export default function WakeSettings() {
           </div>
         </div>
       )}
-      {enrollOpen && (
-        <EnrollVoiceprint
-          onClose={() => setEnrollOpen(false)}
-          onEnrolled={() => setVoiceprintEnrolled(true)}
-        />
-      )}
+      <EnrollVoiceprintV2
+        open={enrollOpen}
+        onClose={() => setEnrollOpen(false)}
+        onEnrolled={() => setVoiceprintEnrolled(true)}
+      />
     </>
   );
 }
