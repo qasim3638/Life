@@ -56,7 +56,15 @@ export default function EnrollVoiceprintV2({ open, onClose, passphrase = PASSPHR
       setPhase("idle");
       setSeconds(0);
       setEnrollResult(null);
+      // Resume wake-word listening (if it was running)
+      window.dispatchEvent(new CustomEvent("life:wake-resume"));
+    } else {
+      // Pause wake-word listening so it doesn't hold the mic
+      window.dispatchEvent(new CustomEvent("life:wake-pause"));
     }
+    return () => {
+      if (open) window.dispatchEvent(new CustomEvent("life:wake-resume"));
+    };
   }, [open]);
 
   const cleanup = useCallback(() => {

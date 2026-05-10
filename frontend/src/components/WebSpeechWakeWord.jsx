@@ -58,7 +58,7 @@ export default function WebSpeechWakeWord() {
     return () => window.removeEventListener("life:wake-settings", handler);
   }, []);
 
-  // Pause while floating mic is recording or Yaar is speaking
+  // Pause while floating mic is recording or Yaar is speaking or voiceprint enrollment is open
   useEffect(() => {
     const onMicStart = () => { pausedRef.current = true; safeStop(); };
     const onMicEnd = () => { pausedRef.current = false; scheduleRestart(50); };
@@ -66,11 +66,15 @@ export default function WebSpeechWakeWord() {
     window.addEventListener("life:mic-recording-end", onMicEnd);
     window.addEventListener("life:yaar-speaking-start", onMicStart);
     window.addEventListener("life:yaar-speaking-end", onMicEnd);
+    window.addEventListener("life:wake-pause", onMicStart);
+    window.addEventListener("life:wake-resume", onMicEnd);
     return () => {
       window.removeEventListener("life:mic-recording-start", onMicStart);
       window.removeEventListener("life:mic-recording-end", onMicEnd);
       window.removeEventListener("life:yaar-speaking-start", onMicStart);
       window.removeEventListener("life:yaar-speaking-end", onMicEnd);
+      window.removeEventListener("life:wake-pause", onMicStart);
+      window.removeEventListener("life:wake-resume", onMicEnd);
     };
   }, []);
 
