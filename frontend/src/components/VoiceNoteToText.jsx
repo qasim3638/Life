@@ -121,9 +121,10 @@ export default function VoiceNoteToText({ onTranscribed, label = "Voice note" })
         try { rec.stop(); } catch {}
       }, MAX_SECONDS * 1000);
     } catch (e) {
-      toast.error(e?.name === "NotAllowedError"
-        ? "Microphone permission denied."
-        : "Couldn't access microphone.");
+      const name = e?.name || "Error";
+      const msg = (e?.message || "").toString().slice(0, 80);
+      console.error("[VoiceNote] getUserMedia failed:", name, msg, e);
+      toast.error(`Mic error: ${name} — ${msg}`);
       cleanup();
       setPhase("idle");
     }

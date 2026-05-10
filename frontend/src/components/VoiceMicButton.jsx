@@ -212,9 +212,11 @@ export default function VoiceMicButton() {
       startedAtRef.current = Date.now();
       setPhase("recording");
     } catch (e) {
-      setErrorMsg(e?.name === "NotAllowedError"
-        ? "Microphone permission denied. Allow it in browser settings."
-        : "Couldn't access microphone.");
+      // Show the actual error name + message so we can diagnose
+      const name = e?.name || "Error";
+      const msg = (e?.message || "").toString().slice(0, 80);
+      console.error("[Yaar mic] getUserMedia failed:", name, msg, e);
+      setErrorMsg(`Mic error: ${name} — ${msg}`);
       cleanup();
       setPhase("idle");
     }
