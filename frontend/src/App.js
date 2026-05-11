@@ -4,6 +4,7 @@ import { Toaster } from "sonner";
 import AuthGate from "./components/AuthGate";
 import HiYaarListener from "./components/HiYaarListener";
 import WebSpeechWakeWord from "./components/WebSpeechWakeWord";
+import PicovoiceWakeWord from "./components/PicovoiceWakeWord";
 import WakeSettings from "./components/WakeSettings";
 import Sidebar from "./components/Sidebar";
 import MobileNav from "./components/MobileNav";
@@ -64,6 +65,7 @@ function Shell() {
       <WakeSettings />
       <BriefScheduler />
       <HiYaarListener />
+      <PicovoiceWakeWord />
       <WebSpeechWakeWord />
       <WhisperEngine />
     </div>

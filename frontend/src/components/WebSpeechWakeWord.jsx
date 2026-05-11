@@ -46,6 +46,11 @@ export default function WebSpeechWakeWord() {
   const lastRestartRef = useRef(0);
   const pausedRef = useRef(false); // paused while Yaar speaks or recording
 
+  // If Picovoice key is set, Picovoice handles wake word — Web Speech stays off.
+  const picovoiceActive = (typeof localStorage !== "undefined")
+    ? !!localStorage.getItem("life_picovoice_key")
+    : false;
+
   // Detect support
   const SR = typeof window !== "undefined"
     ? (window.SpeechRecognition || window.webkitSpeechRecognition)
@@ -159,6 +164,12 @@ export default function WebSpeechWakeWord() {
   // Master on/off
   useEffect(() => {
     if (!SR) return;
+    if (picovoiceActive) {
+      // Picovoice handles wake word — stay off
+      shouldRunRef.current = false;
+      safeStop();
+      return;
+    }
     if (enabled) {
       shouldRunRef.current = true;
       pausedRef.current = false;
@@ -173,7 +184,7 @@ export default function WebSpeechWakeWord() {
       safeStop();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enabled, SR]);
+  }, [enabled, SR, picovoiceActive]);
 
   // Render nothing — pure background service
   return null;

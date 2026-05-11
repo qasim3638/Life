@@ -177,8 +177,42 @@ export default function WakeSettings() {
                 </button>
               </div>
               <p className="text-[11px] text-[#9A9F9D] mt-3 leading-relaxed">
-                Free — uses your device's built-in speech recognizer (Google on Android). No API key needed.
-                Variants like "Hey Yaar" or "OK Yaar" also work. Pauses while Yaar speaks.
+                With Picovoice AccessKey below → fast, accurate, screen-off-ready (paid).<br/>
+                Without it → free Web Speech API (app open only).
+              </p>
+            </div>
+
+            {/* Picovoice AccessKey input */}
+            <div className="rounded-2xl bg-white border border-sand p-4 mb-4">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-[#A3897C] mb-2">Picovoice AccessKey (optional)</p>
+              <div className="flex gap-2">
+                <input
+                  type="password"
+                  value={key}
+                  onChange={(e) => setKey(e.target.value)}
+                  placeholder="Paste from console.picovoice.ai"
+                  className="flex-1 px-3 py-2 rounded-xl border border-sand bg-[#FDFBF7] text-sm text-[#2D312E] focus:outline-none focus:border-[#59745D]"
+                  data-testid="picovoice-key-input"
+                />
+                <button
+                  onClick={saveKey}
+                  disabled={!key.trim()}
+                  className="px-4 py-2 rounded-xl bg-[#59745D] text-white text-sm disabled:opacity-40"
+                  data-testid="picovoice-key-save"
+                >
+                  Save
+                </button>
+              </div>
+              <a
+                href="https://console.picovoice.ai"
+                target="_blank"
+                rel="noreferrer"
+                className="text-xs text-[#59745D] underline underline-offset-4 mt-3 inline-flex items-center gap-1"
+              >
+                Get free AccessKey <ExternalLink size={11}/>
+              </a>
+              <p className="text-[11px] text-[#9A9F9D] mt-2 leading-relaxed">
+                With Picovoice → "Hi Yaar" is faster (~80ms), more accurate. Without → falls back to Web Speech.
               </p>
             </div>
 
