@@ -14,7 +14,9 @@
 import { useEffect, useRef, useState } from "react";
 import { PorcupineWorker } from "@picovoice/porcupine-web";
 import { WebVoiceProcessor } from "@picovoice/web-voice-processor";
+import { Capacitor } from "@capacitor/core";
 
+const IS_NATIVE = Capacitor?.isNativePlatform?.() || false;
 const getPicovoiceKey = () => localStorage.getItem("life_picovoice_key") || "";
 const getWakeEnabled = () => (localStorage.getItem("life_wake_enabled") || "off") === "on";
 
@@ -35,14 +37,25 @@ export default function PicovoiceWakeWord() {
   useEffect(() => {
     const pause = async () => {
       pausedRef.current = true;
-      if (workerRef.current) {
-        try { await WebVoiceProcessor.unsubscribe(workerRef.current); } catch {}
+      const w = workerRef.current;
+      if (!w) return;
+      try { await WebVoiceProcessor.unsubscribe(w); } catch {}
+      // On native (Capacitor APK), the Android mic can only be held by one
+      // source at a time. Fully terminate the worker so VoiceRecorder plugin
+      // can grab the mic. We'll recreate on resume.
+      if (IS_NATIVE) {
+        try { await w.terminate(); } catch {}
+        workerRef.current = null;
       }
     };
     const resume = async () => {
       pausedRef.current = false;
-      if (workerRef.current && enabled) {
+      if (!enabled) return;
+      if (workerRef.current) {
         try { await WebVoiceProcessor.subscribe(workerRef.current); } catch {}
+      } else if (IS_NATIVE) {
+        // Worker was terminated — kick off a fresh start
+        window.dispatchEvent(new CustomEvent("life:wake-rebuild"));
       }
     };
     window.addEventListener("life:mic-recording-start", pause);
@@ -116,8 +129,14 @@ export default function PicovoiceWakeWord() {
     if (enabled) start();
     else stop();
 
+    const rebuildHandler = () => {
+      if (enabled && !pausedRef.current) start();
+    };
+    window.addEventListener("life:wake-rebuild", rebuildHandler);
+
     return () => {
       cancelled = true;
+      window.removeEventListener("life:wake-rebuild", rebuildHandler);
       stop();
     };
   }, [enabled]);
